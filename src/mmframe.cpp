@@ -191,7 +191,7 @@ wxEND_EVENT_TABLE()
 mmGUIFrame::mmGUIFrame(mmGUIApp* app, const wxString& title
     , const wxPoint& pos
     , const wxSize& size)
-    : wxFrame(0, -1, title, pos, size)
+    : wxFrame( nullptr , -1 , title , pos , size )
     , m_app(app)
     , gotoAccountID_(-1)
     , gotoTransID_(-1)
@@ -373,7 +373,7 @@ void mmGUIFrame::cleanupNavTreeControl(wxTreeItemId& item)
             cleanupNavTreeControl(childitem);
         }
         mmTreeItemData* iData = dynamic_cast<mmTreeItemData*>(m_nav_tree_ctrl->GetItemData(item));
-        m_nav_tree_ctrl->SetItemData(item, 0);
+        m_nav_tree_ctrl->SetItemData( item , nullptr );
         if (iData)
             delete iData;
         item = m_nav_tree_ctrl->GetNextSibling(item);
