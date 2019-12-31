@@ -59,7 +59,7 @@ mmCategDialog::mmCategDialog()
     m_subcateg_id = -1;
     m_init_selected_categ_id = -1;
     m_init_selected_subcateg_id = -1;
-    selectedItemId_ = 0;
+    selectedItemId_ = nullptr;
     m_enable_select = false;
     m_enable_relocate = false;
     m_refresh_requested = false;
@@ -74,7 +74,7 @@ mmCategDialog::mmCategDialog(wxWindow* parent
     m_subcateg_id = subcategory_id;
     m_init_selected_categ_id = category_id;
     m_init_selected_subcateg_id = subcategory_id;
-    selectedItemId_ = 0;
+    selectedItemId_ = nullptr;
     m_enable_select = bEnableSelect;
     m_enable_relocate = bEnableRelocate;
     m_refresh_requested = false;
