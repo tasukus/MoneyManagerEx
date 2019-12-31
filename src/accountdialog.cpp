@@ -70,6 +70,7 @@ mmNewAcctDialog::mmNewAcctDialog(Model_Account::Data* account, wxWindow* parent,
     , m_initbalance_ctrl(nullptr)
     , m_imageList(nullptr)
     , m_bitmapButtons(nullptr)
+    , bAttachments_(nullptr)
     , m_statement_lock_ctrl(nullptr)
     , m_statement_date_ctrl(nullptr)
     , m_minimum_balance_ctrl(nullptr)
