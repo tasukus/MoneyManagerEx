@@ -69,7 +69,7 @@ private:
     Model_Translink::Data* m_transfer_entry;
     Model_Checking::Data* m_checking_entry;
 
-    bool assetRichText;
+    bool assetRichText = false;
 
     mmTextCtrl* m_assetName;
     wxDatePickerCtrl* m_dpc;
