@@ -686,7 +686,7 @@ void mmCheckingPanel::initViewTransactionsHeader()
 
 void mmCheckingPanel::setDateRange()
 {
-    mmDateRange* date_range = NULL;
+    mmDateRange* date_range = nullptr;
     bool show_future = !Option::instance().getIgnoreFutureTransactions();
     const wxString& future_date_string = wxDateTime(31, wxDateTime::Dec, 9999).FormatISODate();
     m_begin_date = "";
@@ -744,7 +744,7 @@ void mmCheckingPanel::setDateRange()
         }
     }
 
-    if (date_range == NULL) {
+    if (date_range == nullptr) {
         date_range = new mmAllTime;
     }
 

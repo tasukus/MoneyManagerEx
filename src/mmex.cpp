@@ -99,7 +99,7 @@ bool mmGUIApp::setGUILanguage(wxLanguage lang)
         else
             msg += _("There are no translation files installed.");
 
-        mmErrorDialogs::MessageWarning(NULL, msg, _("Language change"));
+        mmErrorDialogs::MessageWarning(nullptr, msg, _("Language change"));
         wxDELETE(trans);
         return false;
     }

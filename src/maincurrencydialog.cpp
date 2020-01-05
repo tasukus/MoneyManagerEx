@@ -369,7 +369,7 @@ bool mmMainCurrencyDialog::Execute(int& currencyID)
 {
     bool result = false;
 
-    mmMainCurrencyDialog dlg(NULL, currencyID);
+    mmMainCurrencyDialog dlg(nullptr, currencyID);
     dlg.m_static_dialog = true;
     dlg.SetTitle(_("Base Currency Selection"));
     dlg.valueListBox_->Enable(false);

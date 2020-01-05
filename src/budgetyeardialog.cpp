@@ -79,7 +79,7 @@ void mmBudgetYearDialog::CreateControls()
     itemBoxSizer2->Add(itemBoxSizer3, 0, wxGROW | wxALL, 5);
 
     m_listBox = new wxListBox(this, wxID_ANY
-        , wxDefaultPosition, wxSize(100, 200), 0, NULL, wxLB_SORT);
+        , wxDefaultPosition, wxSize(100, 200), 0, nullptr, wxLB_SORT);
     itemBoxSizer3->Add(m_listBox, 1, wxGROW | wxALL, 1);
 
     wxBoxSizer* itemBoxSizer5 = new wxBoxSizer(wxHORIZONTAL);

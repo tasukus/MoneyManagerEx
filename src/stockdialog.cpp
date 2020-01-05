@@ -585,7 +585,7 @@ void mmStockDialog::OnHistoryImportButton(wxCommandEvent & WXUNUSED(event))
             return;
         wxProgressDialog * progressDlg = new wxProgressDialog(_("Stock History CSV Import")
             , _("Quotes imported from CSV: "), tFile.GetLineCount()
-            , NULL, wxPD_AUTO_HIDE | wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_CAN_ABORT);
+            , nullptr, wxPD_AUTO_HIDE | wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_CAN_ABORT);
         long countNumTotal = 0;
         long countImported = 0;
         double price;
