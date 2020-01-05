@@ -54,7 +54,7 @@ private:
     wxString m_PathSep = wxFileName::GetPathSeparator();
 
     wxString m_RefType;
-    int m_RefId;
+    int m_RefId = 0;
 
     mmAttachmentDialog() : m_attachment_id(-1) {}
 
