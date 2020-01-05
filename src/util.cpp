@@ -179,7 +179,7 @@ curlWriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp)
   struct curlBuff *mem = static_cast<struct curlBuff *>(userp);
 
   char *tmp = static_cast<char *>(realloc(mem->memory, mem->size + realsize + 1));
-  if (tmp == NULL) {
+  if (tmp == nullptr) {
     /* out of memory! */
     // printf("not enough memory (realloc returned NULL)\n");
     return 0;
@@ -317,7 +317,7 @@ CURLcode http_post_data(const wxString& sSite, const wxString& sData, const wxSt
     struct curlBuff chunk;
     curl_set_writedata_options(curl, chunk);
 
-    struct curl_slist *headers = NULL;
+    struct curl_slist *headers = nullptr;
     headers = curl_slist_append(headers, sContentType.mb_str());
     curl_easy_setopt(curl, CURLOPT_HTTPHEADER, headers);
 
