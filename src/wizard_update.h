@@ -38,7 +38,7 @@ public:
     const rapidjson::Value& m_new_version;
 
 private:
-    wxWizardPageSimple* page1;
+    wxWizardPageSimple* page1 = nullptr;
     void PageChanged(wxWizardEvent& WXUNUSED(event));
     void LinkClicked(wxHtmlLinkEvent& WXUNUSED(event));
 

@@ -57,12 +57,15 @@ private:
         MENU_DELETE_WEBTRAN
     };
 
-    wxDataViewListCtrl* webtranListBox_;
+    wxDataViewListCtrl* webtranListBox_ = nullptr;
 
     mmWebApp::WebTranVector WebAppTransactions_;
-    bool refreshRequested_;
+    bool refreshRequested_=false;
 
-    mmWebAppDialog() : refreshRequested_(false) {}
+    mmWebAppDialog( ) : refreshRequested_( false )
+    {
+        webtranListBox_ = nullptr;
+    }
 
     void Create(wxWindow* parent, const wxString& name = "mmWebAppDialog");
     void CreateControls();
