@@ -27,7 +27,7 @@ class mmTextCtrl : public wxTextCtrl
 public:
     using wxTextCtrl::SetValue;
 
-    mmTextCtrl() : m_currency(0) {}
+    mmTextCtrl() : m_currency(nullptr) {}
     mmTextCtrl(wxWindow *parent, wxWindowID id
         , const wxString &value = wxEmptyString
         , const wxPoint &pos = wxDefaultPosition
