@@ -85,30 +85,30 @@ private:
     /* Currently open file name */
     wxString m_filename;
 
-    int gotoAccountID_;
-    int gotoTransID_;
+    int gotoAccountID_ = -1;
+    int gotoTransID_ = -1;
 
     /* There are 2 kinds of reports */
-    bool activeReport_;
+    bool activeReport_ = false;
 
     /* Repeat Transactions automatic processing delay */
     wxTimer autoRepeatTransactionsTimer_;
     void OnAutoRepeatTransactionsTimer(wxTimerEvent& event);
 
     /* controls */
-    mmPanelBase* panelCurrent_;
-    wxPanel* homePanel_;
-    wxTreeCtrl* m_nav_tree_ctrl;
-    wxMenuBar *menuBar_;
-    wxToolBar* toolBar_;
+    mmPanelBase* panelCurrent_=nullptr;
+    wxPanel* homePanel_=nullptr;
+    wxTreeCtrl* m_nav_tree_ctrl=nullptr;
+    wxMenuBar* menuBar_=nullptr;
+    wxToolBar* toolBar_=nullptr;
 
-    mmTreeItemData* selectedItemData_;
+    mmTreeItemData* selectedItemData_=nullptr;
 
     wxTreeItemId getTreeItemfor(const wxTreeItemId& itemID, const wxString& accountName) const;
     bool setAccountInSection(const wxString& sectionName, const wxString& accountName);
 
     /* printing */
-    int helpFileIndex_;
+    int helpFileIndex_=-1;
 
     /* wxAUI */
     wxAuiManager m_mgr;
@@ -128,17 +128,17 @@ private:
     void createHelpPage();
     void refreshPanelData();
 
-    mmHomePagePanel* homePage_;
+    mmHomePagePanel* homePage_=nullptr;
     void createHomePage();
-    mmCheckingPanel* checkingAccountPage_;
-    mmStocksPanel* stockAccountPage_;
+    mmCheckingPanel* checkingAccountPage_=nullptr;
+    mmStocksPanel* stockAccountPage_=nullptr;
     void createCheckingAccountPage(int accountID);
     void createStocksAccountPage(int accountID);
 
-    mmBillsDepositsPanel* billsDepositsPanel_;
+    mmBillsDepositsPanel* billsDepositsPanel_=nullptr;
     void createBillsDeposits();
 
-    mmBudgetingPanel* budgetingPage_;
+    mmBudgetingPanel* budgetingPage_=nullptr;
     void createBudgetingPage(int budgetYearID);
 
     void createControls();
@@ -178,7 +178,7 @@ private:
     void OnGotoAccount(wxCommandEvent& WXUNUSED(event));
     void OnGotoStocksAccount(wxCommandEvent& WXUNUSED(event));
 
-    bool m_hide_share_accounts;
+    bool m_hide_share_accounts=true;
     void OnHideShareAccounts(wxCommandEvent &event);
     void OnChangeGUILanguage(wxCommandEvent &event);
 
@@ -251,8 +251,8 @@ private:
     void SetDatabaseFile(const wxString& dbFileName, bool newDatabase = false, bool eencrypt = false, const wxString& password = wxEmptyString);
 
     // Required to prevent memory leaks.
-    CommitCallbackHook* m_commit_callback_hook;
-    UpdateCallbackHook* m_update_callback_hook;
+    CommitCallbackHook* m_commit_callback_hook=nullptr;
+    UpdateCallbackHook* m_update_callback_hook=nullptr;
     void ShutdownDatabase();
 
     // any class wishing to process wxWindows events must use this macro

@@ -48,21 +48,21 @@ private:
     void OnCategChange(wxCommandEvent& event);
 
 private:
-    wxCheckBox* m_payee_checkbox;
-    mmComboBox* m_payee;
-    wxCheckBox* m_date_checkbox;
-    wxDatePickerCtrl* m_dpc;
-    wxCheckBox* m_status_checkbox;
-    wxChoice* m_status_choice;
-    wxCheckBox* m_categ_checkbox;
-    wxButton* m_categ_btn;
-    wxCheckBox* m_type_checkbox;
-    wxChoice* m_type_choice;
-    wxCheckBox* m_amount_checkbox;
-    mmTextCtrl* m_amount_ctrl;
-    wxCheckBox* m_notes_checkbox;
-    wxCheckBox* m_append_checkbox;
-    wxTextCtrl* m_notes_ctrl;
+    wxCheckBox* m_payee_checkbox = nullptr;
+    mmComboBox* m_payee = nullptr;
+    wxCheckBox* m_date_checkbox = nullptr;
+    wxDatePickerCtrl* m_dpc = nullptr;
+    wxCheckBox* m_status_checkbox = nullptr;
+    wxChoice* m_status_choice = nullptr;
+    wxCheckBox* m_categ_checkbox = nullptr;
+    wxButton* m_categ_btn = nullptr;
+    wxCheckBox* m_type_checkbox = nullptr;
+    wxChoice* m_type_choice = nullptr;
+    wxCheckBox* m_amount_checkbox = nullptr;
+    mmTextCtrl* m_amount_ctrl = nullptr;
+    wxCheckBox* m_notes_checkbox = nullptr;
+    wxCheckBox* m_append_checkbox = nullptr;
+    wxTextCtrl* m_notes_ctrl = nullptr;
     std::vector<int> m_transaction_id;
     Model_Currency::Data* m_currency;
     int m_categ_id;

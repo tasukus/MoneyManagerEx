@@ -93,14 +93,14 @@ private:
     bool categShowStatus(int categId, int subCategId);
     void setTreeSelection(const wxString& catName, const wxString& subCatName);
 
-    wxTreeCtrl* m_treeCtrl;
-    wxButton* m_buttonAdd;
-    wxButton* m_buttonEdit;
-    wxButton* m_buttonSelect;
-    wxButton* m_buttonDelete;
-    wxBitmapButton* m_buttonRelocate;
-    wxCheckBox* m_cbExpand;
-    wxCheckBox* m_cbShowAll;
+    wxTreeCtrl* m_treeCtrl = nullptr;
+    wxButton* m_buttonAdd = nullptr;
+    wxButton* m_buttonEdit = nullptr;
+    wxButton* m_buttonSelect = nullptr;
+    wxButton* m_buttonDelete = nullptr;
+    wxBitmapButton* m_buttonRelocate = nullptr;
+    wxCheckBox* m_cbExpand = nullptr;
+    wxCheckBox* m_cbShowAll = nullptr;
     wxTreeItemId selectedItemId_;
     wxTreeItemId root_;
     wxTreeItemId getTreeItemFor(const wxTreeItemId& itemID, const wxString& itemText);

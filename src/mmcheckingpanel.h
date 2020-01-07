@@ -84,9 +84,9 @@ public:
     }
 
 public:
-    EColumn g_sortcol; // index of column to sort
-    EColumn m_prevSortCol;
-    bool g_asc; // asc\desc sorting
+    EColumn g_sortcol = COL_DEF_SORT; // index of column to sort
+    EColumn m_prevSortCol = COL_DEF_SORT;
+    bool g_asc = true; // asc\desc sorting
 
     bool getSortOrder() const { return m_asc; }
     EColumn getSortColumn() const { return m_sortCol; }
@@ -110,9 +110,9 @@ public:
     void OnOrganizeAttachments(wxCommandEvent& event);
     void OnCreateReoccurance(wxCommandEvent& event);
     void refreshVisualList(int trans_id = -1, bool filter = true);
-    long m_selectedIndex;
-    long m_selectedForCopy; //The transaction ID if selected for copy
-    long m_selectedID; //Selected transaction ID
+    long m_selectedIndex=-1;
+    long m_selectedForCopy = -1; //The transaction ID if selected for copy
+    long m_selectedID = -1; //Selected transaction ID
     wxString m_today;
 
 protected:
@@ -210,8 +210,8 @@ private:
 
     /* The topmost visible item - this will be used to set
     where to display the list again after refresh */
-    long m_topItemIndex;
-    EColumn m_sortCol;
+    long m_topItemIndex= -1;
+    EColumn m_sortCol = COL_DEF_SORT;
 };
 
 //----------------------------------------------------------------------------
@@ -298,18 +298,18 @@ private:
     wxStaticText* m_info_panel;
     wxStaticText* m_info_panel_mini;
     wxButton* m_bitmapTransFilter;
-    mmFilterTransactionsDialog* m_trans_filter_dlg;
+    mmFilterTransactionsDialog* m_trans_filter_dlg = nullptr;
 
     int m_currentView;
     int m_AccountID;
     bool m_transFilterActive;
     wxString m_begin_date;
     wxString m_end_date;
-    double m_filteredBalance;
+    double m_filteredBalance = 0.0;
     double m_account_balance;
     double m_reconciled_balance;
 
-    TransactionListCtrl* m_listCtrlAccount;
+    TransactionListCtrl* m_listCtrlAccount = nullptr;
     Model_Account::Data* m_account;
     Model_Currency::Data* m_currency;
     wxScopedPtr<wxImageList> m_imageList;

@@ -61,14 +61,14 @@ public:
 
 private:
     Model_Checking::Data* m_checking_entry;
-    int m_transaction_id;
+    int m_transaction_id=-1;
 
-    int m_account_id;
-    int m_payee_id;
-    int m_category_id;
-    int m_subcategory_id;
-    double m_trans_value;
-    double m_commission;
+    int m_account_id = -1;
+    int m_payee_id = -1;
+    int m_category_id = -1;
+    int m_subcategory_id = -1;
+    double m_trans_value = 0.0;
+    double m_commission = 0.0;
 
 private:
     void Create();

@@ -40,11 +40,6 @@ relocatePayeeDialog::relocatePayeeDialog( )
 }
 
 relocatePayeeDialog::relocatePayeeDialog(wxWindow* parent, int source_payee_id)
-    : destPayeeID_(-1)
-    , cbSourcePayee_(nullptr)
-    , cbDestPayee_(nullptr)
-    , m_changed_records(0)
-    , m_info(nullptr)
 {
     sourcePayeeID_  = source_payee_id;
 

@@ -42,7 +42,6 @@ wxEND_EVENT_TABLE()
 
 mmCustomFieldListDialog::mmCustomFieldListDialog (wxWindow* parent, const wxString& RefType) :
     m_RefType(RefType)
-    , m_field_id(-1)
     #ifdef _DEBUG
         , debug_(true)
     #else

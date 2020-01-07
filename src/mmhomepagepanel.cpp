@@ -487,9 +487,6 @@ mmHomePagePanel::mmHomePagePanel(wxWindow *parent, mmGUIFrame *frame
     , long style
     , const wxString& name)
     : m_frame(frame)
-    , browser_(nullptr)
-    , date_range_(nullptr)
-    , countFollowUp_(0)
 {
     Create(parent, winid, pos, size, style, name);
     m_frame->menuPrintingEnable(true);

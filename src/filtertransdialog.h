@@ -155,15 +155,15 @@ private:
 
     wxString m_begin_date;
     wxString m_end_date;
-    int categID_;
-    int subcategID_;
-    bool bSimilarCategoryStatus_;
-    int payeeID_;
+    int categID_=-1;
+    int subcategID_=-1;
+    bool bSimilarCategoryStatus_ = false;
+    int payeeID_ = -1;
     wxString payeeStr_;
     int refAccountID_;
     wxString refAccountStr_;
-    double m_min_amount;
-    double m_max_amount;
+    double m_min_amount = 0.0;
+    double m_max_amount = 0.0;
     wxString m_filterStatus;
 
     mmCustomData* m_custom_fields;

@@ -88,7 +88,7 @@ private:
         COL_NOTES,
         COL_MAX, // number of columns
     };
-    wxImageList* m_imageList;
+    wxImageList* m_imageList=nullptr;
     double GetGainLoss(long item) const;
     void sortTable();
 };
@@ -120,7 +120,7 @@ public:
     void RefreshList();
 
     mmGUIFrame* m_frame;
-    Model_Currency::Data* m_currency;
+    Model_Currency::Data* m_currency=nullptr;
 
     /* Event handlers for Buttons */
     void OnNewStocks(wxCommandEvent& event);

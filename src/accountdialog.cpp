@@ -65,21 +65,6 @@ mmNewAcctDialog::mmNewAcctDialog()
 
 mmNewAcctDialog::mmNewAcctDialog(Model_Account::Data* account, wxWindow* parent, const wxString &name)
     : m_account(account)
-    , m_textAccountName(nullptr)
-    , m_notesCtrl(nullptr)
-    , m_initbalance_ctrl(nullptr)
-    , m_imageList(nullptr)
-    , m_bitmapButtons(nullptr)
-    , bAttachments_(nullptr)
-    , m_statement_lock_ctrl(nullptr)
-    , m_statement_date_ctrl(nullptr)
-    , m_minimum_balance_ctrl(nullptr)
-    , m_credit_limit_ctrl(nullptr)
-    , m_interest_rate_ctrl(nullptr)
-    , m_payment_due_date_ctrl(nullptr)
-    , m_minimum_payment_ctrl(nullptr)
-    , m_currencyID(-1)
-    , m_accessinfo_infocus(false)
 {
     m_imageList = navtree_images_list();
     long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;

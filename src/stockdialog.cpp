@@ -60,21 +60,7 @@ mmStockDialog::mmStockDialog(wxWindow* parent
     , int accountID
     , const wxString& name
 )
-    : m_stock_symbol_ctrl(nullptr)
-    , m_stock_name_ctrl(nullptr)
-    , m_purchase_date_ctrl(nullptr)
-    , m_num_shares_ctrl(nullptr)
-    , m_share_price_ctrl(nullptr)
-    , m_share_price_txt(nullptr)
-    , m_commission_ctrl(nullptr)
-    , m_current_price_ctrl(nullptr)
-    , m_notes_ctrl(nullptr)
-    , m_value_investment(nullptr)
-    , m_bAttachments(nullptr)
-    , m_price_listbox(nullptr)
-    , m_history_date_ctrl(nullptr)
-    , m_exchange_text(nullptr)
-    , m_stock(stock)
+    : m_stock(stock)
     , m_edit(stock ? true : false)
 #ifdef _DEBUG
     , debug_(true)

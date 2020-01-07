@@ -118,11 +118,11 @@ public:
     }
 
 private:
-    int id_;
-    bool isString_;
-    bool isBudgetingNode_;
+    int id_=0;
+    bool isString_=false;
+    bool isBudgetingNode_=false;
     wxString stringData_;
-    mmPrintableBase* report_;
+    mmPrintableBase* report_=nullptr;
 };
 
 int CaseInsensitiveCmp(const wxString &s1, const wxString &s2);

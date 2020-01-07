@@ -56,22 +56,22 @@ private:
     void OnTextEntered(wxCommandEvent& event);
 
 private:
-    mmTextCtrl* m_stock_name_ctrl;
-    mmTextCtrl* m_stock_symbol_ctrl;
-    mmTextCtrl* m_share_num_ctrl;
-    mmTextCtrl* m_share_price_ctrl;
-    mmTextCtrl* m_share_lot_ctrl;
-    mmTextCtrl* m_commission_ctrl;
-    mmTextCtrl* m_notes_ctrl;
-    wxBitmapButton* m_attachments_btn;
+    mmTextCtrl* m_stock_name_ctrl = nullptr;
+    mmTextCtrl* m_stock_symbol_ctrl = nullptr;
+    mmTextCtrl* m_share_num_ctrl = nullptr;
+    mmTextCtrl* m_share_price_ctrl = nullptr;
+    mmTextCtrl* m_share_lot_ctrl = nullptr;
+    mmTextCtrl* m_commission_ctrl = nullptr;
+    mmTextCtrl* m_notes_ctrl = nullptr;
+    wxBitmapButton* m_attachments_btn = nullptr;
 
     UserTransactionPanel* m_transaction_panel;
     wxString m_dialog_heading;
 
-    Model_Stock::Data* m_stock;
-    Model_Checking::Data* m_checking_entry;
-    Model_Translink::Data* m_translink_entry;
-    Model_Shareinfo::Data* m_share_entry;
+    Model_Stock::Data* m_stock = nullptr;
+    Model_Checking::Data* m_checking_entry=nullptr;
+    Model_Translink::Data* m_translink_entry=nullptr;
+    Model_Shareinfo::Data* m_share_entry=nullptr;
     enum
     {
         ID_STOCKTRANS_DATEPICKER_CHANGE = wxID_HIGHEST + 800,

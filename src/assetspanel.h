@@ -121,12 +121,12 @@ private:
     Model_Asset::Data_Set m_assets;
     Model_Asset::TYPE m_filter_type;
     mmGUIFrame * m_frame;
-    wxStaticText* m_header_text;
+    wxStaticText* m_header_text=nullptr;
     void enableEditDeleteButtons(bool enable);
     void OnSearchTxtEntered(wxCommandEvent& event);
-    mmAssetsListCtrl* m_listCtrlAssets;
+    mmAssetsListCtrl* m_listCtrlAssets=nullptr;
 
-    wxButton* m_bitmapTransFilter;
+    wxButton* m_bitmapTransFilter=nullptr;
 
     wxScopedPtr<wxImageList> m_imageList;
 

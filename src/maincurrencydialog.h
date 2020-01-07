@@ -102,7 +102,7 @@ private:
     bool SetBaseCurrency(int& baseCurrencyID);
     bool GetOnlineHistory(std::map<wxDateTime, double> &historical_rates, const wxString &symbol, wxString &msg);
 
-    wxDataViewListCtrl* currencyListBox_;
+    wxDataViewListCtrl* currencyListBox_ = nullptr;
     std::map<int, wxString> ColName_;
     bool bEnableSelect_;
     wxButton* itemButtonEdit_;
@@ -118,7 +118,7 @@ private:
     wxButton* historyButtonDelete_;
 
     int m_currency_id;
-    bool m_static_dialog;
+    bool m_static_dialog=false;
 
 };
 

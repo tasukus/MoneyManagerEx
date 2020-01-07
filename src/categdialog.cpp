@@ -45,14 +45,6 @@ EVT_MENU(wxID_ANY, mmCategDialog::OnMenuSelected)
 wxEND_EVENT_TABLE()
 
 mmCategDialog::mmCategDialog()
-: m_treeCtrl(nullptr)
-, m_buttonAdd(nullptr)
-, m_buttonEdit(nullptr)
-, m_buttonSelect(nullptr)
-, m_buttonDelete(nullptr)
-, m_buttonRelocate(nullptr)
-, m_cbExpand(nullptr)
-, m_cbShowAll(nullptr)
 {
     // Initialize fields in constructor
     m_categ_id = -1;

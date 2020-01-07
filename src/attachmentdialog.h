@@ -49,14 +49,14 @@ private:
 
     wxDataViewListCtrl* attachmentListBox_;
 
-    int m_attachment_id;
+    int m_attachment_id = -1;
     std::map<int, wxString> ColName_;
     wxString m_PathSep = wxFileName::GetPathSeparator();
 
     wxString m_RefType;
     int m_RefId = 0;
 
-    mmAttachmentDialog() : m_attachment_id(-1) {}
+    mmAttachmentDialog() {}
 
     void Create(wxWindow* parent, const wxString& label, const wxString& name = "mmAttachmentDialog");
     void CreateControls();

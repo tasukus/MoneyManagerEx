@@ -117,11 +117,11 @@ private:
     wxStaticText* account_label_;
     wxStaticText* payee_label_;
 
-    bool m_transfer;
+    bool m_transfer = false;
     bool m_new_trx;
     bool m_duplicate;
-    bool categUpdated_;
-    bool m_advanced;
+    bool categUpdated_=false;
+    bool m_advanced=false;
     double m_current_balance;
 
     int object_in_focus_;
@@ -130,19 +130,19 @@ private:
 
     DB_Table_CHECKINGACCOUNT::Data m_trx_data;
     std::vector<Split> local_splits;
-    Model_Currency::Data *m_currency;
-    Model_Currency::Data *m_to_currency;
+    Model_Currency::Data* m_currency = nullptr;
+    Model_Currency::Data* m_to_currency = nullptr;
 
     std::vector<wxString> frequentNotes_;
 
-    bool skip_date_init_;
-    bool skip_account_init_;
-    bool skip_amount_init_;
-    bool skip_payee_init_;
-    bool skip_status_init_;
-    bool skip_notes_init_;
-    bool skip_category_init_;
-    bool skip_tooltips_init_;
+    bool skip_date_init_ = false;
+    bool skip_account_init_ = false;
+    bool skip_amount_init_ = false;
+    bool skip_payee_init_ = false;
+    bool skip_status_init_ = false;
+    bool skip_notes_init_ = false;
+    bool skip_category_init_ = false;
+    bool skip_tooltips_init_ = false;
 
     enum
     {

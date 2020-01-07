@@ -52,8 +52,8 @@ private:
     wxDataViewListCtrl* fieldListBox_;
 
     wxString m_RefType;
-    int m_field_id;
-    mmCustomFieldListDialog() : m_field_id(-1) {}
+    int m_field_id=-1;
+    mmCustomFieldListDialog() {}
     std::map<int, wxString> ColName_;
 
     void Create(wxWindow* parent);

@@ -36,11 +36,6 @@ mmListCtrl::mmListCtrl(wxWindow *parent, wxWindowID winid)
         , wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxLC_VIRTUAL | wxLC_SINGLE_SEL | wxLC_AUTOARRANGE)
     , attr1_(new wxListItemAttr(mmColors::listBorderColor, mmColors::listAlternativeColor0, wxNullFont))
     , attr2_(new wxListItemAttr(mmColors::listBorderColor, mmColors::listAlternativeColor1, wxNullFont))
-    , m_selected_row(-1)
-    , m_selected_col(0)
-    , m_asc(true)
-    , m_default_sort_column(-1)
-    , m_ColumnHeaderNbr(-1)
 {
 }
 

@@ -81,20 +81,20 @@ private:
     void RefreshStockHistory(const wxString& symbol);
     void CreateShareAccount(Model_Account::Data* stock_account, const wxString& name);
 
-    mmTextCtrl* m_stock_symbol_ctrl;
-    mmTextCtrl* m_stock_name_ctrl;
-    wxDatePickerCtrl* m_purchase_date_ctrl; //*Date
-    mmTextCtrl* m_num_shares_ctrl; //*Share Number
-    mmTextCtrl* m_share_price_ctrl; //*Share Price
-    wxStaticText* m_share_price_txt;
-    mmTextCtrl* m_commission_ctrl;
-    mmTextCtrl* m_current_price_ctrl;
-    mmTextCtrl* m_notes_ctrl;
-    wxStaticText* m_value_investment; //Current Value
-    wxBitmapButton* m_bAttachments;
-    wxDataViewListCtrl* m_price_listbox;
-    wxDatePickerCtrl* m_history_date_ctrl;
-    mmTextCtrl* m_exchange_text;
+    mmTextCtrl* m_stock_symbol_ctrl=nullptr;
+    mmTextCtrl* m_stock_name_ctrl=nullptr;
+    wxDatePickerCtrl* m_purchase_date_ctrl=nullptr; //*Date
+    mmTextCtrl* m_num_shares_ctrl=nullptr; //*Share Number
+    mmTextCtrl* m_share_price_ctrl=nullptr; //*Share Price
+    wxStaticText* m_share_price_txt=nullptr;
+    mmTextCtrl* m_commission_ctrl=nullptr;
+    mmTextCtrl* m_current_price_ctrl=nullptr;
+    mmTextCtrl* m_notes_ctrl=nullptr;
+    wxStaticText* m_value_investment=nullptr; //Current Value
+    wxBitmapButton* m_bAttachments=nullptr;
+    wxDataViewListCtrl* m_price_listbox=nullptr;
+    wxDatePickerCtrl* m_history_date_ctrl=nullptr;
+    mmTextCtrl* m_exchange_text=nullptr;
 
     Model_Stock::Data* m_stock;
     bool m_edit;

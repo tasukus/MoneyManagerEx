@@ -62,9 +62,7 @@ mmMainCurrencyDialog::mmMainCurrencyDialog(
     wxWindow* parent
     , int currencyID
     , bool bEnableSelect
-) : currencyListBox_(nullptr),
-    bEnableSelect_(bEnableSelect),
-    m_static_dialog(false)
+) : bEnableSelect_(bEnableSelect)
 {
     ColName_[CURR_BASE]   = _("Base");
     ColName_[CURR_SYMBOL] = _("Symbol");

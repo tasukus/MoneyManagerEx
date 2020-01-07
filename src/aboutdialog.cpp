@@ -31,11 +31,6 @@ wxBEGIN_EVENT_TABLE(mmAboutDialog, wxDialog)
 wxEND_EVENT_TABLE()
 
 mmAboutDialog::mmAboutDialog(wxWindow* parent, int TabToOpen, const wxString &name)
-: about_text_(nullptr)
-, authors_text_(nullptr)
-, sponsors_text_(nullptr)
-, license_text_(nullptr)
-, privacy_text_(nullptr)
 {
     const wxString caption = (TabToOpen == 4)
         ? _("License agreement") : wxString::Format(_("About %s"), mmex::getProgramName());

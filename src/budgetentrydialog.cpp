@@ -39,10 +39,7 @@ mmBudgetEntryDialog::mmBudgetEntryDialog(wxWindow* parent
     , Model_Budget::Data* entry
     , const wxString& categoryEstimate
     , const wxString& CategoryActual)
-    : m_FrequencyChooser()
-    , m_textAmount()
-    , m_choiceType()
-    , catEstimateAmountStr_(categoryEstimate)
+    : catEstimateAmountStr_(categoryEstimate)
     , catActualAmountStr_(CategoryActual)
 {
     budgetEntry_ = entry;

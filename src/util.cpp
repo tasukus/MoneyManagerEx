@@ -62,30 +62,21 @@ int CaseInsensitiveCmp(const wxString &s1, const wxString &s2)
 //----------------------------------------------------------------------------
 mmTreeItemData::mmTreeItemData(int id, bool isBudget)
         : id_(id)
-        , isString_(false)
         , isBudgetingNode_(isBudget)
-        , report_(nullpr)
     {}
 mmTreeItemData::mmTreeItemData(const wxString& string, mmPrintableBase* report)
-        : id_(0)
-        , isString_(true)
-        , isBudgetingNode_(false)
+        : isString_(true)
         , stringData_("report@" + string)
         , report_(report)
     {}
 mmTreeItemData::mmTreeItemData(mmPrintableBase* report)
-        : id_(0)
-        , isString_(true)
-        , isBudgetingNode_(false)
+        : isString_(true)
         , stringData_("report@" + report->getReportTitle())
         , report_(report)
     {}
 mmTreeItemData::mmTreeItemData(const wxString& string)
-        : id_(0)
-        , isString_(true)
-        , isBudgetingNode_(false)
+        : isString_(true)
         , stringData_("item@" + string)
-        , report_(nullptr)
     {}
 mmTreeItemData::~mmTreeItemData()
     {

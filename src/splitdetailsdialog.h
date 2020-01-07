@@ -62,10 +62,10 @@ private:
     Model_Currency::Data *m_currency;
     int transType_;
 
-    wxChoice* m_choice_type;
-    mmTextCtrl* m_text_mount;
-    wxButton* m_bcategory;
-    wxButton* m_cancel_button;
+    wxChoice* m_choice_type = nullptr;
+    mmTextCtrl* m_text_mount = nullptr;
+    wxButton* m_bcategory = nullptr;
+    wxButton* m_cancel_button = nullptr;
 };
 
 #endif

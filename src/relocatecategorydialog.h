@@ -54,13 +54,13 @@ private:
     void IsOkOk();
     int m_sourceCatID;
     int m_sourceSubCatID;
-    wxButton* m_buttonSource;
-    wxStaticText* m_info;
+    wxButton* m_buttonSource = nullptr;
+    wxStaticText* m_info = nullptr;
 
-    int m_destCatID;
-    int m_destSubCatID;
-    wxButton* m_buttonDest;
-    int m_changedRecords;
+    int m_destCatID = -1;
+    int m_destSubCatID = -1;
+    wxButton* m_buttonDest=nullptr;
+    int m_changedRecords = 0;
 };
 
 #endif

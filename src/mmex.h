@@ -36,7 +36,7 @@ public:
 
     wxLanguage getGUILanguage() const;
     bool setGUILanguage(wxLanguage lang);
-    mmGUIFrame* m_frame;
+    mmGUIFrame* m_frame = nullptr;
     const wxString getOptParam() const { return m_optParam; }
     wxSQLite3Database* getSettingDB() const { return m_setting_db; }
     void setSettingDB(wxSQLite3Database* db) { m_setting_db = db; }
@@ -49,12 +49,12 @@ private:
     int OnExit();
     void OnFatalException(); // called when a crash occurs in this application
     void HandleEvent(wxEvtHandler *handler, wxEventFunction func, wxEvent& event) const;
-    wxSingleInstanceChecker* m_checker;
+    wxSingleInstanceChecker* m_checker = nullptr;
 
-    wxSQLite3Database* m_setting_db;
-    wxString m_optParam;
-    wxLanguage m_lang; // GUI translation language displayed
-    wxLocale m_locale;
+    wxSQLite3Database* m_setting_db = nullptr;
+    wxString m_optParam = wxEmptyString;
+    wxLanguage m_lang=wxLANGUAGE_UNKNOWN; // GUI translation language displayed
+    wxLocale m_locale=wxLanguage::wxLANGUAGE_DEFAULT;
 public:
     virtual int FilterEvent(wxEvent& event);
 

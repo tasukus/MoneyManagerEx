@@ -98,19 +98,19 @@ private:
     std::map<int, std::map<int, double> > budgetAmt_;
     std::map<int, std::map<int, std::map<int, double> > > categoryStats_;
     bool monthlyBudget_;
-    budgetingListCtrl* listCtrlBudget_;
+    budgetingListCtrl* listCtrlBudget_=nullptr;
     wxString currentView_;
     int budgetYearID_;
     wxString m_budget_offset_date;
 
-    wxImageList* m_imageList;
+    wxImageList* m_imageList=nullptr;
     wxStaticText* budgetReportHeading_;
-    wxStaticText* income_estimated_;
-    wxStaticText* income_actual_;
-    wxStaticText* income_diff_;
-    wxStaticText* expenses_estimated_;
-    wxStaticText* expenses_actual_;
-    wxStaticText* expenses_diff_;
+    wxStaticText* income_estimated_=nullptr;
+    wxStaticText* income_actual_=nullptr;
+    wxStaticText* income_diff_=nullptr;
+    wxStaticText* expenses_estimated_=nullptr;
+    wxStaticText* expenses_actual_=nullptr;
+    wxStaticText* expenses_diff_=nullptr;
 
     bool Create(wxWindow *parent, wxWindowID winid
         , const wxPoint& pos = wxDefaultPosition

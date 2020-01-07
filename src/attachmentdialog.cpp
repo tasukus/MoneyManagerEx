@@ -42,8 +42,7 @@ wxEND_EVENT_TABLE()
 
 
 mmAttachmentDialog::mmAttachmentDialog (wxWindow* parent, const wxString& RefType, int RefId, const wxString& name) :
-    m_attachment_id(-1)
-    , m_RefId(RefId)
+    m_RefId(RefId)
     #ifdef _DEBUG
         , debug_(true)
     #else

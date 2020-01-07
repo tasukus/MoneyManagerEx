@@ -76,7 +76,6 @@ StocksListCtrl::~StocksListCtrl()
 StocksListCtrl::StocksListCtrl(mmStocksPanel* cp, wxWindow *parent, wxWindowID winid)
     : mmListCtrl(parent, winid)
     , m_stock_panel(cp)
-    , m_imageList(nullptr)
 {
     int x = Option::instance().getIconSize();
     m_imageList = new wxImageList(x, x);
@@ -589,7 +588,6 @@ mmStocksPanel::mmStocksPanel(int accountID
     , wxWindowID winid, const wxPoint& pos, const wxSize& size, long style
     , const wxString& name)
     : m_account_id(accountID)
-    , m_currency()
     , m_frame(frame)
 {
     Create(parent, winid, pos, size, style, name);

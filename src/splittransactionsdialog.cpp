@@ -64,7 +64,6 @@ SplitTransactionDialog::SplitTransactionDialog( )
     , transType_(transType)
     , accountID_(accountID)
     , totalAmount_(totalAmount)
-    , items_changed_(false)
 {
     for (const auto &item : m_splits)
         m_local_splits.push_back(item);

@@ -98,14 +98,8 @@ mmBDDialog::mmBDDialog()
 }
 
 mmBDDialog::mmBDDialog(wxWindow* parent, int bdID, bool edit, bool enterOccur)
-    : payeeUnknown_(true)
-    , m_new_bill(!edit)
+    : m_new_bill(!edit)
     , m_enter_occur(enterOccur)
-    , autoExecuteUserAck_(false)
-    , autoExecuteSilent_(false)
-    , m_advanced(false)
-    , categUpdated_(false)
-    , prevType_(-1)
 {
     const Model_Billsdeposits::Data* bill = Model_Billsdeposits::instance().get(bdID);
     m_new_bill = bill ? false : true;

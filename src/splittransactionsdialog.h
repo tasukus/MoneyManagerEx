@@ -89,7 +89,7 @@ private:
     int transType_;
     int accountID_;
     double totalAmount_;
-    bool items_changed_;
+    bool items_changed_ = false;
 
     wxButton* itemButtonNew_;
     wxButton* itemButtonEdit_;

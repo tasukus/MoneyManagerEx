@@ -50,12 +50,11 @@ private:
     void OnContributerList(wxCommandEvent& event);
     void OnLinkClicked(wxHtmlLinkEvent& event);
 
-    wxHtmlWindow* about_text_;
-    wxHtmlWindow* authors_text_;
-    wxHtmlWindow* sponsors_text_;
-    wxHtmlWindow* license_text_;
-    wxHtmlWindow* privacy_text_;
-
+	wxHtmlWindow* about_text_ = nullptr;
+	wxHtmlWindow* authors_text_ = nullptr;
+	wxHtmlWindow* sponsors_text_ = nullptr;
+	wxHtmlWindow* license_text_ = nullptr;
+	wxHtmlWindow* privacy_text_ = nullptr;
 };
 
 #endif // MM_EX_ABOUTDIALOG_H_

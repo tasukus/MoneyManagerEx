@@ -43,15 +43,6 @@ wxEND_EVENT_TABLE()
 mmCustomFieldEditDialog::mmCustomFieldEditDialog(wxWindow* parent, Model_CustomField::Data* field, const wxString& fieldRefType)
     : m_field(field)
     , m_fieldRefType(fieldRefType)
-    , m_itemDescription(nullptr)
-    , m_itemType(nullptr)
-    , m_itemUDFC(nullptr)
-    , m_itemTooltip(nullptr)
-    , m_itemRegEx(nullptr)
-    , m_itemAutocomplete(nullptr)
-    , m_itemDefault(nullptr)
-    , m_itemChoices(nullptr)
-    , m_itemDigitScale(nullptr)
 {
     long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("New/Edit Custom Field"), wxDefaultPosition, wxSize(400, 300), style);

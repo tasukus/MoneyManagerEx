@@ -64,15 +64,15 @@ private:
 
 private:
     wxChoice* m_currencyType;
-    mmTextCtrl* m_currencyName;
-    wxStaticText* m_sample_text;
-    mmTextCtrl* m_currencySymbol;
-    wxTextCtrl* pfxTx_;
-    wxTextCtrl* sfxTx_;
-    wxTextCtrl* decTx_;
-    wxTextCtrl* grpTx_;
-    wxTextCtrl* scaleTx_;
-    wxCheckBox* m_historic;
+    mmTextCtrl* m_currencyName = nullptr;
+    wxStaticText* m_sample_text = nullptr;
+    mmTextCtrl* m_currencySymbol = nullptr;
+    wxTextCtrl* pfxTx_ = nullptr;
+    wxTextCtrl* sfxTx_ = nullptr;
+    wxTextCtrl* decTx_ = nullptr;
+    wxTextCtrl* grpTx_ = nullptr;
+    wxTextCtrl* scaleTx_ = nullptr;
+    wxCheckBox* m_historic = nullptr;
 
 };
 

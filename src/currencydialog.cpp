@@ -54,16 +54,6 @@ mmCurrencyDialog::~mmCurrencyDialog()
 mmCurrencyDialog::mmCurrencyDialog(wxWindow* parent
     , const Model_Currency::Data * currency)
         : m_scale(SCALE)
-        , m_currencyName(nullptr)
-        , m_sample_text(nullptr)
-        , m_currencySymbol(nullptr)
-        , pfxTx_(nullptr)
-        , sfxTx_(nullptr)
-        , decTx_(nullptr)
-        , grpTx_(nullptr)
-        , scaleTx_(nullptr)
-        , m_historic(nullptr)
-
 {
 
     if (currency)

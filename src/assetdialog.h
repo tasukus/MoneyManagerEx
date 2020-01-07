@@ -45,7 +45,7 @@ public:
     Model_Asset::Data* getAssetData() { return m_asset; }
 
 private:
-    Model_Asset::Data* m_asset;
+    Model_Asset::Data* m_asset = nullptr;
     bool Create(wxWindow* parent
         , wxWindowID id
         , const wxString& caption
@@ -65,25 +65,25 @@ private:
 
     void CreateAssetAccount();
     void HideTransactionPanel();
-    bool m_hidden_trans_entry;
-    Model_Translink::Data* m_transfer_entry;
-    Model_Checking::Data* m_checking_entry;
+    bool m_hidden_trans_entry = true;
+    Model_Translink::Data* m_transfer_entry = nullptr;
+    Model_Checking::Data* m_checking_entry = nullptr;
 
     bool assetRichText = false;
 
-    mmTextCtrl* m_assetName;
-    wxDatePickerCtrl* m_dpc;
-    mmTextCtrl* m_notes;
-    mmTextCtrl* m_value;
-    mmTextCtrl* m_valueChangeRate;
-    wxChoice*  m_assetType;
-    wxChoice*  m_valueChange;
-    wxStaticText* m_valueChangeRateLabel;
-    wxBitmapButton* bAttachments_;
-    wxStaticBox* m_transaction_frame;
-    UserTransactionPanel* m_transaction_panel;
+    mmTextCtrl* m_assetName = nullptr;
+    wxDatePickerCtrl* m_dpc = nullptr;
+    mmTextCtrl* m_notes = nullptr;
+    mmTextCtrl* m_value = nullptr;
+    mmTextCtrl* m_valueChangeRate = nullptr;
+    wxChoice* m_assetType = nullptr;
+    wxChoice* m_valueChange = nullptr;
+    wxStaticText* m_valueChangeRateLabel = nullptr;
+    wxBitmapButton* bAttachments_ = nullptr;
+    wxStaticBox* m_transaction_frame = nullptr;
+    UserTransactionPanel* m_transaction_panel = nullptr;
     wxString m_dialog_heading;
-    mmGUIFrame* m_gui_frame;
+    mmGUIFrame* m_gui_frame = nullptr;
 
     enum
     {

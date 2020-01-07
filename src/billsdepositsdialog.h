@@ -92,7 +92,7 @@ private:
     wxButton* bAttachments_;
     wxCheckBox* cSplit_;
     wxCheckBox* cAdvanced_;
-    bool payeeUnknown_;
+    bool payeeUnknown_ = true;
 
     wxChoice* m_choice_status;
     wxChoice* m_choice_transaction_type;
@@ -106,14 +106,14 @@ private:
     wxChoice* m_choice_repeat;
     wxCheckBox* itemCheckBoxAutoExeUserAck_;
     wxCheckBox* itemCheckBoxAutoExeSilent_;
-    bool autoExecuteUserAck_;
-    bool autoExecuteSilent_;
+    bool autoExecuteUserAck_ = false;
+    bool autoExecuteSilent_ = false;
 
     Model_Billsdeposits::Bill_Data m_bill_data;
 
-    bool m_advanced;
-    bool categUpdated_;
-    int prevType_;
+    bool m_advanced = false;
+    bool categUpdated_ = false;
+    int prevType_ = -1;
     std::vector<wxString> frequentNotes_;
 
     const wxString payeeWithdrawalTip_ = _("Specify where the transaction is going to");

@@ -29,13 +29,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 mmCustomData::mmCustomData()
     : wxDialog()
-    , m_ref_id(-1)
 {
 }
 
 mmCustomData::mmCustomData(wxDialog* dialog, const wxString& ref_type, int ref_id)
     : wxDialog()
-    , m_static_box(nullptr)
     , m_ref_type(ref_type)
     , m_ref_id(ref_id)
 {

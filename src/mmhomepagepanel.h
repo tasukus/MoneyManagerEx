@@ -58,8 +58,8 @@ public:
 private:
     static const std::vector < std::pair <wxString, wxString> > acc_type_str;
     wxString GetHomePageText() const;
-    wxWebView* browser_;
-    mmDateRange* date_range_;
+    wxWebView* browser_=nullptr;
+    mmDateRange* date_range_=nullptr;
     void CreateControls();
     void sortTable() {}
     wxString vAccts_;
@@ -81,7 +81,8 @@ private:
     void setAccountsData(std::map<int, std::pair<double, double> > &accountStats);
     void setExpensesIncomeStatsData(std::map<int, std::pair<double, double> > &incomeExpensesStats
         , mmDateRange* date_range) const;
-    int countFollowUp_, total_transactions_;
+    int countFollowUp_=0;
+    int total_transactions_;
 };
 
 #endif

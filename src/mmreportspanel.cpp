@@ -123,11 +123,8 @@ mmReportsPanel::mmReportsPanel(
     wxWindowID winid, const wxPoint& pos,
     const wxSize& size, long style,
     const wxString& name )
-    : m_date_ranges(nullptr)
-    , m_cust_date(nullptr)
-    , rb_(rb)
+    : rb_(rb)
     , cleanup_(cleanupReport)
-    , cleanupmem_(false)
     , m_frame(frame)
 {
     int day = Model_Infotable::instance().GetIntInfo("FINANCIAL_YEAR_START_DAY", 1);

@@ -42,17 +42,10 @@ relocateCategoryDialog::relocateCategoryDialog( )
 
 relocateCategoryDialog::relocateCategoryDialog(wxWindow* parent
     , int sourceCatID, int sourceSubCatID)
-    : m_buttonSource(nullptr)
-    , m_info(nullptr)
-    , m_buttonDest(nullptr)
 {
 
     m_sourceCatID    = sourceCatID;
     m_sourceSubCatID = sourceSubCatID;
-
-    m_destCatID      = -1;
-    m_destSubCatID   = -1;
-    m_changedRecords =  0;
 
     long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("Relocate Category Dialog"), wxDefaultPosition, wxSize(500, 300), style);

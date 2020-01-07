@@ -35,10 +35,7 @@ wxBEGIN_EVENT_TABLE(mmWebAppDialog, wxDialog)
     EVT_MENU_RANGE(MENU_OPEN_ATTACHMENT, MENU_DELETE_WEBTRAN, mmWebAppDialog::OnMenuSelected)
 wxEND_EVENT_TABLE()
 
-
-mmWebAppDialog::mmWebAppDialog(wxWindow *parent, const wxString& name) :
-    webtranListBox_()
-    , refreshRequested_(false)
+mmWebAppDialog::mmWebAppDialog(wxWindow *parent, const wxString& name)
 {
     Create(parent, name);
 }

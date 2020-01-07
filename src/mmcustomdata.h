@@ -34,9 +34,9 @@ protected:
     mmCustomData(wxDialog* dialog, const wxString& ref_type, int ref_id);
 private:
     wxDialog* m_dialog;
-    wxStaticBox* m_static_box;
+    wxStaticBox* m_static_box=nullptr;
     const wxString m_ref_type;
-    int m_ref_id;
+    int m_ref_id = -1;
     Model_CustomField::Data_Set m_fields;
     std::map<wxWindowID, wxString> m_data_changed;
     void OnStringChanged(wxCommandEvent& event);

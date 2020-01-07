@@ -67,9 +67,9 @@ public:
 
 protected:
     std::vector<mmDateRange*> m_all_date_ranges;
-    wxChoice* m_date_ranges;
+    wxChoice* m_date_ranges=nullptr;
     wxDatePickerCtrl *m_start_date, *m_end_date;
-    mmDateRange* m_cust_date;
+    mmDateRange* m_cust_date=nullptr;
     wxChoice* m_accounts;
     wxChoice* m_chart;
     wxWebView * browser_;
@@ -79,7 +79,7 @@ protected:
 
 private:
     bool cleanup_;
-    bool cleanupmem_;
+    bool cleanupmem_=false;
     wxString htmlreport_;
 
     void OnPrevReport(wxCommandEvent& event);

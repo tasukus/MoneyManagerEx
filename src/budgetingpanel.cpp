@@ -77,15 +77,7 @@ mmBudgetingPanel::mmBudgetingPanel(int budgetYearID
     , wxWindow *parent, wxWindowID winid
     , const wxPoint& pos, const wxSize& size
     , long style,const wxString& name)
-    : listCtrlBudget_(nullptr)
-    , budgetYearID_(budgetYearID)
-    , m_imageList(nullptr)
-    , income_estimated_(nullptr)
-    , income_actual_(nullptr)
-    , income_diff_(nullptr)
-    , expenses_estimated_(nullptr)
-    , expenses_actual_(nullptr)
-    , expenses_diff_(nullptr)
+    : budgetYearID_(budgetYearID)
 {
     Create(parent, winid, pos, size, style, name);
 }
