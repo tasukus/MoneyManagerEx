@@ -76,7 +76,7 @@ StocksListCtrl::~StocksListCtrl()
 StocksListCtrl::StocksListCtrl(mmStocksPanel* cp, wxWindow *parent, wxWindowID winid)
     : mmListCtrl(parent, winid)
     , m_stock_panel(cp)
-    , m_imageList(0)
+    , m_imageList(nullptr)
 {
     int x = Option::instance().getIconSize();
     m_imageList = new wxImageList(x, x);
