@@ -64,7 +64,7 @@ mmTreeItemData::mmTreeItemData(int id, bool isBudget)
         : id_(id)
         , isString_(false)
         , isBudgetingNode_(isBudget)
-        , report_(nullptr)
+        , report_(nullpr)
     {}
 mmTreeItemData::mmTreeItemData(const wxString& string, mmPrintableBase* report)
         : id_(0)
@@ -85,7 +85,7 @@ mmTreeItemData::mmTreeItemData(const wxString& string)
         , isString_(true)
         , isBudgetingNode_(false)
         , stringData_("item@" + string)
-        , report_(0)
+        , report_(nullptr)
     {}
 mmTreeItemData::~mmTreeItemData()
     {
