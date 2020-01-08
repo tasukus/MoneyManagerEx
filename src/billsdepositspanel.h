@@ -125,12 +125,12 @@ private:
     wxDate m_today;
 
 private:
-    wxImageList* m_imageList;
-    billsDepositsListCtrl* listCtrlAccount_;
-    wxStaticText* m_infoText;
-    wxStaticText* m_infoTextMini;
-    mmFilterTransactionsDialog* transFilterDlg_;
-    wxButton* m_bitmapTransFilter;
+    wxImageList* m_imageList = nullptr;
+    billsDepositsListCtrl* listCtrlAccount_ = nullptr;
+    wxStaticText* m_infoText= nullptr;
+    wxStaticText* m_infoTextMini = nullptr;
+    mmFilterTransactionsDialog* transFilterDlg_ = nullptr;
+    wxButton* m_bitmapTransFilter = nullptr;
 
     enum EColumn
     {

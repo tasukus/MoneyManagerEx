@@ -161,12 +161,6 @@ void billsDepositsListCtrl::OnColClick(wxListEvent& event)
 
 mmBillsDepositsPanel::mmBillsDepositsPanel(wxWindow *parent, wxWindowID winid
     , const wxPoint& pos, const wxSize& size, long style, const wxString& name)
-    : m_imageList(nullptr)
-    , listCtrlAccount_(nullptr)
-    , m_infoText(nullptr)
-    , m_infoTextMini(nullptr)
-    , transFilterDlg_(nullptr)
-    , m_bitmapTransFilter(nullptr)
 {
     m_today = wxDate::Today();
     this->tips_.Add(_("MMEX allows regular payments to be set up as transactions. These transactions can also be regular deposits, or transfers that will occur at some future time. These transactions act as a reminder that an event is about to occur, and appears on the Home Page 14 days before the transaction is due. "));
