@@ -33,7 +33,7 @@ class mmCustomData : public wxDialog
 protected:
     mmCustomData(wxDialog* dialog, const wxString& ref_type, int ref_id);
 private:
-    wxDialog* m_dialog;
+    wxDialog* m_dialog = nullptr;
     wxStaticBox* m_static_box=nullptr;
     const wxString m_ref_type;
     int m_ref_id = -1;
@@ -51,8 +51,8 @@ private:
     bool IsWidgetChanged(wxWindowID id);
     void SetWidgetChanged(wxWindowID id, const wxString& data);
     void ResetWidgetChanged(wxWindowID id);
-    wxWindowID m_init_control_id;
-    wxWindowID m_init_label_id;
+    wxWindowID m_init_control_id = wxID_ANY;
+    wxWindowID m_init_label_id = wxID_ANY;
 
 public:
     mmCustomData();
@@ -67,7 +67,7 @@ public:
     wxWindowID GetBaseID() const { return m_init_control_id; }
     void SetLabelID(wxWindowID id) { m_init_label_id = id; }
     wxWindowID GetLabelID() const { return m_init_label_id; }
-    void ResetRefID() { m_ref_id = -1; }
+    void ResetRefID() { m_ref_id = wxID_ANY; }
     // TODO: void SetRefID(int ref_id) { m_ref_id = ref_id; }
     bool IsSomeWidgetChanged() const;
     bool IsDataFound(const Model_Checking::Full_Data &tran);

@@ -137,7 +137,7 @@ private:
     wxString m_userNameString;
     wxString m_financialYearStartDayString;
     wxString m_financialYearStartMonthString;
-    int m_baseCurrency;
+    int m_baseCurrency = 0;
 
     bool m_databaseUpdated;
     bool m_budgetFinancialYears;            //INIDB_BUDGET_FINANCIAL_YEARS

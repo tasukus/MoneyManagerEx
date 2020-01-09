@@ -59,8 +59,8 @@ private:
     void OnCancel(wxCommandEvent& WXUNUSED(event));
 
     Split split_;
-    Model_Currency::Data *m_currency;
-    int transType_;
+    Model_Currency::Data* m_currency = nullptr;
+    int transType_ = -1;
 
     wxChoice* m_choice_type = nullptr;
     mmTextCtrl* m_text_mount = nullptr;

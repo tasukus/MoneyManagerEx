@@ -40,7 +40,7 @@ public:
 public:
     /// Saves the updated System Options to the appropriate databases.
     void SaveNewSystemSettings();
-    mmGUIApp* m_app;
+    mmGUIApp* m_app = nullptr;
 
 private:
     /// Dialog Creation - Used by constructor
@@ -55,8 +55,8 @@ private:
     void OnApply(wxCommandEvent& WXUNUSED(event));
 
 private:
-    wxImageList* m_imageList;
-    wxListbook* m_notebook;
+    wxImageList* m_imageList = nullptr;
+    wxListbook* m_notebook = nullptr;
     std::vector<OptionSettingsBase*> m_panel_list;
 };
 

@@ -98,7 +98,7 @@ private:
     wxString getTemplate(const wxString& sql);
     std::vector <std::vector <wxString> > m_sqlQueryData;
 
-    wxSQLite3Database* m_db;
+    wxSQLite3Database* m_db = nullptr;
     wxWebView* m_outputHTML=nullptr;
 
     wxButton* m_buttonOpen = nullptr;

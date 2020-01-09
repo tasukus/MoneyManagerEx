@@ -60,7 +60,7 @@ public:
     void CheckingType(Model_Translink::CHECKING_TYPE ct);
 
 private:
-    Model_Checking::Data* m_checking_entry;
+    Model_Checking::Data* m_checking_entry = nullptr;
     int m_transaction_id=-1;
 
     int m_account_id = -1;
@@ -99,24 +99,24 @@ public:
         NONE,
     };
 
-    mmTextCtrl* m_entered_amount;
-    wxButton* m_account;
-    wxButton* m_payee;
-    wxButton* m_category;
+    mmTextCtrl* m_entered_amount = nullptr;
+    wxButton* m_account = nullptr;
+    wxButton* m_payee = nullptr;
+    wxButton* m_category = nullptr;
 
     bool ValidCheckingAccountEntry(GUI_ERROR& g_err);
 
 private:
-    wxDatePickerCtrl* m_date_selector;
-    wxSpinButton* m_date_controller;
-    wxChoice* m_status_selector;
-    wxChoice* m_type_selector;
-    wxCheckBox* m_transfer;
-    wxStaticText* m_trans_currency;
-    wxTextCtrl* m_entered_number;
-    wxTextCtrl* m_entered_notes;
+    wxDatePickerCtrl* m_date_selector = nullptr;
+    wxSpinButton* m_date_controller = nullptr;
+    wxChoice* m_status_selector = nullptr;
+    wxChoice* m_type_selector = nullptr;
+    wxCheckBox* m_transfer = nullptr;
+    wxStaticText* m_trans_currency = nullptr;
+    wxTextCtrl* m_entered_number = nullptr;
+    wxTextCtrl* m_entered_notes = nullptr;
     std::vector<wxString> m_frequent_notes;
-    wxBitmapButton* m_attachment;
+    wxBitmapButton* m_attachment = nullptr;
 
     enum
     {

@@ -59,11 +59,11 @@ private:
     void OnCancel(wxCommandEvent& event);
     void OnTextChanged(wxCommandEvent& event);
 
-    Model_Currency::Data* m_currency;
-    int m_scale;
+    Model_Currency::Data* m_currency=nullptr;
+    int m_scale = 9;
 
 private:
-    wxChoice* m_currencyType;
+    wxChoice* m_currencyType = nullptr;
     mmTextCtrl* m_currencyName = nullptr;
     wxStaticText* m_sample_text = nullptr;
     mmTextCtrl* m_currencySymbol = nullptr;

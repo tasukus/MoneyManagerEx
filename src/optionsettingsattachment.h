@@ -48,9 +48,9 @@ private:
     void OnAttachmentsSubfolderChanged(wxCommandEvent& event);
 
 private:
-    wxCheckBox* m_attachments_subfolder;
-    wxCheckBox* m_delete_attachments;
-    wxCheckBox* m_trash_attachments;
+    wxCheckBox* m_attachments_subfolder = nullptr;
+    wxCheckBox* m_delete_attachments = nullptr;
+    wxCheckBox* m_trash_attachments = nullptr;
     wxString m_old_path;
 
     enum

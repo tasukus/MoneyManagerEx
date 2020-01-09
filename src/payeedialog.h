@@ -62,7 +62,7 @@ private:
 
     int m_payee_id = -1;
     int m_payee_rename = -1;
-    bool m_payee_choose;
+    bool m_payee_choose = false;
     wxString m_maskStr;
     bool refreshRequested_ = false;
     std::map<int, wxString> ColName_;
@@ -91,7 +91,7 @@ private:
     void OnSearchTextChanged(wxCommandEvent& event);
     void OnMagicButton(wxCommandEvent& event);
 
-    bool debug_;
+    bool debug_ = false;
 };
 
 #endif // MM_EX_PAYEEDIALOG_H_

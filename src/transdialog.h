@@ -70,7 +70,7 @@ public:
     int GetTransactionID() { return m_trx_data.TRANSID; }
 
 private:
-    mmCustomData* m_custom_fields;
+    mmCustomData* m_custom_fields = nullptr;
     void CreateControls();
     void dataToControls();
     bool ValidateData();
@@ -98,34 +98,34 @@ private:
     void SetTooltips();
     void SetCategoryForPayee(const Model_Payee::Data *payee);
 
-    mmTextCtrl* textNumber_;
-    mmTextCtrl* m_textAmount;
-    mmTextCtrl* toTextAmount_;
-    wxTextCtrl* textNotes_;
-    wxButton* bCategory_;
-    wxButton* bAttachments_;
-    wxComboBox* cbAccount_;
-    wxComboBox* cbPayee_;
-    wxCheckBox* cSplit_;
-    wxCheckBox* cAdvanced_;
-    wxButton* itemButtonCancel_;
-    wxChoice* choiceStatus_;
-    wxChoice* transaction_type_;
-    wxDatePickerCtrl* dpc_;
-    wxSpinButton *spinCtrl_;
-    wxStaticText* itemStaticTextWeek_;
-    wxStaticText* account_label_;
-    wxStaticText* payee_label_;
+    mmTextCtrl* textNumber_ = nullptr;
+    mmTextCtrl* m_textAmount = nullptr;
+    mmTextCtrl* toTextAmount_ = nullptr;
+    wxTextCtrl* textNotes_ = nullptr;
+    wxButton* bCategory_ = nullptr;
+    wxButton* bAttachments_ = nullptr;
+    wxComboBox* cbAccount_ = nullptr;
+    wxComboBox* cbPayee_ = nullptr;
+    wxCheckBox* cSplit_ = nullptr;
+    wxCheckBox* cAdvanced_ = nullptr;
+    wxButton* itemButtonCancel_ = nullptr;
+    wxChoice* choiceStatus_ = nullptr;
+    wxChoice* transaction_type_ = nullptr;
+    wxDatePickerCtrl* dpc_ = nullptr;
+    wxSpinButton* spinCtrl_ = nullptr;
+    wxStaticText* itemStaticTextWeek_ = nullptr;
+    wxStaticText* account_label_ = nullptr;
+    wxStaticText* payee_label_ = nullptr;
 
     bool m_transfer = false;
-    bool m_new_trx;
-    bool m_duplicate;
+    bool m_new_trx = false;
+    bool m_duplicate = false;
     bool categUpdated_=false;
     bool m_advanced=false;
-    double m_current_balance;
+    double m_current_balance = 0.0;
 
-    int object_in_focus_;
-    int m_account_id;
+    int object_in_focus_ = 0;
+    int m_account_id = -1;
     TransactionStatus m_status;
 
     DB_Table_CHECKINGACCOUNT::Data m_trx_data;

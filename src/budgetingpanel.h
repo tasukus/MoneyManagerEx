@@ -104,7 +104,7 @@ private:
     wxString m_budget_offset_date;
 
     wxImageList* m_imageList=nullptr;
-    wxStaticText* budgetReportHeading_;
+    wxStaticText* budgetReportHeading_=nullptr;
     wxStaticText* income_estimated_=nullptr;
     wxStaticText* income_actual_=nullptr;
     wxStaticText* income_diff_=nullptr;

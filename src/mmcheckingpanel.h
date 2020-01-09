@@ -173,7 +173,7 @@ private:
     wxDECLARE_EVENT_TABLE();
 
 private:
-    mmCheckingPanel* m_cp;
+    mmCheckingPanel* m_cp = nullptr;
 
     wxListItemAttr m_attr1;  // style1
     wxListItemAttr m_attr2;  // style2
@@ -289,15 +289,15 @@ private:
     wxDECLARE_EVENT_TABLE();
     friend class TransactionListCtrl; // needs access to m_core, initdb_, ...
 
-    wxButton* m_btnNew;
-    wxButton* m_btnEdit;
-    wxButton* m_btnDuplicate;
-    wxButton* m_btnDelete;
-    wxButton* m_btnAttachment;
-    wxStaticText* m_header_text;
-    wxStaticText* m_info_panel;
-    wxStaticText* m_info_panel_mini;
-    wxButton* m_bitmapTransFilter;
+    wxButton* m_btnNew=nullptr;
+    wxButton* m_btnEdit=nullptr;
+    wxButton* m_btnDuplicate=nullptr;
+    wxButton* m_btnDelete=nullptr;
+    wxButton* m_btnAttachment=nullptr;
+    wxStaticText* m_header_text=nullptr;
+    wxStaticText* m_info_panel=nullptr;
+    wxStaticText* m_info_panel_mini=nullptr;
+    wxButton* m_bitmapTransFilter=nullptr;
     mmFilterTransactionsDialog* m_trans_filter_dlg = nullptr;
 
     int m_currentView;
@@ -310,8 +310,8 @@ private:
     double m_reconciled_balance;
 
     TransactionListCtrl* m_listCtrlAccount = nullptr;
-    Model_Account::Data* m_account;
-    Model_Currency::Data* m_currency;
+    Model_Account::Data* m_account = nullptr;
+    Model_Currency::Data* m_currency = nullptr;
     wxScopedPtr<wxImageList> m_imageList;
     Model_Checking::Full_Data_Set m_trans;
 

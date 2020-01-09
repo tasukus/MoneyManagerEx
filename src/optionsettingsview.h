@@ -46,24 +46,24 @@ private:
 
 private:
     /// Colour Buttons.
-    wxButton* m_UDFCB1;
-    wxButton* m_UDFCB2;
-    wxButton* m_UDFCB3;
-    wxButton* m_UDFCB4;
-    wxButton* m_UDFCB5;
-    wxButton* m_UDFCB6;
-    wxButton* m_UDFCB7;
+    wxButton* m_UDFCB1 = nullptr;
+    wxButton* m_UDFCB2 = nullptr;
+    wxButton* m_UDFCB3 = nullptr;
+    wxButton* m_UDFCB4 = nullptr;
+    wxButton* m_UDFCB5 = nullptr;
+    wxButton* m_UDFCB6 = nullptr;
+    wxButton* m_UDFCB7 = nullptr;
 
-    wxChoice* m_choice_visible;
-    wxChoice* m_choice_trans_visible;
-    wxSpinCtrl* m_scale_factor;
+    wxChoice* m_choice_visible = nullptr;
+    wxChoice* m_choice_trans_visible = nullptr;
+    wxSpinCtrl* m_scale_factor = nullptr;
 
-    wxCheckBox* m_budget_financial_years;
-    wxCheckBox* m_budget_include_transfers;
-    wxCheckBox* m_budget_setup_without_summary;
-    wxCheckBox* m_budget_summary_without_category;
-    wxSpinCtrl* m_budget_days_offset;
-    wxCheckBox* m_ignore_future_transactions;
+    wxCheckBox* m_budget_financial_years = nullptr;
+    wxCheckBox* m_budget_include_transfers = nullptr;
+    wxCheckBox* m_budget_setup_without_summary = nullptr;
+    wxCheckBox* m_budget_summary_without_category = nullptr;
+    wxSpinCtrl* m_budget_days_offset = nullptr;
+    wxCheckBox* m_ignore_future_transactions = nullptr;
 
     enum
     {

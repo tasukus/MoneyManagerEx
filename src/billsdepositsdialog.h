@@ -78,34 +78,34 @@ private:
     void OnAutoExecutionUserAckChecked(wxCommandEvent& event);
     void OnAutoExecutionSilentChecked(wxCommandEvent& event);
     void OnTextEntered(wxCommandEvent& event);
-    int transID_;
+    int transID_ = 0;
 
-    wxTextCtrl* textNumber_;
-    mmTextCtrl* textAmount_;
-    mmTextCtrl* toTextAmount_;
-    wxTextCtrl* textNotes_;
-    wxTextCtrl* textCategory_;
-    wxTextCtrl* textNumRepeats_;
-    wxButton* bCategory_;
-    wxButton* bPayee_;
-    wxButton* bAccount_;
-    wxButton* bAttachments_;
-    wxCheckBox* cSplit_;
-    wxCheckBox* cAdvanced_;
+    wxTextCtrl* textNumber_ = nullptr;
+    mmTextCtrl* textAmount_ = nullptr;
+    mmTextCtrl* toTextAmount_ = nullptr;
+    wxTextCtrl* textNotes_ = nullptr;
+    wxTextCtrl* textCategory_ = nullptr;
+    wxTextCtrl* textNumRepeats_ = nullptr;
+    wxButton* bCategory_ = nullptr;
+    wxButton* bPayee_ = nullptr;
+    wxButton* bAccount_ = nullptr;
+    wxButton* bAttachments_ = nullptr;
+    wxCheckBox* cSplit_ = nullptr;
+    wxCheckBox* cAdvanced_ = nullptr;
     bool payeeUnknown_ = true;
 
-    wxChoice* m_choice_status;
-    wxChoice* m_choice_transaction_type;
+    wxChoice* m_choice_status = nullptr;
+    wxChoice* m_choice_transaction_type = nullptr;
 
-    bool m_new_bill;
-    bool m_transfer;
-    bool m_enter_occur;
+    bool m_new_bill = true;
+    bool m_transfer = false;
+    bool m_enter_occur = false;
 
-    wxDatePickerCtrl* m_date_paid;      // Stored in ::NEXTOCCURRENCEDATE
-    wxDatePickerCtrl* m_date_due;       // Stored in ::TRANSDATE
-    wxChoice* m_choice_repeat;
-    wxCheckBox* itemCheckBoxAutoExeUserAck_;
-    wxCheckBox* itemCheckBoxAutoExeSilent_;
+    wxDatePickerCtrl* m_date_paid=nullptr;      // Stored in ::NEXTOCCURRENCEDATE
+    wxDatePickerCtrl* m_date_due=nullptr;       // Stored in ::TRANSDATE
+    wxChoice* m_choice_repeat=nullptr;
+    wxCheckBox* itemCheckBoxAutoExeUserAck_=nullptr;
+    wxCheckBox* itemCheckBoxAutoExeSilent_=nullptr;
     bool autoExecuteUserAck_ = false;
     bool autoExecuteSilent_ = false;
 
@@ -121,8 +121,8 @@ private:
     const wxString payeeTransferTip_ = _("Specify which account the transfer is going to");
     const wxString amountNormalTip_ = _("Specify the amount for this transaction");
     const wxString amountTransferTip_ = _("Specify the amount to be transferred");
-    wxSpinButton* spinNextOccDate_;
-    wxSpinButton* spinTransDate_;
+    wxSpinButton* spinNextOccDate_ = nullptr;
+    wxSpinButton* spinTransDate_ = nullptr;
 
     void resetPayeeString();
     void setTooltips();
@@ -138,9 +138,9 @@ private:
     void OnFrequentUsedNotes(wxCommandEvent& event);
     void onNoteSelected(wxCommandEvent& event);
 
-    wxStaticText* staticTimesRepeat_;
-    wxStaticText* staticTextRepeats_;
-    wxBitmapButton* m_btn_due_date;
+    wxStaticText* staticTimesRepeat_ = nullptr;
+    wxStaticText* staticTextRepeats_ = nullptr;
+    wxBitmapButton* m_btn_due_date = nullptr;
     void OnRepeatTypeChanged(wxCommandEvent& event);
     void OnsetNextRepeatDate(wxCommandEvent& event);
     void setRepeatDetails();

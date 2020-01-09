@@ -48,14 +48,14 @@ private:
 
     void OnPayeeChanged(wxCommandEvent& event);
 
-    int sourcePayeeID_;
+    int sourcePayeeID_ = -1;
     int destPayeeID_=-1;
 
     wxComboBox* cbSourcePayee_=nullptr;
     wxComboBox* cbDestPayee_=nullptr;
     int m_changed_records = 0;
     wxStaticText* m_info=nullptr;
-    wxCheckBox* cbDelete_;
+    wxCheckBox* cbDelete_ = nullptr;
 };
 
 #endif

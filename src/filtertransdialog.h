@@ -125,33 +125,33 @@ private:
 
     wxString settings_string_;
     wxString prev_value_;
-    wxCheckBox* accountCheckBox_;
-    wxChoice* accountDropDown_;
-    wxCheckBox* m_dateRangeCheckBox;
-    wxDatePickerCtrl* m_fromDateCtrl;
-    wxDatePickerCtrl* m_toDateCtrl;
-    wxCheckBox* payeeCheckBox_;
-    wxComboBox* cbPayee_;
-    wxCheckBox* categoryCheckBox_;
-    wxButton* btnCategory_;
-    wxBitmapButton* m_btnSaveAs;
-    wxChoice* m_setting_name;
-    wxCheckBox* similarCategCheckBox_;
-    wxCheckBox* statusCheckBox_;
-    wxChoice* choiceStatus_;
-    wxCheckBox* typeCheckBox_;
-    wxCheckBox* cbTypeWithdrawal_;
-    wxCheckBox* cbTypeDeposit_;
-    wxCheckBox* cbTypeTransferTo_;
-    wxCheckBox* cbTypeTransferFrom_;
-    wxCheckBox* amountRangeCheckBox_;
-    mmTextCtrl* amountMinEdit_;
-    mmTextCtrl* amountMaxEdit_;
-    wxCheckBox* notesCheckBox_;
-    wxTextCtrl* notesEdit_;
-    wxCheckBox* transNumberCheckBox_;
-    wxTextCtrl* transNumberEdit_;
-    wxChoice* m_date_ranges;
+    wxCheckBox* accountCheckBox_ = nullptr;
+    wxChoice* accountDropDown_ = nullptr;
+    wxCheckBox* m_dateRangeCheckBox = nullptr;
+    wxDatePickerCtrl* m_fromDateCtrl = nullptr;
+    wxDatePickerCtrl* m_toDateCtrl = nullptr;
+    wxCheckBox* payeeCheckBox_ = nullptr;
+    wxComboBox* cbPayee_ = nullptr;
+    wxCheckBox* categoryCheckBox_ = nullptr;
+    wxButton* btnCategory_ = nullptr;
+    wxBitmapButton* m_btnSaveAs = nullptr;
+    wxChoice* m_setting_name = nullptr;
+    wxCheckBox* similarCategCheckBox_ = nullptr;
+    wxCheckBox* statusCheckBox_ = nullptr;
+    wxChoice* choiceStatus_ = nullptr;
+    wxCheckBox* typeCheckBox_ = nullptr;
+    wxCheckBox* cbTypeWithdrawal_ = nullptr;
+    wxCheckBox* cbTypeDeposit_ = nullptr;
+    wxCheckBox* cbTypeTransferTo_ = nullptr;
+    wxCheckBox* cbTypeTransferFrom_ = nullptr;
+    wxCheckBox* amountRangeCheckBox_ = nullptr;
+    mmTextCtrl* amountMinEdit_ = nullptr;
+    mmTextCtrl* amountMaxEdit_ = nullptr;
+    wxCheckBox* notesCheckBox_ = nullptr;
+    wxTextCtrl* notesEdit_ = nullptr;
+    wxCheckBox* transNumberCheckBox_ = nullptr;
+    wxTextCtrl* transNumberEdit_ = nullptr;
+    wxChoice* m_date_ranges = nullptr;
 
     wxString m_begin_date;
     wxString m_end_date;
@@ -160,13 +160,13 @@ private:
     bool bSimilarCategoryStatus_ = false;
     int payeeID_ = -1;
     wxString payeeStr_;
-    int refAccountID_;
+    int refAccountID_ = -1;
     wxString refAccountStr_;
     double m_min_amount = 0.0;
     double m_max_amount = 0.0;
     wxString m_filterStatus;
 
-    mmCustomData* m_custom_fields;
+    mmCustomData* m_custom_fields = nullptr;
     std::vector<mmDateRange*> m_all_date_ranges;
 
     enum RepPanel

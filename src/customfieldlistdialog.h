@@ -49,7 +49,7 @@ private:
         MENU_UPDATE_FIELD,
     };
 
-    wxDataViewListCtrl* fieldListBox_;
+    wxDataViewListCtrl* fieldListBox_ = nullptr;
 
     wxString m_RefType;
     int m_field_id=-1;
@@ -72,7 +72,7 @@ private:
     void OnListItemActivated(wxDataViewEvent& event);
     void OnMagicButton(wxCommandEvent& event);
 
-    bool debug_;
+    bool debug_ = false;
 };
 
 #endif // MM_EX_CUSTOMFIELDLISTDIALOG_H_

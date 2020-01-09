@@ -50,16 +50,16 @@ private:
     bool SaveFinancialYearStart();
 
 private:
-    mmGUIApp* m_app;
-    wxChoice* m_date_format_choice;
-    wxChoice* m_month_selection;
-    wxStaticText* m_sample_date_text;
+    mmGUIApp* m_app = nullptr;
+    wxChoice* m_date_format_choice = nullptr;
+    wxChoice* m_month_selection = nullptr;
+    wxStaticText* m_sample_date_text = nullptr;
 
-    int m_currency_id;
+    int m_currency_id = -1;
     wxString m_date_format;
 
-    wxCheckBox* m_use_org_date_copy_paste;
-    wxCheckBox* m_use_sound;
+    wxCheckBox* m_use_org_date_copy_paste = nullptr;
+    wxCheckBox* m_use_sound = nullptr;
 
     enum
     {

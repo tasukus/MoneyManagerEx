@@ -104,20 +104,20 @@ private:
 
     wxDataViewListCtrl* currencyListBox_ = nullptr;
     std::map<int, wxString> ColName_;
-    bool bEnableSelect_;
-    wxButton* itemButtonEdit_;
-    wxButton* itemButtonDelete_;
-    wxCheckBox* cbShowAll_;
-    wxCheckBox* cbHideHistoric_;
-    wxListCtrl* valueListBox_;
-    wxDatePickerCtrl* valueDatePicker_;
-    mmTextCtrl* valueTextBox_;
-    wxStaticBox* historyStaticBox_;
-    wxButton* historyButtonAdd_;
-    wxBitmapButton* m_button_download_history;
-    wxButton* historyButtonDelete_;
+    bool bEnableSelect_ = false;
+    wxButton* itemButtonEdit_ = nullptr;
+    wxButton* itemButtonDelete_ = nullptr;
+    wxCheckBox* cbShowAll_ = nullptr;
+    wxCheckBox* cbHideHistoric_ = nullptr;
+    wxListCtrl* valueListBox_ = nullptr;
+    wxDatePickerCtrl* valueDatePicker_ = nullptr;
+    mmTextCtrl* valueTextBox_ = nullptr;
+    wxStaticBox* historyStaticBox_ = nullptr;
+    wxButton* historyButtonAdd_ = nullptr;
+    wxBitmapButton* m_button_download_history = nullptr;
+    wxButton* historyButtonDelete_ = nullptr;
 
-    int m_currency_id;
+    int m_currency_id = -1;
     bool m_static_dialog=false;
 
 };

@@ -64,9 +64,9 @@ private:
     wxCheckBox* m_append_checkbox = nullptr;
     wxTextCtrl* m_notes_ctrl = nullptr;
     std::vector<int> m_transaction_id;
-    Model_Currency::Data* m_currency;
-    int m_categ_id;
-    int m_subcateg_id;
+    Model_Currency::Data* m_currency=nullptr;
+    int m_categ_id = -1;
+    int m_subcateg_id = -1;
 };
 
 #endif

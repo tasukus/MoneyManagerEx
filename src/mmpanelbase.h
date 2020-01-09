@@ -42,7 +42,8 @@ public:
     mmListCtrl(wxWindow *parent, wxWindowID winid);
     virtual ~mmListCtrl();
 
-    wxListItemAttr *attr1_, *attr2_; // style1
+    wxListItemAttr *attr1_ = nullptr;
+    wxListItemAttr *attr2_ = nullptr; // style1
     long m_selected_row = -1;
     int m_selected_col=0;
     bool m_asc = true;

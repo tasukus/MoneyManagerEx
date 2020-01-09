@@ -47,7 +47,7 @@ private:
         MENU_DELETE_ATTACHMENT,
     };
 
-    wxDataViewListCtrl* attachmentListBox_;
+    wxDataViewListCtrl* attachmentListBox_ = nullptr;
 
     int m_attachment_id = -1;
     std::map<int, wxString> ColName_;
@@ -75,7 +75,7 @@ private:
     void OnListItemActivated(wxDataViewEvent& event);
     void OnMagicButton(wxCommandEvent& event);
 
-    bool debug_;
+    bool debug_ = false;
 };
 
 class mmAttachmentManage

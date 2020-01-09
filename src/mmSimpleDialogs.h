@@ -80,7 +80,7 @@ private:
         const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
     wxString Message, Default;
     wxArrayString Choices;
-    wxComboBox* cbText_;
+    wxComboBox* cbText_ = nullptr;
 };
 
 class mmErrorDialogs

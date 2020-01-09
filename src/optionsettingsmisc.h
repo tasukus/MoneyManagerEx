@@ -47,8 +47,8 @@ private:
     void SaveStocksUrl();
 
 private:
-    wxSpinCtrl* m_max_files;
-    wxSpinCtrl* m_share_precision;
+    wxSpinCtrl* m_max_files = nullptr;
+    wxSpinCtrl* m_share_precision = nullptr;
 
     enum
     {

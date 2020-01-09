@@ -52,7 +52,7 @@ public:
         , const wxString& name = "mmStockDialog"
         );
 
-    int m_stock_id;
+    int m_stock_id = -1;
 
 private:
     void OnQuit(wxCloseEvent& event);
@@ -96,17 +96,17 @@ private:
     wxDatePickerCtrl* m_history_date_ctrl=nullptr;
     mmTextCtrl* m_exchange_text=nullptr;
 
-    Model_Stock::Data* m_stock;
-    bool m_edit;
-    bool debug_;
-    int m_account_id;
-    int m_object_in_focus;
+    Model_Stock::Data* m_stock = nullptr;
+    bool m_edit = false;
+    bool debug_ = false;
+    int m_account_id = -1;
+    int m_object_in_focus = -1;
     wxString m_decimal_point;
-    int m_precision;
-    Model_Account::Data* m_account;
-    Model_Currency::Data* m_currency;
+    int m_precision = -1;
+    Model_Account::Data* m_account = nullptr;
+    Model_Currency::Data* m_currency = nullptr;
     wxString m_current_value;
-    mmGUIFrame* m_gui_frame;
+    mmGUIFrame* m_gui_frame = nullptr;
     enum
     {
         ID_DPC_STOCK_PDATE = wxID_HIGHEST + 800,

@@ -51,7 +51,7 @@ public:
 private:
     void OnTextEntered(wxCommandEvent& event);
 
-    Model_Budget::Data* budgetEntry_;
+    Model_Budget::Data* budgetEntry_ = nullptr;
     wxChoice* m_FrequencyChooser = nullptr;
     mmTextCtrl* m_textAmount = nullptr;
     wxChoice* m_choiceType = nullptr;

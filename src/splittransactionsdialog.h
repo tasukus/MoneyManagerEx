@@ -81,26 +81,26 @@ private:
 
     void UpdateSplitTotal();
 
-    wxDataViewListCtrl* lcSplit_;
-    wxStaticText* transAmount_;
+    wxDataViewListCtrl* lcSplit_ = nullptr;
+    wxStaticText* transAmount_ = nullptr;
 
     std::vector<Split> m_splits;
     std::vector<Split> m_local_splits;
-    int transType_;
-    int accountID_;
-    double totalAmount_;
+    int transType_ = -1;
+    int accountID_ = -1;
+    double totalAmount_ = -1;
     bool items_changed_ = false;
 
-    wxButton* itemButtonNew_;
-    wxButton* itemButtonEdit_;
-    wxButton* itemButtonDelete_;
-    wxButton* itemButtonOK_;
+    wxButton* itemButtonNew_ = nullptr;
+    wxButton* itemButtonEdit_ = nullptr;
+    wxButton* itemButtonDelete_ = nullptr;
+    wxButton* itemButtonOK_ = nullptr;
 
     void SetDisplayEditDeleteButtons();
     void OnListDblClick(wxDataViewEvent& event);
     void OnListItemSelected(wxDataViewEvent& event);
     void EditEntry(int id);
-    int selectedIndex_;
+    int selectedIndex_ = -1;
 };
 
 #endif
