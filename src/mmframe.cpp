@@ -1699,7 +1699,7 @@ void mmGUIFrame::createMenu()
     wxMenuItem* menuItemWebsite = new wxMenuItem(menuHelp, MENU_WEBSITE
         , _("Website")
         , _("Open the Money Manager EX website for latest news, updates etc"));
-    // menuItemFacebook->SetBitmap(mmBitmap(png::WEBSITE));
+    // menuItemWebsite->SetBitmap(mmBitmap(png::WEBSITE));
     wxMenuItem* menuItemFacebook = new wxMenuItem(menuHelp, MENU_FACEBOOK
         , _("Facebook"), _("Visit us on Facebook"));
     menuItemFacebook->SetBitmap(mmBitmap(png::FACEBOOK));
