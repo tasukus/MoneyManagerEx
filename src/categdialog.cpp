@@ -130,7 +130,7 @@ void mmCategDialog::fillControls()
                     if (!bShow)
                         m_treeCtrl->SetItemTextColour(subcateg, wxColour("GREY"));
 
-                    if (m_categ_id == category.CATEGID && m_subcateg_id == sub_category.SUBCATEGID)
+                    if (m_init_selected_categ_id == category.CATEGID && m_init_selected_subcateg_id == sub_category.SUBCATEGID)
                         selectedItemId_ = subcateg;
                 }
             }
