@@ -54,7 +54,7 @@ private:
     wxSQLite3Database* m_setting_db = nullptr;
     wxString m_optParam = wxEmptyString;
     wxLanguage m_lang=wxLANGUAGE_UNKNOWN; // GUI translation language displayed
-    wxLocale m_locale=wxLanguage::wxLANGUAGE_DEFAULT;
+    wxLocale m_locale;
 public:
     virtual int FilterEvent(wxEvent& event);
 
