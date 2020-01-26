@@ -46,9 +46,9 @@ class mmCategDialog : public wxDialog
 public:
     mmCategDialog();
     mmCategDialog(wxWindow* parent
-        , int category_id = -1, int subcategory_id = -1
-        , bool bEnableRelocate = false
-        , bool bEnableSelect = true);
+        , const int category_id = -1, const int subcategory_id = -1
+        , const bool bEnableRelocate = false
+        , const bool bEnableSelect = true);
 
     bool Create(wxWindow* parent
         , wxWindowID id
@@ -57,15 +57,15 @@ public:
         , const wxSize& size
         , long style);
 
-    int getCategId()
+    int getCategId( )const noexcept
     {
         return m_categ_id;
     }
-    int getSubCategId()
+    int getSubCategId( )const noexcept
     {
         return m_subcateg_id;
     }
-    bool getRefreshRequested()
+    bool getRefreshRequested( )const noexcept
     {
         return m_refresh_requested;
     }
@@ -76,7 +76,6 @@ private:
     void fillControls();
     void setTreeSelection(int category_id, int subcategory_id);
 
-    void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);
     void OnAdd(wxCommandEvent& event);
     void OnDelete(wxCommandEvent& event);
@@ -104,15 +103,15 @@ private:
     wxTreeItemId selectedItemId_;
     wxTreeItemId root_;
     wxTreeItemId getTreeItemFor(const wxTreeItemId& itemID, const wxString& itemText);
-    bool m_enable_select;
-    bool m_enable_relocate;
-    int m_categ_id;
-    int m_subcateg_id;
-    int m_init_selected_categ_id;
-    int m_init_selected_subcateg_id;
+    bool m_enable_select = false;
+    bool m_enable_relocate = false;
+    int m_categ_id = -1;
+    int m_subcateg_id = -1;
+    int m_init_selected_categ_id = -1;
+    int m_init_selected_subcateg_id=-1;
     wxColour NormalColor_;
     wxArrayString m_hidden_categs;
-    bool m_refresh_requested;
+    bool m_refresh_requested = false;
 
     enum
     {

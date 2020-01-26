@@ -44,22 +44,14 @@ EVT_TREE_ITEM_MENU(wxID_ANY, mmCategDialog::OnItemRightClick)
 EVT_MENU(wxID_ANY, mmCategDialog::OnMenuSelected)
 wxEND_EVENT_TABLE()
 
-mmCategDialog::mmCategDialog()
+mmCategDialog::mmCategDialog( ) :wxDialog()
 {
-    // Initialize fields in constructor
-    m_categ_id = -1;
-    m_subcateg_id = -1;
-    m_init_selected_categ_id = -1;
-    m_init_selected_subcateg_id = -1;
-    selectedItemId_ = nullptr;
-    m_enable_select = false;
-    m_enable_relocate = false;
-    m_refresh_requested = false;
+    return;
 }
 
 mmCategDialog::mmCategDialog(wxWindow* parent
-    , int category_id, int subcategory_id
-    , bool bEnableRelocate, bool bEnableSelect)
+    ,const int category_id,const int subcategory_id
+    ,const bool bEnableRelocate,const bool bEnableSelect)
 {
     // Initialize fields in constructor
     m_categ_id = category_id;
