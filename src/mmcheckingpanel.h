@@ -91,8 +91,8 @@ public:
     bool getSortOrder() const { return m_asc; }
     EColumn getSortColumn() const { return m_sortCol; }
 
-    void setSortOrder(bool asc) { m_asc = asc; }
-    void setSortColumn(EColumn col) { m_sortCol = col; }
+    void setSortOrder(const bool asc) { m_asc = asc; }
+    void setSortColumn(const EColumn col) { m_sortCol = col; }
 
     void setColumnImage(EColumn col, int image);
 

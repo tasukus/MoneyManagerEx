@@ -58,9 +58,9 @@ const wxString getCaption(const wxString& caption);
  *************************************************************************/
 namespace version
 {
-    const int Major = MMEX_VERSION_MAJOR;
-    const int Minor = MMEX_VERSION_MINOR;
-    const int Patch = MMEX_VERSION_PATCH;
+    constexpr int Major = MMEX_VERSION_MAJOR;
+    constexpr int Minor = MMEX_VERSION_MINOR;
+    constexpr int Patch = MMEX_VERSION_PATCH;
     const wxString string = MMEX_VERSION_FULL;
     int getDbLatestVersion();
 }

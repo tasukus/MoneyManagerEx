@@ -195,14 +195,14 @@ void OptionSettingsMisc::OnBackupChanged(wxCommandEvent& WXUNUSED(event))
 void OptionSettingsMisc::SaveStocksUrl()
 {
     wxTextCtrl* url = static_cast<wxTextCtrl*>(FindWindow(ID_DIALOG_OPTIONS_TEXTCTRL_STOCKURL));
-    wxString stockURL = url->GetValue();
+    const wxString stockURL = url->GetValue( );
     if (!stockURL.IsEmpty())
     {
         Model_Infotable::instance().Set("STOCKURL", stockURL);
     }
     else
     {
-        Model_Infotable::Data_Set items = Model_Infotable::instance().find(Model_Infotable::INFONAME("STOCKURL"));
+        const Model_Infotable::Data_Set items = Model_Infotable::instance().find(Model_Infotable::INFONAME("STOCKURL"));
         if (!items.empty())
             Model_Infotable::instance().remove(items[0].INFOID);
     }

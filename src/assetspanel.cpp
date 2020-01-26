@@ -69,7 +69,7 @@ mmAssetsListCtrl::mmAssetsListCtrl(mmAssetsPanel* cp, wxWindow *parent, wxWindow
 
     for (const auto& entry : m_columns)
     {
-        int count = GetColumnCount();
+        const int count = GetColumnCount();
         InsertColumn(count
             , entry.HEADER
             , entry.FORMAT
@@ -123,7 +123,7 @@ void mmAssetsListCtrl::OnMouseRightClick(wxMouseEvent& event)
 void mmAssetsListCtrl::OnListLeftClick(wxMouseEvent& event)
 {
     int Flags = wxLIST_HITTEST_ONITEM;
-    long index = HitTest(wxPoint(event.m_x, event.m_y), Flags);
+    const long index = HitTest(wxPoint(event.m_x, event.m_y), Flags);
     if (index == -1)
     {
         m_selected_row = -1;
@@ -265,8 +265,8 @@ void mmAssetsListCtrl::OnOrganizeAttachments(wxCommandEvent& WXUNUSED(event))
 {
     if (m_selected_row < 0) return;
 
-    wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::ASSET);
-    int RefId = m_panel->getAssetDataSet()[m_selected_row].ASSETID;
+    const wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::ASSET);
+    const int RefId = m_panel->getAssetDataSet()[m_selected_row].ASSETID;
 
     mmAttachmentDialog dlg(this, RefType, RefId);
     dlg.ShowModal();
@@ -278,8 +278,8 @@ void mmAssetsListCtrl::OnOpenAttachment(wxCommandEvent& WXUNUSED(event))
 {
     if (m_selected_row < 0) return;
 
-    wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::ASSET);
-    int RefId = m_panel->getAssetDataSet()[m_selected_row].ASSETID;
+    const wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::ASSET);
+    const int RefId = m_panel->getAssetDataSet()[m_selected_row].ASSETID;
 
     mmAttachmentManage::OpenAttachmentFromPanelIcon(this, RefType, RefId);
     doRefreshItems(RefId);
@@ -474,7 +474,7 @@ void mmAssetsPanel::CreateControls()
 
     m_listCtrlAssets = new mmAssetsListCtrl(this, itemSplitterWindow10, wxID_ANY);
 
-    int x = Option::instance().getIconSize();
+    const int x = Option::instance().getIconSize();
     m_imageList.reset(new wxImageList(x, x));
     m_imageList->Add(mmBitmap(png::PROPERTY));
     m_imageList->Add(mmBitmap(png::CAR));
@@ -748,7 +748,7 @@ void mmAssetsPanel::OnSearchTxtEntered(wxCommandEvent& event)
         if (t.Matches(search_string + "*"))
         {
             //First of all any items should be unselected
-            long cursel = m_listCtrlAssets->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
+            const long cursel = m_listCtrlAssets->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
             if (cursel != wxNOT_FOUND)
                 m_listCtrlAssets->SetItemState(cursel, 0, wxLIST_STATE_SELECTED | wxLIST_STATE_FOCUSED);
 

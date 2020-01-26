@@ -53,7 +53,7 @@ transactionsUpdateDialog::transactionsUpdateDialog(wxWindow* parent
     Model_Account::Data* acc = Model_Account::instance().get(account_id);
     m_currency = acc ? Model_Account::currency(acc) : Model_Currency::GetBaseCurrency();
 
-    long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_STATIC, _("Multi Transactions Update")
         , wxDefaultPosition, wxSize(500, 300), style);
 }
@@ -91,7 +91,7 @@ void transactionsUpdateDialog::CreateControls()
     m_date_checkbox = new wxCheckBox(this, wxID_ANY, _("Date")
         , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
 
-    long date_style = wxDP_DROPDOWN | wxDP_SHOWCENTURY;
+    constexpr long date_style = wxDP_DROPDOWN | wxDP_SHOWCENTURY;
     m_dpc = new wxDatePickerCtrl(this
         , wxID_ANY, wxDateTime::Today()
         , wxDefaultPosition, wxDefaultSize, date_style);
@@ -223,7 +223,7 @@ void transactionsUpdateDialog::OnOk(wxCommandEvent& WXUNUSED(event))
     wxString type = "";
     if (m_type_checkbox->IsChecked())
     {
-        int i = m_type_choice->GetSelection();
+        const int i = m_type_choice->GetSelection();
         wxStringClientData* type_obj = (i >= 0 && static_cast<unsigned>(i) < m_type_choice->GetCount())
             ? static_cast<wxStringClientData*>(m_type_choice->GetClientObject(i)) : nullptr;
         if (type_obj)

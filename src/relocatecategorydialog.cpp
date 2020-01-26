@@ -47,7 +47,7 @@ relocateCategoryDialog::relocateCategoryDialog(wxWindow* parent
     m_sourceCatID    = sourceCatID;
     m_sourceSubCatID = sourceSubCatID;
 
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("Relocate Category Dialog"), wxDefaultPosition, wxSize(500, 300), style);
 }
 
@@ -251,14 +251,14 @@ void relocateCategoryDialog::IsOkOk()
         .find(Model_Payee::CATEGID(m_sourceCatID)
             , Model_Payee::SUBCATEGID(m_sourceSubCatID));
 
-    int trxs_size = (m_sourceCatID < 0 && m_sourceSubCatID < 0) ? 0 : int(transactions.size());
-    int checks_size = int(checking_split.size());
-    int bills_size = int(billsdeposits.size());
-    int budget_split_size = int(budget_split.size());
-    int payees_size = (m_sourceCatID < 0 && m_sourceSubCatID < 0) ? 0 : int(payees.size());
-    int budget_size = int(budget.size());
+    const int trxs_size = (m_sourceCatID < 0 && m_sourceSubCatID < 0) ? 0 : int(transactions.size());
+    const int checks_size = int(checking_split.size());
+    const int bills_size = int(billsdeposits.size());
+    const int budget_split_size = int(budget_split.size());
+    const int payees_size = (m_sourceCatID < 0 && m_sourceSubCatID < 0) ? 0 : int(payees.size());
+    const int budget_size = int(budget.size());
 
-    int total = trxs_size + checks_size + bills_size + budget_split_size + payees_size + budget_size;
+    const int total = trxs_size + checks_size + bills_size + budget_split_size + payees_size + budget_size;
 
     wxString msgStr = wxString()
         << wxString::Format(_("Records found in transactions: %i"), trxs_size) << "\n"

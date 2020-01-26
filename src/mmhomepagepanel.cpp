@@ -149,8 +149,8 @@ void htmlWidgetStocks::calculate_stats(std::map<int, std::pair<double, double> >
             today_conv_rate = Model_CurrencyHistory::getDayRate(account->CURRENCYID, today);
         }
         std::pair<double, double>& values = stockStats[stock.HELDAT];
-        double current_value = Model_Stock::CurrentValue(stock);
-        double gain_lost = (current_value - stock.VALUE - stock.COMMISSION);
+        const double current_value = Model_Stock::CurrentValue(stock);
+        const double gain_lost = (current_value - stock.VALUE - stock.COMMISSION);
         values.first += gain_lost;
         values.second += current_value;
         if (account && account->STATUS == VIEW_ACCOUNTS_OPEN_STR)
@@ -241,13 +241,13 @@ void htmlWidgetTop7Categories::getTopCategoryStats(
 
     for (const auto &trx : transactions)
     {
-        bool withdrawal = Model_Checking::type(trx) == Model_Checking::WITHDRAWAL;
+        const bool withdrawal = Model_Checking::type(trx) == Model_Checking::WITHDRAWAL;
         const auto it = splits.find(trx.TRANSID);
         const double convRate = Model_CurrencyHistory::getDayRate(Model_Account::instance().get(trx.ACCOUNTID)->CURRENCYID, trx.TRANSDATE);
 
         if (it == splits.end())
         {
-            std::pair<int, int> category = std::make_pair(trx.CATEGID, trx.SUBCATEGID);
+            const std::pair<int, int> category = std::make_pair(trx.CATEGID, trx.SUBCATEGID);
             if (withdrawal)
                 stat[category] -= trx.TRANSAMOUNT * convRate;
             else
@@ -257,7 +257,7 @@ void htmlWidgetTop7Categories::getTopCategoryStats(
         {
             for (const auto& entry : it->second)
             {
-                std::pair<int, int> category = std::make_pair(entry.CATEGID, entry.SUBCATEGID);
+                const std::pair<int, int> category = std::make_pair(entry.CATEGID, entry.SUBCATEGID);
                 double val = entry.SPLITTRANSAMOUNT * convRate * (withdrawal ? -1 : 1);
                 stat[category] += val;
             }
@@ -321,7 +321,7 @@ htmlWidgetBillsAndDeposits::~htmlWidgetBillsAndDeposits()
 wxString htmlWidgetBillsAndDeposits::getHTMLText()
 {
     wxString output = "";
-    wxDate today = wxDate::Today();
+    const wxDate today = wxDate::Today();
     //                    days, payee, description, amount, account, notes
     std::vector< std::tuple<int, wxString, wxString, double, const Model_Account::Data*, wxString> > bd_days;
     for (const auto& entry : Model_Billsdeposits::instance().all(Model_Billsdeposits::COL_NEXTOCCURRENCEDATE))
@@ -339,7 +339,7 @@ wxString htmlWidgetBillsAndDeposits::getHTMLText()
             continue; // Inactive
         }
 
-        int daysOverdue = Model_Billsdeposits::TRANSDATE(&entry)
+        const int daysOverdue = Model_Billsdeposits::TRANSDATE(&entry)
             .Subtract(today).GetDays();
         wxString daysRemainingStr = (daysPayment > 0
             ? wxString::Format(wxPLURAL("%d day remaining", "%d days remaining", daysPayment), daysPayment)
@@ -513,7 +513,7 @@ bool mmHomePagePanel::Create(wxWindow *parent
 {
     SetExtraStyle(GetExtraStyle() | wxWS_EX_BLOCK_EVENTS);
     wxPanelBase::Create(parent, winid, pos, size, style, name);
-    wxDateTime start = wxDateTime::UNow();
+    const wxDateTime start = wxDateTime::UNow();
 
     CreateControls();
     createHTML();
@@ -674,7 +674,7 @@ void mmHomePagePanel::setExpensesIncomeStatsData(std::map<int, std::pair<double,
     , mmDateRange* date_range) const
 {
     //Initialization
-    bool ignoreFuture = Option::instance().getIgnoreFutureTransactions();
+    const bool ignoreFuture = Option::instance().getIgnoreFutureTransactions();
 
     //Calculations
     const auto &transactions = Model_Checking::instance().find(
@@ -698,7 +698,7 @@ void mmHomePagePanel::setExpensesIncomeStatsData(std::map<int, std::pair<double,
 
         const double convRate = Model_CurrencyHistory::getDayRate(Model_Account::instance().get(pBankTransaction.ACCOUNTID)->CURRENCYID, pBankTransaction.TRANSDATE);
 
-        int idx = pBankTransaction.ACCOUNTID;
+        const int idx = pBankTransaction.ACCOUNTID;
         if (Model_Checking::type(pBankTransaction) == Model_Checking::DEPOSIT)
             incomeExpensesStats[idx].first += pBankTransaction.TRANSAMOUNT * convRate;
         else
@@ -734,8 +734,8 @@ const wxString mmHomePagePanel::getAccountsHTML(double& tBalance
         Model_Currency::Data* currency = Model_Account::currency(account);
         if (!currency) currency = Model_Currency::GetBaseCurrency();
         const double convRate = Model_CurrencyHistory::getDayRate(currency->CURRENCYID, today);
-        double acc_bal = account.INITIALBAL + accountStats[account.ACCOUNTID].second; //Model_Account::balance(account);
-        double reconciledBal = account.INITIALBAL + accountStats[account.ACCOUNTID].first;
+        const double acc_bal = account.INITIALBAL + accountStats[account.ACCOUNTID].second; //Model_Account::balance(account);
+        const double reconciledBal = account.INITIALBAL + accountStats[account.ACCOUNTID].first;
         total_balance += acc_bal * convRate;
         total_reconciled += reconciledBal * convRate;
 
@@ -774,17 +774,17 @@ const wxString mmHomePagePanel::getIncomeVsExpensesJSON() const
 
     for (const auto& account : Model_Account::instance().all())
     {
-        int idx = account.ACCOUNTID;
+        const int idx = account.ACCOUNTID;
         tIncome += incomeExpensesStats[idx].first;
         tExpenses += incomeExpensesStats[idx].second;
     }
     // Compute chart spacing and interval (chart forced to start at zero)
-    double steps = 10.0;
+    constexpr double steps = 10.0;
     double scaleStepWidth = ceil(std::max(tIncome, tExpenses) / steps);
     if (scaleStepWidth <= 1.0)
         scaleStepWidth = 1.0;
     else {
-        double s = (pow(10, ceil(log10(scaleStepWidth)) - 1.0));
+        const double s = (pow(10, ceil(log10(scaleStepWidth)) - 1.0));
         if (s > 0) scaleStepWidth = ceil(scaleStepWidth / s)*s;
     }
 
@@ -830,7 +830,7 @@ const wxString mmHomePagePanel::getIncomeVsExpensesJSON() const
 //* Assets *//
 const wxString mmHomePagePanel::getAssetsJSON(double& tBalance) const
 {
-    double asset_balance = Model_Asset::instance().balance();
+    const double asset_balance = Model_Asset::instance().balance();
     tBalance += asset_balance;
 
     StringBuffer json_buffer;
@@ -917,7 +917,7 @@ void mmHomePagePanel::OnLinkClicked(wxWebViewEvent& event)
         {
             if (json_doc.HasMember("TOP_CATEGORIES") && json_doc["TOP_CATEGORIES"].IsBool())
             {
-                bool entry = !json_doc["TOP_CATEGORIES"].GetBool();
+                const bool entry = !json_doc["TOP_CATEGORIES"].GetBool();
                 json_doc["TOP_CATEGORIES"] = entry;
             }
             else
@@ -929,7 +929,7 @@ void mmHomePagePanel::OnLinkClicked(wxWebViewEvent& event)
         {
             if (json_doc.HasMember("INVEST") && json_doc["INVEST"].IsBool())
             {
-                bool entry = !json_doc["INVEST"].GetBool();
+                const bool entry = !json_doc["INVEST"].GetBool();
                 json_doc["INVEST"] = entry;
             }
             else
@@ -941,7 +941,7 @@ void mmHomePagePanel::OnLinkClicked(wxWebViewEvent& event)
         {
             if (json_doc.HasMember("ACCOUNTS_INFO") && json_doc["ACCOUNTS_INFO"].IsBool())
             {
-                bool entry = !json_doc["ACCOUNTS_INFO"].GetBool();
+                const bool entry = !json_doc["ACCOUNTS_INFO"].GetBool();
                 json_doc["ACCOUNTS_INFO"] = entry;
             }
             else
@@ -953,7 +953,7 @@ void mmHomePagePanel::OnLinkClicked(wxWebViewEvent& event)
         {
             if (json_doc.HasMember("CARD_ACCOUNTS_INFO") && json_doc["CARD_ACCOUNTS_INFO"].IsBool())
             {
-                bool entry = !json_doc["CARD_ACCOUNTS_INFO"].GetBool();
+                const bool entry = !json_doc["CARD_ACCOUNTS_INFO"].GetBool();
                 json_doc["CARD_ACCOUNTS_INFO"] = entry;
             }
             else
@@ -965,7 +965,7 @@ void mmHomePagePanel::OnLinkClicked(wxWebViewEvent& event)
         {
             if (json_doc.HasMember("CASH_ACCOUNTS_INFO") && json_doc["CASH_ACCOUNTS_INFO"].IsBool())
             {
-                bool entry = !json_doc["CASH_ACCOUNTS_INFO"].GetBool();
+                const bool entry = !json_doc["CASH_ACCOUNTS_INFO"].GetBool();
                 json_doc["CASH_ACCOUNTS_INFO"] = entry;
             }
             else
@@ -977,7 +977,7 @@ void mmHomePagePanel::OnLinkClicked(wxWebViewEvent& event)
         {
             if (json_doc.HasMember("LOAN_ACCOUNTS_INFO") && json_doc["LOAN_ACCOUNTS_INFO"].IsBool())
             {
-                bool entry = !json_doc["LOAN_ACCOUNTS_INFO"].GetBool();
+                const bool entry = !json_doc["LOAN_ACCOUNTS_INFO"].GetBool();
                 json_doc["LOAN_ACCOUNTS_INFO"] = entry;
             }
             else
@@ -989,7 +989,7 @@ void mmHomePagePanel::OnLinkClicked(wxWebViewEvent& event)
         {
             if (json_doc.HasMember("TERM_ACCOUNTS_INFO") && json_doc["TERM_ACCOUNTS_INFO"].IsBool())
             {
-                bool entry = !json_doc["TERM_ACCOUNTS_INFO"].GetBool();
+                const bool entry = !json_doc["TERM_ACCOUNTS_INFO"].GetBool();
                 json_doc["TERM_ACCOUNTS_INFO"] = entry;
             }
             else
@@ -1000,7 +1000,7 @@ void mmHomePagePanel::OnLinkClicked(wxWebViewEvent& event)
         else if (name == "CRYPTO_WALLETS_INFO") {
             if (json_doc.HasMember("CRYPTO_WALLETS_INFO") && json_doc["CRYPTO_WALLETS_INFO"].IsBool())
             {
-                bool entry = !json_doc["CRYPTO_WALLETS_INFO"].GetBool();
+                const bool entry = !json_doc["CRYPTO_WALLETS_INFO"].GetBool();
                 json_doc["CRYPTO_WALLETS_INFO"] = entry;
             }
             else

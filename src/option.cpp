@@ -190,9 +190,9 @@ void Option::LoadOptions(bool include_infotable)
 
 #ifdef _WINDOWS
     // Windows problem on high res screens Ref Issue #478
-    int default_font_size = 116;
+    constexpr int default_font_size = 116;
 #else
-    int default_font_size = 100;
+    constexpr int default_font_size = 100;
 #endif
 
     m_html_font_size = Model_Setting::instance().GetIntSetting("HTMLSCALE", default_font_size);
@@ -376,8 +376,9 @@ void Option::setIconSize(int value)
 
 int Option::getAccountImageId(int account_id, bool def) const
 {
-    int max = acc_img::MAX_XPM - img::LAST_NAVTREE_PNG;
-    int min = 1;
+    constexpr int max = acc_img::MAX_XPM - img::LAST_NAVTREE_PNG;
+    constexpr int min = 1;
+
     int custom_img_id = Model_Infotable::instance().GetIntInfo(wxString::Format("ACC_IMAGE_ID_%i", account_id), 0);
     if (custom_img_id > max) custom_img_id = custom_img_id - 20; //Bug #963 fix
     if (!def && (custom_img_id >= min && custom_img_id <= max))
@@ -395,7 +396,7 @@ int Option::getAccountImageId(int account_id, bool def) const
         acctStatus = account->STATUS;
         favorite = Model_Account::FAVORITEACCT(account);
     }
-    bool closed = acctStatus == "Closed";
+    const bool closed = acctStatus == "Closed";
 
     switch (acctType)
     {
@@ -454,7 +455,7 @@ void Option::setHideReport(int report, bool value)
 {
     if (isReportIDCorrect(report))
     {
-        int bitField = 1 << m_reports[report].id;
+        const int bitField = 1 << m_reports[report].id;
         if (value)
             m_hideReport |= bitField;
         else
@@ -469,7 +470,7 @@ bool Option::getHideReport(int report) const
     bool hideReport = false;
     if (isReportIDCorrect(report))
     {
-        int bitField = 1 << m_reports.at(report).id;
+        const int bitField = 1 << m_reports.at(report).id;
         hideReport = ((m_hideReport & bitField) != 0);
     }
     return hideReport;

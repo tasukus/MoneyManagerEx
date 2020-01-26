@@ -74,12 +74,12 @@ UserTransactionPanel::~UserTransactionPanel()
 void UserTransactionPanel::Create()
 {
     // Control properties according to system
-    int spinCtrlDirection = wxSP_VERTICAL;
-    int interval = 0;
+    constexpr int spinCtrlDirection = wxSP_VERTICAL;
 #ifdef __WXMSW__
+    constexpr int interval = 4;
     wxSize spinCtrlSize = wxSize(18, 22);
-    interval = 4;
 #else
+    constexpr int interval = 0;
     wxSize spinCtrlSize = wxSize(16, -1);
 #endif
 
@@ -269,7 +269,7 @@ void UserTransactionPanel::SetLastPayeeAndCategory(const int account_id)
         Model_Checking::Data_Set trans_list = Model_Checking::instance().find(Model_Checking::ACCOUNTID(account_id));
         if (!trans_list.empty())
         {
-            int last_trans_pos = trans_list.size() - 1;
+            const int last_trans_pos = trans_list.size() - 1;
 
             Model_Payee::Data* last_payee = Model_Payee::instance().get(trans_list.at(last_trans_pos).PAYEEID);
             m_payee->SetLabelText(last_payee->PAYEENAME);
@@ -364,7 +364,7 @@ void UserTransactionPanel::OnEnteredText(wxCommandEvent& event)
             currency = Model_Account::currency(account);
         else
             currency = Model_Currency::GetBaseCurrency();
-        int currency_precision = Model_Currency::precision(currency);
+        const int currency_precision = Model_Currency::precision(currency);
         m_entered_amount->Calculate(currency_precision);
     }
 }
@@ -386,7 +386,7 @@ void UserTransactionPanel::OnFrequentNotes(wxCommandEvent& WXUNUSED(event))
 
 void UserTransactionPanel::onSelectedNote(wxCommandEvent& event)
 {
-    int i = event.GetId() - wxID_HIGHEST;
+    const int i = event.GetId() - wxID_HIGHEST;
     if (i > 0 && static_cast<size_t>(i) <= m_frequent_notes.size())
         m_entered_notes->ChangeValue(m_frequent_notes[i - 1]);
 }

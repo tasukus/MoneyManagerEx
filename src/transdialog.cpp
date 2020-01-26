@@ -131,7 +131,7 @@ mmTransDialog::mmTransDialog(wxWindow* parent
     if (m_duplicate || m_new_trx) ref_id = -1;
     m_custom_fields = new mmCustomDataTransaction(this, ref_id, ID_CUSTOMFIELD);
 
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, "", wxDefaultPosition, wxSize(500, 400), style, name);
 
     dataToControls();
@@ -346,7 +346,7 @@ void mmTransDialog::dataToControls()
 
     if (!skip_category_init_)
     {
-        bool has_split = !local_splits.empty();
+        const bool has_split = !local_splits.empty();
         wxString fullCategoryName;
         bCategory_->UnsetToolTip();
         if (has_split)
@@ -399,7 +399,7 @@ void mmTransDialog::CreateControls()
     box_sizer2->Add(box_sizer_left, g_flagsExpand);
 
     // Date --------------------------------------------
-    long date_style = wxDP_DROPDOWN | wxDP_SHOWCENTURY;
+    constexpr long date_style = wxDP_DROPDOWN | wxDP_SHOWCENTURY;
 
     dpc_ = new wxDatePickerCtrl(this, ID_DIALOG_TRANS_BUTTONDATE, wxDateTime::Today()
         , wxDefaultPosition, wxDefaultSize, date_style);
@@ -620,7 +620,7 @@ bool mmTransDialog::ValidateData()
         }
 
         // Get payee string from populated list to address issues with case compare differences between autocomplete and payee list
-        int payee_loc = cbPayee_->FindString(payee_name);
+        const int payee_loc = cbPayee_->FindString(payee_name);
         if (payee_loc != wxNOT_FOUND)
             payee_name = cbPayee_->GetString(payee_loc);
 
@@ -756,7 +756,7 @@ void mmTransDialog::OnDpcKillFocus(wxFocusEvent& event)
 
 void mmTransDialog::OnFocusChange(wxChildFocusEvent& event)
 {
-    wxWindow *w = event.GetWindow();
+    const wxWindow *w = event.GetWindow();
     if (w)
     {
         object_in_focus_ = w->GetId();
@@ -830,7 +830,7 @@ void mmTransDialog::OnFocusChange(wxChildFocusEvent& event)
 
 void mmTransDialog::ActivateSplitTransactionsDlg()
 {
-    bool bDeposit = Model_Checking::is_deposit(m_trx_data.TRANSCODE);
+    const bool bDeposit = Model_Checking::is_deposit(m_trx_data.TRANSCODE);
 
     if (!m_textAmount->GetDouble(m_trx_data.TRANSAMOUNT))
         m_trx_data.TRANSAMOUNT = 0;
@@ -870,7 +870,7 @@ void mmTransDialog::SetDialogTitle(const wxString& title)
 void mmTransDialog::OnDateChanged(wxDateEvent& event)
 {
     //get weekday name
-    wxDateTime date = dpc_->GetValue();
+    const wxDateTime date = dpc_->GetValue();
     if (event.GetDate().IsValid())
     {
         itemStaticTextWeek_->SetLabelText(wxGetTranslation(date.GetEnglishWeekDayName(date.GetWeekDay())));
@@ -881,7 +881,7 @@ void mmTransDialog::OnDateChanged(wxDateEvent& event)
 void mmTransDialog::OnTransDateSpin(wxSpinEvent& event)
 {
     wxDateTime date = dpc_->GetValue();
-    int value = event.GetPosition();
+    const int value = event.GetPosition();
 
     date = date.Add(wxDateSpan::Days(value));
     dpc_->SetValue(date);
@@ -1110,7 +1110,7 @@ void mmTransDialog::OnFrequentUsedNotes(wxCommandEvent& WXUNUSED(event))
 
 void mmTransDialog::OnNoteSelected(wxCommandEvent& event)
 {
-    int i = event.GetId() - wxID_HIGHEST;
+    const int i = event.GetId() - wxID_HIGHEST;
     if (i > 0 && static_cast<size_t>(i) <= frequentNotes_.size())
         textNotes_->ChangeValue(frequentNotes_[i - 1]);
 }

@@ -500,7 +500,7 @@ int mmWebApp::MMEX_InsertNewTransaction(webtran_holder& WebAppTrans)
             Model_Subcategory::Data* NewSubCategory = Model_Subcategory::instance().create();
             NewSubCategory->CATEGID = CategoryID;
             NewSubCategory->SUBCATEGNAME = WebAppTrans.SubCategory;
-            int NewSubCategoryID = Model_Subcategory::instance().save(NewSubCategory);
+            const int NewSubCategoryID = Model_Subcategory::instance().save(NewSubCategory);
             SubCategoryID = NewSubCategoryID;
         }
     }
@@ -515,7 +515,7 @@ int mmWebApp::MMEX_InsertNewTransaction(webtran_holder& WebAppTrans)
         NewPayee->PAYEENAME = WebAppTrans.Payee;
         NewPayee->CATEGID = CategoryID;
         NewPayee->SUBCATEGID = SubCategoryID;
-        int NewPayeeID = Model_Payee::instance().save(NewPayee);
+        const int NewPayeeID = Model_Payee::instance().save(NewPayee);
         PayeeID = NewPayeeID;
     }
 

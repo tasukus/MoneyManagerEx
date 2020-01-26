@@ -41,7 +41,7 @@ wxEND_EVENT_TABLE()
 
 mmAppStartDialog::mmAppStartDialog(wxWindow* parent, const wxString& name)
 {
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, mmex::getCaption(wxString::Format(_("Version: %s"), mmex::getTitleProgramVersion())),
         wxDefaultPosition, wxDefaultSize, style, name);
 }
@@ -50,7 +50,7 @@ bool mmAppStartDialog::Create(wxWindow* parent, wxWindowID id, const wxString& c
     , const wxPoint& pos, const wxSize& size, long style, const wxString& name)
 {
     SetExtraStyle(GetExtraStyle()|wxWS_EX_BLOCK_EVENTS);
-    bool ok = wxDialog::Create(parent, id, caption, pos, size, style, name);
+    const bool ok = wxDialog::Create( parent , id , caption , pos , size , style , name );
 
     if (ok) {
         SetIcon(mmex::getProgramIcon());
@@ -68,7 +68,7 @@ mmAppStartDialog::~mmAppStartDialog()
 {
     try
     {
-        bool showBeginApp = itemCheckBox->GetValue();
+        const bool showBeginApp = itemCheckBox->GetValue( );
         Model_Setting::instance().Set("SHOWBEGINAPP", showBeginApp);
     }
     catch (...)
@@ -159,7 +159,7 @@ void mmAppStartDialog::SetCloseButtonToExit()
 
 void mmAppStartDialog::OnButtonAppstartHelpClick( wxCommandEvent& WXUNUSED(event) )
 {
-    mmex::EDocFile helpFileIndex_ = mmex::HTML_INDEX;
+    const mmex::EDocFile helpFileIndex_ = mmex::HTML_INDEX;
     wxFileName helpIndexFile(mmex::getPathDoc(helpFileIndex_));
     wxString url = "file://";
 

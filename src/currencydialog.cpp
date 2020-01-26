@@ -41,7 +41,7 @@ EVT_TEXT(ID_DIALOG_CURRENCY, mmCurrencyDialog::OnTextChanged)
 EVT_CHECKBOX(ID_DIALOG_CURRENCY, mmCurrencyDialog::OnTextChanged)
 wxEND_EVENT_TABLE()
 
-static const int SCALE = 9;
+static constexpr int SCALE = 9;
 
 mmCurrencyDialog::mmCurrencyDialog()
 {
@@ -67,7 +67,7 @@ mmCurrencyDialog::mmCurrencyDialog(wxWindow* parent
         m_currency->SCALE = 2;
     }
 
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_STATIC, _("Currency Manager"), wxDefaultPosition, wxSize(500, 300), style);
 }
 
@@ -256,7 +256,7 @@ void mmCurrencyDialog::OnOk(wxCommandEvent& WXUNUSED(event))
 
 void mmCurrencyDialog::OnTextChanged(wxCommandEvent& WXUNUSED(event))
 {
-    int scale = wxAtoi(scaleTx_->GetValue());
+    const int scale = wxAtoi( scaleTx_->GetValue( ) );
     m_currency->PFX_SYMBOL = pfxTx_->GetValue();
     m_currency->SFX_SYMBOL = sfxTx_->GetValue();
     m_currency->DECIMAL_POINT = decTx_->GetValue();
@@ -268,7 +268,7 @@ void mmCurrencyDialog::OnTextChanged(wxCommandEvent& WXUNUSED(event))
     m_currency->CURRENCY_TYPE = type_selection != -1 ? Model_Currency::currtype_desc(type_selection) : "";
     m_currency->HISTORIC = m_historic->GetValue() ? 1 : 0;
 
-    double base_amount = 123456.78;
+    constexpr double base_amount = 123456.78;
     const wxString& dispAmount = wxString::Format(_("%s Shown As: %s"), wxString::FromCDouble(base_amount, 2)
         , Model_Currency::toCurrency(base_amount, m_currency));
     m_sample_text->SetLabelText(dispAmount);

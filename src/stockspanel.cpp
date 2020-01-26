@@ -77,7 +77,7 @@ StocksListCtrl::StocksListCtrl(mmStocksPanel* cp, wxWindow *parent, wxWindowID w
     : mmListCtrl(parent, winid)
     , m_stock_panel(cp)
 {
-    int x = Option::instance().getIconSize();
+    const int x = Option::instance().getIconSize();
     m_imageList = new wxImageList(x, x);
     m_imageList->Add(mmBitmap(png::PROFIT));
     m_imageList->Add(mmBitmap(png::LOSS));
@@ -110,7 +110,7 @@ StocksListCtrl::StocksListCtrl(mmStocksPanel* cp, wxWindow *parent, wxWindowID w
 
     for (const auto& entry : m_columns)
     {
-        int count = GetColumnCount();
+        const int count = GetColumnCount();
         InsertColumn(count
             , entry.HEADER
             , entry.FORMAT
@@ -141,7 +141,7 @@ void StocksListCtrl::OnMouseRightClick(wxMouseEvent& event)
     }
     m_stock_panel->OnListItemSelected(m_selected_row);
 
-    bool hide_menu_item = (m_selected_row < 0);
+    const bool hide_menu_item = (m_selected_row < 0);
 
     wxMenu menu;
     menu.Append(MENU_TREEPOPUP_NEW, _("&New Stock Investment"));
@@ -222,7 +222,7 @@ void mmStocksPanel::OnListItemSelected(int selectedIndex)
 void StocksListCtrl::OnListLeftClick(wxMouseEvent& event)
 {
     int Flags = wxLIST_HITTEST_ONITEM;
-    long index = HitTest(wxPoint(event.m_x, event.m_y), Flags);
+    const long index = HitTest(wxPoint(event.m_x, event.m_y), Flags);
     if (index == -1)
     {
         m_selected_row = -1;
@@ -291,11 +291,11 @@ void StocksListCtrl::OnMoveStocks(wxCommandEvent& WXUNUSED(event))
     if (accounts.empty()) return;
 
     const Model_Account::Data* from_account = Model_Account::instance().get(m_stock_panel->getAccountID());
-    wxString headerMsg = wxString::Format(_("Moving Transaction from %s to..."), from_account->ACCOUNTNAME);
+    const wxString headerMsg = wxString::Format(_("Moving Transaction from %s to..."), from_account->ACCOUNTNAME);
     mmSingleChoiceDialog scd(this, _("Select the destination Account "), headerMsg , accounts);
 
     int toAccountID = -1;
-    int error_code = scd.ShowModal();
+    const int error_code = scd.ShowModal();
     if (error_code == wxID_OK)
     {
         wxString acctName = scd.GetStringSelection();
@@ -329,8 +329,8 @@ void StocksListCtrl::OnOrganizeAttachments(wxCommandEvent& WXUNUSED(event))
 {
     if (m_selected_row < 0) return;
 
-    wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
-    int RefId = m_stocks[m_selected_row].STOCKID;
+    const wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
+    const int RefId = m_stocks[m_selected_row].STOCKID;
 
     mmAttachmentDialog dlg(this, RefType, RefId);
     dlg.ShowModal();
@@ -355,8 +355,8 @@ void StocksListCtrl::OnOpenAttachment(wxCommandEvent& WXUNUSED(event))
 {
     if (m_selected_row < 0) return;
 
-    wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
-    int RefId = m_stocks[m_selected_row].STOCKID;
+    const wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
+    const int RefId = m_stocks[m_selected_row].STOCKID;
 
     mmAttachmentManage::OpenAttachmentFromPanelIcon(this, RefType, RefId);
     doRefreshItems(RefId);
@@ -412,10 +412,10 @@ void mmStocksPanel::ViewStockTransactions(int selectedIndex)
         if ((share_entry->SHARENUMBER > 0) || (share_entry->SHAREPRICE > 0))
         {
             Model_Checking::Data* stock_trans = Model_Checking::instance().get(stock_link.CHECKINGACCOUNTID);
-            wxString sd = mmGetDateForDisplay(stock_trans->TRANSDATE);
-            wxString sl = share_entry->SHARELOT;
+            const wxString sd = mmGetDateForDisplay(stock_trans->TRANSDATE);
+            const wxString sl = share_entry->SHARELOT;
 
-            int precision = share_entry->SHARENUMBER == floor(share_entry->SHARENUMBER) ? 0 : Option::instance().getSharePrecision();
+            const int precision = share_entry->SHARENUMBER == floor(share_entry->SHARENUMBER) ? 0 : Option::instance().getSharePrecision();
             wxString sn = wxString::FromDouble(share_entry->SHARENUMBER, precision);
             wxString su = wxString::FromDouble(share_entry->SHAREPRICE, Option::instance().getSharePrecision());
             wxString sc = wxString::FromDouble(share_entry->SHARECOMMISSION, 2);
@@ -455,7 +455,7 @@ void StocksListCtrl::OnColClick(wxListEvent& event)
 void StocksListCtrl::doRefreshItems(int trx_id)
 {
     int selectedIndex = initVirtualListControl(trx_id, m_selected_col, m_asc);
-    size_t cnt = m_stocks.size();
+    const size_t cnt = m_stocks.size();
 
     if (selectedIndex < 0 || static_cast<size_t>(selectedIndex) >= cnt)
         selectedIndex = m_asc ? cnt - 1 : 0;
@@ -499,8 +499,8 @@ void StocksListCtrl::sortTable()
         std::stable_sort(m_stocks.begin(), m_stocks.end()
             , [](const Model_Stock::Data & x, const Model_Stock::Data & y)
             {
-                double valueX = x.VALUE;
-                double valueY = y.VALUE;
+                const double valueX = x.VALUE;
+                const double valueY = y.VALUE;
                 return valueX < valueY;
             });
         break;
@@ -508,8 +508,8 @@ void StocksListCtrl::sortTable()
         std::stable_sort(m_stocks.begin(), m_stocks.end()
             , [](const Model_Stock::Data & x, const Model_Stock::Data & y)
             {
-                double valueX = x.CURRENTPRICE - x.VALUE;
-                double valueY = y.CURRENTPRICE - y.VALUE;
+                const double valueX = x.CURRENTPRICE - x.VALUE;
+                const double valueY = y.CURRENTPRICE - y.VALUE;
                 return valueX < valueY;
             });
         break;
@@ -520,8 +520,8 @@ void StocksListCtrl::sortTable()
         std::stable_sort(m_stocks.begin(), m_stocks.end()
             , [](const Model_Stock::Data & x, const Model_Stock::Data & y)
             {
-                double valueX = Model_Stock::CurrentValue(x);
-                double valueY = Model_Stock::CurrentValue(y);
+                const double valueX = Model_Stock::CurrentValue(x);
+                const double valueY = Model_Stock::CurrentValue(y);
                 return valueX < valueY;
             });
         break;
@@ -551,7 +551,7 @@ int StocksListCtrl::initVirtualListControl(int id, int col, bool asc)
     item.SetImage(asc ? 3 : 2);
     SetColumn(col, item);
 
-    int acc_id = m_stock_panel->getAccountID();
+    const int acc_id = m_stock_panel->getAccountID();
     m_stocks = Model_Stock::instance().find(Model_Stock::HELDAT(acc_id));
     sortTable();
 
@@ -746,7 +746,7 @@ const wxString mmStocksPanel::Total_Shares()
         total_shares += stock.NUMSHARES;
     }
 
-    int precision = (total_shares - static_cast<int>(total_shares) != 0) ? 4 : 0;
+    const int precision = (total_shares - static_cast<int>(total_shares) != 0) ? 4 : 0;
     return Model_Currency::toString(total_shares, m_currency, precision);
 }
 
@@ -770,11 +770,11 @@ void mmStocksPanel::updateHeader()
         initVal = account->INITIALBAL;
         investment_balance = Model_Account::investment_balance(account);
     }
-    double originalVal = investment_balance.second;
-    double total = investment_balance.first;
+    const double originalVal = investment_balance.second;
+    const double total = investment_balance.first;
 
     const wxString& diffStr = Model_Currency::toCurrency(total > originalVal ? total - originalVal : originalVal - total, m_currency);
-    double diffPercents = (total > originalVal ? 1 : -1) * (total / originalVal*100.0 - 100.0);
+    const double diffPercents = (total > originalVal ? 1 : -1) * (total / originalVal*100.0 - 100.0);
     const wxString lbl = wxString::Format("%s     %s     %s (%s %%)"
         , wxString::Format(_("Total: %s"), Model_Currency::toCurrency(total + initVal, m_currency))
         , wxString::Format(_("Invested: %s"), Model_Currency::toCurrency(originalVal, m_currency))
@@ -944,7 +944,7 @@ wxString StocksListCtrl::getStockInfo(int selectedIndex) const
         total_current_price += s.CURRENTPRICE * s.NUMSHARES;
     }
 
-    double diff = total_current_price - total_purchase_price;
+    const double diff = total_current_price - total_purchase_price;
     const wxString& sTotalCurrentPrice = Model_Currency::toCurrency(total_current_price, currency);
     const wxString& sGainLostAmount = Model_Currency::toCurrency(abs(diff), currency);
     double total_percentage = 0.0;

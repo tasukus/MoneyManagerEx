@@ -40,7 +40,7 @@ mmBudgetYearDialog::mmBudgetYearDialog( )
 
 mmBudgetYearDialog::mmBudgetYearDialog(wxWindow* parent)
 {
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("Budget Editor"), wxDefaultPosition, wxSize(500, 300), style);
 }
 
@@ -140,7 +140,7 @@ void mmBudgetYearDialog::OnAddMonth(wxCommandEvent& WXUNUSED(event))
 void mmBudgetYearDialog::OnDelete(wxCommandEvent& WXUNUSED(event))
 {
     wxString budgetYearString = m_listBox->GetStringSelection();
-    int budgetYearID = Model_Budgetyear::instance().Get(budgetYearString);
+    const int budgetYearID = Model_Budgetyear::instance().Get(budgetYearString);
     Model_Budgetyear::instance().remove(budgetYearID);
     m_listBox->Clear();
     fillControls();

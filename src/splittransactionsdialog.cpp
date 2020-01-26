@@ -70,7 +70,7 @@ SplitTransactionDialog::SplitTransactionDialog( )
 
     selectedIndex_ = -1;
 
-    long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("Split Transaction Dialog")
         , wxDefaultPosition, wxSize(400, 400), style, name);
 }
@@ -152,8 +152,8 @@ void SplitTransactionDialog::CreateControls()
     wxStdDialogButtonSizer*  buttons_sizer = new wxStdDialogButtonSizer;
     buttons_panel->SetSizer(buttons_sizer);
 
-    wxSizerFlags flagsH = wxSizerFlags(g_flagsH).Border(wxLEFT | wxRIGHT | wxBOTTOM, 5).Center();
-    wxSizerFlags flagsV = wxSizerFlags(g_flagsV).Border(wxLEFT | wxRIGHT | wxBOTTOM, 5).Center();
+    const wxSizerFlags flagsH = wxSizerFlags(g_flagsH).Border(wxLEFT | wxRIGHT | wxBOTTOM, 5).Center();
+    const wxSizerFlags flagsV = wxSizerFlags(g_flagsV).Border(wxLEFT | wxRIGHT | wxBOTTOM, 5).Center();
     wxBoxSizer* mainButtonSizer = new wxBoxSizer(wxVERTICAL);
     wxBoxSizer* topRowButtonSizer = new wxBoxSizer(wxHORIZONTAL);
     wxBoxSizer* bottomRowButtonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -250,7 +250,7 @@ void SplitTransactionDialog::EditEntry(int index)
 
 void SplitTransactionDialog::OnListItemSelected(wxDataViewEvent& event)
 {
-    wxDataViewItem item = event.GetItem();
+    const wxDataViewItem item = event.GetItem();
     selectedIndex_ = lcSplit_->ItemToRow(item);
     SetDisplayEditDeleteButtons();
 }
@@ -270,7 +270,7 @@ void SplitTransactionDialog::SetDisplaySplitCategories()
 
 void SplitTransactionDialog::SetDisplayEditDeleteButtons()
 {
-    bool active = selectedIndex_ >= 0 && static_cast<size_t>(selectedIndex_) < this->m_local_splits.size();
+    const bool active = selectedIndex_ >= 0 && static_cast<size_t>(selectedIndex_) < this->m_local_splits.size();
     itemButtonEdit_->Enable(active);
     itemButtonDelete_->Enable(active);
 }

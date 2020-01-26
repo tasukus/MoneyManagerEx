@@ -150,7 +150,7 @@ mmAddAccountTypePage::mmAddAccountTypePage(mmAddAccountWizard *parent)
 
 bool mmAddAccountTypePage::TransferDataFromWindow()
 {
-    int currencyID = Option::instance().getBaseCurrencyID();
+    const int currencyID = Option::instance().getBaseCurrencyID();
     if (currencyID == -1)
     {
         wxString errorMsg;

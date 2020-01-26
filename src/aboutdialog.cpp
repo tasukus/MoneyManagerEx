@@ -51,7 +51,7 @@ bool mmAboutDialog::Create(wxWindow* parent
 {
     SetExtraStyle(GetExtraStyle() | wxWS_EX_BLOCK_EVENTS);
 
-    bool ok = wxDialog::Create(parent, id, caption, pos, size, style, name);
+    const bool ok = wxDialog::Create( parent , id , caption , pos , size , style , name );
 
     if (ok)
     {
@@ -199,7 +199,7 @@ void mmAboutDialog::CreateControls(int TabToOpen)
 
 void mmAboutDialog::OnLinkClicked(wxHtmlLinkEvent& event)
 {
-    wxHtmlLinkInfo link_info = event.GetLinkInfo();
-    wxString sURL = link_info.GetHref();
+	const wxHtmlLinkInfo& link_info = event.GetLinkInfo();
+    const wxString sURL = link_info.GetHref();
     wxLaunchDefaultBrowser(sURL);
 }

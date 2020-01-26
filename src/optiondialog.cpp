@@ -51,7 +51,7 @@ mmOptionsDialog::~mmOptionsDialog( )
 
 mmOptionsDialog::mmOptionsDialog(wxWindow* parent, mmGUIApp* app): m_app(app)
 {
-    long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("MMEX Options"), wxDefaultPosition, wxSize(500, 400), style);
 }
 
@@ -74,7 +74,7 @@ bool mmOptionsDialog::Create(wxWindow* parent
 
 void mmOptionsDialog::CreateControls()
 {
-    wxSize imageSize(48, 48);
+    const wxSize imageSize( 48 , 48 );
     m_imageList = new wxImageList(imageSize.GetWidth(), imageSize.GetHeight());
     m_imageList->Add(wxBitmap(view_xpm));
     m_imageList->Add(wxBitmap(preferences_attachments_xpm));
@@ -180,7 +180,7 @@ void mmOptionsDialog::OnApply(wxCommandEvent& WXUNUSED(event))
     Model_Infotable::instance().Savepoint();
     Model_Setting::instance().Savepoint();
 
-    int selected_page = m_notebook->GetSelection();
+    const int selected_page = m_notebook->GetSelection();
     m_panel_list[selected_page]->SaveSettings();
 
     Model_Setting::instance().ReleaseSavepoint();

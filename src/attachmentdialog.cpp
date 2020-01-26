@@ -78,7 +78,7 @@ mmAttachmentDialog::mmAttachmentDialog (wxWindow* parent, const wxString& RefTyp
 void mmAttachmentDialog::Create(wxWindow* parent, const wxString& label, const wxString& name)
 {
     SetExtraStyle(GetExtraStyle()|wxWS_EX_BLOCK_EVENTS);
-    long style = wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER;
+    constexpr long style = wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER;
 
     wxString WindowTitle;
     if (m_RefId > 0)
@@ -151,8 +151,8 @@ void mmAttachmentDialog::fillControls()
 
 void mmAttachmentDialog::OnListItemSelected(wxDataViewEvent& event)
 {
-    wxDataViewItem item = event.GetItem();
-    int selected_index = attachmentListBox_->ItemToRow(item);
+    const wxDataViewItem item = event.GetItem( );
+    const int selected_index = attachmentListBox_->ItemToRow( item );
 
     if (selected_index >= 0)
         m_attachment_id = static_cast<int>(attachmentListBox_->GetItemData(item));
@@ -178,7 +178,7 @@ void mmAttachmentDialog::AddAttachment()
 
     const wxString attachmentDescription = dlg.getText();
 
-    wxString AttachmentsFolder = mmex::getPathAttachment(mmAttachmentManage::InfotablePathSetting());
+    const wxString AttachmentsFolder = mmex::getPathAttachment( mmAttachmentManage::InfotablePathSetting( ) );
     int attachmentLastNumber = Model_Attachment::LastAttachmentNumber(m_RefType, m_RefId);
 
     const wxString importedFileName =  wxString::Format("%s_%i_Attach%i.%s", m_RefType, m_RefId, ++attachmentLastNumber, attachmentFileExtension);
@@ -198,7 +198,7 @@ void mmAttachmentDialog::AddAttachment()
 
 void mmAttachmentDialog::OpenAttachment()
 {
-    Model_Attachment::Data *attachments = Model_Attachment::instance().get(m_attachment_id);
+    const Model_Attachment::Data *attachments = Model_Attachment::instance().get(m_attachment_id);
     wxString attachmentFilePath = mmex::getPathAttachment(mmAttachmentManage::InfotablePathSetting())
         + m_PathSep + attachments->REFTYPE + m_PathSep + attachments->FILENAME;
 
@@ -230,7 +230,7 @@ void mmAttachmentDialog::EditAttachment()
 
 void mmAttachmentDialog::DeleteAttachment()
 {
-    Model_Attachment::Data *attachment = Model_Attachment::instance().get(m_attachment_id);
+    const Model_Attachment::Data *attachment = Model_Attachment::instance().get(m_attachment_id);
     if (attachment)
     {
         int DeleteResponse = wxMessageBox(
@@ -491,7 +491,7 @@ bool mmAttachmentManage::RelocateAllAttachments(const wxString& RefType, int Old
 
 void mmAttachmentManage::OpenAttachmentFromPanelIcon(wxWindow* parent, const wxString& RefType, int RefId)
 {
-    int AttachmentsNr = Model_Attachment::instance().NrAttachments(RefType, RefId);
+    const int AttachmentsNr = Model_Attachment::instance().NrAttachments(RefType, RefId);
 
     if (AttachmentsNr == 1)
     {

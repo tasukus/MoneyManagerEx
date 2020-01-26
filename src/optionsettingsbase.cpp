@@ -29,6 +29,6 @@ wxControl* OptionSettingsBase::SetBoldFont(wxControl* control)
 
 bool OptionSettingsBase::GetIniDatabaseCheckboxValue(const wxString& dbField, bool defaultState)
 {
-    bool result = Model_Setting::instance().GetBoolSetting(dbField, defaultState);
+    const bool result = Model_Setting::instance().GetBoolSetting(dbField, defaultState);
     return result;
 }

@@ -120,7 +120,7 @@ billsDepositsListCtrl::billsDepositsListCtrl(mmBillsDepositsPanel* bdp, wxWindow
 
     for (const auto& entry : m_columns)
     {
-        int count = GetColumnCount();
+        const int count = GetColumnCount();
         InsertColumn(count
             , entry.HEADER
             , entry.FORMAT
@@ -236,7 +236,7 @@ void mmBillsDepositsPanel::CreateControls()
         , wxID_ANY, wxDefaultPosition, wxSize(200, 200)
         , wxSP_3DBORDER | wxSP_3DSASH | wxNO_BORDER);
 
-    int x = Option::instance().getIconSize();
+    const int x = Option::instance().getIconSize();
     m_imageList = new wxImageList(x, x);
     m_imageList->Add(mmBitmap(png::FOLLOW_UP));
     m_imageList->Add(mmBitmap(png::RUN)); //TODO: auto exec ico
@@ -391,7 +391,7 @@ void billsDepositsListCtrl::OnItemRightClick(wxMouseEvent& event)
         SetItemState(m_selected_row, wxLIST_STATE_FOCUSED, wxLIST_STATE_FOCUSED);
     }
     m_bdp->updateBottomPanelData(m_selected_row);
-    bool item_active = (m_selected_row >= 0);
+    const bool item_active = (m_selected_row >= 0);
     wxMenu menu;
     menu.Append(MENU_POPUP_BD_ENTER_OCCUR, _("Enter next Occurrence..."));
     menu.AppendSeparator();
@@ -482,9 +482,9 @@ const wxString mmBillsDepositsPanel::GetRemainingDays(const Model_Billsdeposits:
     // DeMultiplex the Auto Executable fields.
     repeats %= BD_REPEATS_MULTIPLEX_BASE;
 
-    int daysRemaining = Model_Billsdeposits::NEXTOCCURRENCEDATE(item)
+    const int daysRemaining = Model_Billsdeposits::NEXTOCCURRENCEDATE(item)
         .Subtract(this->getToday()).GetDays();
-    int daysOverdue = Model_Billsdeposits::TRANSDATE(item)
+    const int daysOverdue = Model_Billsdeposits::TRANSDATE(item)
         .Subtract(this->getToday()).GetDays();
     wxString text = wxString::Format(wxPLURAL("%d day remaining", "%d days remaining", daysRemaining), daysRemaining);
 
@@ -527,7 +527,7 @@ void billsDepositsListCtrl::OnListItemSelected(wxListEvent& event)
 void billsDepositsListCtrl::OnListLeftClick(wxMouseEvent& event)
 {
     int Flags = wxLIST_HITTEST_ONITEM;
-    long index = HitTest(wxPoint(event.m_x, event.m_y), Flags);
+    const long index = HitTest(wxPoint(event.m_x, event.m_y), Flags);
     if (index == -1)
     {
         m_selected_row = -1;
@@ -550,7 +550,7 @@ int billsDepositsListCtrl::OnGetItemImage(long item) const
         }
     repeats %= BD_REPEATS_MULTIPLEX_BASE;
 
-    int daysRemaining = Model_Billsdeposits::NEXTOCCURRENCEDATE(m_bdp->bills_[item])
+    const int daysRemaining = Model_Billsdeposits::NEXTOCCURRENCEDATE(m_bdp->bills_[item])
         .Subtract(m_bdp->getToday()).GetDays();
 
     /* Returns the icon to be shown for each entry */
@@ -606,7 +606,7 @@ void billsDepositsListCtrl::OnDeleteBDSeries(wxCommandEvent& WXUNUSED(event))
         , wxYES_NO | wxNO_DEFAULT | wxICON_ERROR);
     if (msgDlg.ShowModal() == wxID_YES)
     {
-        int BdId = m_bdp->bills_[m_selected_row].BDID;
+        const int BdId = m_bdp->bills_[m_selected_row].BDID;
         Model_Billsdeposits::instance().remove(BdId);
         mmAttachmentManage::DeleteAllAttachments(Model_Attachment::reftype_desc(Model_Attachment::BILLSDEPOSIT), BdId);
         m_bdp->initVirtualListControl();
@@ -618,7 +618,7 @@ void billsDepositsListCtrl::OnEnterBDTransaction(wxCommandEvent& WXUNUSED(event)
 {
     if (m_selected_row == -1) return;
 
-    int id = m_bdp->bills_[m_selected_row].BDID;
+    const int id = m_bdp->bills_[m_selected_row].BDID;
     mmBDDialog dlg(this, id, false, true);
     if ( dlg.ShowModal() == wxID_OK )
         refreshVisualList(m_bdp->initVirtualListControl(id));
@@ -628,7 +628,7 @@ void billsDepositsListCtrl::OnSkipBDTransaction(wxCommandEvent& WXUNUSED(event))
 {
     if (m_selected_row == -1) return;
 
-    int id = m_bdp->bills_[m_selected_row].BDID;
+    const int id = m_bdp->bills_[m_selected_row].BDID;
     Model_Billsdeposits::instance().completeBDInSeries(id);
     refreshVisualList(m_bdp->initVirtualListControl(id));
 }
@@ -637,7 +637,7 @@ void billsDepositsListCtrl::OnOrganizeAttachments(wxCommandEvent& WXUNUSED(event
 {
     if (m_selected_row == -1) return;
 
-    int RefId = m_bdp->bills_[m_selected_row].BDID;
+    const int RefId = m_bdp->bills_[m_selected_row].BDID;
     const wxString& RefType = Model_Attachment::reftype_desc(Model_Attachment::BILLSDEPOSIT);
 
     mmAttachmentDialog dlg(this, RefType, RefId);
@@ -649,7 +649,7 @@ void billsDepositsListCtrl::OnOrganizeAttachments(wxCommandEvent& WXUNUSED(event
 void billsDepositsListCtrl::OnOpenAttachment(wxCommandEvent& WXUNUSED(event))
 {
     if (m_selected_row == -1) return;
-    int RefId = m_bdp->bills_[m_selected_row].BDID;
+    const int RefId = m_bdp->bills_[m_selected_row].BDID;
     const wxString& RefType = Model_Attachment::reftype_desc(Model_Attachment::BILLSDEPOSIT);
 
     mmAttachmentManage::OpenAttachmentFromPanelIcon(this, RefType, RefId);
@@ -728,8 +728,8 @@ void mmBillsDepositsPanel::sortTable()
         std::stable_sort(bills_.begin(), bills_.end()
             , [&](const Model_Billsdeposits::Full_Data& x, const Model_Billsdeposits::Full_Data& y)
         {
-            wxString x_text = this->GetFrequency(&x);
-            wxString y_text = this->GetFrequency(&y);
+            const wxString x_text = this->GetFrequency(&x);
+            const wxString y_text = this->GetFrequency(&y);
             return x_text < y_text;
         });
         break;

@@ -44,7 +44,7 @@ void mmWebAppDialog::Create(wxWindow* parent, const wxString& name)
 {
     SetExtraStyle(GetExtraStyle() | wxWS_EX_BLOCK_EVENTS);
 
-    long style = wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER;
+    constexpr long style = wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER;
     if (!wxDialog::Create(parent, wxID_ANY, _("Import WebApp transactions")
         , wxDefaultPosition, wxDefaultSize, style, name))
     {
@@ -134,12 +134,12 @@ void mmWebAppDialog::fillControls()
 
 void mmWebAppDialog::OnListItemActivated(wxDataViewEvent& event)
 {
-    wxDataViewItem item = event.GetItem();
-    int selected_index = webtranListBox_->ItemToRow(item);
+    const wxDataViewItem item = event.GetItem();
+    const int selected_index = webtranListBox_->ItemToRow(item);
 
     if (selected_index >= 0)
     {
-        int WebTrID = static_cast<int>(webtranListBox_->GetItemData(item));
+        const int WebTrID = static_cast<int>(webtranListBox_->GetItemData(item));
         mmWebAppDialog::ImportWebTr(WebTrID, true);
         fillControls();
     }
@@ -156,7 +156,7 @@ bool mmWebAppDialog::ImportWebTr(int WebTrID, bool open)
         {
             bFound = true;
             WebTrToImport = WebTr;
-            int InsertedTransactionID = mmWebApp::MMEX_InsertNewTransaction(WebTrToImport);
+            const int InsertedTransactionID = mmWebApp::MMEX_InsertNewTransaction(WebTrToImport);
             if (InsertedTransactionID > 0)
             {
                 if (open)
@@ -190,7 +190,7 @@ void mmWebAppDialog::OpenAttachment()
 
     for (wxDataViewItem Item : Selected)
     {
-        int selectedIndex_ = webtranListBox_->ItemToRow(Item);
+        const int selectedIndex_ = webtranListBox_->ItemToRow(Item);
         if (selectedIndex_ >= 0)
         {
             wxString AttachmentName = webtranListBox_->GetTextValue(selectedIndex_, WEBTRAN_ATTACHMENTS);
@@ -278,7 +278,7 @@ void mmWebAppDialog::ImportAllWebTr(const bool open)
 {
     for (int i = 0; i < webtranListBox_->GetItemCount(); i++)
     {
-        int WebTrID = wxAtoi(webtranListBox_->GetTextValue(i, WEBTRAN_ID));
+        const int WebTrID = wxAtoi(webtranListBox_->GetTextValue(i, WEBTRAN_ID));
         mmWebAppDialog::ImportWebTr(WebTrID, open);
     }
 }

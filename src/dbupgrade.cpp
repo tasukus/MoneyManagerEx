@@ -48,7 +48,7 @@ int dbUpgrade::GetCurrentVersion(wxSQLite3Database * db)
 {
     try
     {
-        int ver = FixVersionStatus(db, db->ExecuteScalar("PRAGMA user_version;"));
+        const int ver = FixVersionStatus( db , db->ExecuteScalar( "PRAGMA user_version;" ) );
         return ver;
     }
     catch (const wxSQLite3Exception& /*e*/)
@@ -115,7 +115,7 @@ bool dbUpgrade::InitializeVersion(wxSQLite3Database* db, int version)
 
 bool dbUpgrade::CheckUpgradeDB(wxSQLite3Database* db)
 {
-    int ver = GetCurrentVersion(db);
+    const int ver = GetCurrentVersion(db);
 
     return (ver != dbLatestVersion) ? true : false;
 }
@@ -256,7 +256,7 @@ void dbUpgrade::SqlFileDebug(wxSQLite3Database* db)
         txtLine = txtFile.GetNextLine();
         if (txtLine.StartsWith("-- MMEX db version required ",&txtLine))
         {
-            int ver = GetCurrentVersion(db);
+            const int ver = GetCurrentVersion(db);
             long reqver;
             if (!txtLine.ToCLong(&reqver))
             {
@@ -303,7 +303,7 @@ void dbUpgrade::SqlFileDebug(wxSQLite3Database* db)
                 try
                 {
                     wxSQLite3ResultSet rs = stmt.ExecuteQuery();
-                    int columnCount = rs.GetColumnCount();
+                    const int columnCount = rs.GetColumnCount();
                     txtLog << "=== Result ===" << wxTextFile::GetEOL();
                     while (rs.NextRow())
                     {

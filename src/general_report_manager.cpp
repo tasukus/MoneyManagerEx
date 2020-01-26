@@ -277,14 +277,14 @@ void mmGeneralReportManager::fillControls()
     wxString group_name;
     for (const auto& record : records)
     {
-        bool no_group = record.GROUPNAME.empty();
+        const bool no_group = record.GROUPNAME.empty();
         if (group_name != record.GROUPNAME && !no_group)
         {
             group_name = record.GROUPNAME;
             group = m_treeCtrl->AppendItem(m_rootItem, group_name);
             m_treeCtrl->SetItemData(group, new MyTreeItemData(-1, group_name));
         }
-        wxTreeItemId item = m_treeCtrl->AppendItem(no_group ? m_rootItem : group, record.REPORTNAME);
+        const wxTreeItemId item = m_treeCtrl->AppendItem(no_group ? m_rootItem : group, record.REPORTNAME);
         m_treeCtrl->SetItemData(item, new MyTreeItemData(record.REPORTID, record.GROUPNAME));
 
         if (m_selectedReportID == record.REPORTID)
@@ -315,9 +315,9 @@ void mmGeneralReportManager::CreateControls()
     mainBoxSizer->Add(topScreenSizer, 1, wxGROW | wxALL);
 
 #if defined (__WXMSW__)
-    long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS | wxTR_ROW_LINES;
+    constexpr long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS | wxTR_ROW_LINES;
 #else
-    long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS;
+    constexpr long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS;
 #endif
     m_treeCtrl = new wxTreeCtrl(this, ID_REPORT_LIST
         , wxDefaultPosition, wxSize(200, 200), treeCtrlFlags);
@@ -403,7 +403,7 @@ void mmGeneralReportManager::createEditorTab(wxNotebook* editors_notebook, int t
     }
     if (FindWindow(type + MAGIC_NUM)) return;
 
-    int tabID = editors_notebook->GetRowCount();
+    const int tabID = editors_notebook->GetRowCount();
     wxPanel* panel = new wxPanel(editors_notebook, type + MAGIC_NUM);
     editors_notebook->InsertPage(tabID, panel, label);
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
@@ -419,9 +419,9 @@ void mmGeneralReportManager::createEditorTab(wxNotebook* editors_notebook, int t
         MinimalEditor* templateText = new MinimalEditor(splitter_sql, type);
 
 #if defined (__WXMSW__)
-        long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS | wxTR_ROW_LINES;
+        constexpr long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS | wxTR_ROW_LINES;
 #else
-        long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS;
+        constexpr long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS;
 #endif
         m_dbView = new wxTreeCtrl(splitter_sql, wxID_ANY, wxDefaultPosition
             , wxDefaultSize, treeCtrlFlags);
@@ -457,10 +457,10 @@ void mmGeneralReportManager::createEditorTab(wxNotebook* editors_notebook, int t
         // Populate database view
         std::vector<std::pair<wxString, wxArrayString>> sqlTableInfo;
         this->getSqlTableInfo(sqlTableInfo);
-        wxTreeItemId root_id = m_dbView->AddRoot("Tables");
+        const wxTreeItemId root_id = m_dbView->AddRoot("Tables");
         for (const auto& t : sqlTableInfo)
         {
-            wxTreeItemId id = m_dbView->AppendItem(root_id, t.first);
+            const wxTreeItemId id = m_dbView->AppendItem(root_id, t.first);
             for (const auto& c : t.second)
                 m_dbView->AppendItem(id, c);
         }
@@ -496,7 +496,7 @@ void mmGeneralReportManager::OnSqlTest(wxCommandEvent& WXUNUSED(event))
 
         MinimalEditor* templateText = static_cast<MinimalEditor*>(FindWindow(ID_TEMPLATE));
         std::vector<std::pair<wxString, int> > colHeaders;
-        bool colsOK = this->getColumns(sql, colHeaders);
+        const bool colsOK = this->getColumns(sql, colHeaders);
         wxButton* b = static_cast<wxButton*>(FindWindow(wxID_NEW));
         b->Enable(colsOK && templateText->IsEmpty());
         int pos = 0;
@@ -622,7 +622,7 @@ void mmGeneralReportManager::OnUpdateReport(wxCommandEvent& WXUNUSED(event))
     MyTreeItemData* iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(m_selectedItemID));
     if (!iData) return;
 
-    int id = iData->get_report_id();
+    const int id = iData->get_report_id();
     Model_Report::Data * report = Model_Report::instance().get(id);
     if (report)
     {
@@ -645,7 +645,7 @@ void mmGeneralReportManager::OnRun(wxCommandEvent& WXUNUSED(event))
     MyTreeItemData* iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(m_selectedItemID));
     if (!iData) return;
 
-    int id = iData->get_report_id();
+    const int id = iData->get_report_id();
     m_selectedGroup = iData->get_group_name();
     Model_Report::Data * report = Model_Report::instance().get(id);
     if (report)
@@ -664,7 +664,7 @@ void mmGeneralReportManager::OnRun(wxCommandEvent& WXUNUSED(event))
 
 void mmGeneralReportManager::OnItemRightClick(wxTreeEvent& event)
 {
-    wxTreeItemId id = event.GetItem();
+    const wxTreeItemId id = event.GetItem();
     m_treeCtrl ->SelectItem(id);
     int report_id = -1;
     MyTreeItemData *iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(id));
@@ -730,7 +730,7 @@ void mmGeneralReportManager::OnSelChanged(wxTreeEvent& event)
         return;
     }
 
-    int id = iData->get_report_id();
+    const int id = iData->get_report_id();
     m_selectedGroup = iData->get_group_name();
     Model_Report::Data * report = Model_Report::instance().get(id);
     if (report)
@@ -864,7 +864,7 @@ bool mmGeneralReportManager::renameReportGroup(const wxString& GroupName)
 
 void mmGeneralReportManager::OnMenuSelected(wxCommandEvent& event)
 {
-    int id = event.GetId();
+    const int id = event.GetId();
 
     if (id == ID_NEW_EMPTY || id == ID_NEW_SAMPLE_ASSETS)
     {
@@ -876,7 +876,7 @@ void mmGeneralReportManager::OnMenuSelected(wxCommandEvent& event)
     MyTreeItemData* iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(m_selectedItemID));
     if (iData)
     {
-        int report_id = iData->get_report_id();
+        const int report_id = iData->get_report_id();
 
         if (report_id > -1)
         {
@@ -925,7 +925,7 @@ void mmGeneralReportManager::newReport(int sample)
     const wxDateTime now = wxDateTime::Now();
     wxString report_name = wxString::Format(_("New Report %s"), now.Format("%Y%m%d%H%M%S"));
 
-    int max_attempts = 3;
+    constexpr int max_attempts = 3;
     for (int i = 0; i < max_attempts; i++)
     {
         report_name = wxGetTextFromUser(_("Enter the name for the report")
@@ -968,7 +968,7 @@ void mmGeneralReportManager::OnExportReport(wxCommandEvent& WXUNUSED(event))
     MyTreeItemData* iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(m_selectedItemID));
     if (!iData) return;
 
-    int id = iData->get_report_id();
+    const int id = iData->get_report_id();
     Model_Report::Data * report = Model_Report::instance().get(id);
     if (report)
     {
@@ -1151,7 +1151,7 @@ wxString mmGeneralReportManager::getTemplate(const wxString& sql)
 #if wxUSE_DRAG_AND_DROP
 void mmGeneralReportManager::OnBeginDrag(wxTreeEvent& (event))
 {
-    wxTreeItemId selectedItem = event.GetItem();
+    const wxTreeItemId selectedItem = event.GetItem();
     if (!selectedItem) return;
 
     wxTextDataObject data;

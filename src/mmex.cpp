@@ -160,7 +160,7 @@ void mmGUIApp::HandleEvent(wxEvtHandler *handler, wxEventFunction func, wxEvent&
 
 int mmGUIApp::FilterEvent(wxEvent &event)
 {
-    int ret = wxApp::FilterEvent(event);
+    const int ret = wxApp::FilterEvent( event );
 
     if (event.GetEventType() == wxEVT_SHOW)
     {
@@ -221,18 +221,18 @@ bool OnInitImpl(mmGUIApp* app)
 
     //Get System screen size
 #ifdef _MSC_VER
-    int sys_screen_x = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-    int sys_screen_y = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+    const int sys_screen_x = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+    const int sys_screen_y = GetSystemMetrics(SM_CYVIRTUALSCREEN);
 #else
-    int sys_screen_x = wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
-    int sys_screen_y = wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
+    const int sys_screen_x = wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
+    const int sys_screen_y = wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
 #endif
 
     /* Load Dimensions of Window */
     int valx = Model_Setting::instance().GetIntSetting("ORIGINX", 50);
     int valy = Model_Setting::instance().GetIntSetting("ORIGINY", 50);
-    int valw = Model_Setting::instance().GetIntSetting("SIZEW", sys_screen_x/4*3);
-    int valh = Model_Setting::instance().GetIntSetting("SIZEH", sys_screen_y/4*3);
+    const int valw = Model_Setting::instance().GetIntSetting("SIZEW", sys_screen_x/4*3);
+    const int valh = Model_Setting::instance().GetIntSetting("SIZEH", sys_screen_y/4*3);
 
     //BUGFIX: #214 MMEX Window is "off screen"
     if (valx >= sys_screen_x ) valx = sys_screen_x - valw;
@@ -240,7 +240,7 @@ bool OnInitImpl(mmGUIApp* app)
 
     app->m_frame = new mmGUIFrame(app, mmex::getProgramName(), wxPoint(valx, valy), wxSize(valw, valh));
 
-    bool ok = app->m_frame->Show();
+    const bool ok = app->m_frame->Show();
     if (isMax) app->m_frame->Maximize(true);
 
     // success: wxApp::OnRun() will be called which will enter the main message

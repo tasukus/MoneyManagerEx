@@ -196,7 +196,7 @@ void OptionSettingsAttachment::OnAttachmentsMenu(wxCommandEvent& event)
     if (!att) return;
     wxString AttachmentsFolder = mmex::getPathAttachment(att->GetValue());
 
-    int id = event.GetId();
+    const int id = event.GetId();
     if (id == wxID_HIGHEST)
         AttachmentsFolder = (ATTACHMENTS_FOLDER_DOCUMENTS);
     else if (id == wxID_HIGHEST + 1)

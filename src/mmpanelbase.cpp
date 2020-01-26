@@ -49,7 +49,7 @@ mmListCtrl::~mmListCtrl()
     */
     for (int column_number = 0; column_number < GetColumnCount(); ++column_number)
     {
-        int column_width = GetColumnWidth(column_number);
+        const int column_width = GetColumnWidth(column_number);
         if (GetColumnWidthSetting(column_number) != column_width)
         {
             SetColumnWidthSetting(column_number, column_width);
@@ -100,8 +100,8 @@ wxString mmListCtrl::BuildPage(const wxString &title) const
 
 void mmListCtrl::OnItemResize(wxListEvent& event)
 {
-    int i = event.GetColumn();
-    int width = GetColumnWidth(i);
+    const int i = event.GetColumn();
+    const int width = GetColumnWidth(i);
     if (!m_col_width.IsEmpty())
         Model_Setting::instance().Set(wxString::Format(m_col_width, i), width);
 }
@@ -192,16 +192,16 @@ void mmListCtrl::OnHeaderReset(wxCommandEvent& WXUNUSED(event))
 
 void mmListCtrl::OnHeaderColumn(wxCommandEvent& event)
 {
-    int id = event.GetId();
-    int columnNbr = id - MENU_HEADER_COLUMN;
+    const int id = event.GetId();
+    const int columnNbr = id - MENU_HEADER_COLUMN;
     if (columnNbr >= 0 && static_cast<size_t>(columnNbr) < m_columns.size() && !m_col_width.IsEmpty())
     {
         int default_width = m_columns[columnNbr].WIDTH;
         if (default_width == 0)
             default_width = wxLIST_AUTOSIZE_USEHEADER;
         const wxString parameter_name = wxString::Format(m_col_width, columnNbr);
-        int cur_width = Model_Setting::instance().GetIntSetting(parameter_name, default_width);
-        int new_width = (cur_width != 0 ? 0 : default_width);
+        const int cur_width = Model_Setting::instance().GetIntSetting(parameter_name, default_width);
+        const int new_width = (cur_width != 0 ? 0 : default_width);
         SetColumnWidth(columnNbr, new_width);
         Model_Setting::instance().Set(parameter_name, GetColumnWidth(columnNbr));
     }

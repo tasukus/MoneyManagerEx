@@ -373,7 +373,7 @@ void mmUpdate::checkUpdates(const bool bSilent, wxFrame *frame)
     {
         if (_stable && r["prerelease"].IsTrue()) continue;
         wxLogDebug("tag %s", r["tag_name"].GetString());
-        Version check(r["tag_name"].GetString());
+        const Version check(r["tag_name"].GetString());
         if(latest<check)
         {
             latest=check;

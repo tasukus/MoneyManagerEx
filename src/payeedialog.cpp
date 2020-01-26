@@ -67,7 +67,7 @@ void mmPayeeDialog::Create(wxWindow* parent, const wxString &name)
 {
     SetExtraStyle(GetExtraStyle()|wxWS_EX_BLOCK_EVENTS);
 
-    long style = wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER;
+    constexpr long style = wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER;
     if (!wxDialog::Create(parent, wxID_ANY, _("Organize Payees")
         , wxDefaultPosition, wxDefaultSize, style, name))
     {
@@ -150,7 +150,7 @@ void mmPayeeDialog::OnDataEditStart(wxDataViewEvent& WXUNUSED(event))
 
 void mmPayeeDialog::OnDataChanged(wxDataViewEvent& event)
 {
-    int row = payeeListBox_->ItemToRow(event.GetItem());
+    const int row = payeeListBox_->ItemToRow( event.GetItem( ) );
     wxVariant var;
     payeeListBox_->GetValue(var, row, event.GetColumn());
     const wxString value = var.GetString();
@@ -176,8 +176,8 @@ void mmPayeeDialog::OnDataChanged(wxDataViewEvent& event)
 
 void mmPayeeDialog::OnListItemSelected(wxDataViewEvent& event)
 {
-    wxDataViewItem item = event.GetItem();
-    int selected_index = payeeListBox_->ItemToRow(item);
+    const wxDataViewItem item = event.GetItem( );
+    const int selected_index = payeeListBox_->ItemToRow( item );
 
     if (selected_index >= 0 && selected_index <= payeeListBox_->GetItemCount()) {
         m_payee_id = static_cast<int>(payeeListBox_->GetItemData(item));
@@ -292,7 +292,7 @@ void mmPayeeDialog::DefineDefaultCategory()
 
 void mmPayeeDialog::OnOrganizeAttachments()
 {
-    wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::PAYEE);
+    const wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::PAYEE);
 
     mmAttachmentDialog dlg(this, RefType, m_payee_id);
     dlg.ShowModal();

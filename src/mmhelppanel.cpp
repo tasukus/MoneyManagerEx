@@ -42,7 +42,7 @@ bool mmHelpPanel::Create( wxWindow *parent, wxWindowID winid,
 {
     SetExtraStyle(GetExtraStyle()|wxWS_EX_BLOCK_EVENTS);
     wxPanel::Create(parent, winid, pos, size, style, name);
-    wxDateTime start = wxDateTime::UNow();
+    const wxDateTime start = wxDateTime::UNow();
 
     CreateControls();
     GetSizer()->Fit(this);
@@ -84,7 +84,7 @@ void mmHelpPanel::CreateControls()
     Default help files will be used when the language help file are not found.
     **************************************************************************/
 
-    int helpFileIndex = m_frame->getHelpFileIndex();
+    const int helpFileIndex = m_frame->getHelpFileIndex();
     const wxString help_file = wxString::Format("file://%s?lang=%s"
         , mmex::getPathDoc(static_cast<mmex::EDocFile>(helpFileIndex))
         , Option::instance().getLanguageISO6391());

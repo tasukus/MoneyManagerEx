@@ -166,7 +166,7 @@ struct curlBuff {
 static size_t
 curlWriteMemoryCallback(void *contents, size_t size, size_t nmemb, void *userp)
 {
-  size_t realsize = size * nmemb;
+  const size_t realsize = size * nmemb;
   struct curlBuff *mem = static_cast<struct curlBuff *>(userp);
 
   char *tmp = static_cast<char *>(realloc(mem->memory, mem->size + realsize + 1));
@@ -241,7 +241,7 @@ static int log_libcurl_debug(CURL *handle, curl_infotype type, char *data, size_
 #endif
 
 void curl_set_common_options(CURL* curl, const wxString& useragent = wxEmptyString) {
-    wxString proxyName = Model_Setting::instance().GetStringSetting("PROXYIP", "");
+    const wxString proxyName = Model_Setting::instance().GetStringSetting("PROXYIP", "");
     if (!proxyName.IsEmpty())
     {
         int proxyPort = Model_Setting::instance().GetIntSetting("PROXYPORT", 0);
@@ -249,7 +249,7 @@ void curl_set_common_options(CURL* curl, const wxString& useragent = wxEmptyStri
         curl_easy_setopt(curl, CURLOPT_PROXY, static_cast<const char*>(proxySettings.mb_str()));
     }
 
-    int networkTimeout = Model_Setting::instance().GetIntSetting("NETWORKTIMEOUT", 10); // default 10 secs
+    const int networkTimeout = Model_Setting::instance().GetIntSetting("NETWORKTIMEOUT", 10); // default 10 secs
     curl_easy_setopt(curl, CURLOPT_TIMEOUT, networkTimeout);
 
     if (useragent.IsEmpty())
@@ -315,7 +315,7 @@ CURLcode http_post_data(const wxString& sSite, const wxString& sData, const wxSt
     curl_easy_setopt(curl, CURLOPT_URL, static_cast<const char*>(sSite.mb_str()));
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, static_cast<const char*>(sData.mb_str()));
 
-    CURLcode err_code = curl_easy_perform(curl);
+    const CURLcode err_code = curl_easy_perform(curl);
     if (err_code == CURLE_OK)
         sOutput = wxString::FromUTF8(chunk.memory);
     else {
@@ -348,7 +348,7 @@ CURLcode http_download_file(const wxString& sSite, const wxString& sPath)
 
     curl_easy_setopt(curl, CURLOPT_URL, static_cast<const char*>(sSite.mb_str()));
 
-    CURLcode err_code = curl_easy_perform(curl);
+    const CURLcode err_code = curl_easy_perform(curl);
     output.Close();
     curl_easy_cleanup(curl);
 
@@ -595,7 +595,7 @@ bool GetOnlineCurrencyRates(wxString& msg, int curr_id, bool used_only)
         {
             if (currency_data.find(currency_symbol) != currency_data.end())
             {
-                double new_rate = currency_data[currency_symbol];
+                const double new_rate = currency_data[currency_symbol];
                 if (new_rate > 0)
                 {
                     msg << wxString::Format("%s\t -> %0.6f\n", currency_symbol, new_rate);
@@ -697,7 +697,7 @@ bool get_yahoo_prices(std::vector<wxString>& symbols
             if (!v.HasMember("currency") || !v["currency"].IsString())
                 continue;
             const auto currency = wxString::FromUTF8(v["currency"].GetString());
-            double k = currency == "GBp" ? 100 : 1;
+            const double k = currency == "GBp" ? 100 : 1;
 
             wxLogDebug("item: %u %s %f", i, symbol, price);
             out[symbol] = price <= 0 ? 1 : price / k;
@@ -871,7 +871,7 @@ bool mmParseDisplayStringToDate(wxDateTime& date, const wxString& str_date, cons
             date_str.Replace(" ", "");
         }
         wxString::const_iterator end;
-        bool t = date.ParseFormat(date_str, sDateMask, &end);
+        const bool t = date.ParseFormat(date_str, sDateMask, &end);
         //wxLogDebug("String:%s Mask:%s OK:%s ISO:%s Pattern:%s", date_str, date_mask, wxString(t ? "true" : "false"), date.FormatISODate(), regex);
         return t;
     }
@@ -883,7 +883,7 @@ const wxDateTime mmParseISODate(const wxString& str)
     wxDateTime dt;
     if (str.IsEmpty() || !dt.ParseDate(str))
         dt = wxDateTime::Today();
-    int year = dt.GetYear();
+    const int year = dt.GetYear();
     if (year < 50)
         dt.Add(wxDateSpan::Years(2000));
     else if (year < 100)
@@ -1094,8 +1094,8 @@ void mmCalcValidator::OnChar(wxKeyEvent& event)
     if (!m_validatorWindow || !text_field)
         return event.Skip();
 
-    wxChar decChar = text_field->GetDecimalPoint();
-    bool numpad_dec_swap = (wxGetKeyState(WXK_NUMPAD_DECIMAL) && decChar != str);
+    const wxChar decChar = text_field->GetDecimalPoint();
+    const bool numpad_dec_swap = (wxGetKeyState(WXK_NUMPAD_DECIMAL) && decChar != str);
 
     if (numpad_dec_swap)
         str = wxString(decChar);
@@ -1104,7 +1104,7 @@ void mmCalcValidator::OnChar(wxKeyEvent& event)
     if (str == '.' || str == ',')
     {
         const wxString value = text_field->GetValue();
-        size_t ind = value.rfind(decChar);
+        const size_t ind = value.rfind(decChar);
         if (ind < value.Length())
         {
             // check if after last decimal point there is an operation char (+-/*)

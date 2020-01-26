@@ -105,7 +105,7 @@ mmFilterTransactionsDialog::mmFilterTransactionsDialog(wxWindow* parent, int acc
     m_all_date_ranges.push_back(new mmSpecifiedRange(wxDate::Today(), wxDate::Today()));
 
     m_custom_fields = new mmCustomDataTransaction(this, 0, wxID_HIGHEST + 11600);
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("Transaction Filter"), wxDefaultPosition, wxSize(400, 300), style);
 }
 
@@ -360,7 +360,7 @@ void mmFilterTransactionsDialog::CreateControls()
         }
 
         //Label
-        Value& j_label = GetValueByPointerWithDefault(j_doc, "/LABEL", "");
+        const Value& j_label = GetValueByPointerWithDefault(j_doc, "/LABEL", "");
         const wxString& s_label = j_label.IsString() ? j_label.GetString() : "";
 
         m_setting_name->AppendString(s_label.empty() ? wxString::Format(_("%i: Empty"), i + 1) : s_label);
@@ -461,7 +461,7 @@ void mmFilterTransactionsDialog::OnButtonokClick(wxCommandEvent& WXUNUSED(event)
     if (accountCheckBox_->IsChecked())
     {
         refAccountStr_ = accountDropDown_->GetStringSelection();
-        Model_Account::Data* account = Model_Account::instance().get(refAccountStr_);
+        const Model_Account::Data* account = Model_Account::instance().get(refAccountStr_);
         if (account)
             refAccountID_ = account->ACCOUNTID;
     }
@@ -507,7 +507,7 @@ void mmFilterTransactionsDialog::OnButtonokClick(wxCommandEvent& WXUNUSED(event)
         if (m_begin_date > m_end_date)
         {
             const auto today = wxDate::Today().FormatISODate();
-            int id = m_begin_date >= today
+            const int id = m_begin_date >= today
                 ? m_fromDateCtrl->GetId() : m_toDateCtrl->GetId();
             return mmErrorDialogs::ToolTip4Object(FindWindow(id)
                 , _("Invalid value"), _("Date"));
@@ -518,7 +518,7 @@ void mmFilterTransactionsDialog::OnButtonokClick(wxCommandEvent& WXUNUSED(event)
     {
         if (choiceStatus_->GetSelection() < 0)
         {
-            int id = choiceStatus_->GetId();
+            const int id = choiceStatus_->GetId();
             return mmErrorDialogs::ToolTip4Object(FindWindow(id)
                 , _("Invalid value"), _("Status"));
         }
@@ -538,8 +538,8 @@ void mmFilterTransactionsDialog::OnCategs(wxCommandEvent& WXUNUSED(event))
 {
     Model_Category::Data* category = Model_Category::instance().get(categID_);
     Model_Subcategory::Data* sub_category = Model_Subcategory::instance().get(subcategID_);
-    int categID = category ? category->CATEGID : -1;
-    int subcategID = sub_category ? sub_category->SUBCATEGID : -1;
+    const int categID = category ? category->CATEGID : -1;
+    const int subcategID = sub_category ? sub_category->SUBCATEGID : -1;
     mmCategDialog dlg(this, categID, subcategID);
 
     if (dlg.ShowModal() == wxID_APPLY)
@@ -578,9 +578,9 @@ bool mmFilterTransactionsDialog::SomethingSelected()
 void mmFilterTransactionsDialog::getFilterStatus()
 {
     m_filterStatus.clear();
-    int item = choiceStatus_->GetSelection();
+    const int item = choiceStatus_->GetSelection();
     if (!getStatusCheckBox() || item < 0) return;
-    wxStringClientData* status_obj =
+    const wxStringClientData* status_obj =
         static_cast<wxStringClientData*>(choiceStatus_->GetClientObject(item));
     if (status_obj) {
         m_filterStatus = status_obj->GetData().Left(1);
@@ -678,7 +678,7 @@ void mmFilterTransactionsDialog::setAccountToolTip(const wxString& tip) const
 
 void mmFilterTransactionsDialog::clearSettings()
 {
-    int i = m_setting_name->GetSelection();
+    const int i = m_setting_name->GetSelection();
     const wxString& default_label = wxString::Format(_("%i: Empty"), i + 1);
     m_setting_name->SetString(i, default_label);
 
@@ -836,7 +836,7 @@ wxString mmFilterTransactionsDialog::to_json(bool i18n)
 
     if (m_dateRangeCheckBox->IsChecked())
     {
-        int i = m_date_ranges->GetSelection();
+        const int i = m_date_ranges->GetSelection();
         const auto& title = m_all_date_ranges[i]->title();
         if (!title.empty()) {
             json_writer.Key((i18n ? _("Date") : "DATE").c_str());
@@ -868,7 +868,7 @@ wxString mmFilterTransactionsDialog::to_json(bool i18n)
         wxArrayString s = Model_Checking::all_status();
         s.Add(wxTRANSLATE("Un-Reconciled"));
         s.Add(wxTRANSLATE("All Except Reconciled"));
-        int item = choiceStatus_->GetSelection();
+        const int item = choiceStatus_->GetSelection();
         wxString status;
         if (0 <= item && static_cast<size_t>(item) < s.size())
             status = s[item];
@@ -958,7 +958,7 @@ void mmFilterTransactionsDialog::from_json(const wxString &data)
     }
 
     //Label
-    Value& j_label = GetValueByPointerWithDefault(j_doc, "/LABEL", "");
+    const Value& j_label = GetValueByPointerWithDefault(j_doc, "/LABEL", "");
     const wxString& s_label = j_label.IsString() ? j_label.GetString() : "";
     m_setting_name->SetStringSelection(s_label);
 
@@ -968,14 +968,14 @@ void mmFilterTransactionsDialog::from_json(const wxString &data)
     }
 
     //Account
-    Value& j_account = GetValueByPointerWithDefault(j_doc, "/ACCOUNT", "");
+    const Value& j_account = GetValueByPointerWithDefault(j_doc, "/ACCOUNT", "");
     const wxString& s_account = j_account.IsString() ? j_account.GetString() : "";
     accountCheckBox_->SetValue(!s_account.empty());
     accountDropDown_->Enable(accountCheckBox_->IsChecked());
     accountDropDown_->SetStringSelection(s_account);
 
     //Dates
-    Value& j_date = GetValueByPointerWithDefault(j_doc, "/DATE", "");
+    const Value& j_date = GetValueByPointerWithDefault(j_doc, "/DATE", "");
     const wxString& s_date = j_date.IsString() ? j_date.GetString() : "";
     m_date_ranges->SetStringSelection(wxGetTranslation(s_date));
     if (!s_date.empty())
@@ -984,12 +984,12 @@ void mmFilterTransactionsDialog::from_json(const wxString &data)
         OnDateRangeChanged(evt);
     }
 
-    bool custom = (s_date == "Custom");
+    const bool custom = (s_date == "Custom");
     if (custom)
     {
-        Value& j_date1 = GetValueByPointerWithDefault(j_doc, "/DATE1", "");
+        const Value& j_date1 = GetValueByPointerWithDefault(j_doc, "/DATE1", "");
         m_begin_date = j_date1.IsString() ? j_date1.GetString() : "";
-        Value& j_date2 = GetValueByPointerWithDefault(j_doc, "/DATE2", "");
+        const Value& j_date2 = GetValueByPointerWithDefault(j_doc, "/DATE2", "");
         m_end_date = j_date2.IsString() ? j_date2.GetString() : "";
         m_fromDateCtrl->SetValue(mmParseISODate(m_begin_date));
         m_toDateCtrl->SetValue(mmParseISODate(m_end_date));
@@ -1001,14 +1001,14 @@ void mmFilterTransactionsDialog::from_json(const wxString &data)
 
 
     //Payee
-    Value& j_payee = GetValueByPointerWithDefault(j_doc, "/PAYEE", "");
+    const Value& j_payee = GetValueByPointerWithDefault(j_doc, "/PAYEE", "");
     const wxString& s_payee = j_payee.IsString() ? j_payee.GetString() : "";
     payeeCheckBox_->SetValue(!s_payee.empty());
     cbPayee_->Enable(payeeCheckBox_->IsChecked());
     cbPayee_->SetValue(s_payee);
 
     //Category
-    Value& j_category = GetValueByPointerWithDefault(j_doc, "/CATEGORY", "");
+    const Value& j_category = GetValueByPointerWithDefault(j_doc, "/CATEGORY", "");
     const wxString& s_category = j_category.IsString() ? j_category.GetString() : "";
     categoryCheckBox_->SetValue(!s_category.empty());
     btnCategory_->Enable(categoryCheckBox_->IsChecked());
@@ -1039,14 +1039,14 @@ void mmFilterTransactionsDialog::from_json(const wxString &data)
     btnCategory_->SetLabelText(Model_Category::full_name(categID_, subcategID_));
 
     //Status
-    Value& j_status = GetValueByPointerWithDefault(j_doc, "/STATUS", "");
+    const Value& j_status = GetValueByPointerWithDefault(j_doc, "/STATUS", "");
     const wxString& s_status = j_status.IsString() ? j_status.GetString() : "";
     statusCheckBox_->SetValue(!s_status.empty());
     choiceStatus_->Enable(statusCheckBox_->IsChecked());
     choiceStatus_->SetStringSelection(wxGetTranslation(s_status));
 
     //Type
-    Value& j_type = GetValueByPointerWithDefault(j_doc, "/TYPE", "");
+    const Value& j_type = GetValueByPointerWithDefault(j_doc, "/TYPE", "");
     const wxString& s_type = j_type.IsString() ? j_type.GetString() : "";
     typeCheckBox_->SetValue(!s_type.empty());
     cbTypeWithdrawal_->SetValue(s_type.Contains("W"));
@@ -1059,8 +1059,8 @@ void mmFilterTransactionsDialog::from_json(const wxString &data)
     cbTypeTransferFrom_->Enable(typeCheckBox_->IsChecked());
 
     //Amounts
-    bool amt1 = (j_doc.HasMember("AMOUNT_MIN") && j_doc["AMOUNT_MIN"].IsDouble());
-    bool amt2 = (j_doc.HasMember("AMOUNT_MAX") && j_doc["AMOUNT_MAX"].IsDouble());
+    const bool amt1 = (j_doc.HasMember("AMOUNT_MIN") && j_doc["AMOUNT_MIN"].IsDouble());
+    const bool amt2 = (j_doc.HasMember("AMOUNT_MAX") && j_doc["AMOUNT_MAX"].IsDouble());
 
     amountRangeCheckBox_->SetValue(amt1 || amt2);
     amountMinEdit_->Enable(amt1);
@@ -1084,7 +1084,7 @@ void mmFilterTransactionsDialog::from_json(const wxString &data)
     wxString s_number;
     if (j_doc.HasMember("NUMBER") && j_doc["NUMBER"].IsString()) {
         transNumberCheckBox_->SetValue(true);
-        Value& s = j_doc["NUMBER"];
+        const Value& s = j_doc["NUMBER"];
         s_number = s.GetString();
     }
     else {
@@ -1097,7 +1097,7 @@ void mmFilterTransactionsDialog::from_json(const wxString &data)
     wxString s_notes;
     if (j_doc.HasMember("NOTES") && j_doc["NOTES"].IsString()) {
         notesCheckBox_->SetValue(true);
-        Value& s = j_doc["NOTES"];
+        const Value& s = j_doc["NOTES"];
         s_notes = s.GetString();
     }
     else {
@@ -1200,7 +1200,7 @@ void mmFilterTransactionsDialog::OnMoreFields(wxCommandEvent& WXUNUSED(event))
 void mmFilterTransactionsDialog::OnDateRangeChanged(wxCommandEvent& WXUNUSED(event))
 {
     bool user_date = false;
-    int i = this->m_date_ranges->GetSelection();
+    const int i = this->m_date_ranges->GetSelection();
     if (i >= 0 && static_cast<unsigned>(i) < m_date_ranges->GetCount())
     {
         const mmDateRange* date_range = static_cast<mmDateRange*>
@@ -1222,7 +1222,7 @@ void mmFilterTransactionsDialog::OnDateRangeChanged(wxCommandEvent& WXUNUSED(eve
 
 void mmFilterTransactionsDialog::OnSaveSettings(wxCommandEvent& WXUNUSED(event))
 {
-    int i = m_setting_name->GetSelection();
+    const int i = m_setting_name->GetSelection();
     //m_custom_fields->SaveCustomValues(i);
     const wxString& default_label = wxString::Format(_("%i: Empty"), i + 1);
     wxString label = m_setting_name->GetStringSelection();
@@ -1249,7 +1249,7 @@ void mmFilterTransactionsDialog::SaveSettings(int menu_item)
 
 void mmFilterTransactionsDialog::OnSettingsSelected(wxCommandEvent& event)
 {
-    int i = event.GetSelection();
+    const int i = event.GetSelection();
     GetStoredSettings(i);
     m_custom_fields->ResetRefID(); // TODO: m_custom_fields->SetRefID(0);
     dataToControls();

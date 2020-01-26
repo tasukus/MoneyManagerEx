@@ -39,7 +39,7 @@ mmBudgetYearEntryDialog::mmBudgetYearEntryDialog(wxWindow* parent
     , bool withMonth)
 {
     withMonth_ = withMonth;
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("Budget Entry Details"), wxDefaultPosition, wxSize(500, 300), style);
     if (withMonth_)
         this->SetTitle(_("Budget Month Entry"));
@@ -72,7 +72,7 @@ void mmBudgetYearEntryDialog::CreateControls()
     wxStaticText* itemStaticText3 = new wxStaticText( this, wxID_STATIC, _("Budget Year:"));
     itemGridSizer2->Add(itemStaticText3, 0, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-    int year = wxDate::GetCurrentYear();
+    const int year = wxDate::GetCurrentYear();
     textYear_ = new wxSpinCtrl( this, wxID_ANY
         , wxEmptyString, wxDefaultPosition, wxSize(100,-1), wxSP_ARROW_KEYS, 1900, 3000, year);
     textYear_->SetValue(year);
@@ -87,7 +87,7 @@ void mmBudgetYearEntryDialog::CreateControls()
         itemGridSizer2->Add(itemStaticTextMonth, 0
             , wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 5);
 
-        int month = wxDate::GetCurrentMonth() + 1; // we require months(1..12)
+        const int month = wxDate::GetCurrentMonth() + 1; // we require months(1..12)
         textMonth_ = new wxSpinCtrl(this, wxID_ANY
             , wxEmptyString, wxDefaultPosition, textYear_->GetSize()
             , wxSP_ARROW_KEYS, 1, 12, month);
@@ -158,8 +158,8 @@ void mmBudgetYearEntryDialog::OnOk(wxCommandEvent& WXUNUSED(event))
         Model_Budgetyear::instance().Add(currYearText);
         if (baseYear != "None")
         {
-            int baseYearID = Model_Budgetyear::instance().Get(baseYear);
-            int newYearID  = Model_Budgetyear::instance().Get(currYearText);
+            const int baseYearID = Model_Budgetyear::instance().Get(baseYear);
+            const int newYearID  = Model_Budgetyear::instance().Get(currYearText);
             Model_Budget::copyBudgetYear(newYearID, baseYearID);
         }
     }

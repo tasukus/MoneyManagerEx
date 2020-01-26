@@ -392,12 +392,12 @@ bool mmGUIFrame::setAccountInSection(const wxString& sectionName, const wxString
 {
     m_nav_tree_ctrl->SetEvtHandlerEnabled(false);
     bool accountFound = false;
-    wxTreeItemId rootItem = getTreeItemfor(m_nav_tree_ctrl->GetRootItem()
+    const wxTreeItemId rootItem = getTreeItemfor( m_nav_tree_ctrl->GetRootItem( )
         , wxGetTranslation(sectionName));
     if (rootItem.IsOk() && m_nav_tree_ctrl->ItemHasChildren(rootItem))
     {
         m_nav_tree_ctrl->ExpandAllChildren(rootItem);
-        wxTreeItemId accountItem = getTreeItemfor(rootItem, accountName);
+        const wxTreeItemId accountItem = getTreeItemfor( rootItem , accountName );
         if (accountItem.IsOk())
         {
             // Set the NavTreeCtrl and prevent any event code being executed for now.
@@ -415,7 +415,7 @@ bool mmGUIFrame::setNavTreeSection(const wxString &sectionName)
 {
     m_nav_tree_ctrl->SetEvtHandlerEnabled(false);
     bool accountNotFound = true;
-    wxTreeItemId rootItem = getTreeItemfor(m_nav_tree_ctrl->GetRootItem(), sectionName);
+    const wxTreeItemId rootItem = getTreeItemfor( m_nav_tree_ctrl->GetRootItem( ) , sectionName );
     if (rootItem.IsOk())
     {
         // Set the NavTreeCtrl and prevent any event code being executed for now.
@@ -471,7 +471,7 @@ void mmGUIFrame::OnAutoRepeatTransactionsTimer(wxTimerEvent& WXUNUSED(event))
     for (const auto& q1 : bills.all())
     {
         bills.decode_fields(q1);
-        bool allow_transaction = bills.AllowTransaction(q1, bal);
+        const bool allow_transaction = bills.AllowTransaction( q1 , bal );
         const wxDateTime payment_date = bills.TRANSDATE(q1);
         if (bills.autoExecuteManual() && bills.requireExecution())
         {
@@ -512,7 +512,7 @@ void mmGUIFrame::OnAutoRepeatTransactionsTimer(wxTimerEvent& WXUNUSED(event))
                 tran->SUBCATEGID = q1.SUBCATEGID;
                 tran->TRANSDATE = payment_date.FormatISODate();
 
-                int transID = Model_Checking::instance().save(tran);
+                const int transID = Model_Checking::instance( ).save( tran );
 
                 Model_Splittransaction::Cache checking_splits;
                 for (const auto &item : Model_Billsdeposits::splittransaction(q1))
@@ -673,70 +673,70 @@ void mmGUIFrame::updateNavTreeControl()
     m_nav_tree_ctrl->SetItemBold(root, true);
     m_nav_tree_ctrl->SetFocus();
 
-    wxTreeItemId accounts = m_nav_tree_ctrl->AppendItem(root, _("Bank Accounts")
+    const wxTreeItemId accounts = m_nav_tree_ctrl->AppendItem( root , _( "Bank Accounts" )
         , img::SAVINGS_ACC_NORMAL_PNG, img::SAVINGS_ACC_NORMAL_PNG);
     m_nav_tree_ctrl->SetItemData(accounts, new mmTreeItemData("Bank Accounts"));
     m_nav_tree_ctrl->SetItemBold(accounts, true);
 
-    wxTreeItemId cardAccounts = m_nav_tree_ctrl->AppendItem(root, _("Credit Card Accounts")
+    const wxTreeItemId cardAccounts = m_nav_tree_ctrl->AppendItem( root , _( "Credit Card Accounts" )
         , img::CARD_ACC_PNG, img::CARD_ACC_PNG);
     m_nav_tree_ctrl->SetItemData(cardAccounts, new mmTreeItemData("Credit Card Accounts"));
     m_nav_tree_ctrl->SetItemBold(cardAccounts, true);
 
-    wxTreeItemId cashAccounts = m_nav_tree_ctrl->AppendItem(root, _("Cash Accounts")
+    const wxTreeItemId cashAccounts = m_nav_tree_ctrl->AppendItem( root , _( "Cash Accounts" )
         , img::CASH_ACC_NORMAL_PNG, img::CASH_ACC_NORMAL_PNG);
     m_nav_tree_ctrl->SetItemData(cashAccounts, new mmTreeItemData("Cash Accounts"));
     m_nav_tree_ctrl->SetItemBold(cashAccounts, true);
 
-    wxTreeItemId loanAccounts = m_nav_tree_ctrl->AppendItem(root, _("Loan Accounts")
+    const wxTreeItemId loanAccounts = m_nav_tree_ctrl->AppendItem( root , _( "Loan Accounts" )
         , img::LOAN_ACC_NORMAL_PNG, img::LOAN_ACC_NORMAL_PNG);
     m_nav_tree_ctrl->SetItemData(loanAccounts, new mmTreeItemData("Loan Accounts"));
     m_nav_tree_ctrl->SetItemBold(loanAccounts, true);
 
-    wxTreeItemId termAccounts = m_nav_tree_ctrl->AppendItem(root, _("Term Accounts")
+    const wxTreeItemId termAccounts = m_nav_tree_ctrl->AppendItem( root , _( "Term Accounts" )
         , img::TERMACCOUNT_PNG, img::TERMACCOUNT_PNG);
     m_nav_tree_ctrl->SetItemData(termAccounts, new mmTreeItemData("Term Accounts"));
     m_nav_tree_ctrl->SetItemBold(termAccounts, true);
 
-    wxTreeItemId stocks = m_nav_tree_ctrl->AppendItem(root, _("Stock Portfolios")
+    const wxTreeItemId stocks = m_nav_tree_ctrl->AppendItem( root , _( "Stock Portfolios" )
         , img::STOCK_ACC_PNG, img::STOCK_ACC_PNG);
     m_nav_tree_ctrl->SetItemData(stocks, new mmTreeItemData("Stocks"));
     m_nav_tree_ctrl->SetItemBold(stocks, true);
 
-    wxTreeItemId shareAccounts = m_nav_tree_ctrl->AppendItem(root, _("Share Accounts")
+    const wxTreeItemId shareAccounts = m_nav_tree_ctrl->AppendItem( root , _( "Share Accounts" )
         , img::STOCK_ACC_PNG, img::STOCK_ACC_PNG);
     m_nav_tree_ctrl->SetItemData(shareAccounts, new mmTreeItemData("Share Accounts"));
     m_nav_tree_ctrl->SetItemBold(shareAccounts, true);
 
-    wxTreeItemId assets = m_nav_tree_ctrl->AppendItem(root, _("Assets")
+    const wxTreeItemId assets = m_nav_tree_ctrl->AppendItem( root , _( "Assets" )
         , img::ASSET_PNG, img::ASSET_PNG);
     m_nav_tree_ctrl->SetItemData(assets, new mmTreeItemData("Assets"));
     m_nav_tree_ctrl->SetItemBold(assets, true);
 
-    wxTreeItemId cryptoAccounts = m_nav_tree_ctrl->AppendItem(root, _("Crypto Wallets")
+    const wxTreeItemId cryptoAccounts = m_nav_tree_ctrl->AppendItem( root , _( "Crypto Wallets" )
         , img::CRYPTO_PNG, img::CRYPTO_PNG);
     m_nav_tree_ctrl->SetItemData(cryptoAccounts, new mmTreeItemData("Crypto Wallets"));
     m_nav_tree_ctrl->SetItemBold(cryptoAccounts, true);
 
-    wxTreeItemId bills = m_nav_tree_ctrl->AppendItem(root, _("Recurring Transactions")
+    const wxTreeItemId bills = m_nav_tree_ctrl->AppendItem( root , _( "Recurring Transactions" )
         , img::SCHEDULE_PNG, img::SCHEDULE_PNG);
     m_nav_tree_ctrl->SetItemData(bills, new mmTreeItemData("Bills & Deposits"));
     m_nav_tree_ctrl->SetItemBold(bills, true);
 
-    wxTreeItemId budgeting = m_nav_tree_ctrl->AppendItem(root, _("Budget Setup")
+    const wxTreeItemId budgeting = m_nav_tree_ctrl->AppendItem( root , _( "Budget Setup" )
         , img::CALENDAR_PNG, img::CALENDAR_PNG);
     m_nav_tree_ctrl->SetItemData(budgeting, new mmTreeItemData("Budgeting"));
     m_nav_tree_ctrl->SetItemBold(budgeting, true);
 
     const DB_Table_BUDGETYEAR::Data_Set all_budgets
         = Model_Budgetyear::instance().all(Model_Budgetyear::COL_BUDGETYEARNAME);
-    bool have_budget = (all_budgets.size() > 0);
+    const bool have_budget = (all_budgets.size( ) > 0);
     for (const auto& e : Model_Budgetyear::instance().all(Model_Budgetyear::COL_BUDGETYEARNAME))
     {
-        int id = e.BUDGETYEARID;
+        const int id = e.BUDGETYEARID;
         const wxString& name = e.BUDGETYEARNAME;
 
-        wxTreeItemId bYear = m_nav_tree_ctrl->AppendItem(budgeting
+        const wxTreeItemId bYear = m_nav_tree_ctrl->AppendItem(budgeting
             , name, img::CALENDAR_PNG, img::CALENDAR_PNG);
         m_nav_tree_ctrl->SetItemData(bYear, new mmTreeItemData(id, true));
     }
@@ -750,7 +750,7 @@ void mmGUIFrame::updateNavTreeControl()
 
     ///////////////////////////////////////////////////////////////////
 
-    wxTreeItemId help = m_nav_tree_ctrl->AppendItem(root, _("Help")
+    const wxTreeItemId help = m_nav_tree_ctrl->AppendItem(root, _("Help")
         , img::HELP_PNG, img::HELP_PNG);
     m_nav_tree_ctrl->SetItemData(help, new mmTreeItemData("Help"));
     m_nav_tree_ctrl->SetItemBold(help, true);
@@ -771,7 +771,7 @@ void mmGUIFrame::updateNavTreeControl()
             else if (vAccts == VIEW_ACCOUNTS_CLOSED_STR && (Model_Account::status(account) == Model_Account::OPEN))
                 continue;
 
-            int selectedImage = Option::instance().getAccountImageId(account.ACCOUNTID);
+            const int selectedImage = Option::instance().getAccountImageId(account.ACCOUNTID);
 
             wxTreeItemId tacct;
 
@@ -789,7 +789,7 @@ void mmGUIFrame::updateNavTreeControl()
                     {
                         if (Model_Translink::HasShares(stock_entry.STOCKID))
                         {
-                            wxTreeItemId se = m_nav_tree_ctrl->AppendItem(tacct
+                            const wxTreeItemId se = m_nav_tree_ctrl->AppendItem(tacct
                                 , stock_entry.STOCKNAME, selectedImage, selectedImage);
                             int account_id = stock_entry.STOCKID;
                             if (Model_Translink::ShareAccountId(account_id))
@@ -864,7 +864,7 @@ void mmGUIFrame::loadNavTreeItemsStatus()
 {
     /* Load Nav Tree Control */
     SetEvtHandlerEnabled(false);
-    wxTreeItemId root = m_nav_tree_ctrl->GetRootItem();
+    const wxTreeItemId root = m_nav_tree_ctrl->GetRootItem();
     m_nav_tree_ctrl->Expand(root);
 
     const wxString& str = Model_Infotable::instance().GetStringInfo("NAV_TREE_STATUS", "");
@@ -880,7 +880,7 @@ void mmGUIFrame::loadNavTreeItemsStatus()
 
     while (!items.empty())
     {
-        wxTreeItemId next = items.top();
+        const wxTreeItemId next = items.top();
         items.pop();
 
         wxTreeItemIdValue cookie;
@@ -940,7 +940,7 @@ void mmGUIFrame::navTreeStateToJson()
 
     while (!items.empty())
     {
-        wxTreeItemId next = items.top();
+        const wxTreeItemId next = items.top();
         items.pop();
 
         wxTreeItemIdValue cookie;
@@ -970,7 +970,7 @@ void mmGUIFrame::navTreeStateToJson()
 void mmGUIFrame::OnSelChanged(wxTreeEvent& event)
 {
     menuPrintingEnable(false);
-    wxTreeItemId selectedItem = event.GetItem();
+    const wxTreeItemId selectedItem = event.GetItem();
     if (!selectedItem) return;
 
     m_nav_tree_ctrl->Update();
@@ -984,12 +984,12 @@ void mmGUIFrame::OnSelChanged(wxTreeEvent& event)
     {
         if (iData->isBudgetingNode())
         {
-            int year = iData->getData();
+            const int year = iData->getData();
             createBudgetingPage(year);
         }
         else
         {
-            int data = iData->getData();
+            const int data = iData->getData();
             Model_Account::Data* account = Model_Account::instance().get(data);
             if (account)
             {
@@ -1056,11 +1056,11 @@ void mmGUIFrame::OnLaunchAccountWebsite(wxCommandEvent& WXUNUSED(event))
 {
     if (selectedItemData_)
     {
-        int data = selectedItemData_->getData();
+        const int data = selectedItemData_->getData();
         Model_Account::Data* account = Model_Account::instance().get(data);
         if (account)
         {
-            wxString website = account->WEBSITE;
+            const wxString& website = account->WEBSITE;
             if (!website.IsEmpty()) wxLaunchDefaultBrowser(website);
             return;
         }
@@ -1072,8 +1072,8 @@ void mmGUIFrame::OnAccountAttachments(wxCommandEvent& WXUNUSED(event))
 {
     if (selectedItemData_)
     {
-        int RefId = selectedItemData_->getData();
-        wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::BANKACCOUNT);
+        const int RefId = selectedItemData_->getData();
+        const wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::BANKACCOUNT);
 
         mmAttachmentDialog dlg(this, RefType, RefId);
         dlg.ShowModal();
@@ -1085,7 +1085,7 @@ void mmGUIFrame::OnPopupEditAccount(wxCommandEvent& WXUNUSED(event))
 {
     if (selectedItemData_)
     {
-        int data = selectedItemData_->getData();
+        const int data = selectedItemData_->getData();
         Model_Account::Data* account = Model_Account::instance().get(data);
         if (account)
         {
@@ -1104,7 +1104,7 @@ void mmGUIFrame::OnPopupReallocateAccount(wxCommandEvent& WXUNUSED(event))
 {
     if (selectedItemData_)
     {
-        int account_id = selectedItemData_->getData();
+        const int account_id = selectedItemData_->getData();
         ReallocateAccount(account_id);
     }
 }
@@ -1113,15 +1113,15 @@ void mmGUIFrame::OnPopupAccountBaseBalance(wxCommandEvent& WXUNUSED(event))
 {
     if (selectedItemData_)
     {
-        int account_id = selectedItemData_->getData();
+        const int account_id = selectedItemData_->getData();
         Model_Account::Data* account = Model_Account::instance().get(account_id);
         Model_Currency::Data* acc_currency = Model_Account::currency(account);
         Model_Currency::Data* base_currency = Model_Currency::GetBaseCurrency();
 
-        double acc_bal = Model_Account::balance(account);
-        double acc_base_bal = acc_bal * Model_CurrencyHistory::getDayRate(acc_currency->CURRENCYID);
+        const double acc_bal = Model_Account::balance(account);
+        const double acc_base_bal = acc_bal * Model_CurrencyHistory::getDayRate(acc_currency->CURRENCYID);
 
-        wxString message = wxString::Format(
+        const wxString message = wxString::Format(
             _("Account: %s\n\n"
               "Balance at currency %s: %s\n"
               "Balance at currency %s: %s"),
@@ -1138,7 +1138,7 @@ void mmGUIFrame::OnPopupDeleteAccount(wxCommandEvent& WXUNUSED(event))
 {
     if (selectedItemData_)
     {
-        int data = selectedItemData_->getData();
+        const int data = selectedItemData_->getData();
         Model_Account::Data* account = Model_Account::instance().get(data);
         if (account)
         {
@@ -1165,7 +1165,7 @@ void mmGUIFrame::OnPopupDeleteAccount(wxCommandEvent& WXUNUSED(event))
 
 void mmGUIFrame::OnItemMenu(wxTreeEvent& event)
 {
-    wxTreeItemId selectedItem = event.GetItem();
+    const wxTreeItemId selectedItem = event.GetItem();
     if (menuBar_->FindItem(MENU_ORGCATEGS)->IsEnabled())
         showTreePopupMenu(selectedItem, event.GetPoint());
     else
@@ -1176,7 +1176,7 @@ void mmGUIFrame::OnItemMenu(wxTreeEvent& event)
 
 void mmGUIFrame::OnItemRightClick(wxTreeEvent& event)
 {
-    wxTreeItemId selectedItem = event.GetItem();
+    const wxTreeItemId selectedItem = event.GetItem();
     m_nav_tree_ctrl->SelectItem(selectedItem);
 }
 //----------------------------------------------------------------------------
@@ -1189,7 +1189,7 @@ void mmGUIFrame::showTreePopupMenu(const wxTreeItemId& id, const wxPoint& pt)
 
     if (!iData->isStringData())
     {
-        int data = iData->getData();
+        const int data = iData->getData();
         if (!iData->isBudgetingNode())
         {
             Model_Account::Data* account = Model_Account::instance().get(data);
@@ -1211,7 +1211,7 @@ void mmGUIFrame::showTreePopupMenu(const wxTreeItemId& id, const wxPoint& pt)
                 menu.Append(MENU_TREEPOPUP_ACCOUNT_BASE_BALANCE, _("&Foreign Currency Balance"));
                 menu.Append(MENU_TREEPOPUP_LAUNCHWEBSITE, _("&Launch Account Website"));
                 // Enable menu item only if a website exists for the account.
-                bool webStatus = !account->WEBSITE.IsEmpty();
+                const bool webStatus = !account->WEBSITE.IsEmpty();
                 menu.Enable(MENU_TREEPOPUP_LAUNCHWEBSITE, webStatus);
                 menu.Append(MENU_TREEPOPUP_ACCOUNTATTACHMENTS, _("&Organize Attachments"));
 
@@ -1287,7 +1287,7 @@ void mmGUIFrame::showTreePopupMenu(const wxTreeItemId& id, const wxPoint& pt)
 
 void mmGUIFrame::OnViewAccountsTemporaryChange(wxCommandEvent& e)
 {
-    int evt_id = e.GetId();
+    const int evt_id = e.GetId( );
     //Get current settings for view accounts
     const wxString vAccts = Model_Setting::instance().ViewAccounts();
     wxString temp_view = VIEW_ACCOUNTS_ALL_STR;
@@ -1362,7 +1362,7 @@ void mmGUIFrame::createHomePage()
     const auto time = wxDateTime::UNow();
 
     m_nav_tree_ctrl->SetEvtHandlerEnabled(false);
-    int id = panelCurrent_ ? panelCurrent_->GetId() : -1;
+    const int id = panelCurrent_ ? panelCurrent_->GetId() : -1;
     /* Update home page details only if it is being displayed */
     if (id == mmID_HOMEPAGE)
     {
@@ -1524,11 +1524,11 @@ void mmGUIFrame::createMenu()
     menuItemLanguage->SetBitmap(mmBitmap(png::LANG));
     wxMenu *menuLang = new wxMenu;
 
-    wxArrayString lang_files = wxTranslations::Get()->GetAvailableTranslations("mmex");
+    const wxArrayString lang_files = wxTranslations::Get()->GetAvailableTranslations("mmex");
     std::map<wxString, std::pair<int, wxString>> langs;
     menuLang->AppendRadioItem(MENU_LANG+1+wxLANGUAGE_DEFAULT, _("system default"))
         ->Check(m_app->getGUILanguage()==wxLANGUAGE_DEFAULT);
-    for (auto & file : lang_files)
+    for (const auto & file : lang_files)
     {
         const wxLanguageInfo* info = wxLocale::FindLanguageInfo(file);
         if (info)
@@ -1809,7 +1809,7 @@ void mmGUIFrame::createMenu()
 
 void mmGUIFrame::createToolBar()
 {
-    long style = wxTB_FLAT | wxTB_NODIVIDER;
+    constexpr long style = wxTB_FLAT | wxTB_NODIVIDER;
 
     toolBar_ = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, style, "ToolBar");
 
@@ -2232,7 +2232,7 @@ void mmGUIFrame::OnImportQIF(wxCommandEvent& WXUNUSED(event))
 {
     mmQIFImportDialog dlg(this, gotoAccountID_);
     dlg.ShowModal();
-    int account_id = dlg.get_last_imported_acc();
+    const int account_id = dlg.get_last_imported_acc();
     updateNavTreeControl();
     if (account_id > 0)
     {
@@ -2362,7 +2362,7 @@ void mmGUIFrame::refreshPanelData(wxCommandEvent& WXUNUSED(event))
 }
 void mmGUIFrame::refreshPanelData()
 {
-    int id = panelCurrent_->GetId();
+    const int id = panelCurrent_->GetId();
     wxLogDebug("Panel ID: %d", id);
     if (id == mmID_HOMEPAGE) //6000
     {
@@ -2590,7 +2590,7 @@ void mmGUIFrame::showBeginAppDialog(bool fromScratch)
     mmAppStartDialog dlg(this);
     if (fromScratch) dlg.SetCloseButtonToExit();
 
-    int end_mod = dlg.ShowModal();
+    const int end_mod = dlg.ShowModal();
     if (end_mod == wxID_EXIT)
     {
         Close();
@@ -2835,7 +2835,7 @@ void mmGUIFrame::OnRates(wxCommandEvent& WXUNUSED(event))
                 continue;
             }
 
-            double dPrice = it->second;
+            const double dPrice = it->second;
 
             if (dPrice != 0)
             {
@@ -2896,7 +2896,7 @@ void mmGUIFrame::OnDeleteAccount(wxCommandEvent& WXUNUSED(event))
     if (scd.ShowModal() == wxID_OK)
     {
         Model_Account::Data* account = Model_Account::instance().get(scd.GetStringSelection());
-        wxString deletingAccountName = wxString::Format(
+        const wxString deletingAccountName = wxString::Format(
             _("Are you sure you want to delete\n %s account: %s ?")
             , wxGetTranslation(account->ACCOUNTTYPE)
             , account->ACCOUNTNAME);
@@ -2943,7 +2943,7 @@ void mmGUIFrame::ReallocateAccount(int accountID)
 
     if (type_choice.ShowModal() == wxID_OK)
     {
-        int sel = type_choice.GetSelection();
+        const int sel = type_choice.GetSelection();
         account->ACCOUNTTYPE = types[sel];
         Model_Account::instance().save(account);
 
@@ -3082,7 +3082,7 @@ void mmGUIFrame::SetDatabaseFile(const wxString& dbFileName, bool newDatabase, b
 
 void mmGUIFrame::OnRecentFiles(wxCommandEvent& event)
 {
-    int fileNum = event.GetId() - m_recentFiles->GetBaseId();
+    const int fileNum = event.GetId() - m_recentFiles->GetBaseId();
     const wxString file_name = m_recentFiles->GetHistoryFile(fileNum);
     wxFileName file(file_name);
     if (m_db && file == m_filename) return; // already open
@@ -3125,7 +3125,7 @@ void mmGUIFrame::OnClose(wxCloseEvent&)
 
 void mmGUIFrame::OnHideShowReport(wxCommandEvent& event)
 {
-    int report = event.GetId() - MENU_TREEPOPUP_HIDE_SHOW_REPORT;
+    const int report = event.GetId() - MENU_TREEPOPUP_HIDE_SHOW_REPORT;
     Option::instance().setHideReport(report, !Option::instance().getHideReport(report));
     updateNavTreeControl();
     createHomePage();
@@ -3133,7 +3133,7 @@ void mmGUIFrame::OnHideShowReport(wxCommandEvent& event)
 
 void mmGUIFrame::OnChangeGUILanguage(wxCommandEvent& event)
 {
-    wxLanguage lang = static_cast<wxLanguage>(event.GetId()-MENU_LANG-1);
+    const wxLanguage lang = static_cast<wxLanguage>(event.GetId()-MENU_LANG-1);
     if (lang!=m_app->getGUILanguage() && m_app->setGUILanguage(lang))
         mmErrorDialogs::MessageWarning(this
             , _("The language for this application has been changed. "

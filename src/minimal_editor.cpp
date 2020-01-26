@@ -179,8 +179,8 @@ void MinimalEditor::OnMarginClick(wxStyledTextEvent &event)
 {
     if (event.GetMargin() == margin_id_fold)
     {
-        int lineClick = LineFromPosition(event.GetPosition());
-        int levelClick = GetFoldLevel(lineClick);
+        const int lineClick = LineFromPosition( event.GetPosition( ) );
+        const int levelClick = GetFoldLevel( lineClick );
         if ((levelClick & wxSTC_FOLDLEVELHEADERFLAG) > 0)
         {
             ToggleFold(lineClick);

@@ -59,7 +59,7 @@ mmCustomFieldListDialog::mmCustomFieldListDialog (wxWindow* parent, const wxStri
 void mmCustomFieldListDialog::Create(wxWindow* parent)
 {
     SetExtraStyle(GetExtraStyle()|wxWS_EX_BLOCK_EVENTS);
-    long style = wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER;
+    constexpr long style = wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER;
 
     wxString WindowTitle = wxString::Format(_("Personalize custom fields | %s"), m_RefType);
     if (!wxDialog::Create(parent, wxID_ANY, WindowTitle, wxDefaultPosition, wxDefaultSize, style))
@@ -133,8 +133,8 @@ void mmCustomFieldListDialog::fillControls()
 
 void mmCustomFieldListDialog::OnListItemSelected(wxDataViewEvent& event)
 {
-    wxDataViewItem item = event.GetItem();
-    int selected_index = fieldListBox_->ItemToRow(item);
+    const wxDataViewItem item = event.GetItem( );
+    const int selected_index = fieldListBox_->ItemToRow( item );
 
     if (selected_index >= 0)
         m_field_id = static_cast<int>(fieldListBox_->GetItemData(item));
@@ -164,7 +164,7 @@ void mmCustomFieldListDialog::EditField()
 
 void mmCustomFieldListDialog::DeleteField()
 {
-    Model_CustomField::Data *field = Model_CustomField::instance().get(m_field_id);
+    const Model_CustomField::Data *field = Model_CustomField::instance().get(m_field_id);
     if (field)
     {
         int DeleteResponse = wxMessageBox(
@@ -182,7 +182,7 @@ void mmCustomFieldListDialog::DeleteField()
 
 void mmCustomFieldListDialog::UpdateField()
 {
-    Model_CustomField::Data *field = Model_CustomField::instance().get(m_field_id);
+    const Model_CustomField::Data *field = Model_CustomField::instance().get(m_field_id);
     if (!field)
         return;
 

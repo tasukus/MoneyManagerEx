@@ -63,9 +63,9 @@ public:
     size_t GetCustomFieldsCount() const { return m_fields.size(); }
     size_t GetActiveCustomFieldsCount() const;
     std::map<wxString, wxString> GetActiveCustomFields() const;
-    void SetBaseID(wxWindowID id) { m_init_control_id = id; }
+    void SetBaseID(const wxWindowID id) { m_init_control_id = id; }
     wxWindowID GetBaseID() const { return m_init_control_id; }
-    void SetLabelID(wxWindowID id) { m_init_label_id = id; }
+    void SetLabelID(const wxWindowID id) { m_init_label_id = id; }
     wxWindowID GetLabelID() const { return m_init_label_id; }
     void ResetRefID() { m_ref_id = wxID_ANY; }
     // TODO: void SetRefID(int ref_id) { m_ref_id = ref_id; }

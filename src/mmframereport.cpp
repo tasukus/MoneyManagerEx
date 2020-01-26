@@ -109,7 +109,7 @@ void mmGUIFrame::updateReportNavigation(wxTreeItemId& reports, bool budget)
 {
     ///////////////////////////////////////////////////////////////////
 
-    wxTreeItemId transactionList = m_nav_tree_ctrl->AppendItem(reports
+    const wxTreeItemId transactionList = m_nav_tree_ctrl->AppendItem(reports
         , _("Transaction Report"), img::FILTER_PNG, img::FILTER_PNG);
     m_nav_tree_ctrl->SetItemData(transactionList, new mmTreeItemData("Transaction Report"));
 
@@ -120,7 +120,7 @@ void mmGUIFrame::updateReportNavigation(wxTreeItemId& reports, bool budget)
     for (int r = 0; r < Option::instance().getReportCount(); r++)
     {
         const wxString& groupName = Option::instance().getReportGroup(r);
-        bool no_group = groupName.IsEmpty();
+        const bool no_group = groupName.IsEmpty();
         if (reportGroupName != groupName && !no_group)
         {
             bool bAdd = false;
@@ -150,7 +150,7 @@ void mmGUIFrame::updateReportNavigation(wxTreeItemId& reports, bool budget)
         if (bShow)
         {
             const auto& reportName = Option::instance().getReportName(r);
-            wxTreeItemId item = m_nav_tree_ctrl->AppendItem(no_group ? reports : reportGroup
+            const wxTreeItemId item = m_nav_tree_ctrl->AppendItem(no_group ? reports : reportGroup
                 , wxGetTranslation(reportName), img::PIECHART_PNG, img::PIECHART_PNG);
             m_nav_tree_ctrl->SetItemData(item
                 , new mmTreeItemData(reportName, Option::instance().getReportFunction(r)));
@@ -169,7 +169,7 @@ void mmGUIFrame::updateReportNavigation(wxTreeItemId& reports, bool budget)
     wxString group_name;
     for (const auto& record : records)
     {
-        bool no_group = record.GROUPNAME.empty();
+        const bool no_group = record.GROUPNAME.empty();
         if (group_name != record.GROUPNAME && !no_group)
         {
             group = m_nav_tree_ctrl->AppendItem(reports
@@ -179,7 +179,7 @@ void mmGUIFrame::updateReportNavigation(wxTreeItemId& reports, bool budget)
             group_name = record.GROUPNAME;
         }
         Model_Report::Data* r = Model_Report::instance().get(record.REPORTID);
-        wxTreeItemId item = m_nav_tree_ctrl->AppendItem(no_group ? reports : group
+        const wxTreeItemId item = m_nav_tree_ctrl->AppendItem(no_group ? reports : group
             , wxGetTranslation(record.REPORTNAME), img::CUSTOMSQL_PNG, img::CUSTOMSQL_PNG);
         m_nav_tree_ctrl->SetItemData(item, new mmTreeItemData(r->REPORTNAME, new mmGeneralReport(r)));
     }

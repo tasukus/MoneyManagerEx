@@ -95,7 +95,7 @@ mmDialogComboBoxAutocomplete::mmDialogComboBoxAutocomplete(wxWindow *parent, con
     Default(defaultText),
     Choices(choices)
 {
-    long style = wxCAPTION | wxRESIZE_BORDER | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxRESIZE_BORDER | wxCLOSE_BOX;
     Create(parent, wxID_STATIC, caption, wxDefaultPosition, wxSize(300, 100), style);
 }
 

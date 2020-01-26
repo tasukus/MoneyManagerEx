@@ -90,7 +90,7 @@ bool mmBudgetingPanel::Create(wxWindow *parent
     wxPanel::Create(parent, winid, pos, size, style, name);
 
     this->windowsFreezeThaw();
-    wxDateTime start = wxDateTime::UNow();
+    const wxDateTime start = wxDateTime::UNow();
     CreateControls();
     GetSizer()->Fit(this);
     GetSizer()->SetSizeHints(this);
@@ -111,7 +111,7 @@ mmBudgetingPanel::~mmBudgetingPanel()
 
 void mmBudgetingPanel::OnViewPopupSelected(wxCommandEvent& event)
 {
-    int evt =  event.GetId();
+    const int evt =  event.GetId();
     if (evt ==  MENU_VIEW_ALLBUDGETENTRIES)
         currentView_ = VIEW_ALL;
     else if (evt == MENU_VIEW_NONZEROBUDGETENTRIES)
@@ -277,7 +277,7 @@ void mmBudgetingPanel::CreateControls()
     itemIncomeSizer->Add(expenses_diff_);
     /* ---------------------- */
 
-    int x = Option::instance().getIconSize();
+    const int x = Option::instance().getIconSize();
     m_imageList = new wxImageList(x, x);
     m_imageList->Add(mmBitmap(png::RECONCILED));
     m_imageList->Add(mmBitmap(png::VOID_STAT));
@@ -394,8 +394,8 @@ void mmBudgetingPanel::initVirtualListControl()
     }
     else
     {
-        int day = -1;
-        wxDateTime::Month month = wxDateTime::Month::Inv_Month;
+        constexpr int day = -1;
+        const wxDateTime::Month month = wxDateTime::Month::Inv_Month;
         budgetDetails.AdjustYearValues(day, month, dtBegin);
         budgetDetails.AdjustDateForEndFinancialYear(dtEnd);
     }
@@ -478,7 +478,7 @@ void mmBudgetingPanel::initVirtualListControl()
             && DisplayEntryAllowed(-1, category.CATEGID))
         {
             budget_.push_back(std::make_pair(-1, category.CATEGID));
-            size_t transCatTotalIndex = budget_.size() - 1;
+            const size_t transCatTotalIndex = budget_.size() - 1;
             listCtrlBudget_->RefreshItem(transCatTotalIndex);
         }
     }
@@ -508,8 +508,8 @@ void mmBudgetingPanel::initVirtualListControl()
 
 double mmBudgetingPanel::getEstimate(int category, int subcategory) const
 {
-    Model_Budget::PERIOD_ENUM period = budgetPeriod_.at(category).at(subcategory);
-    double amt = budgetAmt_.at(category).at(subcategory);
+    const Model_Budget::PERIOD_ENUM period = budgetPeriod_.at(category).at(subcategory);
+    const double amt = budgetAmt_.at(category).at(subcategory);
     return (monthlyBudget_ ? Model_Budget::getMonthlyEstimate(period, amt) : Model_Budget::getYearlyEstimate(period, amt));
 }
 
@@ -673,8 +673,8 @@ void mmBudgetingPanel::OnListItemActivated(int selectedIndex)
     else
         entry = &budget[0];
 
-    double estimated = getEstimate(budget_[selectedIndex].first, budget_[selectedIndex].second);
-    double actual = categoryStats_[budget_[selectedIndex].first][budget_[selectedIndex].second][0];
+    const double estimated = getEstimate(budget_[selectedIndex].first, budget_[selectedIndex].second);
+    const double actual = categoryStats_[budget_[selectedIndex].first][budget_[selectedIndex].second][0];
 
     mmBudgetEntryDialog dlg(this, entry, Model_Currency::toCurrency(estimated), Model_Currency::toCurrency(actual));
     if (dlg.ShowModal() == wxID_OK)

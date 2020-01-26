@@ -43,7 +43,7 @@ relocatePayeeDialog::relocatePayeeDialog(wxWindow* parent, int source_payee_id)
 {
     sourcePayeeID_  = source_payee_id;
 
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
 
     Create(parent, wxID_STATIC, _("Relocate Payee Dialog"), wxDefaultPosition, wxSize(500, 300), style);
 }
@@ -72,7 +72,7 @@ void relocatePayeeDialog::CreateControls()
     flagsH.Align(wxALIGN_LEFT|wxALIGN_CENTER_VERTICAL).Border(wxALL, 5).Center();
     flagsV.Align(wxALIGN_LEFT).Border(wxALL, 5).Center();
     flagsExpand.Align(wxALIGN_LEFT).Border(wxALL, 5).Expand();
-    wxSize btnSize = wxSize(180,-1);
+    const wxSize btnSize = wxSize( 180 , -1 );
 
     wxStaticText* headerText = new wxStaticText( this, wxID_STATIC
         , _("Relocate all source payee to the destination payee"));
@@ -195,7 +195,6 @@ void relocatePayeeDialog::OnOk(wxCommandEvent& WXUNUSED(event))
 
 void relocatePayeeDialog::IsOkOk()
 {
-    bool e = true;
     int trxs_size, bills_size;
     const wxString& destPayeeName = cbDestPayee_->GetValue();
     const wxString& sourcePayeeName = cbSourcePayee_->GetValue();
@@ -216,6 +215,7 @@ void relocatePayeeDialog::IsOkOk()
         destPayeeID_ = dest_payee->PAYEEID;
     }
 
+    bool e = true;
     if (!dest_payee || !source_payee
         || dest_payee == source_payee
         || trxs_size + bills_size == 0) {

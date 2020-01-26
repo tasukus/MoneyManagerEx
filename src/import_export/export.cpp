@@ -33,7 +33,7 @@ mmExportTransaction::~mmExportTransaction()
 const wxString mmExportTransaction::getTransactionQIF(const Model_Checking::Full_Data& full_tran
     , const wxString& dateMask, bool reverce)
 {
-    bool transfer = Model_Checking::is_transfer(full_tran.TRANSCODE);
+    const bool transfer = Model_Checking::is_transfer( full_tran.TRANSCODE );
 
     wxString buffer = "";
     wxString categ = full_tran.m_splits.empty() ? full_tran.CATEGNAME : "";
@@ -60,7 +60,7 @@ const wxString mmExportTransaction::getTransactionQIF(const Model_Checking::Full
 
     buffer << "D" << Model_Checking::TRANSDATE(full_tran).Format(dateMask) << "\n";
     buffer << "C" << (full_tran.STATUS == "R" ? "R" : "") << "\n";
-    double value = Model_Checking::balance(full_tran
+    const double value = Model_Checking::balance( full_tran
         , (reverce ? full_tran.TOACCOUNTID : full_tran.ACCOUNTID));
     const wxString& s = wxString::FromCDouble(value, 2);
     buffer << "T" << s << "\n";
@@ -99,7 +99,7 @@ const wxString mmExportTransaction::getAccountHeaderQIF(int accountID)
     Model_Account::Data *account = Model_Account::instance().get(accountID);
     if (account)
     {
-        double dInitBalance = account->INITIALBAL;
+        const double dInitBalance = account->INITIALBAL;
         Model_Currency::Data *currency = Model_Currency::instance().get(account->CURRENCYID);
         if (currency)
         {
@@ -137,7 +137,7 @@ const wxString mmExportTransaction::getCategoriesQIF()
         for (const auto& sub_category: Model_Category::sub_category(category))
         {
             bIncome = Model_Category::has_income(category.CATEGID, sub_category.SUBCATEGID);
-            bool bSubcateg = sub_category.CATEGID != -1;
+            const bool bSubcateg = sub_category.CATEGID != -1;
             wxString full_categ_name = wxString()
                 << categ_name << (bSubcateg ? wxString()<<":" : wxString()<<"")
                 << sub_category.SUBCATEGNAME;

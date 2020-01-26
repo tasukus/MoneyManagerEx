@@ -56,7 +56,7 @@ mmAssetDialog::mmAssetDialog(wxWindow* parent, mmGUIFrame* gui_frame, Model_Asse
         }
     }
 
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, m_dialog_heading, wxDefaultPosition, wxSize(400, 300), style);
 }
 
@@ -73,7 +73,7 @@ mmAssetDialog::mmAssetDialog(wxWindow* parent, mmGUIFrame* gui_frame, Model_Tran
         m_asset = Model_Asset::instance().get(transfer_entry->LINKRECORDID);
     }
 
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, m_dialog_heading, wxDefaultPosition, wxSize(400, 300), style);
 }
 
@@ -294,7 +294,7 @@ void mmAssetDialog::HideTransactionPanel()
 
 void mmAssetDialog::OnChangeAppreciationType(wxCommandEvent& WXUNUSED(event))
 {
-    int selection = m_valueChange->GetSelection();
+    const int selection = m_valueChange->GetSelection( );
     // Disable for "None", Enable for "Appreciates" or "Depreciates"
     enableDisableRate(selection != Model_Asset::RATE_NONE);
 }
@@ -331,7 +331,7 @@ void mmAssetDialog::OnOk(wxCommandEvent& WXUNUSED(event))
         return;
     }
 
-    int valueChangeType = m_valueChange->GetSelection();
+    const int valueChangeType = m_valueChange->GetSelection( );
     if (valueChangeType != Model_Asset::RATE_NONE && !m_valueChangeRate->checkValue(valueChangeRate))
     {
         return;
@@ -341,7 +341,7 @@ void mmAssetDialog::OnOk(wxCommandEvent& WXUNUSED(event))
     wxStringClientData* type_obj = static_cast<wxStringClientData *>(m_assetType->GetClientObject(m_assetType->GetSelection()));
     if (type_obj) asset_type = type_obj->GetData();
 
-    bool is_new = !m_asset;
+    const bool is_new = !m_asset;
     if (is_new) this->m_asset = Model_Asset::instance().create();
 
     m_asset->STARTDATE        = m_dpc->GetValue().FormatISODate();
@@ -352,8 +352,8 @@ void mmAssetDialog::OnOk(wxCommandEvent& WXUNUSED(event))
     m_asset->VALUECHANGERATE  = valueChangeRate;
     m_asset->ASSETTYPE        = asset_type;
 
-    int old_asset_id = m_asset->ASSETID;
-    int new_asset_id = Model_Asset::instance().save(m_asset);
+    const int old_asset_id = m_asset->ASSETID;
+    const int new_asset_id = Model_Asset::instance( ).save( m_asset );
 
     if (old_asset_id < 0)
     {
@@ -364,7 +364,7 @@ void mmAssetDialog::OnOk(wxCommandEvent& WXUNUSED(event))
     UserTransactionPanel::GUI_ERROR g_err = UserTransactionPanel::GUI_ERROR::NONE;
     if (m_transaction_panel->ValidCheckingAccountEntry(g_err))
     {
-        int checking_id = m_transaction_panel->SaveChecking();
+        const int checking_id = m_transaction_panel->SaveChecking();
         if (!m_transfer_entry)
         {
             Model_Translink::SetAssetTranslink(new_asset_id

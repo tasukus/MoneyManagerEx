@@ -56,7 +56,7 @@ ShareTransactionDialog::ShareTransactionDialog(wxWindow* parent, Model_Stock::Da
     : m_dialog_heading(_("Add Share Transaction"))
     , m_stock(stock)
 {
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, m_dialog_heading, wxDefaultPosition, wxSize(400, 300), style);
 }
 
@@ -74,7 +74,7 @@ ShareTransactionDialog::ShareTransactionDialog(wxWindow* parent, Model_Translink
             m_share_entry = Model_Shareinfo::ShareEntry(translink_entry->CHECKINGACCOUNTID);
         }
     }
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, m_dialog_heading, wxDefaultPosition, wxSize(400, 300), style);
 }
 
@@ -350,7 +350,7 @@ void ShareTransactionDialog::OnOk(wxCommandEvent& WXUNUSED(event))
     }
 
     // allow for loyalty shares. These are "Free"
-    bool loyalty_shares = (share_price == 0) && (num_shares > 0);
+    const bool loyalty_shares = (share_price == 0) && (num_shares > 0);
     if (m_stock && loyalty_shares)
     {
         current_price = m_stock->CURRENTPRICE;
@@ -373,7 +373,7 @@ void ShareTransactionDialog::OnOk(wxCommandEvent& WXUNUSED(event))
             num_shares = num_shares * -1;
         }
 
-        int checking_id = m_transaction_panel->SaveChecking();
+        const int checking_id = m_transaction_panel->SaveChecking( );
 
         /*
         // The PURCHASEDATE, field in STOCK table becomes obsolete.

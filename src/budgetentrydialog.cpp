@@ -43,7 +43,7 @@ mmBudgetEntryDialog::mmBudgetEntryDialog(wxWindow* parent
     , catActualAmountStr_(CategoryActual)
 {
     budgetEntry_ = entry;
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("Budget Year Entry"), wxDefaultPosition, wxSize(500, 300), style);
 }
 
@@ -67,8 +67,8 @@ bool mmBudgetEntryDialog::Create(wxWindow* parent
 
 void mmBudgetEntryDialog::fillControls()
 {
-    double amt = budgetEntry_->AMOUNT;
-    int period = Model_Budget::period(budgetEntry_);
+    const double amt = budgetEntry_->AMOUNT;
+    const int period = Model_Budget::period( budgetEntry_ );
     m_FrequencyChooser->SetSelection(period);
     if (period == Model_Budget::NONE && amt == 0.0)
         m_FrequencyChooser->SetSelection(DEF_FREQ_MONTHLY);
@@ -162,7 +162,7 @@ void mmBudgetEntryDialog::CreateControls()
 
 void mmBudgetEntryDialog::OnOk(wxCommandEvent& WXUNUSED(event))
 {
-    int typeSelection = m_choiceType->GetSelection();
+    const int typeSelection = m_choiceType->GetSelection();
     wxString period = Model_Budget::PERIOD_ENUM_CHOICES[m_FrequencyChooser->GetSelection()].second;
     double amt = 0.0;
 

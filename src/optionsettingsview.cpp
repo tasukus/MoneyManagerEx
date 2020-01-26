@@ -108,11 +108,12 @@ void OptionSettingsView::Create()
 
     view_sizer1->Add(new wxStaticText(this, wxID_STATIC, _("HTML scale factor")), g_flagsH);
 
-    int max = 300; int min = 25;
+    constexpr int max = 300;
+    constexpr int min = 25;
     m_scale_factor = new wxSpinCtrl(this, wxID_ANY
         , wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, min, max);
 
-    int vFontSize = Option::instance().getHtmlFontSize();
+    const int vFontSize = Option::instance( ).getHtmlFontSize( );
     m_scale_factor->SetValue(vFontSize);
     m_scale_factor->SetToolTip(_("Specify which scale factor is used for the report pages"));
     view_sizer1->Add(m_scale_factor, g_flagsH);
@@ -177,7 +178,7 @@ void OptionSettingsView::Create()
     wxStaticBoxSizer* userColourSettingStBoxSizer = new wxStaticBoxSizer(userColourSettingStBox, wxHORIZONTAL);
     viewsPanelSizer->Add(userColourSettingStBoxSizer, wxSizerFlags(g_flagsExpand).Proportion(0));
 
-    int size_x = 55;
+    constexpr int size_x = 55;
     m_UDFCB1 = new wxButton(this, wxID_HIGHEST + 11, L"1  \u2588\u2588", wxDefaultPosition, wxSize(size_x, -1), 0);
     m_UDFCB1->SetForegroundColour(mmColors::userDefColor1);
     userColourSettingStBoxSizer->Add(m_UDFCB1, g_flagsH);
@@ -243,7 +244,7 @@ void OptionSettingsView::SaveSettings()
         transVisible = visible_obj->GetData();
     Model_Setting::instance().SetViewTransactions(transVisible);
 
-    int size = m_scale_factor->GetValue();
+    const int size = m_scale_factor->GetValue( );
     Option::instance().setHtmlFontSize(size);
 
     Option::instance().setBudgetFinancialYears(m_budget_financial_years->GetValue());

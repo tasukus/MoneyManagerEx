@@ -203,8 +203,8 @@ bool mmReportsPanel::saveReportText(wxString& error, bool initial)
     rb_->initial_report(initial);
     if (m_date_ranges)
     {
-        int selectedItem = m_date_ranges->GetSelection();
-        int rp = rb_->report_parameters();
+        const int selectedItem = m_date_ranges->GetSelection();
+        const int rp = rb_->report_parameters();
         if (rp & rb_->RepParams::DATE_RANGE)
         {
             mmDateRange* date = static_cast<mmDateRange*>
@@ -303,7 +303,7 @@ void mmReportsPanel::CreateControls()
 
     if (rb_)
     {
-        int rp = rb_->report_parameters();
+        const int rp = rb_->report_parameters();
         bool show_next_prev_buttons = false;
         if (rp & rb_->RepParams::DATE_RANGE)
         {
@@ -329,7 +329,7 @@ void mmReportsPanel::CreateControls()
             itemBoxSizerHeader->Add(m_date_ranges, 0, wxALL, 1);
             itemBoxSizerHeader->AddSpacer(5);
             const mmDateRange* date_range = m_all_date_ranges.at(sel_id);
-            long date_style = wxDP_DROPDOWN | wxDP_SHOWCENTURY;
+            constexpr long date_style = wxDP_DROPDOWN | wxDP_SHOWCENTURY;
             m_start_date = new wxDatePickerCtrl(itemPanel3, ID_CHOICE_START_DATE
                 , wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, date_style);
             m_start_date->SetValue(date_range->start_date());
@@ -354,7 +354,7 @@ void mmReportsPanel::CreateControls()
             mmSetOwnFont(itemStaticTextH1, GetFont().Larger());
             itemBoxSizerHeader->Add(itemStaticTextH1, 0, wxALL | wxALIGN_CENTER_VERTICAL, 1);
             itemBoxSizerHeader->AddSpacer(5);
-            long date_style = wxDP_DROPDOWN | wxDP_SHOWCENTURY;
+            constexpr long date_style = wxDP_DROPDOWN | wxDP_SHOWCENTURY;
             m_start_date = new wxDatePickerCtrl(itemPanel3, ID_CHOICE_START_DATE
                 , wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, date_style);
             m_start_date->SetValue(wxDateTime::Today());
@@ -377,7 +377,7 @@ void mmReportsPanel::CreateControls()
             m_date_ranges = new wxChoice(itemPanel3, ID_CHOICE_DATE_RANGE
                 , wxDefaultPosition, wxDefaultSize, 0, NULL, wxCB_SORT);
 
-            int prev_selection = rb_->getDateSelection();
+            const int prev_selection = rb_->getDateSelection();
             int cur_selection = 0;
             bool sel_found = false;
             for (const auto& e : Model_Budgetyear::instance().all(Model_Budgetyear::COL_BUDGETYEARNAME))
@@ -549,7 +549,7 @@ void mmReportsPanel::OnStartEndDateChanged(wxDateEvent& WXUNUSED(event))
 
 void mmReportsPanel::OnPrevReport(wxCommandEvent& event)
 {
-    int curSel = m_date_ranges->GetCurrentSelection();
+    const int curSel = m_date_ranges->GetCurrentSelection();
     if (curSel > 0)
     {
         m_date_ranges->SetSelection(curSel - 1);
@@ -559,7 +559,7 @@ void mmReportsPanel::OnPrevReport(wxCommandEvent& event)
 
 void mmReportsPanel::OnNextReport(wxCommandEvent& event)
 {
-    int curSel = m_date_ranges->GetCurrentSelection();
+    const int curSel = m_date_ranges->GetCurrentSelection();
     if (curSel + 1 < static_cast<int>(m_date_ranges->GetCount()))
     {
         m_date_ranges->SetSelection(curSel + 1);
@@ -571,7 +571,7 @@ void mmReportsPanel::OnChartChanged(wxCommandEvent& WXUNUSED(event))
 {
     if (rb_)
     {
-        int sel = m_chart->GetSelection();
+        const int sel = m_chart->GetSelection();
         if ((sel == 1) || (sel != rb_->getChartSelection()))
         {
             rb_->chart(sel);
