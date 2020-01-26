@@ -1028,7 +1028,7 @@ void mmFilterTransactionsDialog::from_json(const wxString &data)
     {
         categID_ = category->CATEGID;
     }
-    Model_Subcategory::Data* sub_category = 0;
+    Model_Subcategory::Data* sub_category = nullptr;
     const auto subcateg_name = categ_token.GetNextToken().Trim(false);
     if (!subcateg_name.IsEmpty())
     {

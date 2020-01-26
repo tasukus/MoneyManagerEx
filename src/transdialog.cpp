@@ -957,7 +957,7 @@ void mmTransDialog::SetCategoryForPayee(const Model_Payee::Data *payee)
         Model_Category::Data *category = Model_Category::instance().get(payee->CATEGID);
         if (category)
         {
-            Model_Subcategory::Data *subcategory = (payee->SUBCATEGID != -1 ? Model_Subcategory::instance().get(payee->SUBCATEGID) : 0);
+            Model_Subcategory::Data *subcategory = (payee->SUBCATEGID != -1 ? Model_Subcategory::instance().get(payee->SUBCATEGID) : nullptr);
             wxString fullCategoryName = Model_Category::full_name(category, subcategory);
 
             m_trx_data.CATEGID = payee->CATEGID;

@@ -411,7 +411,7 @@ void mmBudgetingPanel::initVirtualListControl()
     Model_Category::instance().getCategoryStats(categoryStats_
         , nullptr
         , &date_range, Option::instance().getIgnoreFutureTransactions()
-        , false, (evaluateTransfer ? &budgetAmt_ : 0));
+        , false, (evaluateTransfer ? &budgetAmt_ : nullptr));
 
     const Model_Subcategory::Data_Set& allSubcategories = Model_Subcategory::instance().all(Model_Subcategory::COL_SUBCATEGNAME);
     for (const auto& category : Model_Category::instance().all(Model_Category::COL_CATEGNAME))
@@ -659,7 +659,7 @@ void mmBudgetingPanel::OnListItemActivated(int selectedIndex)
 
     Model_Budget::Data_Set budget = Model_Budget::instance().find(Model_Budget::BUDGETYEARID(GetBudgetYearID())
         , Model_Budget::CATEGID(budget_[selectedIndex].first), Model_Budget::SUBCATEGID(budget_[selectedIndex].second));
-    Model_Budget::Data* entry = 0;
+    Model_Budget::Data* entry = nullptr;
     if (budget.empty())
     {
         entry = Model_Budget::instance().create();

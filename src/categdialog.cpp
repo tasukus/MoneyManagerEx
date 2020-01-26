@@ -541,7 +541,7 @@ void mmCategDialog::setTreeSelection(int category_id, int subcategory_id)
     if (!categories.empty())
     {
         const Model_Category::Data *category = Model_Category::instance().get(category_id);
-        const Model_Subcategory::Data *subcategory = (subcategory_id != -1 ? Model_Subcategory::instance().get(subcategory_id) : 0);
+        const Model_Subcategory::Data *subcategory = (subcategory_id != -1 ? Model_Subcategory::instance().get(subcategory_id) : nullptr);
         wxString categoryName = "", subCategoryName = "";
         if (category)
             categoryName = category->CATEGNAME;
@@ -680,6 +680,6 @@ bool mmCategDialog::categShowStatus(int categId, int subCategId)
 wxString mmCategDialog::getFullCategName()
 {
     Model_Category::Data *category = Model_Category::instance().get(m_categ_id);
-    Model_Subcategory::Data *subcategory = (m_subcateg_id != -1 ? Model_Subcategory::instance().get(m_subcateg_id) : 0);
+    Model_Subcategory::Data *subcategory = (m_subcateg_id != -1 ? Model_Subcategory::instance().get(m_subcateg_id) : nullptr);
     return Model_Category::full_name(category, subcategory);
 }
