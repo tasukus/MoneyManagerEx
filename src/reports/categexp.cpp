@@ -199,7 +199,7 @@ wxString mmReportCategoryExpenses::getHTMLText()
     }
     hb.endTbody();
 
-    int span = (getChartSelection() == 0) ? 4 : 3;
+    const int span = (getChartSelection() == 0) ? 4 : 3;
     hb.startTfoot();
     if (type_ == CATEGORY)
     {

@@ -55,7 +55,7 @@ wxString mmReportTransactions::getHTMLText()
     hb.addDivContainer();
 
     const auto account = Model_Account::instance().get(m_transDialog->getAccountID());
-    bool monoAcc = m_transDialog->getAccountCheckBox() && account;
+    const bool monoAcc = m_transDialog->getAccountCheckBox() && account;
     const wxString transHeading = monoAcc
         ? wxString::Format(_("Transaction List for Account: %s"), account->ACCOUNTNAME)
         : _("Transaction List ");
@@ -181,10 +181,10 @@ wxString mmReportTransactions::getHTMLText()
 void mmReportTransactions::Run(mmFilterTransactionsDialog* dlg)
 {
     const auto splits = Model_Splittransaction::instance().get_all();
-    auto categ = m_transDialog->getCategId();
-    auto subcateg = m_transDialog->getSubCategId();
-    bool similar = !m_transDialog->getSimilarStatus();
-    bool category = dlg->getCategoryCheckBox();
+    const auto categ = m_transDialog->getCategId();
+    const auto subcateg = m_transDialog->getSubCategId();
+    const bool similar = !m_transDialog->getSimilarStatus();
+    const bool category = dlg->getCategoryCheckBox();
     for (const auto& tran : Model_Checking::instance().all()) //TODO: find should be faster
     {
         Model_Checking::Full_Data full_tran(m_refAccountID, tran, splits);

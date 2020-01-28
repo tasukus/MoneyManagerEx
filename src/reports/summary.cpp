@@ -127,7 +127,7 @@ mmReportSummaryByDate::mmReportSummaryByDate(int mode)
 
 wxString mmReportSummaryByDate::getHTMLText()
 {
-    size_t account_types_num = Model_Account::INVESTMENT + 1;
+    const size_t account_types_num = Model_Account::INVESTMENT + 1;
     std::map<size_t, double> balancePerDay;
     mmHTMLBuilder   hb;
     wxString        datePrec;
@@ -310,7 +310,7 @@ wxString mmReportSummaryByDate::getHTMLText()
     }
 
     hb.startTbody();
-    int x = 1 + (account_types_num) + 2;
+    const int x = 1 + (account_types_num) + 2;
     for (int k = totBalanceData.size() - x; k >= 0; k -= x)
     {
         if (datePrec.Left(4) != totBalanceData[k].Left(4))

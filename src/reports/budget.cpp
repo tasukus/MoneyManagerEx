@@ -51,7 +51,7 @@ void mmReportBudget::SetBudgetMonth(wxString budgetYearStr, wxDateTime& startDat
     wxStringTokenizer tz(budgetYearStr,"-");
     wxString yearStr = tz.GetNextToken();
     wxString monthStr = tz.GetNextToken();
-    wxDateTime::Month month = static_cast<wxDateTime::Month>(wxAtoi(monthStr) - 1);
+    const wxDateTime::Month month = static_cast<wxDateTime::Month>(wxAtoi(monthStr) - 1);
     startDate.SetMonth(month);
     SetDateToEndOfMonth(month,endDate);
 }

@@ -415,7 +415,7 @@ bool mmAssetsPanel::Create(wxWindow *parent
     if (!wxPanel::Create(parent, winid, pos, size, style, name)) return false;
 
     this->windowsFreezeThaw();
-    wxDateTime start = wxDateTime::UNow();
+    const wxDateTime start = wxDateTime::UNow();
 
     m_tips = _("MMEX allows you to track fixed assets like cars,"
         " houses, land and others. Each asset can have its value"
@@ -726,7 +726,7 @@ void mmAssetsPanel::OnViewPopupSelected(wxCommandEvent& event)
     }
     this->Layout();
 
-    int trx_id = -1;
+    constexpr int trx_id = -1;
     m_listCtrlAssets->doRefreshItems(trx_id);
     updateExtraAssetData(trx_id);
 }
@@ -736,7 +736,7 @@ void mmAssetsPanel::OnSearchTxtEntered(wxCommandEvent& event)
     const wxString search_string = event.GetString().Lower();
     if (search_string.IsEmpty()) return;
 
-    long last = m_listCtrlAssets->GetItemCount();
+    const long last = m_listCtrlAssets->GetItemCount();
     long selectedItem = m_listCtrlAssets->GetNextItem(-1, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
     if (selectedItem < 0) //nothing selected
         selectedItem = m_listCtrlAssets->m_asc ? last - 1 : 0;

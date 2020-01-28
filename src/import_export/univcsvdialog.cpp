@@ -491,16 +491,16 @@ void mmUnivCSVDialog::SetSettings(const wxString &json_data)
         m_userDefinedDateMask = false;
 
     //File
-    Value& file_name = GetValueByPointerWithDefault(json_doc, "/FILE_NAME", "");
+    const Value& file_name = GetValueByPointerWithDefault(json_doc, "/FILE_NAME", "");
     const auto fn = file_name.IsString() ? file_name.GetString() : "";
     m_text_ctrl_->ChangeValue(fn);
 
     // Account
-    Value& account_name = GetValueByPointerWithDefault(json_doc, "/ACCOUNT_NAME", "");
+    const Value& account_name = GetValueByPointerWithDefault(json_doc, "/ACCOUNT_NAME", "");
     const wxString& an = account_name.IsString() ? account_name.GetString() : "";
     if (!an.empty())
     {
-        int itemIndex = m_choice_account_->FindString(an);
+        const int itemIndex = m_choice_account_->FindString(an);
         if (wxNOT_FOUND == itemIndex)
             mmErrorDialogs::MessageError(m_choice_account_
                 , wxString::Format(_("Default account '%s' for this template does not exist.\n"
@@ -516,7 +516,7 @@ void mmUnivCSVDialog::SetSettings(const wxString &json_data)
     //Delimiter
     if (IsCSV())
     {
-        Value& v_delimiter = GetValueByPointerWithDefault(json_doc, "/DELIMITER", "");
+        const Value& v_delimiter = GetValueByPointerWithDefault(json_doc, "/DELIMITER", "");
         const wxString& de = wxString::FromUTF8(v_delimiter.IsString() ? v_delimiter.GetString() : "");
         const wxString& def_delimiter = Model_Infotable::instance().GetStringInfo("DELIMITER", mmex::DEFDELIMTER);
         delimit_ = (de.empty() ? def_delimiter : de);
@@ -524,7 +524,7 @@ void mmUnivCSVDialog::SetSettings(const wxString &json_data)
     }
 
     //Decimal Char
-    Value& v_decimal = GetValueByPointerWithDefault(json_doc, "/DECIMAL", "");
+    const Value& v_decimal = GetValueByPointerWithDefault(json_doc, "/DECIMAL", "");
     const wxString d = wxString::FromUTF8(v_decimal.IsString() ? v_decimal.GetString() : "");
     if (!d.empty()) {
         decimal_ = d;
@@ -546,7 +546,7 @@ void mmUnivCSVDialog::SetSettings(const wxString &json_data)
                 {
                     if (entry.second == value || wxGetTranslation(entry.second) == value)
                     {
-                        int key = entry.first;
+                        const int key = entry.first;
                         csvFieldOrder_.push_back(key);
                         break;
                     }
@@ -560,14 +560,14 @@ void mmUnivCSVDialog::SetSettings(const wxString &json_data)
         // Amount sign.
         if (json_doc.HasMember("AMOUNT_SIGN") && json_doc["AMOUNT_SIGN"].IsInt())
         {
-            int val = json_doc["AMOUNT_SIGN"].GetInt();
+            const int val = json_doc["AMOUNT_SIGN"].GetInt();
             m_choiceAmountFieldSign->Select(val);
         }
 
         // Row selection settings.
         if (json_doc.HasMember("IGNORE_FIRST_ROWS") && json_doc["IGNORE_FIRST_ROWS"].IsInt())
         {
-            int val = json_doc["IGNORE_FIRST_ROWS"].GetInt();
+            const int val = json_doc["IGNORE_FIRST_ROWS"].GetInt();
             m_spinIgnoreFirstRows_->SetRange(m_spinIgnoreFirstRows_->GetMin()
                 , std::max(val, m_spinIgnoreFirstRows_->GetMax())); // Called before file is loaded so max might still be 0.
             m_spinIgnoreFirstRows_->SetValue(val);
@@ -576,7 +576,7 @@ void mmUnivCSVDialog::SetSettings(const wxString &json_data)
         if (json_doc.HasMember("IGNORE_LAST_ROWS") && json_doc["IGNORE_LAST_ROWS"].IsInt())
         {
 
-            int val = json_doc["IGNORE_LAST_ROWS"].GetInt();
+            const int val = json_doc["IGNORE_LAST_ROWS"].GetInt();
             m_spinIgnoreLastRows_->SetRange(m_spinIgnoreLastRows_->GetMin()
                 , std::max(val, m_spinIgnoreLastRows_->GetMax())); // Called before file is loaded so max might still be 0.
             m_spinIgnoreLastRows_->SetValue(val);
@@ -597,7 +597,7 @@ void mmUnivCSVDialog::SetSettings(const wxString &json_data)
 //Selection dialog for fields to be added to listbox
 void mmUnivCSVDialog::OnAdd(wxCommandEvent& WXUNUSED(event))
 {
-    int index = csvFieldCandicate_->GetSelection();
+    const int index = csvFieldCandicate_->GetSelection();
     if (index != wxNOT_FOUND)
     {
         mmListBoxItem* item = static_cast<mmListBoxItem*> (csvFieldCandicate_->GetClientObject(index));
@@ -635,11 +635,11 @@ void mmUnivCSVDialog::OnAdd(wxCommandEvent& WXUNUSED(event))
 //Removes an item from the field list box
 void mmUnivCSVDialog::OnRemove(wxCommandEvent& WXUNUSED(event))
 {
-    int index = csvListBox_->GetSelection();
+    const int index = csvListBox_->GetSelection();
     if (index != wxNOT_FOUND)
     {
         mmListBoxItem *item = static_cast<mmListBoxItem*>(csvListBox_->GetClientObject(index));
-        int item_index = item->getIndex();
+        const int item_index = item->getIndex();
         wxString item_name = item->getName();
 
         if (item_index != UNIV_CSV_DONTCARE)
@@ -706,7 +706,7 @@ void mmUnivCSVDialog::OnSave(wxCommandEvent& WXUNUSED(event))
     json_writer.StartObject();
 
     wxRadioBox* c = static_cast<wxRadioBox*>(FindWindow(wxID_APPLY));
-    int id = c->GetSelection();
+    const int id = c->GetSelection();
     const wxString& settingsPrefix = GetSettingsPrfix();
     const wxString& setting_id = wxString::Format(settingsPrefix + "%d", id);
 
@@ -765,7 +765,7 @@ void mmUnivCSVDialog::OnSave(wxCommandEvent& WXUNUSED(event))
     json_writer.StartArray();
     for (std::vector<int>::const_iterator it = csvFieldOrder_.begin(); it != csvFieldOrder_.end(); ++it)
     {
-        int i = *it;
+        const int i = *it;
         json_writer.String(CSVFieldName_[i].c_str());
     }
     json_writer.EndArray();
@@ -827,8 +827,8 @@ bool mmUnivCSVDialog::validateData(tran_holder & holder)
 void mmUnivCSVDialog::OnImport(wxCommandEvent& WXUNUSED(event))
 {
     // date and amount are required
-    bool datefield = isIndexPresent(UNIV_CSV_DATE);
-    bool amountfields = isIndexPresent(UNIV_CSV_AMOUNT)
+    const bool datefield = isIndexPresent(UNIV_CSV_DATE);
+    const bool amountfields = isIndexPresent(UNIV_CSV_AMOUNT)
         || (isIndexPresent(UNIV_CSV_WITHDRAWAL)
             && isIndexPresent(UNIV_CSV_DEPOSIT));
     if (!datefield || !amountfields)
@@ -870,8 +870,8 @@ void mmUnivCSVDialog::OnImport(wxCommandEvent& WXUNUSED(event))
 
     /* date, payeename, amount(+/-), Number, status, category : subcategory, notes */
     const long totalLines = pParser->GetLinesCount();
-    long firstRow = m_spinIgnoreFirstRows_->GetValue();
-    long lastRow = totalLines - m_spinIgnoreLastRows_->GetValue();
+    const long firstRow = m_spinIgnoreFirstRows_->GetValue();
+    const long lastRow = totalLines - m_spinIgnoreLastRows_->GetValue();
     const long linesToImport = lastRow - firstRow;
     long countEmptyLines = 0;
 
@@ -1042,7 +1042,7 @@ void mmUnivCSVDialog::OnExport(wxCommandEvent& WXUNUSED(event))
         return;
 
     const auto split = Model_Splittransaction::instance().get_all();
-    int fromAccountID = from_account->ACCOUNTID;
+    const int fromAccountID = from_account->ACCOUNTID;
 
     wxDateTime trx_date;
 
@@ -1073,7 +1073,7 @@ void mmUnivCSVDialog::OnExport(wxCommandEvent& WXUNUSED(event))
 
         Model_Checking::Full_Data tran(0, pBankTransaction, split);
 
-        double value = Model_Checking::balance(pBankTransaction, fromAccountID);
+        const double value = Model_Checking::balance(pBankTransaction, fromAccountID);
         account_balance += value;
 
         const wxString& amount = Model_Currency::toStringNoFormatting(value, currency);
@@ -1148,8 +1148,8 @@ void mmUnivCSVDialog::update_preview()
     this->m_list_ctrl_->SetColumnWidth(colCount, 30);
     ++colCount;
 
-    const int MAX_ROWS_IN_PREVIEW = 20;
-    const int MAX_COLS = 30; // Not including line number col.
+    constexpr int MAX_ROWS_IN_PREVIEW = 20;
+    constexpr int MAX_COLS = 30; // Not including line number col.
 
     int date_col = -1;
 
@@ -1187,7 +1187,7 @@ void mmUnivCSVDialog::update_preview()
             unsigned int col = 0;
             wxString buf;
             buf.Printf("%d", col);
-            long itemIndex = m_list_ctrl_->InsertItem(row, buf, 0);
+            const long itemIndex = m_list_ctrl_->InsertItem(row, buf, 0);
             buf.Printf("%d", row + 1);
             m_list_ctrl_->SetItem(itemIndex, col, buf);
 
@@ -1238,7 +1238,7 @@ void mmUnivCSVDialog::update_preview()
         if (from_account)
         {
             const auto split = Model_Splittransaction::instance().get_all();
-            int fromAccountID = from_account->ACCOUNTID;
+            const int fromAccountID = from_account->ACCOUNTID;
             size_t count = 0;
             int row = 0;
             const wxString& delimit = this->delimit_;
@@ -1252,7 +1252,7 @@ void mmUnivCSVDialog::update_preview()
 
                 Model_Checking::Full_Data tran(0, pBankTransaction, split);
 
-                double value = Model_Checking::balance(pBankTransaction, fromAccountID);
+                const double value = Model_Checking::balance(pBankTransaction, fromAccountID);
                 account_balance += value;
 
                 Model_Currency::Data* currency = Model_Account::currency(from_account);
@@ -1333,11 +1333,11 @@ void mmUnivCSVDialog::update_preview()
 
 void mmUnivCSVDialog::OnMoveUp(wxCommandEvent& WXUNUSED(event))
 {
-    int index = csvListBox_->GetSelection();
+    const int index = csvListBox_->GetSelection();
     if (index != wxNOT_FOUND && index != 0)
     {
         mmListBoxItem* item = static_cast<mmListBoxItem*>(csvListBox_->GetClientObject(index));
-        int item_index = item->getIndex();
+        const int item_index = item->getIndex();
         const wxString item_name = item->getName();
 
         csvListBox_->Delete(index);
@@ -1352,11 +1352,11 @@ void mmUnivCSVDialog::OnMoveUp(wxCommandEvent& WXUNUSED(event))
 
 void mmUnivCSVDialog::OnMoveDown(wxCommandEvent& WXUNUSED(event))
 {
-    int index = csvListBox_->GetSelection();
+    const int index = csvListBox_->GetSelection();
     if (index != wxNOT_FOUND && static_cast<size_t>(index) != csvListBox_->GetCount() - 1)
     {
         mmListBoxItem* item = static_cast<mmListBoxItem*>(csvListBox_->GetClientObject(index));
-        int item_index = item->getIndex();
+        const int item_index = item->getIndex();
         wxString item_name = item->getName();
 
         csvListBox_->Delete(index);
@@ -1373,7 +1373,7 @@ void mmUnivCSVDialog::OnStandard(wxCommandEvent& WXUNUSED(event))
 {
     csvListBox_->Clear();
     csvFieldOrder_.clear();
-    int standard[] = { UNIV_CSV_DATE, UNIV_CSV_PAYEE, UNIV_CSV_AMOUNT, UNIV_CSV_CATEGORY, UNIV_CSV_SUBCATEGORY, UNIV_CSV_TRANSNUM, UNIV_CSV_NOTES };
+    const int standard[] = { UNIV_CSV_DATE, UNIV_CSV_PAYEE, UNIV_CSV_AMOUNT, UNIV_CSV_CATEGORY, UNIV_CSV_SUBCATEGORY, UNIV_CSV_TRANSNUM, UNIV_CSV_NOTES };
     for (size_t i = 0; i < sizeof(standard) / sizeof(UNIV_CSV_DATE); ++i)
     {
         csvListBox_->Append(wxGetTranslation(CSVFieldName_[standard[i]]), new mmListBoxItem(standard[i], CSVFieldName_[standard[i]]));
@@ -1381,7 +1381,7 @@ void mmUnivCSVDialog::OnStandard(wxCommandEvent& WXUNUSED(event))
     }
 
     csvFieldCandicate_->Clear();
-    int rest[] = { UNIV_CSV_DONTCARE, UNIV_CSV_WITHDRAWAL, UNIV_CSV_DEPOSIT, UNIV_CSV_BALANCE };
+    const int rest[] = { UNIV_CSV_DONTCARE, UNIV_CSV_WITHDRAWAL, UNIV_CSV_DEPOSIT, UNIV_CSV_BALANCE };
     for (size_t i = 0; i < sizeof(rest) / sizeof(UNIV_CSV_DATE); ++i)
     {
         csvFieldCandicate_->Append(wxGetTranslation(CSVFieldName_[rest[i]]), new mmListBoxItem(rest[i], CSVFieldName_[rest[i]]));
@@ -1412,7 +1412,7 @@ void mmUnivCSVDialog::OnBrowse(wxCommandEvent& WXUNUSED(event))
         break;
     }
 
-    long flags = IsImporter() ? wxFD_FILE_MUST_EXIST | wxFD_OPEN : wxFD_SAVE;
+    const long flags = IsImporter() ? wxFD_FILE_MUST_EXIST | wxFD_OPEN : wxFD_SAVE;
     const wxString defaultWildcard = IsXML() ? wxString() << _("XML Files (*.xml)") << "|*.xml;*.XML|" << _("All Files") << "|" << wxFileSelectorDefaultWildcardStr :
         wxString() << _("CSV Files (*.csv)") << "|*.csv;*.CSV";
     const wxString chooseExt = IsXML() ? "*.xml" : "*.csv";
@@ -1479,7 +1479,7 @@ void mmUnivCSVDialog::OnDelimiterChange(wxCommandEvent& event)
 
 void mmUnivCSVDialog::OnDecimalChange(wxCommandEvent& event)
 {
-    int i = m_choiceDecimalSeparator->GetSelection();
+    const int i = m_choiceDecimalSeparator->GetSelection();
     wxStringClientData* type_obj = static_cast<wxStringClientData*>(m_choiceDecimalSeparator->GetClientObject(i));
     if (type_obj) {
         decimal_ = type_obj->GetData();
@@ -1641,10 +1641,10 @@ void mmUnivCSVDialog::OnFileNameEntered(wxCommandEvent& event)
 
 void mmUnivCSVDialog::OnDateFormatChanged(wxCommandEvent& event)
 {
-    int sel = event.GetInt();
+    const int sel = event.GetInt();
     if (sel == wxNOT_FOUND)
         return;
-    int i = event.GetId();
+    const int i = event.GetId();
     if (i == ID_DATE_FORMAT)
     {
         wxStringClientData* data = static_cast<wxStringClientData*>(choiceDateFormat_->GetClientObject(choiceDateFormat_->GetSelection()));
@@ -1681,8 +1681,8 @@ void mmUnivCSVDialog::OnSpinCtrlIgnoreRows(wxSpinEvent& WXUNUSED(event))
 
 void mmUnivCSVDialog::UpdateListItemBackground()
 {
-    int firstRow = m_spinIgnoreFirstRows_->GetValue();
-    int lastRow = m_list_ctrl_->GetItemCount() - m_spinIgnoreLastRows_->GetValue() - 1;
+    const int firstRow = m_spinIgnoreFirstRows_->GetValue();
+    const int lastRow = m_list_ctrl_->GetItemCount() - m_spinIgnoreLastRows_->GetValue() - 1;
     for (int row = 0; row < m_list_ctrl_->GetItemCount(); row++)
     {
         wxColor color = row >= firstRow && row <= lastRow ? m_list_ctrl_->GetBackgroundColour() : *wxLIGHT_GREY;

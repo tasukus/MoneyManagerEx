@@ -67,7 +67,7 @@ mmNewAcctDialog::mmNewAcctDialog(Model_Account::Data* account, wxWindow* parent,
     : m_account(account)
 {
     m_imageList = navtree_images_list();
-    long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
+    constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("New Account"), wxDefaultPosition, wxDefaultSize, style, name);
     this->Connect(wxID_ANY, wxEVT_CHILD_FOCUS, wxChildFocusEventHandler(mmNewAcctDialog::OnChangeFocus), nullptr, this);
     this->SetMinSize(wxSize(550, 300));
