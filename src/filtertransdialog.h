@@ -45,7 +45,7 @@ public:
     /// Constructors
     mmFilterTransactionsDialog();
     ~mmFilterTransactionsDialog();
-    mmFilterTransactionsDialog(wxWindow* parent, int account_id);
+    mmFilterTransactionsDialog(wxWindow *parent, int account_id);
 
     virtual int ShowModal();
 
@@ -54,7 +54,7 @@ public:
     void getDescription(mmHTMLBuilder &hb, bool html = true);
     bool SomethingSelected();
     void ResetFilterStatus();
-    void setAccountToolTip(const wxString& tip) const;
+    void setAccountToolTip(const wxString &tip) const;
     bool getStatusCheckBox();
     bool getAccountCheckBox();
     int getAccountID();
@@ -83,21 +83,21 @@ private:
 
 private:
     /// Returns true if Status string matches.
-    bool compareStatus(const wxString& itemStatus, const wxString& filterStatus) const;
+    bool compareStatus(const wxString &itemStatus, const wxString &filterStatus) const;
 
     bool getTypeCheckBox();
-    bool allowType(const wxString& typeState, bool sameAccount) const;
+    bool allowType(const wxString &typeState, bool sameAccount) const;
     bool getPayeeCheckBox();
     bool getNumberCheckBox();
     bool getNotesCheckBox();
     void clearSettings();
 
     /// Creation
-    bool Create(wxWindow* parent
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
 
     /// Creates the controls and sizers
@@ -106,52 +106,52 @@ private:
     const wxString GetStoredSettings(int id);
 
     /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOXACCOUNT
-    void OnCheckboxClick( wxCommandEvent& event );
+    void OnCheckboxClick( wxCommandEvent &event );
 
-    void OnButtonokClick(wxCommandEvent& event);
-    void OnButtoncancelClick(wxCommandEvent& event);
+    void OnButtonokClick(wxCommandEvent &event);
+    void OnButtoncancelClick(wxCommandEvent &event);
     void SaveSettings(int menu_item);
-    void OnButtonClearClick(wxCommandEvent& event);
-    void OnMoreFields(wxCommandEvent& event);
-    void OnPayeeUpdated(wxCommandEvent& event);
-    void OnTextEntered(wxCommandEvent& event);
-    void OnDateRangeChanged(wxCommandEvent& event);
-    void OnSaveSettings(wxCommandEvent& event);
-    void OnSettingsSelected(wxCommandEvent& event);
+    void OnButtonClearClick(wxCommandEvent &event);
+    void OnMoreFields(wxCommandEvent &event);
+    void OnPayeeUpdated(wxCommandEvent &event);
+    void OnTextEntered(wxCommandEvent &event);
+    void OnDateRangeChanged(wxCommandEvent &event);
+    void OnSaveSettings(wxCommandEvent &event);
+    void OnSettingsSelected(wxCommandEvent &event);
 
-    void OnCategs(wxCommandEvent& event);
+    void OnCategs(wxCommandEvent &event);
     wxString to_json(bool i18n = false);
     void from_json(const wxString &data);
 
     wxString settings_string_;
     wxString prev_value_;
-    wxCheckBox* accountCheckBox_ = nullptr;
-    wxChoice* accountDropDown_ = nullptr;
-    wxCheckBox* m_dateRangeCheckBox = nullptr;
-    wxDatePickerCtrl* m_fromDateCtrl = nullptr;
-    wxDatePickerCtrl* m_toDateCtrl = nullptr;
-    wxCheckBox* payeeCheckBox_ = nullptr;
-    wxComboBox* cbPayee_ = nullptr;
-    wxCheckBox* categoryCheckBox_ = nullptr;
-    wxButton* btnCategory_ = nullptr;
-    wxBitmapButton* m_btnSaveAs = nullptr;
-    wxChoice* m_setting_name = nullptr;
-    wxCheckBox* similarCategCheckBox_ = nullptr;
-    wxCheckBox* statusCheckBox_ = nullptr;
-    wxChoice* choiceStatus_ = nullptr;
-    wxCheckBox* typeCheckBox_ = nullptr;
-    wxCheckBox* cbTypeWithdrawal_ = nullptr;
-    wxCheckBox* cbTypeDeposit_ = nullptr;
-    wxCheckBox* cbTypeTransferTo_ = nullptr;
-    wxCheckBox* cbTypeTransferFrom_ = nullptr;
-    wxCheckBox* amountRangeCheckBox_ = nullptr;
-    mmTextCtrl* amountMinEdit_ = nullptr;
-    mmTextCtrl* amountMaxEdit_ = nullptr;
-    wxCheckBox* notesCheckBox_ = nullptr;
-    wxTextCtrl* notesEdit_ = nullptr;
-    wxCheckBox* transNumberCheckBox_ = nullptr;
-    wxTextCtrl* transNumberEdit_ = nullptr;
-    wxChoice* m_date_ranges = nullptr;
+    wxCheckBox *accountCheckBox_ = nullptr;
+    wxChoice *accountDropDown_ = nullptr;
+    wxCheckBox *m_dateRangeCheckBox = nullptr;
+    wxDatePickerCtrl *m_fromDateCtrl = nullptr;
+    wxDatePickerCtrl *m_toDateCtrl = nullptr;
+    wxCheckBox *payeeCheckBox_ = nullptr;
+    wxComboBox *cbPayee_ = nullptr;
+    wxCheckBox *categoryCheckBox_ = nullptr;
+    wxButton *btnCategory_ = nullptr;
+    wxBitmapButton *m_btnSaveAs = nullptr;
+    wxChoice *m_setting_name = nullptr;
+    wxCheckBox *similarCategCheckBox_ = nullptr;
+    wxCheckBox *statusCheckBox_ = nullptr;
+    wxChoice *choiceStatus_ = nullptr;
+    wxCheckBox *typeCheckBox_ = nullptr;
+    wxCheckBox *cbTypeWithdrawal_ = nullptr;
+    wxCheckBox *cbTypeDeposit_ = nullptr;
+    wxCheckBox *cbTypeTransferTo_ = nullptr;
+    wxCheckBox *cbTypeTransferFrom_ = nullptr;
+    wxCheckBox *amountRangeCheckBox_ = nullptr;
+    mmTextCtrl *amountMinEdit_ = nullptr;
+    mmTextCtrl *amountMaxEdit_ = nullptr;
+    wxCheckBox *notesCheckBox_ = nullptr;
+    wxTextCtrl *notesEdit_ = nullptr;
+    wxCheckBox *transNumberCheckBox_ = nullptr;
+    wxTextCtrl *transNumberEdit_ = nullptr;
+    wxChoice *m_date_ranges = nullptr;
 
     wxString m_begin_date;
     wxString m_end_date;
@@ -166,8 +166,8 @@ private:
     double m_max_amount = 0.0;
     wxString m_filterStatus;
 
-    mmCustomData* m_custom_fields = nullptr;
-    std::vector<mmDateRange*> m_all_date_ranges;
+    mmCustomData *m_custom_fields = nullptr;
+    std::vector<mmDateRange *> m_all_date_ranges;
 
     enum RepPanel
     {

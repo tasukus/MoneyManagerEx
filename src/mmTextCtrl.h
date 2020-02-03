@@ -34,7 +34,7 @@ public:
                , const wxSize &size = wxDefaultSize
                , long style = 0
                , const wxValidator &validator = wxDefaultValidator
-               , const Model_Currency::Data* currency = Model_Currency::GetBaseCurrency()
+               , const Model_Currency::Data *currency = Model_Currency::GetBaseCurrency()
                , const wxString &name = "mmTextCtrl")
         : wxTextCtrl(parent, id, value, pos, size, style, validator, name)
         , m_currency(currency)
@@ -44,13 +44,13 @@ public:
     void SetValue(double value, int precision);
     //SetValue without generating an event
     void SetValueNoEvent(double value, int precision);
-    void SetValue(double value, const Model_Account::Data* account, int precision = -1);
-    void SetValue(double value, const Model_Currency::Data* currency, int precision = -1);
+    void SetValue(double value, const Model_Account::Data *account, int precision = -1);
+    void SetValue(double value, const Model_Currency::Data *currency, int precision = -1);
     bool Calculate(int alt_precision = -1);
     bool GetDouble(double &amount) const;
     bool checkValue(double &amount, bool positive_value = true);
     wxChar GetDecimalPoint();
 
 private:
-    const Model_Currency::Data* m_currency=nullptr;
+    const Model_Currency::Data *m_currency=nullptr;
 };

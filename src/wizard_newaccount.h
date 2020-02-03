@@ -37,19 +37,19 @@ public:
     int acctID_;
 
 private:
-    wxWizardPageSimple* page1;
+    wxWizardPageSimple *page1;
 };
 //----------------------------------------------------------------------------
 
 class mmAddAccountNamePage : public wxWizardPageSimple
 {
 public:
-    mmAddAccountNamePage(mmAddAccountWizard* parent);
+    mmAddAccountNamePage(mmAddAccountWizard *parent);
     virtual bool TransferDataFromWindow();
 
 private:
-    mmAddAccountWizard* parent_;
-    wxTextCtrl* textAccountName_;
+    mmAddAccountWizard *parent_;
+    wxTextCtrl *textAccountName_;
 };
 //----------------------------------------------------------------------------
 
@@ -60,8 +60,8 @@ public:
     virtual bool TransferDataFromWindow();
 
 private:
-    wxChoice* itemChoiceType_;
-    mmAddAccountWizard* parent_;
+    wxChoice *itemChoiceType_;
+    mmAddAccountWizard *parent_;
 };
 
 //----------------------------------------------------------------------------

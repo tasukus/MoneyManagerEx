@@ -19,7 +19,7 @@
 #include "Model_Budgetsplittransaction.h"
 
 Model_Budgetsplittransaction::Model_Budgetsplittransaction()
-: Model<DB_Table_BUDGETSPLITTRANSACTIONS>()
+    : Model<DB_Table_BUDGETSPLITTRANSACTIONS>()
 {
 }
 
@@ -31,9 +31,9 @@ Model_Budgetsplittransaction::~Model_Budgetsplittransaction()
 * Initialize the global Model_Budgetsplittransaction table.
 * Reset the Model_Budgetsplittransaction table or create the table if it does not exist.
 */
-Model_Budgetsplittransaction& Model_Budgetsplittransaction::instance(wxSQLite3Database* db)
+Model_Budgetsplittransaction &Model_Budgetsplittransaction::instance(wxSQLite3Database *db)
 {
-    Model_Budgetsplittransaction& ins = Singleton<Model_Budgetsplittransaction>::instance();
+    Model_Budgetsplittransaction &ins = Singleton<Model_Budgetsplittransaction>::instance();
     ins.db_ = db;
     ins.destroy_cache();
     ins.ensure(db);
@@ -42,15 +42,18 @@ Model_Budgetsplittransaction& Model_Budgetsplittransaction::instance(wxSQLite3Da
 }
 
 /** Return the static instance of Model_Budgetsplittransaction table */
-Model_Budgetsplittransaction& Model_Budgetsplittransaction::instance()
+Model_Budgetsplittransaction &Model_Budgetsplittransaction::instance()
 {
     return Singleton<Model_Budgetsplittransaction>::instance();
 }
 
-double Model_Budgetsplittransaction::get_total(const Data_Set& rows)
+double Model_Budgetsplittransaction::get_total(const Data_Set &rows)
 {
     double total = 0.0;
-    for (auto& r : rows) total += r.SPLITTRANSAMOUNT;
+    for (auto &r : rows)
+    {
+        total += r.SPLITTRANSAMOUNT;
+    }
 
     return total;
 }
@@ -58,7 +61,7 @@ double Model_Budgetsplittransaction::get_total(const Data_Set& rows)
 std::map<int, Model_Budgetsplittransaction::Data_Set> Model_Budgetsplittransaction::get_all()
 {
     std::map<int, Model_Budgetsplittransaction::Data_Set> data;
-    for (const auto & split : instance().all())
+    for (const auto &split : instance().all())
     {
         data[split.TRANSID].push_back(split);
     }
@@ -66,11 +69,11 @@ std::map<int, Model_Budgetsplittransaction::Data_Set> Model_Budgetsplittransacti
     return data;
 }
 
-int Model_Budgetsplittransaction::update(const Data_Set& rows, int transactionID)
+int Model_Budgetsplittransaction::update(const Data_Set &rows, int transactionID)
 {
 
     Data_Set split = instance().find(TRANSID(transactionID));
-    for (const auto& split_item : split)
+    for (const auto &split_item : split)
     {
         instance().remove(split_item.SPLITTRANSID);
     }

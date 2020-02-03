@@ -41,7 +41,7 @@ class mmCurrencyDialog : public wxDialog
 public:
     mmCurrencyDialog();
     ~mmCurrencyDialog();
-    mmCurrencyDialog(wxWindow* parent, const Model_Currency::Data * currency);
+    mmCurrencyDialog(wxWindow *parent, const Model_Currency::Data *currency);
 
     int getCurrencyID()
     {
@@ -49,33 +49,33 @@ public:
     };
 
 private:
-    bool Create(wxWindow* parent, wxWindowID id,
-                const wxString& caption,
-                const wxPoint& pos,
-                const wxSize& size,
+    bool Create(wxWindow *parent, wxWindowID id,
+                const wxString &caption,
+                const wxPoint &pos,
+                const wxSize &size,
                 long style);
 
     void CreateControls();
     void fillControls();
 
-    void OnOk(wxCommandEvent& event);
-    void OnCancel(wxCommandEvent& event);
-    void OnTextChanged(wxCommandEvent& event);
+    void OnOk(wxCommandEvent &event);
+    void OnCancel(wxCommandEvent &event);
+    void OnTextChanged(wxCommandEvent &event);
 
-    Model_Currency::Data* m_currency=nullptr;
+    Model_Currency::Data *m_currency=nullptr;
     int m_scale = 9;
 
 private:
-    wxChoice* m_currencyType = nullptr;
-    mmTextCtrl* m_currencyName = nullptr;
-    wxStaticText* m_sample_text = nullptr;
-    mmTextCtrl* m_currencySymbol = nullptr;
-    wxTextCtrl* pfxTx_ = nullptr;
-    wxTextCtrl* sfxTx_ = nullptr;
-    wxTextCtrl* decTx_ = nullptr;
-    wxTextCtrl* grpTx_ = nullptr;
-    wxTextCtrl* scaleTx_ = nullptr;
-    wxCheckBox* m_historic = nullptr;
+    wxChoice *m_currencyType = nullptr;
+    mmTextCtrl *m_currencyName = nullptr;
+    wxStaticText *m_sample_text = nullptr;
+    mmTextCtrl *m_currencySymbol = nullptr;
+    wxTextCtrl *pfxTx_ = nullptr;
+    wxTextCtrl *sfxTx_ = nullptr;
+    wxTextCtrl *decTx_ = nullptr;
+    wxTextCtrl *grpTx_ = nullptr;
+    wxTextCtrl *scaleTx_ = nullptr;
+    wxCheckBox *m_historic = nullptr;
 
 };
 

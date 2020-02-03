@@ -28,7 +28,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
             PrettyWriter<StringBuffer> json_writer(json_buffer);
 
             json_writer.StartArray();
-            for (const auto & item: *this)
+            for (const auto &item: *this)
             {
                 json_writer.StartObject();
                 item.as_json(json_writer);
@@ -41,11 +41,11 @@ struct DB_Table_SETTING_V1 : public DB_Table
     };
 
     /** A container to hold a list of Data record pointers for the table in memory*/
-    typedef std::vector<Self::Data*> Cache;
-    typedef std::map<int, Self::Data*> Index_By_Id;
+    typedef std::vector<Self::Data *> Cache;
+    typedef std::map<int, Self::Data *> Index_By_Id;
     Cache cache_;
     Index_By_Id index_by_id_;
-    Data* fake_; // in case the entity not found
+    Data *fake_; // in case the entity not found
 
     /** Destructor: clears any data records stored in memory */
     ~DB_Table_SETTING_V1()
@@ -63,7 +63,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
     }
 
     /** Creates the database table if the table does not exist*/
-    bool ensure(wxSQLite3Database* db)
+    bool ensure(wxSQLite3Database *db)
     {
         if (!exists(db))
         {
@@ -84,7 +84,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
         return true;
     }
 
-    bool ensure_index(wxSQLite3Database* db)
+    bool ensure_index(wxSQLite3Database *db)
     {
         try
         {
@@ -99,7 +99,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
         return true;
     }
 
-    void ensure_data(wxSQLite3Database* db)
+    void ensure_data(wxSQLite3Database *db)
     {
         db->Begin();
         db->Commit();
@@ -107,19 +107,28 @@ struct DB_Table_SETTING_V1 : public DB_Table
 
     struct SETTINGID : public DB_Column<int>
     {
-        static wxString name() { return "SETTINGID"; }
+        static wxString name()
+        {
+            return "SETTINGID";
+        }
         explicit SETTINGID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct SETTINGNAME : public DB_Column<wxString>
     {
-        static wxString name() { return "SETTINGNAME"; }
+        static wxString name()
+        {
+            return "SETTINGNAME";
+        }
         explicit SETTINGNAME(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct SETTINGVALUE : public DB_Column<wxString>
     {
-        static wxString name() { return "SETTINGVALUE"; }
+        static wxString name()
+        {
+            return "SETTINGVALUE";
+        }
         explicit SETTINGVALUE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
@@ -137,21 +146,34 @@ struct DB_Table_SETTING_V1 : public DB_Table
     {
         switch(col)
         {
-            case COL_SETTINGID: return "SETTINGID";
-            case COL_SETTINGNAME: return "SETTINGNAME";
-            case COL_SETTINGVALUE: return "SETTINGVALUE";
-            default: break;
+            case COL_SETTINGID:
+                return "SETTINGID";
+            case COL_SETTINGNAME:
+                return "SETTINGNAME";
+            case COL_SETTINGVALUE:
+                return "SETTINGVALUE";
+            default:
+                break;
         }
 
         return "UNKNOWN";
     }
 
     /** Returns the column number from the given column name*/
-    static COLUMN name_to_column(const wxString& name)
+    static COLUMN name_to_column(const wxString &name)
     {
-        if ("SETTINGID" == name) return COL_SETTINGID;
-        else if ("SETTINGNAME" == name) return COL_SETTINGNAME;
-        else if ("SETTINGVALUE" == name) return COL_SETTINGVALUE;
+        if ("SETTINGID" == name)
+        {
+            return COL_SETTINGID;
+        }
+        else if ("SETTINGNAME" == name)
+        {
+            return COL_SETTINGNAME;
+        }
+        else if ("SETTINGVALUE" == name)
+        {
+            return COL_SETTINGVALUE;
+        }
 
         return COL_UNKNOWN;
     }
@@ -161,7 +183,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
     {
         friend struct DB_Table_SETTING_V1;
         /** This is a instance pointer to itself in memory. */
-        Self* table_;
+        Self *table_;
 
         int SETTINGID; // primary key
         wxString SETTINGNAME;
@@ -177,24 +199,24 @@ struct DB_Table_SETTING_V1 : public DB_Table
             SETTINGID = id;
         }
 
-        bool operator < (const Data& r) const
+        bool operator < (const Data &r) const
         {
             return this->id() < r.id();
         }
 
-        bool operator < (const Data* r) const
+        bool operator < (const Data *r) const
         {
             return this->id() < r->id();
         }
 
-        explicit Data(Self* table = 0)
+        explicit Data(Self *table = 0)
         {
             table_ = table;
 
             SETTINGID = -1;
         }
 
-        explicit Data(wxSQLite3ResultSet& q, Self* table = 0)
+        explicit Data(wxSQLite3ResultSet &q, Self *table = 0)
         {
             table_ = table;
 
@@ -203,16 +225,18 @@ struct DB_Table_SETTING_V1 : public DB_Table
             SETTINGVALUE = q.GetString(2);
         }
 
-        Data& operator=(const Data& other)
+        Data &operator=(const Data &other)
         {
-            if (this == &other) return *this;
+            if (this == &other)
+            {
+                return *this;
+            }
 
             SETTINGID = other.SETTINGID;
             SETTINGNAME = other.SETTINGNAME;
             SETTINGVALUE = other.SETTINGVALUE;
             return *this;
         }
-
 
         bool match(const Self::SETTINGID &in) const
         {
@@ -243,7 +267,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
         }
 
         /** Add the field data as json key:value pairs */
-        void as_json(PrettyWriter<StringBuffer>& json_writer) const
+        void as_json(PrettyWriter<StringBuffer> &json_writer) const
         {
             json_writer.Key("SETTINGID");
             json_writer.Int(this->SETTINGID);
@@ -262,7 +286,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
             return row;
         }
 
-        void to_template(html_template& t) const
+        void to_template(html_template &t) const
         {
             t(L"SETTINGID") = SETTINGID;
             t(L"SETTINGNAME") = SETTINGNAME;
@@ -270,9 +294,12 @@ struct DB_Table_SETTING_V1 : public DB_Table
         }
 
         /** Save the record instance in memory to the database. */
-        bool save(wxSQLite3Database* db)
+        bool save(wxSQLite3Database *db)
         {
-            if (db && db->IsReadOnly()) return false;
+            if (db && db->IsReadOnly())
+            {
+                return false;
+            }
             if (!table_ || !db)
             {
                 wxLogError("can not save SETTING_V1");
@@ -283,7 +310,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
         }
 
         /** Remove the record instance from memory and the database. */
-        bool remove(wxSQLite3Database* db)
+        bool remove(wxSQLite3Database *db)
         {
             if (!table_ || !db)
             {
@@ -305,10 +332,16 @@ struct DB_Table_SETTING_V1 : public DB_Table
         NUM_COLUMNS = 3
     };
 
-    size_t num_columns() const { return NUM_COLUMNS; }
+    size_t num_columns() const
+    {
+        return NUM_COLUMNS;
+    }
 
     /** Name of the table */
-    wxString name() const { return "SETTING_V1"; }
+    wxString name() const
+    {
+        return "SETTING_V1";
+    }
 
     DB_Table_SETTING_V1() : fake_(new Data())
     {
@@ -316,17 +349,17 @@ struct DB_Table_SETTING_V1 : public DB_Table
     }
 
     /** Create a new Data record and add to memory table (cache) */
-    Self::Data* create()
+    Self::Data *create()
     {
-        Self::Data* entity = new Self::Data(this);
+        Self::Data *entity = new Self::Data(this);
         cache_.push_back(entity);
         return entity;
     }
 
     /** Create a copy of the Data record and add to memory table (cache) */
-    Self::Data* clone(const Data* e)
+    Self::Data *clone(const Data *e)
     {
-        Self::Data* entity = create();
+        Self::Data *entity = create();
         *entity = *e;
         entity->id(-1);
         return entity;
@@ -337,7 +370,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
     * Either create a new record or update the existing record.
     * Remove old record from the memory table (cache)
     */
-    bool save(Self::Data* entity, wxSQLite3Database* db)
+    bool save(Self::Data *entity, wxSQLite3Database *db)
     {
         wxString sql = wxEmptyString;
         if (entity->id() <= 0) //  new & insert
@@ -356,7 +389,9 @@ struct DB_Table_SETTING_V1 : public DB_Table
             stmt.Bind(1, entity->SETTINGNAME);
             stmt.Bind(2, entity->SETTINGVALUE);
             if (entity->id() > 0)
+            {
                 stmt.Bind(3, entity->SETTINGID);
+            }
 
             stmt.ExecuteUpdate();
             stmt.Finalize();
@@ -365,9 +400,11 @@ struct DB_Table_SETTING_V1 : public DB_Table
             {
                 for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
                 {
-                    Self::Data* e = *it;
+                    Self::Data *e = *it;
                     if (e->id() == entity->id())
-                        *e = *entity;  // in-place update
+                    {
+                        *e = *entity;    // in-place update
+                    }
                 }
             }
         }
@@ -386,9 +423,12 @@ struct DB_Table_SETTING_V1 : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(int id, wxSQLite3Database* db)
+    bool remove(int id, wxSQLite3Database *db)
     {
-        if (id <= 0) return false;
+        if (id <= 0)
+        {
+            return false;
+        }
         try
         {
             wxString sql = "DELETE FROM SETTING_V1 WHERE SETTINGID = ?";
@@ -400,7 +440,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
             Cache c;
             for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
             {
-                Self::Data* entity = *it;
+                Self::Data *entity = *it;
                 if (entity->id() == id)
                 {
                     index_by_id_.erase(entity->id());
@@ -424,7 +464,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(Self::Data* entity, wxSQLite3Database* db)
+    bool remove(Self::Data *entity, wxSQLite3Database *db)
     {
         if (remove(entity->id(), db))
         {
@@ -436,11 +476,11 @@ struct DB_Table_SETTING_V1 : public DB_Table
     }
 
     template<typename... Args>
-    Self::Data* get_one(const Args& ... args)
+    Self::Data *get_one(const Args &... args)
     {
         for (Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it)
         {
-            Self::Data* item = it->second;
+            Self::Data *item = it->second;
             if (item->id() > 0 && match(item, args...))
             {
                 ++ hit_;
@@ -457,7 +497,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data* get(int id, wxSQLite3Database* db)
+    Self::Data *get(int id, wxSQLite3Database *db)
     {
         if (id <= 0)
         {
@@ -473,7 +513,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
         }
 
         ++ miss_;
-        Self::Data* entity = 0;
+        Self::Data *entity = 0;
         wxString where = wxString::Format(" WHERE %s = ?", PRIMARY::name().c_str());
         try
         {
@@ -507,7 +547,7 @@ struct DB_Table_SETTING_V1 : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all(wxSQLite3Database* db, COLUMN col = COLUMN(0), bool asc = true)
+    const Data_Set all(wxSQLite3Database *db, COLUMN col = COLUMN(0), bool asc = true)
     {
         Data_Set result;
         try

@@ -28,7 +28,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
             PrettyWriter<StringBuffer> json_writer(json_buffer);
 
             json_writer.StartArray();
-            for (const auto & item: *this)
+            for (const auto &item: *this)
             {
                 json_writer.StartObject();
                 item.as_json(json_writer);
@@ -41,11 +41,11 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     };
 
     /** A container to hold a list of Data record pointers for the table in memory*/
-    typedef std::vector<Self::Data*> Cache;
-    typedef std::map<int, Self::Data*> Index_By_Id;
+    typedef std::vector<Self::Data *> Cache;
+    typedef std::map<int, Self::Data *> Index_By_Id;
     Cache cache_;
     Index_By_Id index_by_id_;
-    Data* fake_; // in case the entity not found
+    Data *fake_; // in case the entity not found
 
     /** Destructor: clears any data records stored in memory */
     ~DB_Table_CURRENCYFORMATS()
@@ -63,7 +63,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     }
 
     /** Creates the database table if the table does not exist*/
-    bool ensure(wxSQLite3Database* db)
+    bool ensure(wxSQLite3Database *db)
     {
         if (!exists(db))
         {
@@ -84,7 +84,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
         return true;
     }
 
-    bool ensure_index(wxSQLite3Database* db)
+    bool ensure_index(wxSQLite3Database *db)
     {
         try
         {
@@ -99,7 +99,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
         return true;
     }
 
-    void ensure_data(wxSQLite3Database* db)
+    void ensure_data(wxSQLite3Database *db)
     {
         db->Begin();
         db->ExecuteUpdate(wxString::Format("INSERT INTO CURRENCYFORMATS VALUES ('1', '%s', '$', '', '.', ' ', '100', 'USD', 'Fiat', '0')", wxTRANSLATE("US Dollar")));
@@ -296,7 +296,8 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
         db->ExecuteUpdate(wxString::Format("INSERT INTO CURRENCYFORMATS VALUES ('192', '%s', '', '', '.', ',', '100', 'ECV', 'Fiat', '1')", wxTRANSLATE("Unidad de Valor Constante (UVC) (before 2000-09)")));
         db->ExecuteUpdate(wxString::Format("INSERT INTO CURRENCYFORMATS VALUES ('193', '%s', '', '', '.', ',', '100', 'EEK', 'Fiat', '1')", wxTRANSLATE("Kroon (before 2011-01)")));
         db->ExecuteUpdate(wxString::Format("INSERT INTO CURRENCYFORMATS VALUES ('194', '%s', '', '', '.', ',', '100', 'ESA', 'Fiat', '1')", wxTRANSLATE("Spanish Peseta (1978 to 1981)")));
-        db->ExecuteUpdate(wxString::Format("INSERT INTO CURRENCYFORMATS VALUES ('195', '%s', '', '', '.', ',', '100', 'ESB', 'Fiat', '1')", wxTRANSLATE("A Account (convertible Peseta Account) (before 1994-12)")));
+        db->ExecuteUpdate(wxString::Format("INSERT INTO CURRENCYFORMATS VALUES ('195', '%s', '', '', '.', ',', '100', 'ESB', 'Fiat', '1')",
+                                           wxTRANSLATE("A Account (convertible Peseta Account) (before 1994-12)")));
         db->ExecuteUpdate(wxString::Format("INSERT INTO CURRENCYFORMATS VALUES ('196', '%s', '', '', '.', ',', '100', 'ESP', 'Fiat', '1')", wxTRANSLATE("Spanish Peseta (before 2002-03)")));
         db->ExecuteUpdate(wxString::Format("INSERT INTO CURRENCYFORMATS VALUES ('197', '%s', '', '', '.', ',', '100', 'FIM', 'Fiat', '1')", wxTRANSLATE("Markka (before 2002-03)")));
         db->ExecuteUpdate(wxString::Format("INSERT INTO CURRENCYFORMATS VALUES ('198', '%s', '', '', '.', ',', '100', 'FRF', 'Fiat', '1')", wxTRANSLATE("French Franc (before 1999-01)")));
@@ -386,61 +387,91 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
 
     struct CURRENCYID : public DB_Column<int>
     {
-        static wxString name() { return "CURRENCYID"; }
+        static wxString name()
+        {
+            return "CURRENCYID";
+        }
         explicit CURRENCYID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct CURRENCYNAME : public DB_Column<wxString>
     {
-        static wxString name() { return "CURRENCYNAME"; }
+        static wxString name()
+        {
+            return "CURRENCYNAME";
+        }
         explicit CURRENCYNAME(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct PFX_SYMBOL : public DB_Column<wxString>
     {
-        static wxString name() { return "PFX_SYMBOL"; }
+        static wxString name()
+        {
+            return "PFX_SYMBOL";
+        }
         explicit PFX_SYMBOL(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct SFX_SYMBOL : public DB_Column<wxString>
     {
-        static wxString name() { return "SFX_SYMBOL"; }
+        static wxString name()
+        {
+            return "SFX_SYMBOL";
+        }
         explicit SFX_SYMBOL(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct DECIMAL_POINT : public DB_Column<wxString>
     {
-        static wxString name() { return "DECIMAL_POINT"; }
+        static wxString name()
+        {
+            return "DECIMAL_POINT";
+        }
         explicit DECIMAL_POINT(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct GROUP_SEPARATOR : public DB_Column<wxString>
     {
-        static wxString name() { return "GROUP_SEPARATOR"; }
+        static wxString name()
+        {
+            return "GROUP_SEPARATOR";
+        }
         explicit GROUP_SEPARATOR(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct SCALE : public DB_Column<int>
     {
-        static wxString name() { return "SCALE"; }
+        static wxString name()
+        {
+            return "SCALE";
+        }
         explicit SCALE(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct CURRENCY_SYMBOL : public DB_Column<wxString>
     {
-        static wxString name() { return "CURRENCY_SYMBOL"; }
+        static wxString name()
+        {
+            return "CURRENCY_SYMBOL";
+        }
         explicit CURRENCY_SYMBOL(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct CURRENCY_TYPE : public DB_Column<wxString>
     {
-        static wxString name() { return "CURRENCY_TYPE"; }
+        static wxString name()
+        {
+            return "CURRENCY_TYPE";
+        }
         explicit CURRENCY_TYPE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct HISTORIC : public DB_Column<int>
     {
-        static wxString name() { return "HISTORIC"; }
+        static wxString name()
+        {
+            return "HISTORIC";
+        }
         explicit HISTORIC(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
@@ -465,35 +496,76 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     {
         switch(col)
         {
-            case COL_CURRENCYID: return "CURRENCYID";
-            case COL_CURRENCYNAME: return "CURRENCYNAME";
-            case COL_PFX_SYMBOL: return "PFX_SYMBOL";
-            case COL_SFX_SYMBOL: return "SFX_SYMBOL";
-            case COL_DECIMAL_POINT: return "DECIMAL_POINT";
-            case COL_GROUP_SEPARATOR: return "GROUP_SEPARATOR";
-            case COL_SCALE: return "SCALE";
-            case COL_CURRENCY_SYMBOL: return "CURRENCY_SYMBOL";
-            case COL_CURRENCY_TYPE: return "CURRENCY_TYPE";
-            case COL_HISTORIC: return "HISTORIC";
-            default: break;
+            case COL_CURRENCYID:
+                return "CURRENCYID";
+            case COL_CURRENCYNAME:
+                return "CURRENCYNAME";
+            case COL_PFX_SYMBOL:
+                return "PFX_SYMBOL";
+            case COL_SFX_SYMBOL:
+                return "SFX_SYMBOL";
+            case COL_DECIMAL_POINT:
+                return "DECIMAL_POINT";
+            case COL_GROUP_SEPARATOR:
+                return "GROUP_SEPARATOR";
+            case COL_SCALE:
+                return "SCALE";
+            case COL_CURRENCY_SYMBOL:
+                return "CURRENCY_SYMBOL";
+            case COL_CURRENCY_TYPE:
+                return "CURRENCY_TYPE";
+            case COL_HISTORIC:
+                return "HISTORIC";
+            default:
+                break;
         }
 
         return "UNKNOWN";
     }
 
     /** Returns the column number from the given column name*/
-    static COLUMN name_to_column(const wxString& name)
+    static COLUMN name_to_column(const wxString &name)
     {
-        if ("CURRENCYID" == name) return COL_CURRENCYID;
-        else if ("CURRENCYNAME" == name) return COL_CURRENCYNAME;
-        else if ("PFX_SYMBOL" == name) return COL_PFX_SYMBOL;
-        else if ("SFX_SYMBOL" == name) return COL_SFX_SYMBOL;
-        else if ("DECIMAL_POINT" == name) return COL_DECIMAL_POINT;
-        else if ("GROUP_SEPARATOR" == name) return COL_GROUP_SEPARATOR;
-        else if ("SCALE" == name) return COL_SCALE;
-        else if ("CURRENCY_SYMBOL" == name) return COL_CURRENCY_SYMBOL;
-        else if ("CURRENCY_TYPE" == name) return COL_CURRENCY_TYPE;
-        else if ("HISTORIC" == name) return COL_HISTORIC;
+        if ("CURRENCYID" == name)
+        {
+            return COL_CURRENCYID;
+        }
+        else if ("CURRENCYNAME" == name)
+        {
+            return COL_CURRENCYNAME;
+        }
+        else if ("PFX_SYMBOL" == name)
+        {
+            return COL_PFX_SYMBOL;
+        }
+        else if ("SFX_SYMBOL" == name)
+        {
+            return COL_SFX_SYMBOL;
+        }
+        else if ("DECIMAL_POINT" == name)
+        {
+            return COL_DECIMAL_POINT;
+        }
+        else if ("GROUP_SEPARATOR" == name)
+        {
+            return COL_GROUP_SEPARATOR;
+        }
+        else if ("SCALE" == name)
+        {
+            return COL_SCALE;
+        }
+        else if ("CURRENCY_SYMBOL" == name)
+        {
+            return COL_CURRENCY_SYMBOL;
+        }
+        else if ("CURRENCY_TYPE" == name)
+        {
+            return COL_CURRENCY_TYPE;
+        }
+        else if ("HISTORIC" == name)
+        {
+            return COL_HISTORIC;
+        }
 
         return COL_UNKNOWN;
     }
@@ -503,7 +575,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     {
         friend struct DB_Table_CURRENCYFORMATS;
         /** This is a instance pointer to itself in memory. */
-        Self* table_;
+        Self *table_;
 
         int CURRENCYID; // primary key
         wxString CURRENCYNAME;
@@ -526,17 +598,17 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
             CURRENCYID = id;
         }
 
-        bool operator < (const Data& r) const
+        bool operator < (const Data &r) const
         {
             return this->id() < r.id();
         }
 
-        bool operator < (const Data* r) const
+        bool operator < (const Data *r) const
         {
             return this->id() < r->id();
         }
 
-        explicit Data(Self* table = 0)
+        explicit Data(Self *table = 0)
         {
             table_ = table;
 
@@ -545,7 +617,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
             HISTORIC = -1;
         }
 
-        explicit Data(wxSQLite3ResultSet& q, Self* table = 0)
+        explicit Data(wxSQLite3ResultSet &q, Self *table = 0)
         {
             table_ = table;
 
@@ -561,9 +633,12 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
             HISTORIC = q.GetInt(9);
         }
 
-        Data& operator=(const Data& other)
+        Data &operator=(const Data &other)
         {
-            if (this == &other) return *this;
+            if (this == &other)
+            {
+                return *this;
+            }
 
             CURRENCYID = other.CURRENCYID;
             CURRENCYNAME = other.CURRENCYNAME;
@@ -577,7 +652,6 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
             HISTORIC = other.HISTORIC;
             return *this;
         }
-
 
         bool match(const Self::CURRENCYID &in) const
         {
@@ -643,7 +717,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
         }
 
         /** Add the field data as json key:value pairs */
-        void as_json(PrettyWriter<StringBuffer>& json_writer) const
+        void as_json(PrettyWriter<StringBuffer> &json_writer) const
         {
             json_writer.Key("CURRENCYID");
             json_writer.Int(this->CURRENCYID);
@@ -683,7 +757,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
             return row;
         }
 
-        void to_template(html_template& t) const
+        void to_template(html_template &t) const
         {
             t(L"CURRENCYID") = CURRENCYID;
             t(L"CURRENCYNAME") = CURRENCYNAME;
@@ -698,9 +772,12 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
         }
 
         /** Save the record instance in memory to the database. */
-        bool save(wxSQLite3Database* db)
+        bool save(wxSQLite3Database *db)
         {
-            if (db && db->IsReadOnly()) return false;
+            if (db && db->IsReadOnly())
+            {
+                return false;
+            }
             if (!table_ || !db)
             {
                 wxLogError("can not save CURRENCYFORMATS");
@@ -711,7 +788,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
         }
 
         /** Remove the record instance from memory and the database. */
-        bool remove(wxSQLite3Database* db)
+        bool remove(wxSQLite3Database *db)
         {
             if (!table_ || !db)
             {
@@ -733,10 +810,16 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
         NUM_COLUMNS = 10
     };
 
-    size_t num_columns() const { return NUM_COLUMNS; }
+    size_t num_columns() const
+    {
+        return NUM_COLUMNS;
+    }
 
     /** Name of the table */
-    wxString name() const { return "CURRENCYFORMATS"; }
+    wxString name() const
+    {
+        return "CURRENCYFORMATS";
+    }
 
     DB_Table_CURRENCYFORMATS() : fake_(new Data())
     {
@@ -744,17 +827,17 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     }
 
     /** Create a new Data record and add to memory table (cache) */
-    Self::Data* create()
+    Self::Data *create()
     {
-        Self::Data* entity = new Self::Data(this);
+        Self::Data *entity = new Self::Data(this);
         cache_.push_back(entity);
         return entity;
     }
 
     /** Create a copy of the Data record and add to memory table (cache) */
-    Self::Data* clone(const Data* e)
+    Self::Data *clone(const Data *e)
     {
-        Self::Data* entity = create();
+        Self::Data *entity = create();
         *entity = *e;
         entity->id(-1);
         return entity;
@@ -765,7 +848,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     * Either create a new record or update the existing record.
     * Remove old record from the memory table (cache)
     */
-    bool save(Self::Data* entity, wxSQLite3Database* db)
+    bool save(Self::Data *entity, wxSQLite3Database *db)
     {
         wxString sql = wxEmptyString;
         if (entity->id() <= 0) //  new & insert
@@ -791,7 +874,9 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
             stmt.Bind(8, entity->CURRENCY_TYPE);
             stmt.Bind(9, entity->HISTORIC);
             if (entity->id() > 0)
+            {
                 stmt.Bind(10, entity->CURRENCYID);
+            }
 
             stmt.ExecuteUpdate();
             stmt.Finalize();
@@ -800,9 +885,11 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
             {
                 for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
                 {
-                    Self::Data* e = *it;
+                    Self::Data *e = *it;
                     if (e->id() == entity->id())
-                        *e = *entity;  // in-place update
+                    {
+                        *e = *entity;    // in-place update
+                    }
                 }
             }
         }
@@ -821,9 +908,12 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(int id, wxSQLite3Database* db)
+    bool remove(int id, wxSQLite3Database *db)
     {
-        if (id <= 0) return false;
+        if (id <= 0)
+        {
+            return false;
+        }
         try
         {
             wxString sql = "DELETE FROM CURRENCYFORMATS WHERE CURRENCYID = ?";
@@ -835,7 +925,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
             Cache c;
             for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
             {
-                Self::Data* entity = *it;
+                Self::Data *entity = *it;
                 if (entity->id() == id)
                 {
                     index_by_id_.erase(entity->id());
@@ -859,7 +949,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(Self::Data* entity, wxSQLite3Database* db)
+    bool remove(Self::Data *entity, wxSQLite3Database *db)
     {
         if (remove(entity->id(), db))
         {
@@ -871,11 +961,11 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     }
 
     template<typename... Args>
-    Self::Data* get_one(const Args& ... args)
+    Self::Data *get_one(const Args &... args)
     {
         for (Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it)
         {
-            Self::Data* item = it->second;
+            Self::Data *item = it->second;
             if (item->id() > 0 && match(item, args...))
             {
                 ++ hit_;
@@ -892,7 +982,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data* get(int id, wxSQLite3Database* db)
+    Self::Data *get(int id, wxSQLite3Database *db)
     {
         if (id <= 0)
         {
@@ -908,7 +998,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
         }
 
         ++ miss_;
-        Self::Data* entity = 0;
+        Self::Data *entity = 0;
         wxString where = wxString::Format(" WHERE %s = ?", PRIMARY::name().c_str());
         try
         {
@@ -942,7 +1032,7 @@ struct DB_Table_CURRENCYFORMATS : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all(wxSQLite3Database* db, COLUMN col = COLUMN(0), bool asc = true)
+    const Data_Set all(wxSQLite3Database *db, COLUMN col = COLUMN(0), bool asc = true)
     {
         Data_Set result;
         try

@@ -41,23 +41,23 @@ class SplitTransactionDialog: public wxDialog
 public:
     /// Constructors
     SplitTransactionDialog();
-    SplitTransactionDialog(wxWindow* parent
-                           , std::vector<Split>& split
+    SplitTransactionDialog(wxWindow *parent
+                           , std::vector<Split> &split
                            , int transType
                            , int accountID
                            , double totalAmount = 0.0
-                           , const wxString& name = "SplitTransactionDialog"
+                           , const wxString &name = "SplitTransactionDialog"
                           );
 
     /// Creation
     bool Create(
-        wxWindow* parent,
+        wxWindow *parent,
         wxWindowID id,
-        const wxString& caption,
-        const wxPoint& pos,
-        const wxSize& size,
+        const wxString &caption,
+        const wxPoint &pos,
+        const wxSize &size,
         long style
-        , const wxString& name
+        , const wxString &name
     );
     std::vector<Split> getResult()
     {
@@ -76,19 +76,19 @@ private:
     void DataToControls();
 
     /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_NEW
-    void OnButtonAddClick( wxCommandEvent& event );
+    void OnButtonAddClick( wxCommandEvent &event );
 
     /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_DELETE
-    void OnButtonRemoveClick( wxCommandEvent& event );
+    void OnButtonRemoveClick( wxCommandEvent &event );
 
     /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EDIT
-    void OnButtonEditClick( wxCommandEvent& event );
-    void OnOk( wxCommandEvent& event );
+    void OnButtonEditClick( wxCommandEvent &event );
+    void OnOk( wxCommandEvent &event );
 
     void UpdateSplitTotal();
 
-    wxDataViewListCtrl* lcSplit_ = nullptr;
-    wxStaticText* transAmount_ = nullptr;
+    wxDataViewListCtrl *lcSplit_ = nullptr;
+    wxStaticText *transAmount_ = nullptr;
 
     std::vector<Split> m_splits;
     std::vector<Split> m_local_splits;
@@ -97,14 +97,14 @@ private:
     double totalAmount_ = -1;
     bool items_changed_ = false;
 
-    wxButton* itemButtonNew_ = nullptr;
-    wxButton* itemButtonEdit_ = nullptr;
-    wxButton* itemButtonDelete_ = nullptr;
-    wxButton* itemButtonOK_ = nullptr;
+    wxButton *itemButtonNew_ = nullptr;
+    wxButton *itemButtonEdit_ = nullptr;
+    wxButton *itemButtonDelete_ = nullptr;
+    wxButton *itemButtonOK_ = nullptr;
 
     void SetDisplayEditDeleteButtons();
-    void OnListDblClick(wxDataViewEvent& event);
-    void OnListItemSelected(wxDataViewEvent& event);
+    void OnListDblClick(wxDataViewEvent &event);
+    void OnListItemSelected(wxDataViewEvent &event);
     void EditEntry(int id);
     int selectedIndex_ = -1;
 };

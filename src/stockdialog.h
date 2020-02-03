@@ -37,40 +37,40 @@ class mmStockDialog : public wxDialog
 
 public:
     mmStockDialog();
-    mmStockDialog(wxWindow* parent
-                  , mmGUIFrame* gui_frame
-                  , Model_Stock::Data* stock
+    mmStockDialog(wxWindow *parent
+                  , mmGUIFrame *gui_frame
+                  , Model_Stock::Data *stock
                   , int accountID
-                  , const wxString& name = "mmStockDialog"
+                  , const wxString &name = "mmStockDialog"
                  );
 
-    bool Create(wxWindow* parent, wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+    bool Create(wxWindow *parent, wxWindowID id
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style
-                , const wxString& name = "mmStockDialog"
+                , const wxString &name = "mmStockDialog"
                );
 
     int m_stock_id = -1;
 
 private:
-    void OnQuit(wxCloseEvent& event);
-    void OnSave(wxCommandEvent& event);
-    void OnCancel(wxCommandEvent& event);
-    void OnAttachments(wxCommandEvent& event);
-    void OnStockPriceButton(wxCommandEvent& event);
-    void OnHistoryImportButton(wxCommandEvent& event);
-    void OnHistoryDownloadButton(wxCommandEvent& event);
-    void OnFocusChange(wxChildFocusEvent& event);
-    void OnSelectionChanged(wxDataViewEvent& event);
-    void OnListValueEditingDone(wxDataViewEvent& event);
-    void OnListValueChanged(wxDataViewEvent& event);
-    void OnTextEntered(wxCommandEvent& event);
-    void OnMagicButton(wxCommandEvent& event);
-    void OnItemRightClick(wxDataViewEvent& event);
-    void OnMenuSelected(wxCommandEvent& event);
-    void OnHistoryAddUpdateEntry(wxCommandEvent& event);
+    void OnQuit(wxCloseEvent &event);
+    void OnSave(wxCommandEvent &event);
+    void OnCancel(wxCommandEvent &event);
+    void OnAttachments(wxCommandEvent &event);
+    void OnStockPriceButton(wxCommandEvent &event);
+    void OnHistoryImportButton(wxCommandEvent &event);
+    void OnHistoryDownloadButton(wxCommandEvent &event);
+    void OnFocusChange(wxChildFocusEvent &event);
+    void OnSelectionChanged(wxDataViewEvent &event);
+    void OnListValueEditingDone(wxDataViewEvent &event);
+    void OnListValueChanged(wxDataViewEvent &event);
+    void OnTextEntered(wxCommandEvent &event);
+    void OnMagicButton(wxCommandEvent &event);
+    void OnItemRightClick(wxDataViewEvent &event);
+    void OnMenuSelected(wxCommandEvent &event);
+    void OnHistoryAddUpdateEntry(wxCommandEvent &event);
 
     void OnMenuAddSelected();
     void OnHistoryDelete();
@@ -78,35 +78,35 @@ private:
     void CreateControls();
     void UpdateControls();
     void DataToControls();
-    void RefreshStockHistory(const wxString& symbol);
-    void CreateShareAccount(Model_Account::Data* stock_account, const wxString& name);
+    void RefreshStockHistory(const wxString &symbol);
+    void CreateShareAccount(Model_Account::Data *stock_account, const wxString &name);
 
-    mmTextCtrl* m_stock_symbol_ctrl=nullptr;
-    mmTextCtrl* m_stock_name_ctrl=nullptr;
-    wxDatePickerCtrl* m_purchase_date_ctrl=nullptr; //*Date
-    mmTextCtrl* m_num_shares_ctrl=nullptr; //*Share Number
-    mmTextCtrl* m_share_price_ctrl=nullptr; //*Share Price
-    wxStaticText* m_share_price_txt=nullptr;
-    mmTextCtrl* m_commission_ctrl=nullptr;
-    mmTextCtrl* m_current_price_ctrl=nullptr;
-    mmTextCtrl* m_notes_ctrl=nullptr;
-    wxStaticText* m_value_investment=nullptr; //Current Value
-    wxBitmapButton* m_bAttachments=nullptr;
-    wxDataViewListCtrl* m_price_listbox=nullptr;
-    wxDatePickerCtrl* m_history_date_ctrl=nullptr;
-    mmTextCtrl* m_exchange_text=nullptr;
+    mmTextCtrl *m_stock_symbol_ctrl=nullptr;
+    mmTextCtrl *m_stock_name_ctrl=nullptr;
+    wxDatePickerCtrl *m_purchase_date_ctrl=nullptr; //*Date
+    mmTextCtrl *m_num_shares_ctrl=nullptr; //*Share Number
+    mmTextCtrl *m_share_price_ctrl=nullptr; //*Share Price
+    wxStaticText *m_share_price_txt=nullptr;
+    mmTextCtrl *m_commission_ctrl=nullptr;
+    mmTextCtrl *m_current_price_ctrl=nullptr;
+    mmTextCtrl *m_notes_ctrl=nullptr;
+    wxStaticText *m_value_investment=nullptr; //Current Value
+    wxBitmapButton *m_bAttachments=nullptr;
+    wxDataViewListCtrl *m_price_listbox=nullptr;
+    wxDatePickerCtrl *m_history_date_ctrl=nullptr;
+    mmTextCtrl *m_exchange_text=nullptr;
 
-    Model_Stock::Data* m_stock = nullptr;
+    Model_Stock::Data *m_stock = nullptr;
     bool m_edit = false;
     bool debug_ = false;
     int m_account_id = -1;
     int m_object_in_focus = -1;
     wxString m_decimal_point;
     int m_precision = -1;
-    Model_Account::Data* m_account = nullptr;
-    Model_Currency::Data* m_currency = nullptr;
+    Model_Account::Data *m_account = nullptr;
+    Model_Currency::Data *m_currency = nullptr;
     wxString m_current_value;
-    mmGUIFrame* m_gui_frame = nullptr;
+    mmGUIFrame *m_gui_frame = nullptr;
     enum
     {
         ID_DPC_STOCK_PDATE = wxID_HIGHEST + 800,

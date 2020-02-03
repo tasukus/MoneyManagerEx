@@ -24,54 +24,55 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "Model_Report.h"
 
 const char *usage_template = R"(
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title><TMPL_VAR REPORTNAME></title>
-    <script src = "ChartNew.js"></script>
-    <script src = "format.js"></script>
-    <script src = "sorttable.js"></script>
-    <link href = "master.css" rel = "stylesheet" />
-    <style>
+                             <!DOCTYPE html>
+                             <html>
+                             <head>
+                             <meta http-equiv="content-type" content="text/html;
+charset=utf-8" />
+        <title><TMPL_VAR REPORTNAME></title>
+        <script src = "ChartNew.js"></script>
+        <script src = "format.js"></script>
+        <script src = "sorttable.js"></script>
+        <link href = "master.css" rel = "stylesheet" />
+        <style>
         canvas {min-height: 100px}
         body {font-size: <TMPL_VAR HTMLSCALE>%}
-    </style>
-</head>
-<body>
+        </style>
+        </head>
+        <body>
 
-<div class = "container">
-<h3><TMPL_VAR REPORTNAME>
+        <div class = "container">
+        <h3><TMPL_VAR REPORTNAME>
 
-<!--
-<select id="chart-type" onchange='onChartChange(this)'>
-    <option value="line" selected><TMPL_VAR _LINECHART></option>
-    <option value="bar"><TMPL_VAR _BARCHART></option>
-</select>
--->
-</h3>
-<TMPL_VAR TODAY><hr>
+        <!--
+        <select id="chart-type" onchange='onChartChange(this)'>
+        <option value="line" selected><TMPL_VAR _LINECHART></option>
+        <option value="bar"><TMPL_VAR _BARCHART></option>
+        </select>
+        -->
+        </h3>
+        <TMPL_VAR TODAY><hr>
 
-<div class = "row">
-<canvas id="mycanvas"></canvas>
-<script>
-    var data = {
-    labels: [ <TMPL_VAR STARTDATE>, <TMPL_VAR ENDDATE> ],
-    xBegin: <TMPL_VAR STARTDATE>,
-    xEnd: <TMPL_VAR ENDDATE>,
-    datasets: [
+        <div class = "row">
+        <canvas id="mycanvas"></canvas>
+        <script>
+        var data = {
+        labels: [ <TMPL_VAR STARTDATE>, <TMPL_VAR ENDDATE> ],
+        xBegin: <TMPL_VAR STARTDATE>,
+        xEnd: <TMPL_VAR ENDDATE>,
+        datasets: [
         {
-            // fillColor : 'rgba(129, 172, 123, 0.5)',
-            strokeColor : 'rgba(129, 172, 123, 1)',
-            // pointColor : 'rgba(129, 172, 123, 1)',
-            // pointStrokeColor : "#fff",
-            data : [ <TMPL_LOOP NAME=CONTENTS><TMPL_VAR FREQUENCY><TMPL_UNLESS NAME=__LAST__>,</TMPL_UNLESS></TMPL_LOOP> ],
-            xPos: [ <TMPL_LOOP NAME=CONTENTS><TMPL_VAR USAGEDATE><TMPL_UNLESS NAME=__LAST__>,</TMPL_UNLESS></TMPL_LOOP> ],
-            title : "<TMPL_VAR _FREQUENCY>"
+        // fillColor : 'rgba(129, 172, 123, 0.5)',
+        strokeColor : 'rgba(129, 172, 123, 1)',
+        // pointColor : 'rgba(129, 172, 123, 1)',
+        // pointStrokeColor : "#fff",
+        data : [ <TMPL_LOOP NAME=CONTENTS><TMPL_VAR FREQUENCY><TMPL_UNLESS NAME=__LAST__>,</TMPL_UNLESS></TMPL_LOOP> ],
+        xPos: [ <TMPL_LOOP NAME=CONTENTS><TMPL_VAR USAGEDATE><TMPL_UNLESS NAME=__LAST__>,</TMPL_UNLESS></TMPL_LOOP> ],
+        title : "<TMPL_VAR _FREQUENCY>"
         }
         ]
-    }
-    var opts= {
+        }
+        var opts= {
         annotateDisplay: true,
         responsive: true,
         yAxisMinimumInterval: 1,
@@ -81,31 +82,31 @@ const char *usage_template = R"(
         linkType: 1,
         fmtV2: "date",
         fmtXLabel: "date"
-    };
+        };
 
-    var ctx = document.getElementById("mycanvas").getContext("2d");
+        var ctx = document.getElementById("mycanvas").getContext("2d");
 
-    window.onload = function() {
+        window.onload = function() {
         var myBar = new Chart(ctx).Line(data,opts);
-    }
-/*
-    function onChartChange(select){
+        }
+        /*
+        function onChartChange(select){
         var value = select.value;
         if (value == "line") {
-           new Chart(ctx).Line(data,opts);
+        new Chart(ctx).Line(data,opts);
         }
         else if (value == "bar") {
-           new Chart(ctx).Bar(data,opts);
+        new Chart(ctx).Bar(data,opts);
         }
-    }
-*/
-</script>
-</div></div></body>
-</html>
-)";
+        }
+        */
+        </script>
+        </div></div></body>
+        </html>
+        )";
 
 mmReportMyUsage::mmReportMyUsage()
-: mmPrintableBase(_("MMEX Usage Frequency"))
+    : mmPrintableBase(_("MMEX Usage Frequency"))
 {
 }
 
@@ -123,20 +124,22 @@ wxString mmReportMyUsage::getHTMLText()
     Model_Usage::Data_Set all_usage;
     wxDateTime _start_date, _end_date;
 
-    if (m_date_range && m_date_range->is_with_date()) {
+    if (m_date_range && m_date_range->is_with_date())
+    {
         all_usage = Model_Usage::instance().find(Model_Usage::USAGEDATE(m_date_range->start_date().FormatISODate(), GREATER_OR_EQUAL)
-            , Model_Usage::USAGEDATE(m_date_range->end_date().FormatISODate(), LESS_OR_EQUAL));
+                    , Model_Usage::USAGEDATE(m_date_range->end_date().FormatISODate(), LESS_OR_EQUAL));
         _start_date=m_date_range->start_date();
         _end_date=m_date_range->end_date();
     }
-    else {
+    else
+    {
         all_usage = Model_Usage::instance().all();
         wxASSERT(_start_date.ParseISODate(all_usage.front().USAGEDATE));
         wxASSERT(_end_date.ParseISODate(all_usage.back().USAGEDATE));
     }
     std::map<wxString, std::pair<int, wxString> > usage_by_day;
 
-    for (const auto & usage : all_usage)
+    for (const auto &usage : all_usage)
     {
         usage_by_day[usage.USAGEDATE].first += 1;
 
@@ -185,7 +188,8 @@ wxString mmReportMyUsage::getHTMLText()
         // }
     }
 
-    if (usage_by_day.empty()) {
+    if (usage_by_day.empty())
+    {
         usage_by_day[wxDateTime::Today().FormatISODate()] = std::make_pair(0, "");
     }
 
@@ -196,7 +200,7 @@ wxString mmReportMyUsage::getHTMLText()
         row_t r;
         wxASSERT(day.ParseISODate(it->first));
         r(L"USAGEDATE") = wxString::Format("new Date(%d,%d,%d,0,0,0)",
-                             day.GetYear(), day.GetMonth(), day.GetDay());
+                                           day.GetYear(), day.GetMonth(), day.GetDay());
         r(L"FREQUENCY") = wxString::Format("%d", it->second.first);
         // r(L"SLOW") = it->second.second;
 
@@ -209,13 +213,13 @@ wxString mmReportMyUsage::getHTMLText()
     // report(L"_BARCHART") = _("Bar Chart");
     report(L"_FREQUENCY") = _("Frequency");
     report(L"STARTDATE") = wxString::Format("new Date(%d,%d,%d,0,0,0)",
-                            _start_date.GetYear(),
-                            _start_date.GetMonth(),
-                            _start_date.GetDay());
+                                            _start_date.GetYear(),
+                                            _start_date.GetMonth(),
+                                            _start_date.GetDay());
     report(L"ENDDATE") = wxString::Format("new Date(%d,%d,%d,0,0,0)",
-                            _end_date.GetYear(),
-                            _end_date.GetMonth(),
-                            _end_date.GetDay());
+                                          _end_date.GetYear(),
+                                          _end_date.GetMonth(),
+                                          _end_date.GetDay());
     report(L"CONTENTS") = contents;
     report(L"GRAND") = wxString::Format("%zu", all_usage.size());
     report(L"HTMLSCALE") = wxString::Format("%d", Option::instance().getHtmlFontSize());
@@ -225,7 +229,7 @@ wxString mmReportMyUsage::getHTMLText()
     {
         out = report.Process();
     }
-    catch (const syntax_ex& e)
+    catch (const syntax_ex &e)
     {
         return e.what();
     }

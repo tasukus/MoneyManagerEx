@@ -38,29 +38,29 @@ class mmQIFImportDialog : public wxDialog
 
 public:
     mmQIFImportDialog() {}
-    mmQIFImportDialog(wxWindow* parent, int account_id);
+    mmQIFImportDialog(wxWindow *parent, int account_id);
 
-    bool Create(wxWindow* parent, wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+    bool Create(wxWindow *parent, wxWindowID id
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
+                , long style);
 
     wxString OnGetItemText(long item, long column) const;
     int get_last_imported_acc();
 
 private:
-    mmQIFImport* qif_api = nullptr;
+    mmQIFImport *qif_api = nullptr;
     void CreateControls();
     void fillControls();
-    void OnFileSearch(wxCommandEvent& event);
-    void OnCheckboxClick(wxCommandEvent& WXUNUSED(event));
-    void OnAccountChanged(wxCommandEvent& WXUNUSED(event));
-    void OnDateMaskChange(wxCommandEvent& event);
-    void OnQuit(wxCloseEvent& event);
-    void OnCancel(wxCommandEvent& event);
-    void OnOk(wxCommandEvent& WXUNUSED(event));
-    void OnDecimalChange(wxCommandEvent& event);
+    void OnFileSearch(wxCommandEvent &event);
+    void OnCheckboxClick(wxCommandEvent &WXUNUSED(event));
+    void OnAccountChanged(wxCommandEvent &WXUNUSED(event));
+    void OnDateMaskChange(wxCommandEvent &event);
+    void OnQuit(wxCloseEvent &event);
+    void OnCancel(wxCommandEvent &event);
+    void OnOk(wxCommandEvent &WXUNUSED(event));
+    void OnDecimalChange(wxCommandEvent &event);
     bool mmReadQIFFile();
     void clear_transaction_data();
     int getOrCreateAccounts();
@@ -68,8 +68,8 @@ private:
     void getOrCreateCategories();
     bool completeTransaction(std::unordered_map <int, wxString> &trx, const wxString &accName);
     bool completeTransaction(/*in*/ const std::unordered_map <int, wxString> &i
-        , /*out*/ Model_Checking::Data* trx, wxString& msg);
-    bool mergeTransferPair(Model_Checking::Cache& to, Model_Checking::Cache& from);
+                                    , /*out*/ Model_Checking::Data *trx, wxString &msg);
+    bool mergeTransferPair(Model_Checking::Cache &to, Model_Checking::Cache &from);
     void appendTransfers(Model_Checking::Cache &destination, Model_Checking::Cache &target);
     void joinSplit(Model_Checking::Cache &destination, std::vector <Model_Splittransaction::Cache> &target);
     void saveSplit();
@@ -93,25 +93,25 @@ private:
     const wxDateTime m_today;
     const wxDateTime m_fresh;
 
-    wxDataViewListCtrl* dataListBox_;
-    wxDataViewListCtrl* accListBox_;
-    wxDataViewListCtrl* payeeListBox_;
-    wxDataViewListCtrl* categoryListBox_;
-    wxButton* button_search_;
-    wxTextCtrl* file_name_ctrl_;
-    wxChoice* m_choiceEncoding;
-    wxTextCtrl* log_field_;
-    wxCheckBox* dateFromCheckBox_;
-    wxCheckBox* dateToCheckBox_;
-    wxDatePickerCtrl* fromDateCtrl_;
-    wxDatePickerCtrl* toDateCtrl_;
-    wxComboBox* choiceDateFormat_;
-    wxCheckBox* accountCheckBox_;
-    wxChoice* accountDropDown_;
-    wxCheckBox* accountNumberCheckBox_;
-    wxCheckBox* payeeIsNotesCheckBox_;
-    wxButton* btnOK_;
-    mmChoiceAmountMask* m_choiceDecimalSeparator;
+    wxDataViewListCtrl *dataListBox_;
+    wxDataViewListCtrl *accListBox_;
+    wxDataViewListCtrl *payeeListBox_;
+    wxDataViewListCtrl *categoryListBox_;
+    wxButton *button_search_;
+    wxTextCtrl *file_name_ctrl_;
+    wxChoice *m_choiceEncoding;
+    wxTextCtrl *log_field_;
+    wxCheckBox *dateFromCheckBox_;
+    wxCheckBox *dateToCheckBox_;
+    wxDatePickerCtrl *fromDateCtrl_;
+    wxDatePickerCtrl *toDateCtrl_;
+    wxComboBox *choiceDateFormat_;
+    wxCheckBox *accountCheckBox_;
+    wxChoice *accountDropDown_;
+    wxCheckBox *accountNumberCheckBox_;
+    wxCheckBox *payeeIsNotesCheckBox_;
+    wxButton *btnOK_;
+    mmChoiceAmountMask *m_choiceDecimalSeparator;
 
     bool payeeIsNotes_; //Include payee field in notes
 

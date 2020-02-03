@@ -21,7 +21,7 @@
 #include "Model_Billsdeposits.h"
 
 Model_Subcategory::Model_Subcategory()
-: Model<DB_Table_SUBCATEGORY>()
+    : Model<DB_Table_SUBCATEGORY>()
 {
 }
 
@@ -33,9 +33,9 @@ Model_Subcategory::~Model_Subcategory()
 * Initialize the global Model_Subcategory table.
 * Reset the Model_Subcategory table or create the table if it does not exist.
 */
-Model_Subcategory& Model_Subcategory::instance(wxSQLite3Database* db)
+Model_Subcategory &Model_Subcategory::instance(wxSQLite3Database *db)
 {
-    Model_Subcategory& ins = Singleton<Model_Subcategory>::instance();
+    Model_Subcategory &ins = Singleton<Model_Subcategory>::instance();
     ins.db_ = db;
     ins.destroy_cache();
     ins.ensure(db);
@@ -45,20 +45,26 @@ Model_Subcategory& Model_Subcategory::instance(wxSQLite3Database* db)
 }
 
 /** Return the static instance of Model_Subcategory table */
-Model_Subcategory& Model_Subcategory::instance()
+Model_Subcategory &Model_Subcategory::instance()
 {
     return Singleton<Model_Subcategory>::instance();
 }
 
 /** Return the Data record instance for the given subcategory name and category ID */
-Model_Subcategory::Data* Model_Subcategory::get(const wxString& name, int category_id)
+Model_Subcategory::Data *Model_Subcategory::get(const wxString &name, int category_id)
 {
     //FIXME: return wrong value
-    Data* category = this->get_one(SUBCATEGNAME(name), CATEGID(category_id));
-    if (category) return category;
+    Data *category = this->get_one(SUBCATEGNAME(name), CATEGID(category_id));
+    if (category)
+    {
+        return category;
+    }
 
     Data_Set items = this->find(SUBCATEGNAME(name), CATEGID(category_id));
-    if (!items.empty()) category = this->get(items[0].SUBCATEGID, this->db_);
+    if (!items.empty())
+    {
+        category = this->get(items[0].SUBCATEGID, this->db_);
+    }
     return category;
 }
 

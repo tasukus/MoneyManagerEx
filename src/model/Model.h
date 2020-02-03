@@ -33,18 +33,18 @@ class wxSQLite3ResultSet;
 typedef wxDateTime wxDate;
 
 #if (wxMAJOR_VERSION == 3 && wxMINOR_VERSION >= 1)
-    // wx 3.1 has implemented such hash
+// wx 3.1 has implemented such hash
 #else
 namespace std
 {
-    template<>
-    struct hash<wxString>
+template<>
+struct hash<wxString>
+{
+    size_t operator()(const wxString &k) const
     {
-        size_t operator()(const wxString& k) const
-        {
-            return std::hash<std::wstring>()(k.ToStdWstring());
-        }
-    };
+        return std::hash<std::wstring>()(k.ToStdWstring());
+    }
+};
 }
 #endif
 
@@ -69,11 +69,14 @@ public:
     }
 
 protected:
-    static wxDate to_date(const wxString& str_date)
+    static wxDate to_date(const wxString &str_date)
     {
         static std::unordered_map<wxString, wxDate> cache;
         const auto it = cache.find(str_date);
-        if (it != cache.end()) return it->second;
+        if (it != cache.end())
+        {
+            return it->second;
+        }
 
         wxDate date;
         date.ParseISODate(str_date); // the date in ISO 8601 format "YYYY-MM-DD".
@@ -86,7 +89,7 @@ public:
     virtual void show_statistics() const = 0;
 
 protected:
-    wxSQLite3Database* db_;
+    wxSQLite3Database *db_;
 };
 
 template<class DB_TABLE>
@@ -117,7 +120,7 @@ public:
     * Returns a Data_Set containing the addresses of the items found.
     * The Data_Set is empty when nothing found.
     */
-    const typename DB_TABLE::Data_Set find(const Args&... args)
+    const typename DB_TABLE::Data_Set find(const Args &... args)
     {
         return find_by(this, db_, true, args...);
     }
@@ -133,7 +136,7 @@ public:
     * Returns a Data_Set containing the addresses of the items found.
     * The Data_Set is empty when nothing found.
     */
-    const typename DB_TABLE::Data_Set find_or(const Args&... args)
+    const typename DB_TABLE::Data_Set find_or(const Args &... args)
     {
         return find_by(this, db_, false, args...);
     }
@@ -142,13 +145,13 @@ public:
     * Return the Data record pointer for the given ID
     * from either memory cache or the database.
     */
-    typename DB_TABLE::Data* get(int id)
+    typename DB_TABLE::Data *get(int id)
     {
         return this->get(id, this->db_);
     }
 
     /** Save the Data record memory instance to the database. */
-    int save(typename DB_TABLE::Data* r)
+    int save(typename DB_TABLE::Data *r)
     {
         r->save(this->db_);
         return r->id();
@@ -159,13 +162,15 @@ public:
     * in the record list (Data_Set) to the database.
     */
     template<class DATA>
-    int save(std::vector<DATA>& rows)
+    int save(std::vector<DATA> &rows)
     {
         this->Savepoint();
-        for (auto& r : rows)
+        for (auto &r : rows)
         {
             if (r.id() < 0)
+            {
                 wxLogDebug("Incorrect function call to save %s", r.to_json().c_str());
+            }
             this->save(&r);
         }
         this->ReleaseSavepoint();
@@ -174,10 +179,13 @@ public:
     }
 
     template<class DATA>
-    int save(std::vector<DATA*>& rows)
+    int save(std::vector<DATA *> &rows)
     {
         this->Savepoint();
-        for (auto& r : rows) this->save(r);
+        for (auto &r : rows)
+        {
+            this->save(r);
+        }
         this->ReleaseSavepoint();
 
         return rows.size();
@@ -193,10 +201,13 @@ public:
     void preload(int max_num = 1000)
     {
         int i = 0;
-        for (const auto & item : all())
+        for (const auto &item : all())
         {
             get(item.id());
-            if (++i >= max_num) break;
+            if (++i >= max_num)
+            {
+                break;
+            }
         }
     }
 
@@ -230,9 +241,9 @@ public:
     void show_statistics() const
     {
         wxLogDebug("%s : (cache %zu, index_by_id %zu, hit %zu, miss %zu, skip %zu)",
-            this->name(),
-            this->cache_.size(),
-            this->index_by_id_.size(),
-            this->hit_, this->miss_, this->skip_);
+                   this->name(),
+                   this->cache_.size(),
+                   this->index_by_id_.size(),
+                   this->hit_, this->miss_, this->skip_);
     }
 };

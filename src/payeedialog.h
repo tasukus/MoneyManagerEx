@@ -32,7 +32,7 @@ class mmPayeeDialog : public wxDialog
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmPayeeDialog(wxWindow* parent, bool payee_choose, const wxString &name = "mmPayeeDialog");
+    mmPayeeDialog(wxWindow *parent, bool payee_choose, const wxString &name = "mmPayeeDialog");
 
     int getPayeeId() const
     {
@@ -62,9 +62,9 @@ private:
         MENU_RELOCATE_PAYEE
     };
 
-    wxDataViewListCtrl* payeeListBox_= nullptr;
-    wxSearchCtrl* m_maskTextCtrl = nullptr;
-    wxBitmapButton* m_magicButton = nullptr;
+    wxDataViewListCtrl *payeeListBox_= nullptr;
+    wxSearchCtrl *m_maskTextCtrl = nullptr;
+    wxBitmapButton *m_magicButton = nullptr;
 
     int m_payee_id = -1;
     int m_payee_rename = -1;
@@ -75,7 +75,7 @@ private:
 
     mmPayeeDialog() {}
 
-    void Create(wxWindow* parent, const wxString &name);
+    void Create(wxWindow *parent, const wxString &name);
     void CreateControls();
     void fillControls();
 
@@ -85,17 +85,17 @@ private:
     void DefineDefaultCategory();
     void OnOrganizeAttachments();
     void OnPayeeRelocate();
-    void OnCancel(wxCommandEvent& WXUNUSED(event));
-    void OnOk(wxCommandEvent& WXUNUSED(event));
+    void OnCancel(wxCommandEvent &WXUNUSED(event));
+    void OnOk(wxCommandEvent &WXUNUSED(event));
 
-    void OnListItemSelected(wxDataViewEvent& event);
-    void OnListItemActivated(wxDataViewEvent& event);
-    void OnDataEditStart(wxDataViewEvent& event);
-    void OnDataChanged(wxDataViewEvent& event);
-    void OnMenuSelected(wxCommandEvent& event);
-    void OnItemRightClick(wxDataViewEvent& event);
-    void OnSearchTextChanged(wxCommandEvent& event);
-    void OnMagicButton(wxCommandEvent& event);
+    void OnListItemSelected(wxDataViewEvent &event);
+    void OnListItemActivated(wxDataViewEvent &event);
+    void OnDataEditStart(wxDataViewEvent &event);
+    void OnDataChanged(wxDataViewEvent &event);
+    void OnMenuSelected(wxCommandEvent &event);
+    void OnItemRightClick(wxDataViewEvent &event);
+    void OnSearchTextChanged(wxCommandEvent &event);
+    void OnMagicButton(wxCommandEvent &event);
 
     bool debug_ = false;
 };

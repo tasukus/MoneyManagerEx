@@ -20,7 +20,7 @@
 #include "Model_Shareinfo.h"
 
 Model_Shareinfo::Model_Shareinfo()
-: Model<DB_Table_SHAREINFO>()
+    : Model<DB_Table_SHAREINFO>()
 {
 }
 
@@ -32,9 +32,9 @@ Model_Shareinfo::~Model_Shareinfo()
 * Initialize the global Model_Shareinfo table.
 * Reset the Model_Shareinfo table or create the table if it does not exist.
 */
-Model_Shareinfo& Model_Shareinfo::instance(wxSQLite3Database* db)
+Model_Shareinfo &Model_Shareinfo::instance(wxSQLite3Database *db)
 {
-    Model_Shareinfo& ins = Singleton<Model_Shareinfo>::instance();
+    Model_Shareinfo &ins = Singleton<Model_Shareinfo>::instance();
     ins.db_ = db;
     ins.destroy_cache();
     ins.ensure(db);
@@ -43,7 +43,7 @@ Model_Shareinfo& Model_Shareinfo::instance(wxSQLite3Database* db)
 }
 
 /** Return the static instance of Model_Shareinfo table */
-Model_Shareinfo& Model_Shareinfo::instance()
+Model_Shareinfo &Model_Shareinfo::instance()
 {
     return Singleton<Model_Shareinfo>::instance();
 }
@@ -53,12 +53,12 @@ Model_Shareinfo::Data_Set Model_Shareinfo::ShareList(const int checking_id)
     // SQL equivalent statement:
     // select * from Model_Shareinfo where CHECKINGACCOUNTID = checking_account_id;
     Model_Shareinfo::Data_Set trans_list = Model_Shareinfo::instance()
-        .find(Model_Shareinfo::CHECKINGACCOUNTID(checking_id));
+                                           .find(Model_Shareinfo::CHECKINGACCOUNTID(checking_id));
 
     return trans_list;
 }
 
-Model_Shareinfo::Data* Model_Shareinfo::ShareEntry(const int checking_id)
+Model_Shareinfo::Data *Model_Shareinfo::ShareEntry(const int checking_id)
 {
     Data_Set list = Model_Shareinfo::ShareList(checking_id);
     if (!list.empty())
@@ -69,12 +69,12 @@ Model_Shareinfo::Data* Model_Shareinfo::ShareEntry(const int checking_id)
 }
 
 void Model_Shareinfo::ShareEntry(int checking_id
-    , double share_number
-    , double share_price
-    , double share_commission
-    , const wxString& share_lot)
+                                 , double share_number
+                                 , double share_price
+                                 , double share_commission
+                                 , const wxString &share_lot)
 {
-    Data* share_entry = NULL;
+    Data *share_entry = NULL;
     Data_Set share_list = ShareList(checking_id);
 
     if (share_list.empty())

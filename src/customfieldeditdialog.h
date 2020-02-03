@@ -32,34 +32,34 @@ class mmCustomFieldEditDialog : public wxDialog
 
 public:
     mmCustomFieldEditDialog() {};
-    mmCustomFieldEditDialog(wxWindow *parent, Model_CustomField::Data* field, const wxString& fieldRefType);
+    mmCustomFieldEditDialog(wxWindow *parent, Model_CustomField::Data *field, const wxString &fieldRefType);
 
-    Model_CustomField::Data* m_field = nullptr;
+    Model_CustomField::Data *m_field = nullptr;
 private:
-    bool Create(wxWindow* parent
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
     void CreateControls();
     void dataToControls();
-    void OnOk(wxCommandEvent& event);
-    void OnCancel(wxCommandEvent& event);
-    void OnQuit(wxCloseEvent& event);
-    void OnChangeType(wxCommandEvent& event);
-    void OnChangeType(wxCommandEvent& event, bool OnDataToControls);
+    void OnOk(wxCommandEvent &event);
+    void OnCancel(wxCommandEvent &event);
+    void OnQuit(wxCloseEvent &event);
+    void OnChangeType(wxCommandEvent &event);
+    void OnChangeType(wxCommandEvent &event, bool OnDataToControls);
 
     wxString m_fieldRefType;
-    wxTextCtrl* m_itemDescription = nullptr;
-    wxChoice* m_itemType = nullptr;
-    wxChoice* m_itemUDFC = nullptr;
-    wxTextCtrl* m_itemTooltip = nullptr;
-    wxTextCtrl* m_itemRegEx = nullptr;
-    wxCheckBox* m_itemAutocomplete = nullptr;
-    wxTextCtrl* m_itemDefault = nullptr;
-    wxTextCtrl* m_itemChoices = nullptr;
-    wxSpinCtrl* m_itemDigitScale = nullptr;
+    wxTextCtrl *m_itemDescription = nullptr;
+    wxChoice *m_itemType = nullptr;
+    wxChoice *m_itemUDFC = nullptr;
+    wxTextCtrl *m_itemTooltip = nullptr;
+    wxTextCtrl *m_itemRegEx = nullptr;
+    wxCheckBox *m_itemAutocomplete = nullptr;
+    wxTextCtrl *m_itemDefault = nullptr;
+    wxTextCtrl *m_itemChoices = nullptr;
+    wxSpinCtrl *m_itemDigitScale = nullptr;
 
     enum
     {

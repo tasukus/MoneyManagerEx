@@ -38,7 +38,7 @@ const std::vector<std::pair<Model_Asset::TYPE, wxString> > Model_Asset::TYPE_CHO
 };
 
 Model_Asset::Model_Asset()
-: Model<DB_Table_ASSETS>()
+    : Model<DB_Table_ASSETS>()
 {
 }
 
@@ -50,9 +50,9 @@ Model_Asset::~Model_Asset()
 * Initialize the global Model_Asset table.
 * Reset the Model_Asset table or create the table if it does not exist.
 */
-Model_Asset& Model_Asset::instance(wxSQLite3Database* db)
+Model_Asset &Model_Asset::instance(wxSQLite3Database *db)
 {
-    Model_Asset& ins = Singleton<Model_Asset>::instance();
+    Model_Asset &ins = Singleton<Model_Asset>::instance();
     ins.db_ = db;
     ins.destroy_cache();
     ins.ensure(db);
@@ -61,7 +61,7 @@ Model_Asset& Model_Asset::instance(wxSQLite3Database* db)
 }
 
 /** Return the static instance of Model_Asset table */
-Model_Asset& Model_Asset::instance()
+Model_Asset &Model_Asset::instance()
 {
     return Singleton<Model_Asset>::instance();
 }
@@ -71,8 +71,10 @@ wxArrayString Model_Asset::all_rate()
     static wxArrayString rates;
     if (rates.empty())
     {
-        for (const auto& item : RATE_CHOICES)
+        for (const auto &item : RATE_CHOICES)
+        {
             rates.Add(item.second);
+        }
     }
     return rates;
 }
@@ -82,8 +84,10 @@ wxArrayString Model_Asset::all_type()
     static wxArrayString types;
     if (types.empty())
     {
-        for (const auto& item : TYPE_CHOICES)
+        for (const auto &item : TYPE_CHOICES)
+        {
             types.Add(item.second);
+        }
     }
     return types;
 }
@@ -91,7 +95,7 @@ wxArrayString Model_Asset::all_type()
 double Model_Asset::balance()
 {
     double balance = 0.0;
-    for (const auto& r: this->all())
+    for (const auto &r: this->all())
     {
         balance += value(r);
     }
@@ -103,50 +107,56 @@ DB_Table_ASSETS::ASSETTYPE Model_Asset::ASSETTYPE(TYPE type, OP op)
     return DB_Table_ASSETS::ASSETTYPE(all_type()[type], op);
 }
 
-DB_Table_ASSETS::STARTDATE Model_Asset::STARTDATE(const wxDate& date, OP op)
+DB_Table_ASSETS::STARTDATE Model_Asset::STARTDATE(const wxDate &date, OP op)
 {
     return DB_Table_ASSETS::STARTDATE(date.FormatISODate(), op);
 }
 
-wxDate Model_Asset::STARTDATE(const Data* r)
+wxDate Model_Asset::STARTDATE(const Data *r)
 {
     return Model::to_date(r->STARTDATE);
 }
 
-wxDate Model_Asset::STARTDATE(const Data& r)
+wxDate Model_Asset::STARTDATE(const Data &r)
 {
     return Model::to_date(r.STARTDATE);
 }
 
-Model_Asset::TYPE Model_Asset::type(const Data* r)
+Model_Asset::TYPE Model_Asset::type(const Data *r)
 {
-    for (const auto& item : TYPE_CHOICES) if (item.second.CmpNoCase(r->ASSETTYPE) == 0) return item.first;
+    for (const auto &item : TYPE_CHOICES) if (item.second.CmpNoCase(r->ASSETTYPE) == 0)
+        {
+            return item.first;
+        }
 
     return TYPE_UNKNOWN;
 }
 
-Model_Asset::TYPE Model_Asset::type(const Data& r)
+Model_Asset::TYPE Model_Asset::type(const Data &r)
 {
     return type(&r);
 }
 
-Model_Asset::RATE Model_Asset::rate(const Data* r)
+Model_Asset::RATE Model_Asset::rate(const Data *r)
 {
-    for (const auto & item : RATE_CHOICES) if (item.second.CmpNoCase(r->VALUECHANGE) == 0) return item.first;
+    for (const auto &item : RATE_CHOICES) if (item.second.CmpNoCase(r->VALUECHANGE) == 0)
+        {
+            return item.first;
+        }
     return RATE_UNKNOWN;
 }
 
-Model_Asset::RATE Model_Asset::rate(const Data& r)
+Model_Asset::RATE Model_Asset::rate(const Data &r)
 {
     return rate(&r);
 }
 
-Model_Currency::Data* Model_Asset::currency(const Data* /* r */)
+Model_Currency::Data *Model_Asset::currency(const Data * /* r */)
 {
     return Model_Currency::instance().GetBaseCurrency();
 }
 
-double Model_Asset::value(const Data* r)
+double Model_Asset::value(const Data *r)
 {
     double sum = r->VALUE;
     wxDate start_date = STARTDATE(r);
@@ -155,22 +165,22 @@ double Model_Asset::value(const Data* r)
     double diff_time_in_days = static_cast<double>(diff_time.GetDays());
     switch (rate(r))
     {
-    case RATE_NONE:
-        break;
-    case RATE_APPRECIATE:
-        sum *= pow(1.0 + (r->VALUECHANGERATE / 36500.0), diff_time_in_days);
-        break;
-    case RATE_DEPRECIATE:
-        sum *= pow(1.0 - (r->VALUECHANGERATE / 36500.0), diff_time_in_days);
-        break;
-    default:
-        break;
+        case RATE_NONE:
+            break;
+        case RATE_APPRECIATE:
+            sum *= pow(1.0 + (r->VALUECHANGERATE / 36500.0), diff_time_in_days);
+            break;
+        case RATE_DEPRECIATE:
+            sum *= pow(1.0 - (r->VALUECHANGERATE / 36500.0), diff_time_in_days);
+            break;
+        default:
+            break;
     }
 
     return sum;
 }
 
-double Model_Asset::value(const Data& r)
+double Model_Asset::value(const Data &r)
 {
     return value(&r);
 }

@@ -28,33 +28,34 @@
 namespace tags
 {
 static const wxString END = R"(
-<script>
-    var elements = document.getElementsByClassName('money');
-    for (var i = 0; i < elements.length; i++) {
-        elements[i].style.textAlign = 'right';
-        if (elements[i].innerHTML.indexOf('-') > -1) {
-            elements[i].style.color ='red';
-        }
-    }
-</script>
-</body>
-</html>
-)";
+                            <script>
+                            var elements = document.getElementsByClassName('money');
+                            for (var i = 0; i < elements.length; i++) {
+                            elements[i].style.textAlign = 'right';
+                            if (elements[i].innerHTML.indexOf('-') > -1) {
+                            elements[i].style.color ='red';
+                            }
+                            }
+                            </script>
+                            </body>
+                            </html>
+                            )";
 static const char HTML[] = R"(<!DOCTYPE html>
-<html><head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<title>%s - Report</title>
-<link href = 'master.css' rel = 'stylesheet' />
-<script src = 'ChartNew.js'></script>
-<script src = 'sorttable.js'></script>
-<style>
-    /* Sortable tables */
-    table.sortable thead {cursor: default;}
-    body { font-size: %d%%; }
-</style>
-</head>
-<body>
-)";
+                           <html><head>
+                           <meta http-equiv="content-type" content="text/html;
+charset=utf-8" />
+        <title>%s - Report</title>
+        <link href = 'master.css' rel = 'stylesheet' />
+        <script src = 'ChartNew.js'></script>
+        <script src = 'sorttable.js'></script>
+        <style>
+        /* Sortable tables */
+        table.sortable thead {cursor: default;}
+        body { font-size: %d%%; }
+        </style>
+        </head>
+        <body>
+        )";
 static const wxString DIV_CONTAINER = "<div class='container'>\n";
 static const wxString DIV_ROW = "<div class='row'>\n";
 static const wxString DIV_COL8 = "<div class='col-xs-2'></div>\n<div class='col-xs-8'>\n"; //17_67%
@@ -91,8 +92,9 @@ static const wxString CENTER = "<center>\n";
 static const wxString CENTER_END = "</center>\n";
 static const wxString TABLE_CELL_SPAN = "    <td colspan='%zu'>";
 static const wxString TABLE_CELL_RIGHT = "    <td style='text-align: right'>";
-static const wxString COLORS [] = {
-      "rgba(135,206,250,0.7)"
+static const wxString COLORS [] =
+{
+    "rgba(135,206,250,0.7)"
     , "rgba(255,192,203,0.7)"
     , "rgba(210,105,30,0.7)"
     , "rgba(0,255,0,0.7)"
@@ -123,23 +125,24 @@ static const wxString COLORS [] = {
     , "rgba(139,69,19,0.7)"
     , "rgba(176,196,222,0.7)"
     , "rgba(85,107,47,0.7)"
-    , "rgba(0,0,139,0.7)" };
+    , "rgba(0,0,139,0.7)"
+};
 }
 
 mmHTMLBuilder::mmHTMLBuilder()
 {
     today_.date = wxDateTime::Now();
     today_.todays_date = wxString::Format(_("Report Generated %s %s")
-        , mmGetDateForDisplay(today_.date.FormatISODate())
-        , today_.date.FormatISOTime());
+                                          , mmGetDateForDisplay(today_.date.FormatISODate())
+                                          , today_.date.FormatISOTime());
 }
 
 void mmHTMLBuilder::init()
 {
     html_ = wxString::Format(wxString::FromUTF8(tags::HTML)
-        , mmex::getProgramName()
-        , Option::instance().getHtmlFontSize()
-    );
+                             , mmex::getProgramName()
+                             , Option::instance().getHtmlFontSize()
+                            );
 
     //Show user name if provided
     if (!Option::instance().getUserName().IsEmpty())
@@ -149,7 +152,7 @@ void mmHTMLBuilder::init()
     }
 }
 
-void mmHTMLBuilder::addHeader(int level, const wxString& header)
+void mmHTMLBuilder::addHeader(int level, const wxString &header)
 {
     html_ += wxString::Format(tags::HEADER, level, header, level);
 }
@@ -181,8 +184,8 @@ void mmHTMLBuilder::startTfoot()
     html_ += tags::TFOOT_START;
 }
 
-void mmHTMLBuilder::addTotalRow(const wxString& caption, int cols
-    , double value)
+void mmHTMLBuilder::addTotalRow(const wxString &caption, int cols
+                                , double value)
 {
     startTotalTableRow();
     html_ += wxString::Format(tags::TABLE_CELL_SPAN, cols - static_cast<size_t>(1));
@@ -192,15 +195,15 @@ void mmHTMLBuilder::addTotalRow(const wxString& caption, int cols
     endTableRow();
 }
 
-void mmHTMLBuilder::addTotalRow(const wxString& caption, int cols
-    , const std::vector<wxString>& data)
+void mmHTMLBuilder::addTotalRow(const wxString &caption, int cols
+                                , const std::vector<wxString> &data)
 {
     startTotalTableRow();
     html_ += wxString::Format(tags::TABLE_CELL_SPAN, cols - data.size());
     html_ += caption;
     endTableCell();
 
-    for (const auto& value: data)
+    for (const auto &value: data)
     {
         html_ << tags::TABLE_CELL_RIGHT << value;
         endTableCell();
@@ -208,16 +211,18 @@ void mmHTMLBuilder::addTotalRow(const wxString& caption, int cols
     endTableRow();
 }
 
-void mmHTMLBuilder::addTotalRow(const wxString& caption, int cols
-    , const std::vector<double>& data)
+void mmHTMLBuilder::addTotalRow(const wxString &caption, int cols
+                                , const std::vector<double> &data)
 {
     std::vector<wxString> data_str;
-    for (const auto& value: data)
+    for (const auto &value: data)
+    {
         data_str.push_back(Model_Currency::toCurrency(value));
+    }
     addTotalRow(caption, cols, data_str);
 }
 
-void mmHTMLBuilder::addTableHeaderCell(const wxString& value, const bool numeric, const bool sortable, const int cols, const bool center)
+void mmHTMLBuilder::addTableHeaderCell(const wxString &value, const bool numeric, const bool sortable, const int cols, const bool center)
 {
     const wxString sort = (sortable ? "" : " class='sorttable_nosort'");
     const wxString align = (center ? " class='text-center'" : (numeric ? " class='text-right'" : " class='text-left'"));
@@ -228,10 +233,12 @@ void mmHTMLBuilder::addTableHeaderCell(const wxString& value, const bool numeric
     html_ += tags::TABLE_HEADER_END;
 }
 
-void mmHTMLBuilder::addCurrencyCell(double amount, const Model_Currency::Data* currency, int precision)
+void mmHTMLBuilder::addCurrencyCell(double amount, const Model_Currency::Data *currency, int precision)
 {
     if (precision == -1)
+    {
         precision = Model_Currency::precision(currency);
+    }
     const wxString f = wxString::Format(" class='money' sorttable_customkey = '%f' nowrap", amount);
     html_ += wxString::Format(tags::TABLE_CELL, f);
     html_ += Model_Currency::toCurrency(amount, currency, precision);
@@ -246,15 +253,15 @@ void mmHTMLBuilder::addMoneyCell(double amount, int precision)
     // TODO: verify if all values are in base currency at addMoneyCell call
 }
 
-void mmHTMLBuilder::addTableCellDate(const wxString& iso_date)
+void mmHTMLBuilder::addTableCellDate(const wxString &iso_date)
 {
     html_ += wxString::Format(tags::TABLE_CELL
-        , wxString::Format(" class='text-left' sorttable_customkey = '%s' nowrap", iso_date));
+                              , wxString::Format(" class='text-left' sorttable_customkey = '%s' nowrap", iso_date));
     html_ += mmGetDateForDisplay(iso_date);
     endTableCell();
 }
 
-void mmHTMLBuilder::addTableCell(const wxString& value, const bool numeric, const bool center)
+void mmHTMLBuilder::addTableCell(const wxString &value, const bool numeric, const bool center)
 {
     const wxString align = (center ? " class='text-center'" : (numeric ? " class='text-right' nowrap" : " class='text-left'"));
     html_ += wxString::Format(tags::TABLE_CELL, align);
@@ -265,10 +272,12 @@ void mmHTMLBuilder::addTableCell(const wxString& value, const bool numeric, cons
 void mmHTMLBuilder::addEmptyTableCell(const int number)
 {
     for (int i = 0; i < number; i++)
+    {
         html_ += wxString::Format(tags::TABLE_CELL + tags::TABLE_CELL_END, "");
+    }
 }
 
-void mmHTMLBuilder::addColorMarker(const wxString& color)
+void mmHTMLBuilder::addColorMarker(const wxString &color)
 {
     html_ += wxString::Format(tags::TABLE_CELL, "");
     html_ += wxString::Format("<span style='font-family: serif; color: %s'>%s</span>", color, L"\u2588");
@@ -283,33 +292,36 @@ const wxString mmHTMLBuilder::getColor(int i) const
 
 void mmHTMLBuilder::addTableCellMonth(const wxDateTime::Month month)
 {
-    if (month >= 0 && month < 12) {
+    if (month >= 0 && month < 12)
+    {
         wxString f = wxString::Format(" sorttable_customkey = '%i'", month);
         html_ += wxString::Format(tags::TABLE_CELL, f);
         html_ += wxGetTranslation(wxDateTime::GetEnglishMonthName(month));
         endTableCell();
     }
     else
+    {
         addEmptyTableCell();
+    }
 }
 
-void mmHTMLBuilder::addTableCellLink(const wxString& href
-    , const wxString& value)
+void mmHTMLBuilder::addTableCellLink(const wxString &href
+                                     , const wxString &value)
 {
     addTableCell(wxString::Format(tags::TABLE_CELL_LINK, href, value ));
 }
 
-void mmHTMLBuilder::DisplayDateHeading(const wxDateTime& startDate, const wxDateTime& endDate, bool withDateRange)
+void mmHTMLBuilder::DisplayDateHeading(const wxDateTime &startDate, const wxDateTime &endDate, bool withDateRange)
 {
     wxString text = withDateRange
-        ? wxString::Format(_("From %s till %s")
-            , mmGetDateForDisplay(startDate.FormatISODate())
-            , mmGetDateForDisplay(endDate.FormatISODate()))
-        : _("Over Time");
+                    ? wxString::Format(_("From %s till %s")
+                                       , mmGetDateForDisplay(startDate.FormatISODate())
+                                       , mmGetDateForDisplay(endDate.FormatISODate()))
+                    : _("Over Time");
     addHeader(3, text);
 }
 
-void mmHTMLBuilder::addTableRow(const wxString& label, double data)
+void mmHTMLBuilder::addTableRow(const wxString &label, double data)
 {
     startTableRow();
     addTableCell(label);
@@ -367,7 +379,7 @@ void mmHTMLBuilder::startTableRow()
     html_ += tags::TABLE_ROW;
 }
 
-void mmHTMLBuilder::startTableRow(const wxString& color)
+void mmHTMLBuilder::startTableRow(const wxString &color)
 {
     html_ += wxString::Format(tags::TABLE_ROW_BG, color);
 }
@@ -382,7 +394,7 @@ void mmHTMLBuilder::endTableRow()
     html_ += tags::TABLE_ROW_END;
 }
 
-void mmHTMLBuilder::addText(const wxString& text)
+void mmHTMLBuilder::addText(const wxString &text)
 {
     html_ += text;
 }
@@ -397,7 +409,7 @@ void mmHTMLBuilder::addHorizontalLine(int size)
     html_ += wxString::Format(tags::HOR_LINE, size);
 }
 
-void mmHTMLBuilder::startTableCell(const wxString& format)
+void mmHTMLBuilder::startTableCell(const wxString &format)
 {
     html_ += wxString::Format(tags::TABLE_CELL, format);
 }
@@ -406,52 +418,52 @@ void mmHTMLBuilder::endTableCell()
     html_ += tags::TABLE_CELL_END;
 }
 
-void mmHTMLBuilder::addRadarChart(std::vector<ValueTrio>& actData, std::vector<ValueTrio>& estData, const wxString& id, int x, int y)
+void mmHTMLBuilder::addRadarChart(std::vector<ValueTrio> &actData, std::vector<ValueTrio> &estData, const wxString &id, int x, int y)
 {
     static const wxString html_parts = R"(
-<canvas id='%s' width ='%i' height='%i'></canvas>
-<script type='text/javascript'>
-  var data = {
-    labels : [%s],
-    datasets : [%s]
-  };
-  var ctx = document.getElementById('%s').getContext('2d');
-  var options = %s;
-  var reportChart = new Chart(ctx).Radar(data, options);
-</script>
-)";
+                                       <canvas id='%s' width ='%i' height='%i'></canvas>
+                                       <script type='text/javascript'>
+                                       var data = {
+                                       labels : [%s],
+                                       datasets : [%s]
+                                   };
+                                       var ctx = document.getElementById('%s').getContext('2d');
+                                       var options = %s;
+                                       var reportChart = new Chart(ctx).Radar(data, options);
+                                       </script>
+                                       )";
 
     static const wxString data_item = R"(
-{
-  'label' : '%s',
-  'fillColor' : '%s',
-  'strokeColor' : '%s',
-  'pointColor' : '%s',
-  'pointStrokeColor' : '#fff',
-  'data' : [%s],
-},)";
+                                      {
+                                      'label' : '%s',
+                                      'fillColor' : '%s',
+                                      'strokeColor' : '%s',
+                                      'pointColor' : '%s',
+                                      'pointStrokeColor' : '#fff',
+                                      'data' : [%s],
+                                  },)";
 
     static const wxString opt = R"(
-{
-  datasetFill: false,
-  inGraphDataShow : false,
-  annotateDisplay : true,
-  responsive: true,
-  pointDot : false,
-  showGridLines: true
-}
-)";
+                                {
+                                datasetFill: false,
+                                inGraphDataShow : false,
+                                annotateDisplay : true,
+                                responsive: true,
+                                pointDot : false,
+                                showGridLines: true
+                            }
+                                )";
 
     wxString labels = "";
     wxString actValues = "";
     wxString estValues = "";
 
-    for (const auto& entry : actData)
+    for (const auto &entry : actData)
     {
         labels += wxString::Format("'%s',", entry.label);
         actValues += wxString::FromCDouble(fabs(entry.amount), 2) + ",";
     }
-    for (const auto& entry : estData)
+    for (const auto &entry : estData)
     {
         estValues += wxString::FromCDouble(fabs(entry.amount), 2) + ",";
     }
@@ -463,16 +475,16 @@ void mmHTMLBuilder::addRadarChart(std::vector<ValueTrio>& actData, std::vector<V
     addText(wxString::Format(html_parts, id, x, y, labels, datasets, id, opt));
 }
 
-void mmHTMLBuilder::addPieChart(std::vector<ValueTrio>& valueList, const wxString& id, int x, int y)
+void mmHTMLBuilder::addPieChart(std::vector<ValueTrio> &valueList, const wxString &id, int x, int y)
 {
     static const wxString html_parts = R"(
-<canvas id='%s' width ='%i' height='%i' style='min-width: %dpx; min-height: %dpx'></canvas>
-<script>
-  var d = %s;
-  var ctx = document.getElementById('%s').getContext('2d');
-  var reportChart = new Chart(ctx).Pie(d.data, d.options);
-</script>
-)";
+                                       <canvas id='%s' width ='%i' height='%i' style='min-width: %dpx; min-height: %dpx'></canvas>
+                                       <script>
+                                       var d = %s;
+                                       var ctx = document.getElementById('%s').getContext('2d');
+                                       var reportChart = new Chart(ctx).Pie(d.data, d.options);
+                                       </script>
+                                       )";
 
     int precision = Model_Currency::precision(Model_Currency::GetBaseCurrency());
     int round = pow(10, precision);
@@ -480,9 +492,9 @@ void mmHTMLBuilder::addPieChart(std::vector<ValueTrio>& valueList, const wxStrin
     Document jsonDoc;
     jsonDoc.SetObject();
     Value data_array(kArrayType);
-    Document::AllocatorType& allocator = jsonDoc.GetAllocator();
+    Document::AllocatorType &allocator = jsonDoc.GetAllocator();
 
-    for (const auto& entry : valueList)
+    for (const auto &entry : valueList)
     {
         // Replace problem causing character
         auto label = entry.label;
@@ -513,7 +525,6 @@ void mmHTMLBuilder::addPieChart(std::vector<ValueTrio>& valueList, const wxStrin
     optionsValue.AddMember("responsive", true, allocator);
     jsonDoc.AddMember("options", optionsValue, allocator);
 
-
     StringBuffer strbuf;
     Writer<StringBuffer> writer(strbuf);
     jsonDoc.Accept(writer);
@@ -523,30 +534,30 @@ void mmHTMLBuilder::addPieChart(std::vector<ValueTrio>& valueList, const wxStrin
     addText(wxString::Format(html_parts, id, x, y, x/2, y/2, data, id));
 }
 
-void mmHTMLBuilder::addBarChart(const wxArrayString& labels
-    , const std::vector<BarGraphData>& data, const wxString& id
-    , int x, int y)
+void mmHTMLBuilder::addBarChart(const wxArrayString &labels
+                                , const std::vector<BarGraphData> &data, const wxString &id
+                                , int x, int y)
 {
     static const wxString html_parts = R"(
-<canvas id='%s' width ='%i' height='%i' style='min-width: %dpx; min-height: %dpx'></canvas>
-<script>
-  var d = %s;
-  var ctx = document.getElementById('%s').getContext('2d');
-  var reportChart = new Chart(ctx).Bar(d.data, d.options);
-</script>
-)";
+                                       <canvas id='%s' width ='%i' height='%i' style='min-width: %dpx; min-height: %dpx'></canvas>
+                                       <script>
+                                       var d = %s;
+                                       var ctx = document.getElementById('%s').getContext('2d');
+                                       var reportChart = new Chart(ctx).Bar(d.data, d.options);
+                                       </script>
+                                       )";
 
     int precision = Model_Currency::precision(Model_Currency::GetBaseCurrency());
 
     Document jsonDoc;
     jsonDoc.SetObject();
-    Document::AllocatorType& allocator = jsonDoc.GetAllocator();
+    Document::AllocatorType &allocator = jsonDoc.GetAllocator();
 
     Value dataObjValue;
     dataObjValue.SetObject();
 
     Value labelsArray(kArrayType);
-    for (const auto& entry : labels)
+    for (const auto &entry : labels)
     {
         Value label_str;
         label_str.SetString(entry.c_str(), allocator);
@@ -557,7 +568,7 @@ void mmHTMLBuilder::addBarChart(const wxArrayString& labels
     double max_value = 0;
     int round = pow(10, precision);
     Value datasets_array(kArrayType);
-    for (const auto& entry : data)
+    for (const auto &entry : data)
     {
         Value objValue;
         objValue.SetObject();
@@ -573,7 +584,7 @@ void mmHTMLBuilder::addBarChart(const wxArrayString& labels
         objValue.AddMember("strokeColor", color, allocator);
 
         Value data_array(kArrayType);
-        for (const auto& item : entry.data)
+        for (const auto &item : entry.data)
         {
             double v = (floor(fabs(item) * round) / round);
             data_array.PushBack(v, allocator);
@@ -592,10 +603,14 @@ void mmHTMLBuilder::addBarChart(const wxArrayString& labels
     double scaleStepWidth = ceil(max_value / vertical_steps);
     // Compute chart spacing and interval (chart forced to start at zero)
     if (scaleStepWidth < 1.0)
+    {
         scaleStepWidth = 1.0;
-    else {
+    }
+    else
+    {
         double s = (pow(10, ceil(log10(scaleStepWidth)) - 1.0));
-        if (s > 0) {
+        if (s > 0)
+        {
             scaleStepWidth = ceil(scaleStepWidth / s) * s;
         }
     }
@@ -622,23 +637,23 @@ void mmHTMLBuilder::addBarChart(const wxArrayString& labels
     addText(wxString::Format(html_parts, id, x, y, x, y, d, id));
 }
 
-void mmHTMLBuilder::addLineChart(const std::vector<LineGraphData>& data, const wxString& id, int colorNum, int x, int y, bool pointDot, bool showGridLines, bool datasetFill)
+void mmHTMLBuilder::addLineChart(const std::vector<LineGraphData> &data, const wxString &id, int colorNum, int x, int y, bool pointDot, bool showGridLines, bool datasetFill)
 {
     static const wxString html_parts = R"(
-<canvas id='%s' width ='%i' height='%i'></canvas>
-<script type='text/javascript'>
-var d = %s
-var ctx = document.getElementById('%s').getContext('2d');
-var reportChart = new Chart(ctx).Line(d.data, d.options);
-</script>
-)";
+                                       <canvas id='%s' width ='%i' height='%i'></canvas>
+                                       <script type='text/javascript'>
+                                       var d = %s
+                                       var ctx = document.getElementById('%s').getContext('2d');
+                                       var reportChart = new Chart(ctx).Line(d.data, d.options);
+                                       </script>
+                                       )";
 
     int precision = Model_Currency::precision(Model_Currency::GetBaseCurrency());
     int round = pow(10, precision);
 
     Document jsonDoc;
     jsonDoc.SetObject();
-    Document::AllocatorType& allocator = jsonDoc.GetAllocator();
+    Document::AllocatorType &allocator = jsonDoc.GetAllocator();
 
     Value dObjValue;
     dObjValue.SetObject();
@@ -646,7 +661,7 @@ var reportChart = new Chart(ctx).Line(d.data, d.options);
     Value labelsArray(kArrayType);
     Value valuesArray(kArrayType);
     Value xPosArray(kArrayType);
-    for (const auto& entry : data)
+    for (const auto &entry : data)
     {
         Value label_str, xPos;
         label_str.SetString(entry.label.c_str(), allocator);
@@ -711,7 +726,7 @@ const wxString mmHTMLBuilder::getHTMLText() const
     return html_;
 }
 
-std::ostream& operator << (std::ostream& os, const wxDateTime& date)
+std::ostream &operator << (std::ostream &os, const wxDateTime &date)
 {
     os << date.FormatISODate();
     return os;

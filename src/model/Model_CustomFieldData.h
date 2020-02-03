@@ -39,19 +39,19 @@ public:
     * Return the static instance address for Model_CustomFieldData table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_CustomFieldData& instance(wxSQLite3Database* db);
+    static Model_CustomFieldData &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_CustomFieldData table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_CustomFieldData& instance();
+    static Model_CustomFieldData &instance();
 
 public:
     std::map<int, Data_Set> get_all(Model_Attachment::REFTYPE reftype);
-    Data* get(int FieldID, int RefID);
+    Data *get(int FieldID, int RefID);
     wxArrayString allValue(const int FieldID);
-    bool DeleteAllData(const wxString& RefType, int RefID);
+    bool DeleteAllData(const wxString &RefType, int RefID);
 };
 
 #endif

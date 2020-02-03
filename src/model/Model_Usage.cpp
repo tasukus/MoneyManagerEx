@@ -28,7 +28,7 @@ Copyright (C) 2018 Stefano Giorgio (stef145g)
 #include "option.h"
 
 Model_Usage::Model_Usage()
-: Model<DB_Table_USAGE_V1>()
+    : Model<DB_Table_USAGE_V1>()
 {
 }
 
@@ -40,9 +40,9 @@ Model_Usage::~Model_Usage()
 * Initialize the global Model_Usage table.
 * Reset the Model_Usage table or create the table if it does not exist.
 */
-Model_Usage& Model_Usage::instance(wxSQLite3Database* db)
+Model_Usage &Model_Usage::instance(wxSQLite3Database *db)
 {
-    Model_Usage& ins = Singleton<Model_Usage>::instance();
+    Model_Usage &ins = Singleton<Model_Usage>::instance();
     ins.db_ = db;
     ins.destroy_cache();
     ins.ensure(db);
@@ -52,12 +52,12 @@ Model_Usage& Model_Usage::instance(wxSQLite3Database* db)
 }
 
 /** Return the static instance of Model_Usage table */
-Model_Usage& Model_Usage::instance()
+Model_Usage &Model_Usage::instance()
 {
     return Singleton<Model_Usage>::instance();
 }
 
-void Model_Usage::AppendToUsage(const wxString& json_string)
+void Model_Usage::AppendToUsage(const wxString &json_string)
 {
     wxLogDebug("===== Model_Usage::AppendToUsage =================");
     wxLogDebug("%s", json_string);
@@ -65,7 +65,7 @@ void Model_Usage::AppendToUsage(const wxString& json_string)
     m_json_usage.Add(json_string);
 }
 
-void Model_Usage::AppendToCache(const wxString& json_string)
+void Model_Usage::AppendToCache(const wxString &json_string)
 {
     wxLogDebug("===== Model_Usage::AppendToCache =================");
     wxLogDebug("%s", json_string);
@@ -90,7 +90,7 @@ wxString Model_Usage::To_JSON_String() const
         json_writer.StartArray();
         for (size_t i = 0; i < m_json_usage.GetCount(); i++)
         {
-            const char* item = m_json_usage.Item(i).c_str();
+            const char *item = m_json_usage.Item(i).c_str();
             json_writer.RawValue(item, strlen(item), kObjectType);
         }
         json_writer.EndArray();
@@ -100,7 +100,7 @@ wxString Model_Usage::To_JSON_String() const
         json_writer.StartArray();
         for (size_t i = 0; i < m_json_cache.GetCount(); i++)
         {
-            const char* item = m_json_cache.Item(i).c_str();
+            const char *item = m_json_cache.Item(i).c_str();
             json_writer.RawValue(item, strlen(item), kObjectType);
         }
         json_writer.EndArray();
@@ -124,7 +124,7 @@ wxString uuid()
 class SendStatsThread : public wxThread
 {
 public:
-    explicit SendStatsThread(const wxString& url) : wxThread()
+    explicit SendStatsThread(const wxString &url) : wxThread()
         , m_url(url) {};
     ~SendStatsThread() {};
 
@@ -133,15 +133,24 @@ protected:
     virtual ExitCode Entry();
 };
 
-void Model_Usage::pageview(const wxWindow* window, long plt /* = 0 msec*/)
+void Model_Usage::pageview(const wxWindow *window, long plt /* = 0 msec*/)
 {
-    if (!window) return;
-    if (window->GetName().IsEmpty()) return;
+    if (!window)
+    {
+        return;
+    }
+    if (window->GetName().IsEmpty())
+    {
+        return;
+    }
 
     const wxWindow *current = window;
 
     wxString documentTitle = window->GetLabel();
-    if (documentTitle.IsEmpty()) documentTitle = window->GetName();
+    if (documentTitle.IsEmpty())
+    {
+        documentTitle = window->GetName();
+    }
 
     wxString documentPath;
     while (current)
@@ -156,11 +165,13 @@ void Model_Usage::pageview(const wxWindow* window, long plt /* = 0 msec*/)
     }
 
     if (plt)
+    {
         timing(wxURI(documentPath).BuildURI(), wxURI(documentTitle).BuildURI(), plt);
+    }
     return pageview(wxURI(documentPath).BuildURI(), wxURI(documentTitle).BuildURI(), plt);
 }
 
-void Model_Usage::timing(const wxString& documentPath, const wxString& documentTitle, long plt /* = 0 msec*/)
+void Model_Usage::timing(const wxString &documentPath, const wxString &documentTitle, long plt /* = 0 msec*/)
 {
     if (!Option::instance().getSendUsageStatistics())
     {
@@ -169,7 +180,8 @@ void Model_Usage::timing(const wxString& documentPath, const wxString& documentT
 
     wxString url = mmex::weblink::GA;
 
-    std::vector<std::pair<wxString, wxString>> parameters = {
+    std::vector<std::pair<wxString, wxString>> parameters =
+    {
         { "v", "1" },
         { "t", "timing" },
         { "tid", "UA-51521761-6" },
@@ -184,23 +196,26 @@ void Model_Usage::timing(const wxString& documentPath, const wxString& documentT
         // application
         { "an", "MoneyManagerEx" },
         { "av", mmex::version::string }, // application version
-                                         // custom dimensions
+        // custom dimensions
         { "cd1", wxPlatformInfo::Get().GetPortIdShortName() },
         { "plt", wxString::Format("%ld", plt)}
     };
 
-    for (const auto& kv : parameters)
+    for (const auto &kv : parameters)
     {
-        if (kv.second.empty()) continue;
+        if (kv.second.empty())
+        {
+            continue;
+        }
         url += wxString::Format("%s=%s&", kv.first, kv.second);
     }
 
     // Spawn thread to send statistics
-    SendStatsThread* thread = new SendStatsThread(url.RemoveLast()); // override the last &
+    SendStatsThread *thread = new SendStatsThread(url.RemoveLast()); // override the last &
     thread->Run();
 }
 
-void Model_Usage::pageview(const wxString& documentPath, const wxString& documentTitle, long plt /* = 0 msec*/)
+void Model_Usage::pageview(const wxString &documentPath, const wxString &documentTitle, long plt /* = 0 msec*/)
 {
     if (!Option::instance().getSendUsageStatistics())
     {
@@ -209,7 +224,8 @@ void Model_Usage::pageview(const wxString& documentPath, const wxString& documen
 
     wxString url = mmex::weblink::GA;
 
-    std::vector<std::pair<wxString, wxString>> parameters = {
+    std::vector<std::pair<wxString, wxString>> parameters =
+    {
         { "v", "1" },
         { "t", "pageview" },
         { "tid", "UA-51521761-6" },
@@ -224,26 +240,29 @@ void Model_Usage::pageview(const wxString& documentPath, const wxString& documen
         // application
         { "an", "MoneyManagerEx" },
         { "av", mmex::version::string }, // application version
-                                         // custom dimensions
+        // custom dimensions
         { "cd1", wxPlatformInfo::Get().GetPortIdShortName() },
         { "plt", wxString::Format("%ld", plt)}
     };
 
-    for (const auto& kv : parameters)
+    for (const auto &kv : parameters)
     {
-        if (kv.second.empty()) continue;
+        if (kv.second.empty())
+        {
+            continue;
+        }
         url += wxString::Format("%s=%s&", kv.first, kv.second);
     }
 
     // Spawn thread to send statistics
-    SendStatsThread* thread = new SendStatsThread(url.RemoveLast()); // override the last &
+    SendStatsThread *thread = new SendStatsThread(url.RemoveLast()); // override the last &
     thread->Run();
 }
 
 wxThread::ExitCode SendStatsThread::Entry()
 {
     wxLogDebug("Sending stats (thread %lu, priority %u, %s, %i cores): %s",
-        GetId(), GetPriority(), wxGetOsDescription(), GetCPUCount(), m_url);
+               GetId(), GetPriority(), wxGetOsDescription(), GetCPUCount(), m_url);
     wxString result = wxEmptyString;
     http_get_data(m_url, result, "User-Agent: " + wxGetOsDescription() + "\r\n");
     wxLogDebug("Response: %s", result);

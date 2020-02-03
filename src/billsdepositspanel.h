@@ -34,37 +34,37 @@ class billsDepositsListCtrl: public mmListCtrl
     wxDECLARE_EVENT_TABLE();
 
 public:
-    billsDepositsListCtrl(mmBillsDepositsPanel* bdp, wxWindow *parent, wxWindowID winid = wxID_ANY);
+    billsDepositsListCtrl(mmBillsDepositsPanel *bdp, wxWindow *parent, wxWindowID winid = wxID_ANY);
     ~billsDepositsListCtrl();
 
-    void OnNewBDSeries(wxCommandEvent& event);
-    void OnEditBDSeries(wxCommandEvent& event);
-    void OnDeleteBDSeries(wxCommandEvent& event);
-    void OnEnterBDTransaction(wxCommandEvent& event);
-    void OnSkipBDTransaction(wxCommandEvent& event);
-    void OnOpenAttachment(wxCommandEvent& event);
-    void OnOrganizeAttachments(wxCommandEvent& event);
+    void OnNewBDSeries(wxCommandEvent &event);
+    void OnEditBDSeries(wxCommandEvent &event);
+    void OnDeleteBDSeries(wxCommandEvent &event);
+    void OnEnterBDTransaction(wxCommandEvent &event);
+    void OnSkipBDTransaction(wxCommandEvent &event);
+    void OnOpenAttachment(wxCommandEvent &event);
+    void OnOrganizeAttachments(wxCommandEvent &event);
     void RefreshList();
 
 protected:
-    virtual void OnColClick(wxListEvent& event);
+    virtual void OnColClick(wxListEvent &event);
 
 private:
     /* required overrides for virtual style list control */
     virtual wxString OnGetItemText(long item, long column) const;
     virtual int OnGetItemImage(long item) const;
 
-    void OnItemRightClick(wxMouseEvent& event);
-    void OnListLeftClick(wxMouseEvent& event);
-    void OnListItemActivated(wxListEvent& event);
-    void OnMarkTransaction(wxCommandEvent& event);
-    void OnMarkAllTransactions(wxCommandEvent& event);
-    void OnListKeyDown(wxListEvent& event);
-    void OnListItemSelected(wxListEvent& event);
+    void OnItemRightClick(wxMouseEvent &event);
+    void OnListLeftClick(wxMouseEvent &event);
+    void OnListItemActivated(wxListEvent &event);
+    void OnMarkTransaction(wxCommandEvent &event);
+    void OnMarkAllTransactions(wxCommandEvent &event);
+    void OnListKeyDown(wxListEvent &event);
+    void OnListItemSelected(wxListEvent &event);
 
     void refreshVisualList(int selected_index = -1);
 
-    mmBillsDepositsPanel* m_bdp;
+    mmBillsDepositsPanel *m_bdp;
 };
 
 class mmBillsDepositsPanel : public mmPanelBase
@@ -74,10 +74,10 @@ class mmBillsDepositsPanel : public mmPanelBase
 public:
     mmBillsDepositsPanel(wxWindow *parent
                          , wxWindowID winid = wxID_ANY
-                         , const wxPoint& pos = wxDefaultPosition
-                         , const wxSize& size = wxDefaultSize
+                         , const wxPoint &pos = wxDefaultPosition
+                         , const wxSize &size = wxDefaultSize
                          , long style = wxTAB_TRAVERSAL | wxNO_BORDER
-                         , const wxString& name = "mmBillsDepositsPanel"
+                         , const wxString &name = "mmBillsDepositsPanel"
                         );
     ~mmBillsDepositsPanel();
 
@@ -99,8 +99,8 @@ public:
         return COL_PAYMENT_DATE;
     }
 
-    const wxString GetFrequency(const Model_Billsdeposits::Data* item) const;
-    const wxString GetRemainingDays(const Model_Billsdeposits::Data* item) const;
+    const wxString GetFrequency(const Model_Billsdeposits::Data *item) const;
+    const wxString GetRemainingDays(const Model_Billsdeposits::Data *item) const;
 
     wxString BuildPage() const;
     wxDate getToday() const;
@@ -108,20 +108,20 @@ public:
 private:
     void CreateControls();
     bool Create(wxWindow *parent, wxWindowID winid,
-                const wxPoint& pos = wxDefaultPosition,
-                const wxSize& size = wxDefaultSize,
+                const wxPoint &pos = wxDefaultPosition,
+                const wxSize &size = wxDefaultSize,
                 long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-                const wxString& name = "mmBillsDepositsPanel");
+                const wxString &name = "mmBillsDepositsPanel");
 
     /* Event handlers for Buttons */
-    void OnNewBDSeries(wxCommandEvent& event);
-    void OnEditBDSeries(wxCommandEvent& event);
-    void OnDeleteBDSeries(wxCommandEvent& event);
+    void OnNewBDSeries(wxCommandEvent &event);
+    void OnEditBDSeries(wxCommandEvent &event);
+    void OnDeleteBDSeries(wxCommandEvent &event);
 
-    void OnEnterBDTransaction(wxCommandEvent& event);
-    void OnSkipBDTransaction(wxCommandEvent& event);
-    void OnOpenAttachment(wxCommandEvent& event);
-    void OnFilterTransactions(wxCommandEvent& event);
+    void OnEnterBDTransaction(wxCommandEvent &event);
+    void OnSkipBDTransaction(wxCommandEvent &event);
+    void OnOpenAttachment(wxCommandEvent &event);
+    void OnFilterTransactions(wxCommandEvent &event);
 
     void sortTable();
 
@@ -131,12 +131,12 @@ private:
     wxDate m_today;
 
 private:
-    wxImageList* m_imageList = nullptr;
-    billsDepositsListCtrl* listCtrlAccount_ = nullptr;
-    wxStaticText* m_infoText= nullptr;
-    wxStaticText* m_infoTextMini = nullptr;
-    mmFilterTransactionsDialog* transFilterDlg_ = nullptr;
-    wxButton* m_bitmapTransFilter = nullptr;
+    wxImageList *m_imageList = nullptr;
+    billsDepositsListCtrl *listCtrlAccount_ = nullptr;
+    wxStaticText *m_infoText= nullptr;
+    wxStaticText *m_infoTextMini = nullptr;
+    mmFilterTransactionsDialog *transFilterDlg_ = nullptr;
+    wxButton *m_bitmapTransFilter = nullptr;
 
     enum EColumn
     {

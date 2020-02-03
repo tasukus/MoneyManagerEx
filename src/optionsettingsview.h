@@ -42,28 +42,28 @@ public:
 
 private:
     void Create();
-    void OnNavTreeColorChanged(wxCommandEvent& event);
+    void OnNavTreeColorChanged(wxCommandEvent &event);
 
 private:
     /// Colour Buttons.
-    wxButton* m_UDFCB1 = nullptr;
-    wxButton* m_UDFCB2 = nullptr;
-    wxButton* m_UDFCB3 = nullptr;
-    wxButton* m_UDFCB4 = nullptr;
-    wxButton* m_UDFCB5 = nullptr;
-    wxButton* m_UDFCB6 = nullptr;
-    wxButton* m_UDFCB7 = nullptr;
+    wxButton *m_UDFCB1 = nullptr;
+    wxButton *m_UDFCB2 = nullptr;
+    wxButton *m_UDFCB3 = nullptr;
+    wxButton *m_UDFCB4 = nullptr;
+    wxButton *m_UDFCB5 = nullptr;
+    wxButton *m_UDFCB6 = nullptr;
+    wxButton *m_UDFCB7 = nullptr;
 
-    wxChoice* m_choice_visible = nullptr;
-    wxChoice* m_choice_trans_visible = nullptr;
-    wxSpinCtrl* m_scale_factor = nullptr;
+    wxChoice *m_choice_visible = nullptr;
+    wxChoice *m_choice_trans_visible = nullptr;
+    wxSpinCtrl *m_scale_factor = nullptr;
 
-    wxCheckBox* m_budget_financial_years = nullptr;
-    wxCheckBox* m_budget_include_transfers = nullptr;
-    wxCheckBox* m_budget_setup_without_summary = nullptr;
-    wxCheckBox* m_budget_summary_without_category = nullptr;
-    wxSpinCtrl* m_budget_days_offset = nullptr;
-    wxCheckBox* m_ignore_future_transactions = nullptr;
+    wxCheckBox *m_budget_financial_years = nullptr;
+    wxCheckBox *m_budget_include_transfers = nullptr;
+    wxCheckBox *m_budget_setup_without_summary = nullptr;
+    wxCheckBox *m_budget_summary_without_category = nullptr;
+    wxSpinCtrl *m_budget_days_offset = nullptr;
+    wxCheckBox *m_ignore_future_transactions = nullptr;
 
     enum
     {

@@ -30,30 +30,30 @@ class mmBudgetYearEntryDialog : public wxDialog
 
 public:
     mmBudgetYearEntryDialog();
-    mmBudgetYearEntryDialog(wxWindow* parent,
+    mmBudgetYearEntryDialog(wxWindow *parent,
                             bool withMonth = false);
 
-    bool Create(wxWindow* parent
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
 
     void CreateControls();
 
     // utility functions
-    void OnOk(wxCommandEvent& event);
+    void OnOk(wxCommandEvent &event);
 
 public:
     wxString budgetYear_;
     wxString yearToCopy_;
 
 private:
-    wxChoice* itemChoice_ = nullptr;
-    wxSpinCtrl* textYear_ = nullptr;
+    wxChoice *itemChoice_ = nullptr;
+    wxSpinCtrl *textYear_ = nullptr;
     bool withMonth_ = false;
-    wxSpinCtrl* textMonth_ = nullptr;
+    wxSpinCtrl *textMonth_ = nullptr;
 };
 
 #endif

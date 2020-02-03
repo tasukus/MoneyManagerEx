@@ -48,20 +48,20 @@ public:
     * Return the static instance address for Model_Account table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Account& instance(wxSQLite3Database* db);
+    static Model_Account &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_Account table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Account& instance();
+    static Model_Account &instance();
 
 public:
     /** Return the Data record for the given account name */
-    Data* get(const wxString& name);
+    Data *get(const wxString &name);
 
     /** Return the Data record for the given account num */
-    Data* getByAccNum(const wxString& num);
+    Data *getByAccNum(const wxString &num);
 
     static wxString get_account_name(int account_id);
 
@@ -74,43 +74,43 @@ public:
     static wxArrayString all_status();
     static wxArrayString all_type();
 
-    static Model_Currency::Data* currency(const Data* r);
-    static Model_Currency::Data* currency(const Data& r);
+    static Model_Currency::Data *currency(const Data *r);
+    static Model_Currency::Data *currency(const Data &r);
 
-    static const Model_Checking::Data_Set transaction(const Data* r);
-    static const Model_Checking::Data_Set transaction(const Data& r);
+    static const Model_Checking::Data_Set transaction(const Data *r);
+    static const Model_Checking::Data_Set transaction(const Data &r);
 
-    static const Model_Billsdeposits::Data_Set billsdeposits(const Data* r);
-    static const Model_Billsdeposits::Data_Set billsdeposits(const Data& r);
+    static const Model_Billsdeposits::Data_Set billsdeposits(const Data *r);
+    static const Model_Billsdeposits::Data_Set billsdeposits(const Data &r);
 
-    static double balance(const Data* r);
-    static double balance(const Data& r);
+    static double balance(const Data *r);
+    static double balance(const Data &r);
 
-    static std::pair<double, double> investment_balance(const Data* r);
-    static std::pair<double, double> investment_balance(const Data& r);
-    static wxString toCurrency(double value, const Data* r);
+    static std::pair<double, double> investment_balance(const Data *r);
+    static std::pair<double, double> investment_balance(const Data &r);
+    static wxString toCurrency(double value, const Data *r);
 
-    static wxString toString(double value, const Data* r, int precision = 2);
-    static wxString toString(double value, const Data& r, int precision = 2);
+    static wxString toString(double value, const Data *r, int precision = 2);
+    static wxString toString(double value, const Data &r, int precision = 2);
 
-    static STATUS_ENUM status(const Data* account);
-    static STATUS_ENUM status(const Data& account);
+    static STATUS_ENUM status(const Data *account);
+    static STATUS_ENUM status(const Data &account);
     static DB_Table_ACCOUNTLIST::STATUS STATUS(STATUS_ENUM status, OP op = EQUAL);
 
-    static TYPE type(const Data* account);
-    static TYPE type(const Data& account);
+    static TYPE type(const Data *account);
+    static TYPE type(const Data &account);
 
-    static bool FAVORITEACCT(const Data* r);
-    static bool FAVORITEACCT(const Data& r);
+    static bool FAVORITEACCT(const Data *r);
+    static bool FAVORITEACCT(const Data &r);
 
-    static bool is_used(const Model_Currency::Data* c);
-    static bool is_used(const Model_Currency::Data& c);
+    static bool is_used(const Model_Currency::Data *c);
+    static bool is_used(const Model_Currency::Data &c);
 
     static int money_accounts_num();
 
-    static bool Exist(const wxString& account_name);
+    static bool Exist(const wxString &account_name);
 
-    static wxDateTime DateOf(const wxString& date_str);
+    static wxDateTime DateOf(const wxString &date_str);
     static bool BoolOf(int value);
 };
 

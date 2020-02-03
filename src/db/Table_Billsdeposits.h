@@ -28,7 +28,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
             PrettyWriter<StringBuffer> json_writer(json_buffer);
 
             json_writer.StartArray();
-            for (const auto & item: *this)
+            for (const auto &item: *this)
             {
                 json_writer.StartObject();
                 item.as_json(json_writer);
@@ -41,11 +41,11 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     };
 
     /** A container to hold a list of Data record pointers for the table in memory*/
-    typedef std::vector<Self::Data*> Cache;
-    typedef std::map<int, Self::Data*> Index_By_Id;
+    typedef std::vector<Self::Data *> Cache;
+    typedef std::map<int, Self::Data *> Index_By_Id;
     Cache cache_;
     Index_By_Id index_by_id_;
-    Data* fake_; // in case the entity not found
+    Data *fake_; // in case the entity not found
 
     /** Destructor: clears any data records stored in memory */
     ~DB_Table_BILLSDEPOSITS()
@@ -63,7 +63,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     }
 
     /** Creates the database table if the table does not exist*/
-    bool ensure(wxSQLite3Database* db)
+    bool ensure(wxSQLite3Database *db)
     {
         if (!exists(db))
         {
@@ -84,7 +84,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
         return true;
     }
 
-    bool ensure_index(wxSQLite3Database* db)
+    bool ensure_index(wxSQLite3Database *db)
     {
         try
         {
@@ -99,7 +99,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
         return true;
     }
 
-    void ensure_data(wxSQLite3Database* db)
+    void ensure_data(wxSQLite3Database *db)
     {
         db->Begin();
         db->Commit();
@@ -107,103 +107,154 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
 
     struct BDID : public DB_Column<int>
     {
-        static wxString name() { return "BDID"; }
+        static wxString name()
+        {
+            return "BDID";
+        }
         explicit BDID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct ACCOUNTID : public DB_Column<int>
     {
-        static wxString name() { return "ACCOUNTID"; }
+        static wxString name()
+        {
+            return "ACCOUNTID";
+        }
         explicit ACCOUNTID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct TOACCOUNTID : public DB_Column<int>
     {
-        static wxString name() { return "TOACCOUNTID"; }
+        static wxString name()
+        {
+            return "TOACCOUNTID";
+        }
         explicit TOACCOUNTID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct PAYEEID : public DB_Column<int>
     {
-        static wxString name() { return "PAYEEID"; }
+        static wxString name()
+        {
+            return "PAYEEID";
+        }
         explicit PAYEEID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct TRANSCODE : public DB_Column<wxString>
     {
-        static wxString name() { return "TRANSCODE"; }
+        static wxString name()
+        {
+            return "TRANSCODE";
+        }
         explicit TRANSCODE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct TRANSAMOUNT : public DB_Column<double>
     {
-        static wxString name() { return "TRANSAMOUNT"; }
+        static wxString name()
+        {
+            return "TRANSAMOUNT";
+        }
         explicit TRANSAMOUNT(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
     struct STATUS : public DB_Column<wxString>
     {
-        static wxString name() { return "STATUS"; }
+        static wxString name()
+        {
+            return "STATUS";
+        }
         explicit STATUS(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct TRANSACTIONNUMBER : public DB_Column<wxString>
     {
-        static wxString name() { return "TRANSACTIONNUMBER"; }
+        static wxString name()
+        {
+            return "TRANSACTIONNUMBER";
+        }
         explicit TRANSACTIONNUMBER(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct NOTES : public DB_Column<wxString>
     {
-        static wxString name() { return "NOTES"; }
+        static wxString name()
+        {
+            return "NOTES";
+        }
         explicit NOTES(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct CATEGID : public DB_Column<int>
     {
-        static wxString name() { return "CATEGID"; }
+        static wxString name()
+        {
+            return "CATEGID";
+        }
         explicit CATEGID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct SUBCATEGID : public DB_Column<int>
     {
-        static wxString name() { return "SUBCATEGID"; }
+        static wxString name()
+        {
+            return "SUBCATEGID";
+        }
         explicit SUBCATEGID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct TRANSDATE : public DB_Column<wxString>
     {
-        static wxString name() { return "TRANSDATE"; }
+        static wxString name()
+        {
+            return "TRANSDATE";
+        }
         explicit TRANSDATE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct FOLLOWUPID : public DB_Column<int>
     {
-        static wxString name() { return "FOLLOWUPID"; }
+        static wxString name()
+        {
+            return "FOLLOWUPID";
+        }
         explicit FOLLOWUPID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct TOTRANSAMOUNT : public DB_Column<double>
     {
-        static wxString name() { return "TOTRANSAMOUNT"; }
+        static wxString name()
+        {
+            return "TOTRANSAMOUNT";
+        }
         explicit TOTRANSAMOUNT(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
     struct REPEATS : public DB_Column<int>
     {
-        static wxString name() { return "REPEATS"; }
+        static wxString name()
+        {
+            return "REPEATS";
+        }
         explicit REPEATS(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct NEXTOCCURRENCEDATE : public DB_Column<wxString>
     {
-        static wxString name() { return "NEXTOCCURRENCEDATE"; }
+        static wxString name()
+        {
+            return "NEXTOCCURRENCEDATE";
+        }
         explicit NEXTOCCURRENCEDATE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct NUMOCCURRENCES : public DB_Column<int>
     {
-        static wxString name() { return "NUMOCCURRENCES"; }
+        static wxString name()
+        {
+            return "NUMOCCURRENCES";
+        }
         explicit NUMOCCURRENCES(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
@@ -235,49 +286,118 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     {
         switch(col)
         {
-            case COL_BDID: return "BDID";
-            case COL_ACCOUNTID: return "ACCOUNTID";
-            case COL_TOACCOUNTID: return "TOACCOUNTID";
-            case COL_PAYEEID: return "PAYEEID";
-            case COL_TRANSCODE: return "TRANSCODE";
-            case COL_TRANSAMOUNT: return "TRANSAMOUNT";
-            case COL_STATUS: return "STATUS";
-            case COL_TRANSACTIONNUMBER: return "TRANSACTIONNUMBER";
-            case COL_NOTES: return "NOTES";
-            case COL_CATEGID: return "CATEGID";
-            case COL_SUBCATEGID: return "SUBCATEGID";
-            case COL_TRANSDATE: return "TRANSDATE";
-            case COL_FOLLOWUPID: return "FOLLOWUPID";
-            case COL_TOTRANSAMOUNT: return "TOTRANSAMOUNT";
-            case COL_REPEATS: return "REPEATS";
-            case COL_NEXTOCCURRENCEDATE: return "NEXTOCCURRENCEDATE";
-            case COL_NUMOCCURRENCES: return "NUMOCCURRENCES";
-            default: break;
+            case COL_BDID:
+                return "BDID";
+            case COL_ACCOUNTID:
+                return "ACCOUNTID";
+            case COL_TOACCOUNTID:
+                return "TOACCOUNTID";
+            case COL_PAYEEID:
+                return "PAYEEID";
+            case COL_TRANSCODE:
+                return "TRANSCODE";
+            case COL_TRANSAMOUNT:
+                return "TRANSAMOUNT";
+            case COL_STATUS:
+                return "STATUS";
+            case COL_TRANSACTIONNUMBER:
+                return "TRANSACTIONNUMBER";
+            case COL_NOTES:
+                return "NOTES";
+            case COL_CATEGID:
+                return "CATEGID";
+            case COL_SUBCATEGID:
+                return "SUBCATEGID";
+            case COL_TRANSDATE:
+                return "TRANSDATE";
+            case COL_FOLLOWUPID:
+                return "FOLLOWUPID";
+            case COL_TOTRANSAMOUNT:
+                return "TOTRANSAMOUNT";
+            case COL_REPEATS:
+                return "REPEATS";
+            case COL_NEXTOCCURRENCEDATE:
+                return "NEXTOCCURRENCEDATE";
+            case COL_NUMOCCURRENCES:
+                return "NUMOCCURRENCES";
+            default:
+                break;
         }
 
         return "UNKNOWN";
     }
 
     /** Returns the column number from the given column name*/
-    static COLUMN name_to_column(const wxString& name)
+    static COLUMN name_to_column(const wxString &name)
     {
-        if ("BDID" == name) return COL_BDID;
-        else if ("ACCOUNTID" == name) return COL_ACCOUNTID;
-        else if ("TOACCOUNTID" == name) return COL_TOACCOUNTID;
-        else if ("PAYEEID" == name) return COL_PAYEEID;
-        else if ("TRANSCODE" == name) return COL_TRANSCODE;
-        else if ("TRANSAMOUNT" == name) return COL_TRANSAMOUNT;
-        else if ("STATUS" == name) return COL_STATUS;
-        else if ("TRANSACTIONNUMBER" == name) return COL_TRANSACTIONNUMBER;
-        else if ("NOTES" == name) return COL_NOTES;
-        else if ("CATEGID" == name) return COL_CATEGID;
-        else if ("SUBCATEGID" == name) return COL_SUBCATEGID;
-        else if ("TRANSDATE" == name) return COL_TRANSDATE;
-        else if ("FOLLOWUPID" == name) return COL_FOLLOWUPID;
-        else if ("TOTRANSAMOUNT" == name) return COL_TOTRANSAMOUNT;
-        else if ("REPEATS" == name) return COL_REPEATS;
-        else if ("NEXTOCCURRENCEDATE" == name) return COL_NEXTOCCURRENCEDATE;
-        else if ("NUMOCCURRENCES" == name) return COL_NUMOCCURRENCES;
+        if ("BDID" == name)
+        {
+            return COL_BDID;
+        }
+        else if ("ACCOUNTID" == name)
+        {
+            return COL_ACCOUNTID;
+        }
+        else if ("TOACCOUNTID" == name)
+        {
+            return COL_TOACCOUNTID;
+        }
+        else if ("PAYEEID" == name)
+        {
+            return COL_PAYEEID;
+        }
+        else if ("TRANSCODE" == name)
+        {
+            return COL_TRANSCODE;
+        }
+        else if ("TRANSAMOUNT" == name)
+        {
+            return COL_TRANSAMOUNT;
+        }
+        else if ("STATUS" == name)
+        {
+            return COL_STATUS;
+        }
+        else if ("TRANSACTIONNUMBER" == name)
+        {
+            return COL_TRANSACTIONNUMBER;
+        }
+        else if ("NOTES" == name)
+        {
+            return COL_NOTES;
+        }
+        else if ("CATEGID" == name)
+        {
+            return COL_CATEGID;
+        }
+        else if ("SUBCATEGID" == name)
+        {
+            return COL_SUBCATEGID;
+        }
+        else if ("TRANSDATE" == name)
+        {
+            return COL_TRANSDATE;
+        }
+        else if ("FOLLOWUPID" == name)
+        {
+            return COL_FOLLOWUPID;
+        }
+        else if ("TOTRANSAMOUNT" == name)
+        {
+            return COL_TOTRANSAMOUNT;
+        }
+        else if ("REPEATS" == name)
+        {
+            return COL_REPEATS;
+        }
+        else if ("NEXTOCCURRENCEDATE" == name)
+        {
+            return COL_NEXTOCCURRENCEDATE;
+        }
+        else if ("NUMOCCURRENCES" == name)
+        {
+            return COL_NUMOCCURRENCES;
+        }
 
         return COL_UNKNOWN;
     }
@@ -287,7 +407,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     {
         friend struct DB_Table_BILLSDEPOSITS;
         /** This is a instance pointer to itself in memory. */
-        Self* table_;
+        Self *table_;
 
         int BDID; // primary key
         int ACCOUNTID;
@@ -317,17 +437,17 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
             BDID = id;
         }
 
-        bool operator < (const Data& r) const
+        bool operator < (const Data &r) const
         {
             return this->id() < r.id();
         }
 
-        bool operator < (const Data* r) const
+        bool operator < (const Data *r) const
         {
             return this->id() < r->id();
         }
 
-        explicit Data(Self* table = 0)
+        explicit Data(Self *table = 0)
         {
             table_ = table;
 
@@ -344,7 +464,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
             NUMOCCURRENCES = -1;
         }
 
-        explicit Data(wxSQLite3ResultSet& q, Self* table = 0)
+        explicit Data(wxSQLite3ResultSet &q, Self *table = 0)
         {
             table_ = table;
 
@@ -367,9 +487,12 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
             NUMOCCURRENCES = q.GetInt(16);
         }
 
-        Data& operator=(const Data& other)
+        Data &operator=(const Data &other)
         {
-            if (this == &other) return *this;
+            if (this == &other)
+            {
+                return *this;
+            }
 
             BDID = other.BDID;
             ACCOUNTID = other.ACCOUNTID;
@@ -390,7 +513,6 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
             NUMOCCURRENCES = other.NUMOCCURRENCES;
             return *this;
         }
-
 
         bool match(const Self::BDID &in) const
         {
@@ -491,7 +613,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
         }
 
         /** Add the field data as json key:value pairs */
-        void as_json(PrettyWriter<StringBuffer>& json_writer) const
+        void as_json(PrettyWriter<StringBuffer> &json_writer) const
         {
             json_writer.Key("BDID");
             json_writer.Int(this->BDID);
@@ -552,7 +674,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
             return row;
         }
 
-        void to_template(html_template& t) const
+        void to_template(html_template &t) const
         {
             t(L"BDID") = BDID;
             t(L"ACCOUNTID") = ACCOUNTID;
@@ -574,9 +696,12 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
         }
 
         /** Save the record instance in memory to the database. */
-        bool save(wxSQLite3Database* db)
+        bool save(wxSQLite3Database *db)
         {
-            if (db && db->IsReadOnly()) return false;
+            if (db && db->IsReadOnly())
+            {
+                return false;
+            }
             if (!table_ || !db)
             {
                 wxLogError("can not save BILLSDEPOSITS");
@@ -587,7 +712,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
         }
 
         /** Remove the record instance from memory and the database. */
-        bool remove(wxSQLite3Database* db)
+        bool remove(wxSQLite3Database *db)
         {
             if (!table_ || !db)
             {
@@ -609,10 +734,16 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
         NUM_COLUMNS = 17
     };
 
-    size_t num_columns() const { return NUM_COLUMNS; }
+    size_t num_columns() const
+    {
+        return NUM_COLUMNS;
+    }
 
     /** Name of the table */
-    wxString name() const { return "BILLSDEPOSITS"; }
+    wxString name() const
+    {
+        return "BILLSDEPOSITS";
+    }
 
     DB_Table_BILLSDEPOSITS() : fake_(new Data())
     {
@@ -620,17 +751,17 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     }
 
     /** Create a new Data record and add to memory table (cache) */
-    Self::Data* create()
+    Self::Data *create()
     {
-        Self::Data* entity = new Self::Data(this);
+        Self::Data *entity = new Self::Data(this);
         cache_.push_back(entity);
         return entity;
     }
 
     /** Create a copy of the Data record and add to memory table (cache) */
-    Self::Data* clone(const Data* e)
+    Self::Data *clone(const Data *e)
     {
-        Self::Data* entity = create();
+        Self::Data *entity = create();
         *entity = *e;
         entity->id(-1);
         return entity;
@@ -641,7 +772,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     * Either create a new record or update the existing record.
     * Remove old record from the memory table (cache)
     */
-    bool save(Self::Data* entity, wxSQLite3Database* db)
+    bool save(Self::Data *entity, wxSQLite3Database *db)
     {
         wxString sql = wxEmptyString;
         if (entity->id() <= 0) //  new & insert
@@ -674,7 +805,9 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
             stmt.Bind(15, entity->NEXTOCCURRENCEDATE);
             stmt.Bind(16, entity->NUMOCCURRENCES);
             if (entity->id() > 0)
+            {
                 stmt.Bind(17, entity->BDID);
+            }
 
             stmt.ExecuteUpdate();
             stmt.Finalize();
@@ -683,9 +816,11 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
             {
                 for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
                 {
-                    Self::Data* e = *it;
+                    Self::Data *e = *it;
                     if (e->id() == entity->id())
-                        *e = *entity;  // in-place update
+                    {
+                        *e = *entity;    // in-place update
+                    }
                 }
             }
         }
@@ -704,9 +839,12 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(int id, wxSQLite3Database* db)
+    bool remove(int id, wxSQLite3Database *db)
     {
-        if (id <= 0) return false;
+        if (id <= 0)
+        {
+            return false;
+        }
         try
         {
             wxString sql = "DELETE FROM BILLSDEPOSITS WHERE BDID = ?";
@@ -718,7 +856,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
             Cache c;
             for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
             {
-                Self::Data* entity = *it;
+                Self::Data *entity = *it;
                 if (entity->id() == id)
                 {
                     index_by_id_.erase(entity->id());
@@ -742,7 +880,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(Self::Data* entity, wxSQLite3Database* db)
+    bool remove(Self::Data *entity, wxSQLite3Database *db)
     {
         if (remove(entity->id(), db))
         {
@@ -754,11 +892,11 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     }
 
     template<typename... Args>
-    Self::Data* get_one(const Args& ... args)
+    Self::Data *get_one(const Args &... args)
     {
         for (Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it)
         {
-            Self::Data* item = it->second;
+            Self::Data *item = it->second;
             if (item->id() > 0 && match(item, args...))
             {
                 ++ hit_;
@@ -775,7 +913,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data* get(int id, wxSQLite3Database* db)
+    Self::Data *get(int id, wxSQLite3Database *db)
     {
         if (id <= 0)
         {
@@ -791,7 +929,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
         }
 
         ++ miss_;
-        Self::Data* entity = 0;
+        Self::Data *entity = 0;
         wxString where = wxString::Format(" WHERE %s = ?", PRIMARY::name().c_str());
         try
         {
@@ -825,7 +963,7 @@ struct DB_Table_BILLSDEPOSITS : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all(wxSQLite3Database* db, COLUMN col = COLUMN(0), bool asc = true)
+    const Data_Set all(wxSQLite3Database *db, COLUMN col = COLUMN(0), bool asc = true)
     {
         Data_Set result;
         try

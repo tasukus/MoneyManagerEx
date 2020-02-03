@@ -34,44 +34,44 @@ class ShareTransactionDialog : public wxDialog
 
 public:
     ShareTransactionDialog();
-    ShareTransactionDialog(wxWindow* parent, Model_Stock::Data* stock);
-    ShareTransactionDialog(wxWindow* parent, Model_Translink::Data* transfer_entry, Model_Checking::Data* checking_entry);
+    ShareTransactionDialog(wxWindow *parent, Model_Stock::Data *stock);
+    ShareTransactionDialog(wxWindow *parent, Model_Translink::Data *transfer_entry, Model_Checking::Data *checking_entry);
 
     int m_stock_id = -1;
 
 private:
-    bool Create(wxWindow* parent, wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+    bool Create(wxWindow *parent, wxWindowID id
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
 
     void CreateControls();
     void DataToControls();
 
-    void OnQuit(wxCloseEvent& WXUNUSED(event));
-    void OnOk(wxCommandEvent& WXUNUSED(event));
-    void OnCancel(wxCommandEvent& WXUNUSED(event));
-    void OnStockPriceButton(wxCommandEvent& event);
-    void OnTextEntered(wxCommandEvent& event);
+    void OnQuit(wxCloseEvent &WXUNUSED(event));
+    void OnOk(wxCommandEvent &WXUNUSED(event));
+    void OnCancel(wxCommandEvent &WXUNUSED(event));
+    void OnStockPriceButton(wxCommandEvent &event);
+    void OnTextEntered(wxCommandEvent &event);
 
 private:
-    mmTextCtrl* m_stock_name_ctrl = nullptr;
-    mmTextCtrl* m_stock_symbol_ctrl = nullptr;
-    mmTextCtrl* m_share_num_ctrl = nullptr;
-    mmTextCtrl* m_share_price_ctrl = nullptr;
-    mmTextCtrl* m_share_lot_ctrl = nullptr;
-    mmTextCtrl* m_commission_ctrl = nullptr;
-    mmTextCtrl* m_notes_ctrl = nullptr;
-    wxBitmapButton* m_attachments_btn = nullptr;
+    mmTextCtrl *m_stock_name_ctrl = nullptr;
+    mmTextCtrl *m_stock_symbol_ctrl = nullptr;
+    mmTextCtrl *m_share_num_ctrl = nullptr;
+    mmTextCtrl *m_share_price_ctrl = nullptr;
+    mmTextCtrl *m_share_lot_ctrl = nullptr;
+    mmTextCtrl *m_commission_ctrl = nullptr;
+    mmTextCtrl *m_notes_ctrl = nullptr;
+    wxBitmapButton *m_attachments_btn = nullptr;
 
-    UserTransactionPanel* m_transaction_panel = nullptr;
+    UserTransactionPanel *m_transaction_panel = nullptr;
     wxString m_dialog_heading;
 
-    Model_Stock::Data* m_stock = nullptr;
-    Model_Checking::Data* m_checking_entry=nullptr;
-    Model_Translink::Data* m_translink_entry=nullptr;
-    Model_Shareinfo::Data* m_share_entry=nullptr;
+    Model_Stock::Data *m_stock = nullptr;
+    Model_Checking::Data *m_checking_entry=nullptr;
+    Model_Translink::Data *m_translink_entry=nullptr;
+    Model_Shareinfo::Data *m_share_entry=nullptr;
     enum
     {
         ID_STOCKTRANS_DATEPICKER_CHANGE = wxID_HIGHEST + 800,

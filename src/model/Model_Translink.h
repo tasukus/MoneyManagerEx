@@ -41,27 +41,27 @@ public:
     * Return the static instance address for Model_Translink table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Translink& instance(wxSQLite3Database* db);
+    static Model_Translink &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_Translink table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Translink& instance();
+    static Model_Translink &instance();
 
 public:
     static CHECKING_TYPE type_checking(const int tt);
 
 public:
     /* Create the translink record as Asset */
-    static Model_Translink::Data* SetAssetTranslink(const int asset_id
-        , const int checking_id
-        , const CHECKING_TYPE checking_type = AS_INCOME_EXPENSE);
+    static Model_Translink::Data *SetAssetTranslink(const int asset_id
+            , const int checking_id
+            , const CHECKING_TYPE checking_type = AS_INCOME_EXPENSE);
 
     /* Create a translink record as Stock */
-    static Model_Translink::Data* SetStockTranslink(const int stock_id
-        , const int checking_id
-        , const CHECKING_TYPE checking_type = AS_INCOME_EXPENSE);
+    static Model_Translink::Data *SetStockTranslink(const int stock_id
+            , const int checking_id
+            , const CHECKING_TYPE checking_type = AS_INCOME_EXPENSE);
 
     /*
     Return a list of translink records for the associated foreign table type.
@@ -70,7 +70,7 @@ public:
     select * from TRANSLINK where LINKTYPE = "Stock" AND LINKRECORDID = link_id;
     */
     static Model_Translink::Data_Set TranslinkList(Model_Attachment::REFTYPE link_table
-        , const int link_id);
+            , const int link_id);
 
     static bool HasShares(const int stock_id);
 
@@ -93,14 +93,14 @@ public:
     stock_entry.VALUE     = value of shares based on:
     ... share_entry.SHARENUMBER * share_entry.SHAREPRICE
     */
-    static void UpdateStockValue(Model_Stock::Data* stock_entry);
-    static void UpdateAssetValue(Model_Asset::Data* asset_entry);
+    static void UpdateStockValue(Model_Stock::Data *stock_entry);
+    static void UpdateAssetValue(Model_Asset::Data *asset_entry);
 
     /* Return true with the account id of the first share entry in the stock translink list */
-    static bool ShareAccountId(int& stock_entry_id);
+    static bool ShareAccountId(int &stock_entry_id);
 
 private:
 
-    static Model_Translink::Data* SetTranslink(const int checking_id, const CHECKING_TYPE checking_type
-        , const wxString& link_type, const int link_record_id);
+    static Model_Translink::Data *SetTranslink(const int checking_id, const CHECKING_TYPE checking_type
+            , const wxString &link_type, const int link_record_id);
 };

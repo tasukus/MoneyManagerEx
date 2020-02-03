@@ -27,7 +27,7 @@ public:
     * Returns the address of the static instance created for the class.
     * Creates the instance on first call.
     */
-    static inline T& instance()
+    static inline T &instance()
     {
         static T _instance;
         return _instance;
@@ -36,8 +36,8 @@ public:
 private:
     Singleton(void);
     ~Singleton(void);
-    Singleton(const Singleton<T>&);
-    Singleton<T>& operator= (const Singleton<T> &);
+    Singleton(const Singleton<T> &);
+    Singleton<T> &operator= (const Singleton<T> &);
 };
 
 #endif // MM_EX_SINGLETON_H_

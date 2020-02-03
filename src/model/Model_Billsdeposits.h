@@ -35,7 +35,8 @@ public:
 public:
     enum TYPE { WITHDRAWAL = 0, DEPOSIT, TRANSFER };
     enum STATUS_ENUM { NONE = 0, RECONCILED, VOID_, FOLLOWUP, DUPLICATE_ };
-    enum REPEAT_TYPE {
+    enum REPEAT_TYPE
+    {
         REPEAT_INACTIVE = -1,
         REPEAT_NONE,
         REPEAT_WEEKLY,
@@ -92,7 +93,7 @@ public:
     struct Full_Data : public Data
     {
         Full_Data();
-        explicit Full_Data(const Data& r);
+        explicit Full_Data(const Data &r);
         wxString ACCOUNTNAME;
         wxString PAYEENAME;
         wxString CATEGNAME;
@@ -112,42 +113,42 @@ public:
     * Return the static instance address for Model_Billsdeposits table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Billsdeposits& instance(wxSQLite3Database* db);
+    static Model_Billsdeposits &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_Billsdeposits table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Billsdeposits& instance();
+    static Model_Billsdeposits &instance();
 
 public:
     // This relates the 'Date Due' field
-    static wxDate TRANSDATE(const Data* r);
+    static wxDate TRANSDATE(const Data *r);
     // This relates the 'Date Due' field
-    static wxDate TRANSDATE(const Data& r);
+    static wxDate TRANSDATE(const Data &r);
     // This relates the 'Date Paid' field
-    static wxDate NEXTOCCURRENCEDATE(const Data* r);
+    static wxDate NEXTOCCURRENCEDATE(const Data *r);
     // This relates the 'Date Paid' field
-    static wxDate NEXTOCCURRENCEDATE(const Data& r);
-    static TYPE type(const wxString& r);
-    static TYPE type(const Data* r);
-    static TYPE type(const Data& r);
-    static STATUS_ENUM status(const wxString& r);
-    static STATUS_ENUM status(const Data* r);
-    static STATUS_ENUM status(const Data& r);
-    static wxString toShortStatus(const wxString& fullStatus);
+    static wxDate NEXTOCCURRENCEDATE(const Data &r);
+    static TYPE type(const wxString &r);
+    static TYPE type(const Data *r);
+    static TYPE type(const Data &r);
+    static STATUS_ENUM status(const wxString &r);
+    static STATUS_ENUM status(const Data *r);
+    static STATUS_ENUM status(const Data &r);
+    static wxString toShortStatus(const wxString &fullStatus);
 
     /**
     * Decodes the internal fields and sets the condition of the following parameters:
     * autoExecuteManual(), autoExecuteSilent(), requireExecution(), allowExecution();
     */
-    void decode_fields(const Data& r);
+    void decode_fields(const Data &r);
     bool autoExecuteManual();
     bool autoExecuteSilent();
     bool requireExecution();
     bool allowExecution();
     typedef std::map<int, double> AccountBalance;
-    bool AllowTransaction(const Data& r, AccountBalance& bal);
+    bool AllowTransaction(const Data &r, AccountBalance &bal);
 
 private:
     bool m_autoExecuteManual;
@@ -165,11 +166,11 @@ public:
     static DB_Table_BILLSDEPOSITS::STATUS STATUS(STATUS_ENUM status, OP op = EQUAL);
     static DB_Table_BILLSDEPOSITS::TRANSCODE TRANSCODE(TYPE type, OP op = EQUAL);
 
-    static const Model_Budgetsplittransaction::Data_Set splittransaction(const Data* r);
-    static const Model_Budgetsplittransaction::Data_Set splittransaction(const Data& r);
+    static const Model_Budgetsplittransaction::Data_Set splittransaction(const Data *r);
+    static const Model_Budgetsplittransaction::Data_Set splittransaction(const Data &r);
 
     void completeBDInSeries(int bdID);
-    static const wxDateTime nextOccurDate(int type, int numRepeats, const wxDateTime& nextOccurDate);
+    static const wxDateTime nextOccurDate(int type, int numRepeats, const wxDateTime &nextOccurDate);
 };
 
 #endif

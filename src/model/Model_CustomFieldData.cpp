@@ -21,7 +21,7 @@
 #include <wx/string.h>
 
 Model_CustomFieldData::Model_CustomFieldData()
-: Model<DB_Table_CUSTOMFIELDDATA>()
+    : Model<DB_Table_CUSTOMFIELDDATA>()
 {
 }
 
@@ -33,9 +33,9 @@ Model_CustomFieldData::~Model_CustomFieldData()
 * Initialize the global Model_CustomFieldData table.
 * Reset the Model_CustomFieldData table or create the table if it does not exist.
 */
-Model_CustomFieldData& Model_CustomFieldData::instance(wxSQLite3Database* db)
+Model_CustomFieldData &Model_CustomFieldData::instance(wxSQLite3Database *db)
 {
-    Model_CustomFieldData& ins = Singleton<Model_CustomFieldData>::instance();
+    Model_CustomFieldData &ins = Singleton<Model_CustomFieldData>::instance();
     ins.db_ = db;
     ins.destroy_cache();
     ins.ensure(db);
@@ -44,28 +44,30 @@ Model_CustomFieldData& Model_CustomFieldData::instance(wxSQLite3Database* db)
 }
 
 /** Return the static instance of Model_CustomFieldData table */
-Model_CustomFieldData& Model_CustomFieldData::instance()
+Model_CustomFieldData &Model_CustomFieldData::instance()
 {
     return Singleton<Model_CustomFieldData>::instance();
 }
 
-Model_CustomFieldData::Data* Model_CustomFieldData::get(int FieldID, int RefID)
+Model_CustomFieldData::Data *Model_CustomFieldData::get(int FieldID, int RefID)
 {
     Model_CustomFieldData::Data_Set items = this->find(FIELDID(FieldID), REFID(RefID));
     if (!items.empty())
+    {
         return this->get(items[0].FIELDATADID, this->db_);
+    }
     return nullptr;
 }
 
 std::map<int, Model_CustomFieldData::Data_Set> Model_CustomFieldData::get_all(Model_Attachment::REFTYPE reftype)
 {
-    const wxString& reftype_desc = Model_Attachment::reftype_desc(reftype);
+    const wxString &reftype_desc = Model_Attachment::reftype_desc(reftype);
     Model_CustomField::Data_Set custom_fields = Model_CustomField::instance()
-        .find(Model_CustomField::DB_Table_CUSTOMFIELD::REFTYPE(reftype_desc));
+            .find(Model_CustomField::DB_Table_CUSTOMFIELD::REFTYPE(reftype_desc));
     std::map<int, Model_CustomFieldData::Data_Set> data;
-    for (const auto& entry : custom_fields)
+    for (const auto &entry : custom_fields)
     {
-        for (const auto & custom_field : find(Model_CustomFieldData::FIELDID(entry.FIELDID)))
+        for (const auto &custom_field : find(Model_CustomFieldData::FIELDID(entry.FIELDID)))
         {
             data[custom_field.REFID].push_back(custom_field);
         }
@@ -93,16 +95,18 @@ wxArrayString Model_CustomFieldData::allValue(const int FieldID)
     return values;
 }
 
-bool Model_CustomFieldData::DeleteAllData(const wxString& RefType, int RefID)
+bool Model_CustomFieldData::DeleteAllData(const wxString &RefType, int RefID)
 {
-    const auto& fields = Model_CustomField::instance().find(Model_CustomField::DB_Table_CUSTOMFIELD::REFTYPE(RefType));
+    const auto &fields = Model_CustomField::instance().find(Model_CustomField::DB_Table_CUSTOMFIELD::REFTYPE(RefType));
 
     this->Savepoint();
-    for (const auto& field : fields)
+    for (const auto &field : fields)
     {
-        Data* data = Model_CustomFieldData::instance().get(field.FIELDID, RefID);
+        Data *data = Model_CustomFieldData::instance().get(field.FIELDID, RefID);
         if (data)
+        {
             Model_CustomFieldData::instance().remove(data->FIELDATADID);
+        }
     }
     this->ReleaseSavepoint();
     return true;

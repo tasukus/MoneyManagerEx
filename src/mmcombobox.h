@@ -78,7 +78,7 @@ public:
         int id = -1;
         if (m_payee)
         {
-            Model_Payee::Data * p = Model_Payee::instance().get(this->GetValue());
+            Model_Payee::Data *p = Model_Payee::instance().get(this->GetValue());
             if (p)
             {
                 id = p->PAYEEID;
@@ -96,7 +96,7 @@ public:
         }
         else
         {
-            Model_Account::Data* a = Model_Account::instance().get(this->GetValue());
+            Model_Account::Data *a = Model_Account::instance().get(this->GetValue());
             if (a)
             {
                 id = a->ACCOUNTID;

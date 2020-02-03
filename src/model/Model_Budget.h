@@ -35,26 +35,26 @@ public:
     * Return the static instance address for Model_Budget table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Budget& instance(wxSQLite3Database* db);
+    static Model_Budget &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_Budget table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Budget& instance();
+    static Model_Budget &instance();
 
 public:
     enum PERIOD_ENUM { NONE = 0, WEEKLY, BIWEEKLY, MONTHLY, BIMONTHLY, QUARTERLY, HALFYEARLY, YEARLY, DAILY };
     static const std::vector<std::pair<PERIOD_ENUM, wxString> > PERIOD_ENUM_CHOICES;
 
     static wxArrayString all_period();
-    static PERIOD_ENUM period(const Data* r);
-    static PERIOD_ENUM period(const Data& r);
+    static PERIOD_ENUM period(const Data *r);
+    static PERIOD_ENUM period(const Data &r);
     static DB_Table_BUDGETTABLE::PERIOD PERIOD(PERIOD_ENUM period, OP op = EQUAL);
 
     static void getBudgetEntry(int budgetYearID, std::map<int,
-        std::map<int, PERIOD_ENUM> > &budgetPeriod,
-        std::map<int, std::map<int, double> > &budgetAmt);
+                               std::map<int, PERIOD_ENUM> > &budgetPeriod,
+                               std::map<int, std::map<int, double> > &budgetAmt);
     static void copyBudgetYear(int newYearID, int baseYearID);
     static double getMonthlyEstimate(const PERIOD_ENUM period, const double amount);
     static double getYearlyEstimate(const PERIOD_ENUM period, const double amount);

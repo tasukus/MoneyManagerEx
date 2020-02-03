@@ -36,16 +36,16 @@ class mmHomePagePanel : public mmPanelBase
 public:
     mmHomePagePanel(wxWindow *parent, mmGUIFrame *frame,
                     wxWindowID winid = wxID_ANY,
-                    const wxPoint& pos = wxDefaultPosition,
-                    const wxSize& size = wxDefaultSize,
+                    const wxPoint &pos = wxDefaultPosition,
+                    const wxSize &size = wxDefaultSize,
                     long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-                    const wxString& name = "mmHomePagePanel");
+                    const wxString &name = "mmHomePagePanel");
 
     bool Create(wxWindow *parent, wxWindowID winid,
-                const wxPoint& pos = wxDefaultPosition,
-                const wxSize& size = wxDefaultSize,
+                const wxPoint &pos = wxDefaultPosition,
+                const wxSize &size = wxDefaultSize,
                 long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-                const wxString& name = "mmHomePagePanel");
+                const wxString &name = "mmHomePagePanel");
 
     ~mmHomePagePanel();
 
@@ -57,12 +57,12 @@ public:
     void createHTML();
 
 public:
-    mmGUIFrame* m_frame;
+    mmGUIFrame *m_frame;
 private:
     static const std::vector < std::pair <wxString, wxString> > acc_type_str;
     wxString GetHomePageText() const;
-    wxWebView* browser_=nullptr;
-    mmDateRange* date_range_=nullptr;
+    wxWebView *browser_=nullptr;
+    mmDateRange *date_range_=nullptr;
     void CreateControls();
     void sortTable() {}
     wxString vAccts_;
@@ -72,18 +72,18 @@ private:
     void getTemplate();
     void getData();
     void fillData();
-    void OnLinkClicked(wxWebViewEvent& event);
-    const wxString getAssetsJSON(double& tBalance) const;
+    void OnLinkClicked(wxWebViewEvent &event);
+    const wxString getAssetsJSON(double &tBalance) const;
     const wxString getIncomeVsExpensesJSON() const;
     const wxString getStatWidget() const;
     const wxString getToggles() const;
-    const wxString getGrandTotalsJSON(double& tBalance) const;
+    const wxString getGrandTotalsJSON(double &tBalance) const;
 
-    const wxString getAccountsHTML(double& tBalance, std::map<int, std::pair<double, double> > &accountStats
+    const wxString getAccountsHTML(double &tBalance, std::map<int, std::pair<double, double> > &accountStats
                                    , enum Model_Account::TYPE type = Model_Account::CHECKING) const;
     void setAccountsData(std::map<int, std::pair<double, double> > &accountStats);
     void setExpensesIncomeStatsData(std::map<int, std::pair<double, double> > &incomeExpensesStats
-                                    , mmDateRange* date_range) const;
+                                    , mmDateRange *date_range) const;
     int countFollowUp_=0;
     int total_transactions_=0;
 };

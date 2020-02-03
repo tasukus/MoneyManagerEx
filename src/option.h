@@ -38,29 +38,29 @@ public:
 
 public:
     Option();
-    static Option& instance();
+    static Option &instance();
     void LoadOptions(bool include_infotable = true);
 
     // set and save the option: m_dateFormat
-    void setDateFormat(const wxString& datefornat);
+    void setDateFormat(const wxString &datefornat);
     const wxString getDateFormat() const;
 
     // set and save the option: m_language
-    void setLanguage(wxLanguage& language);
+    void setLanguage(wxLanguage &language);
     wxLanguage getLanguageID(bool get_db = false);
     // get 2-letter ISO 639-1 code
     const wxString getLanguageISO6391(bool get_db = false);
 
     // set and save the option: m_userNameString
-    void setUserName(const wxString& username);
+    void setUserName(const wxString &username);
     const wxString getUserName() const;
 
     // set and save the option: m_financialYearStartDayString
-    void setFinancialYearStartDay(const wxString& setting);
+    void setFinancialYearStartDay(const wxString &setting);
     const wxString getFinancialYearStartDay() const;
 
     // set and save the option: m_financialYearStartMonthString
-    void setFinancialYearStartMonth(const wxString& setting);
+    void setFinancialYearStartMonth(const wxString &setting);
     const wxString getFinancialYearStartMonth() const;
 
     // set the base currency ID
@@ -113,7 +113,7 @@ public:
     void setBudgetDaysOffset(int value);
     int getBudgetDaysOffset() const;
     /**Re-adjust date by the date offset value*/
-    void setBudgetDateOffset(wxDateTime& date) const;
+    void setBudgetDateOffset(wxDateTime &date) const;
 
     void setIconSize(int value);
     int getIconSize() const;
@@ -127,7 +127,7 @@ public:
     const wxString getReportGroup(int report) const;
     const wxString getReportName(int report) const;
     bool getBudgetReport(int report) const;
-    mmPrintableBase* getReportFunction(int report) const;
+    mmPrintableBase *getReportFunction(int report) const;
 
 private:
     bool isReportIDCorrect(int report) const;

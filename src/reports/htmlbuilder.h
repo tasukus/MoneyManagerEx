@@ -32,7 +32,7 @@ public:
     mmHTMLBuilder();
     ~mmHTMLBuilder() {}
 
-    void DisplayDateHeading(const wxDateTime& startDate, const wxDateTime& endDate, bool withDateRange = true);
+    void DisplayDateHeading(const wxDateTime &startDate, const wxDateTime &endDate, bool withDateRange = true);
 
     /** Starts a new HMTL report */
     void init();
@@ -44,7 +44,7 @@ public:
     }
 
     /** Create an HTML header and returns as a wxString */
-    void addHeader(int level, const wxString& header);
+    void addHeader(int level, const wxString &header);
     void addDateNow();
 
     /** Start a table element */
@@ -55,28 +55,28 @@ public:
     void startTfoot();
 
     /** Add a special row that will format total values */
-    void addTotalRow(const wxString& caption, int cols, double value);
+    void addTotalRow(const wxString &caption, int cols, double value);
 
     /** Add a special row that will format total values */
-    void addTotalRow(const wxString& caption, int cols, const std::vector<wxString>& data);
-    void addTotalRow(const wxString& caption, int cols, const std::vector<double>& data);
+    void addTotalRow(const wxString &caption, int cols, const std::vector<wxString> &data);
+    void addTotalRow(const wxString &caption, int cols, const std::vector<double> &data);
 
     /** Add a Table header cell */
-    void addTableHeaderCell(const wxString& value, const bool numeric = false, const bool sortable = true, const int cols = 1, const bool center = false);
+    void addTableHeaderCell(const wxString &value, const bool numeric = false, const bool sortable = true, const int cols = 1, const bool center = false);
 
     void addCurrencyCell(double amount, const Model_Currency::Data *currency = Model_Currency::instance().GetBaseCurrency(), int precision = -1);
     void addMoneyCell(double amount, int precision = -1);
     void addTableCellMonth(const wxDateTime::Month month);
-    void addColorMarker(const wxString& color);
+    void addColorMarker(const wxString &color);
     const wxString getColor(int i) const;
 
     /** Add a Cell value */
-    void addTableCellDate(const wxString& iso_date);
-    void addTableCell(const wxString& value, const bool numeric = false, const bool center = false);
+    void addTableCellDate(const wxString &iso_date);
+    void addTableCell(const wxString &value, const bool numeric = false, const bool center = false);
     void addEmptyTableCell(const int number = 1);
 
     /** Add a Cell value */
-    void addTableCellLink(const wxString& href, const wxString& value);
+    void addTableCellLink(const wxString &href, const wxString &value);
 
     void end();
     void endTable();
@@ -90,13 +90,13 @@ public:
     void addDivCol6();
     void endDiv();
     void startTableRow();
-    void startTableRow(const wxString& color);
+    void startTableRow(const wxString &color);
     void startTotalTableRow();
     //void startTableRow(const wxString& custom_color);
     void endTableRow();
 
     /** append an HTML text */
-    void addText(const wxString& text);
+    void addText(const wxString &text);
 
     /** Create an HTML line break */
     void addLineBreak();
@@ -104,17 +104,17 @@ public:
     void addHorizontalLine(int size = 0);
 
     /** Starts a table cell (use only if want to nest other elements inside */
-    void startTableCell(const wxString& format = "");
+    void startTableCell(const wxString &format = "");
     void endTableCell();
 
     const wxString getHTMLText() const;
 
-    void addTableRow(const wxString& label, double data);
+    void addTableRow(const wxString &label, double data);
 
-    void addRadarChart(std::vector<ValueTrio>& actData, std::vector<ValueTrio>& estData, const wxString& id, int x = 300, int y = 300);
-    void addPieChart(std::vector<ValueTrio>& valueList, const wxString& id, int x = 300, int y = 300);
-    void addLineChart(const std::vector<LineGraphData>& data, const wxString& id, int colorNum, int x = 640, int y = 256, bool pointDot = false, bool showGridLines = true, bool datasetFill = false);
-    void addBarChart(const wxArrayString& labels, const std::vector<BarGraphData>& data, const wxString& id, int x = 192, int y = 256);
+    void addRadarChart(std::vector<ValueTrio> &actData, std::vector<ValueTrio> &estData, const wxString &id, int x = 300, int y = 300);
+    void addPieChart(std::vector<ValueTrio> &valueList, const wxString &id, int x = 300, int y = 300);
+    void addLineChart(const std::vector<LineGraphData> &data, const wxString &id, int colorNum, int x = 640, int y = 256, bool pointDot = false, bool showGridLines = true, bool datasetFill = false);
+    void addBarChart(const wxArrayString &labels, const std::vector<BarGraphData> &data, const wxString &id, int x = 192, int y = 256);
 
 private:
     wxString html_;

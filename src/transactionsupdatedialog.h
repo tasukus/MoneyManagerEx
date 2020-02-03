@@ -31,40 +31,40 @@ class transactionsUpdateDialog : public wxDialog
 public:
     transactionsUpdateDialog();
     ~transactionsUpdateDialog();
-    transactionsUpdateDialog(wxWindow* parent, int account_id, std::vector<int>& transaction_id);
+    transactionsUpdateDialog(wxWindow *parent, int account_id, std::vector<int> &transaction_id);
 
 private:
-    bool Create(wxWindow* parent
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
 
     void CreateControls();
-    void OnOk(wxCommandEvent& event);
-    void OnCheckboxClick(wxCommandEvent& event);
-    void onFocusChange(wxChildFocusEvent& event);
-    void OnCategChange(wxCommandEvent& event);
+    void OnOk(wxCommandEvent &event);
+    void OnCheckboxClick(wxCommandEvent &event);
+    void onFocusChange(wxChildFocusEvent &event);
+    void OnCategChange(wxCommandEvent &event);
 
 private:
-    wxCheckBox* m_payee_checkbox = nullptr;
-    mmComboBox* m_payee = nullptr;
-    wxCheckBox* m_date_checkbox = nullptr;
-    wxDatePickerCtrl* m_dpc = nullptr;
-    wxCheckBox* m_status_checkbox = nullptr;
-    wxChoice* m_status_choice = nullptr;
-    wxCheckBox* m_categ_checkbox = nullptr;
-    wxButton* m_categ_btn = nullptr;
-    wxCheckBox* m_type_checkbox = nullptr;
-    wxChoice* m_type_choice = nullptr;
-    wxCheckBox* m_amount_checkbox = nullptr;
-    mmTextCtrl* m_amount_ctrl = nullptr;
-    wxCheckBox* m_notes_checkbox = nullptr;
-    wxCheckBox* m_append_checkbox = nullptr;
-    wxTextCtrl* m_notes_ctrl = nullptr;
+    wxCheckBox *m_payee_checkbox = nullptr;
+    mmComboBox *m_payee = nullptr;
+    wxCheckBox *m_date_checkbox = nullptr;
+    wxDatePickerCtrl *m_dpc = nullptr;
+    wxCheckBox *m_status_checkbox = nullptr;
+    wxChoice *m_status_choice = nullptr;
+    wxCheckBox *m_categ_checkbox = nullptr;
+    wxButton *m_categ_btn = nullptr;
+    wxCheckBox *m_type_checkbox = nullptr;
+    wxChoice *m_type_choice = nullptr;
+    wxCheckBox *m_amount_checkbox = nullptr;
+    mmTextCtrl *m_amount_ctrl = nullptr;
+    wxCheckBox *m_notes_checkbox = nullptr;
+    wxCheckBox *m_append_checkbox = nullptr;
+    wxTextCtrl *m_notes_ctrl = nullptr;
     std::vector<int> m_transaction_id;
-    Model_Currency::Data* m_currency=nullptr;
+    Model_Currency::Data *m_currency=nullptr;
     int m_categ_id = -1;
     int m_subcateg_id = -1;
 };

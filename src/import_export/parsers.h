@@ -33,9 +33,9 @@ public:
 
     virtual ~ITransactionsFile() {}
 
- // *********************** Import related methods ***********************
+// *********************** Import related methods ***********************
     // Opens and parses the input file in to an internal structure that allows calling the getter functions below.
-    virtual bool Load(const wxString& fileName, unsigned int itemsInLine) = 0;
+    virtual bool Load(const wxString &fileName, unsigned int itemsInLine) = 0;
 
     // Gets the number of lines that can be parsed.
     // Depending on type of file there may be lines that are not transactions.
@@ -57,7 +57,7 @@ public:
     virtual void AddNewItem(const wxString &stringItem, ItemType itemType) = 0;
 
     // Exports all item to file.
-    virtual bool Save(const wxString& fileName) = 0;
+    virtual bool Save(const wxString &fileName) = 0;
 };
 
 // A base class for a parser that reads the file in to a string table in memory.
@@ -68,7 +68,9 @@ public:
     virtual ~TableBasedFile()
     {
         for (auto line : itemsTable_)
+        {
             line.clear();
+        }
         itemsTable_.clear();
     }
     virtual unsigned int GetLinesCount() const
@@ -78,13 +80,17 @@ public:
     virtual unsigned int GetItemsCount(unsigned int line) const
     {
         if (line >= GetLinesCount())
+        {
             return 0;
+        }
         return itemsTable_[line].size();
     }
     virtual wxString GetItem(unsigned int line, unsigned int itemInLine) const
     {
         if (line >= GetLinesCount() || itemInLine >= itemsTable_[line].size())
+        {
             return wxEmptyString;
+        }
         return itemsTable_[line][itemInLine].value;
     }
     virtual void AddNewLine()
@@ -99,7 +105,7 @@ public:
 
     virtual void AddNewItem(const wxString &stringItem, ItemType itemType)
     {
-        itemsTable_.back().push_back({ stringItem, itemType });
+        itemsTable_.back().push_back( { stringItem, itemType });
     }
 
 protected:
@@ -121,8 +127,8 @@ class FileCSV : public TableBasedFile
 {
 public:
     FileCSV(wxWindow *pParentWindow, wxConvAuto encoding, wxString delimiter);
-    virtual bool Load(const wxString& fileName, unsigned int itemsInLine);
-    virtual bool Save(const wxString& fileName);
+    virtual bool Load(const wxString &fileName, unsigned int itemsInLine);
+    virtual bool Save(const wxString &fileName);
 protected:
     wxConvAuto encoding_;
     wxString delimiter_;
@@ -133,8 +139,8 @@ class FileXML : public TableBasedFile
 {
 public:
     FileXML(wxWindow *pParentWindow, wxString encoding);
-    virtual bool Load(const wxString& fileName, unsigned int itemsInLine);
-    virtual bool Save(const wxString& fileName);
+    virtual bool Load(const wxString &fileName, unsigned int itemsInLine);
+    virtual bool Save(const wxString &fileName);
 protected:
     wxString encoding_;
 };

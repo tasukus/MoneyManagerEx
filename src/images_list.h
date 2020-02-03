@@ -179,5 +179,5 @@ enum png
     EMPTY,
 };
 
-wxImageList* navtree_images_list();
+wxImageList *navtree_images_list();
 const wxBitmap mmBitmap(int ref);

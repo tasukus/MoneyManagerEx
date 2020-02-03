@@ -38,17 +38,17 @@ public:
     * Return the static instance address for Model_Subcategory table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Subcategory& instance(wxSQLite3Database* db);
+    static Model_Subcategory &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_Subcategory table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Subcategory& instance();
+    static Model_Subcategory &instance();
 
 public:
     /** Return the Data record for the given subcategory name and category ID */
-    Data* get(const wxString& name, int category_id);
+    Data *get(const wxString &name, int category_id);
 
 public:
     static bool is_used(int id);

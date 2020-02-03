@@ -32,13 +32,13 @@ namespace mmex
 {
 
 enum EDocFile { F_README = 0, F_CONTRIB, F_LICENSE, F_VERSION, HTML_INDEX, HTML_CUSTOM_SQL, HTML_INVESTMENT, HTML_BUDGET, DOC_FILES_MAX };
-wxString getPathDoc(const EDocFile& f);
+wxString getPathDoc(const EDocFile &f);
 
 enum EResFile { PROGRAM_ICON = 0, TRANS_SOUND, HOME_PAGE_TEMPLATE, RES_FILES_MAX };
 wxString getPathResource(EResFile f);
 
 // use instead of getPathResource(PROGRAM_ICON)
-const wxIcon& getProgramIcon();
+const wxIcon &getProgramIcon();
 
 enum ESharedFile { LANG_DIR = 0, SHARED_FILES_MAX };
 const wxString getPathShared(ESharedFile f);
@@ -48,7 +48,7 @@ const wxString getPathUser(EUserFile f);
 
 const wxString getPathAttachment(const wxString &AttachmentsFolder);
 bool isPortableMode();
-const wxString getReportFullFileName(const wxString& name);
+const wxString getReportFullFileName(const wxString &name);
 const wxString getTempFolder();
 
 } // namespace mmex

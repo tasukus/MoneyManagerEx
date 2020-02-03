@@ -20,7 +20,7 @@
 #include "Model_StockHistory.h"
 
 Model_Stock::Model_Stock()
-: Model<DB_Table_STOCK>()
+    : Model<DB_Table_STOCK>()
 {
 }
 
@@ -32,9 +32,9 @@ Model_Stock::~Model_Stock()
 * Initialize the global Model_Stock table.
 * Reset the Model_Stock table or create the table if it does not exist.
 */
-Model_Stock& Model_Stock::instance(wxSQLite3Database* db)
+Model_Stock &Model_Stock::instance(wxSQLite3Database *db)
 {
-    Model_Stock& ins = Singleton<Model_Stock>::instance();
+    Model_Stock &ins = Singleton<Model_Stock>::instance();
     ins.db_ = db;
     ins.destroy_cache();
     ins.ensure(db);
@@ -43,39 +43,39 @@ Model_Stock& Model_Stock::instance(wxSQLite3Database* db)
 }
 
 /** Return the static instance of Model_Stock table */
-Model_Stock& Model_Stock::instance()
+Model_Stock &Model_Stock::instance()
 {
     return Singleton<Model_Stock>::instance();
 }
 
-wxDate Model_Stock::PURCHASEDATE(const Data* stock)
+wxDate Model_Stock::PURCHASEDATE(const Data *stock)
 {
     return Model::to_date(stock->PURCHASEDATE);
 }
 
-wxDate Model_Stock::PURCHASEDATE(const Data& stock)
+wxDate Model_Stock::PURCHASEDATE(const Data &stock)
 {
     return Model::to_date(stock.PURCHASEDATE);
 }
 
 /** Original value of Stocks */
-double Model_Stock::InvestmentValue(const Data* r)
+double Model_Stock::InvestmentValue(const Data *r)
 {
     return r->VALUE;
 }
 
 /** Original value of Stocks */
-double Model_Stock::InvestmentValue(const Data& r)
+double Model_Stock::InvestmentValue(const Data &r)
 {
     return InvestmentValue(&r);
 }
 
-double Model_Stock::CurrentValue(const Data* r)
+double Model_Stock::CurrentValue(const Data *r)
 {
     return r->NUMSHARES * r->CURRENTPRICE;
 }
 
-double Model_Stock::CurrentValue(const Data& r)
+double Model_Stock::CurrentValue(const Data &r)
 {
     return CurrentValue(&r);
 }
@@ -91,8 +91,10 @@ bool Model_Stock::remove(int id)
     if (stocks.size() == 1)
     {
         this->Savepoint();
-        for (const auto& r : Model_StockHistory::instance().find(Model_StockHistory::SYMBOL(data->SYMBOL)))
+        for (const auto &r : Model_StockHistory::instance().find(Model_StockHistory::SYMBOL(data->SYMBOL)))
+        {
             Model_StockHistory::instance().remove(r.id());
+        }
         this->ReleaseSavepoint();
     }
 
@@ -102,14 +104,16 @@ bool Model_Stock::remove(int id)
 /**
 Returns the last price date of a given stock
 */
-wxString Model_Stock::lastPriceDate(const Self::Data* entity)
+wxString Model_Stock::lastPriceDate(const Self::Data *entity)
 {
     wxString dtStr = entity->PURCHASEDATE;
     Model_StockHistory::Data_Set histData = Model_StockHistory::instance().find(SYMBOL(entity->SYMBOL));
 
     std::sort(histData.begin(), histData.end(), SorterByDATE());
     if (!histData.empty())
+    {
         dtStr = histData.back().DATE;
+    }
 
     return dtStr;
 }
@@ -117,13 +121,13 @@ wxString Model_Stock::lastPriceDate(const Self::Data* entity)
 /**
 Returns the total stock balance at a given date
 */
-double Model_Stock::getDailyBalanceAt(const Model_Account::Data *account, const wxDate& date)
+double Model_Stock::getDailyBalanceAt(const Model_Account::Data *account, const wxDate &date)
 {
     wxString strDate = date.FormatISODate();
     std::map<int, double> totBalance;
 
     Data_Set stocks = this->instance().find(HELDAT(account->id()));
-    for (const auto & stock : stocks)
+    for (const auto &stock : stocks)
     {
         wxString precValueDate, nextValueDate;
         Model_StockHistory::Data_Set stock_hist = Model_StockHistory::instance().find(SYMBOL(stock.SYMBOL));
@@ -132,7 +136,7 @@ double Model_Stock::getDailyBalanceAt(const Model_Account::Data *account, const 
 
         double valueAtDate = 0.0,  precValue = 0.0, nextValue = 0.0;
 
-        for (const auto & hist : stock_hist)
+        for (const auto &hist : stock_hist)
         {
             // test for the date requested
             if (hist.DATE == strDate)
@@ -153,7 +157,9 @@ double Model_Stock::getDailyBalanceAt(const Model_Account::Data *account, const 
             }
             // end conditions: prec value assigned and price date < requested date
             if (precValue != 0.0 && hist.DATE < strDate)
+            {
                 break;
+            }
         }
         if (valueAtDate == 0.0)
         {
@@ -170,15 +176,19 @@ double Model_Stock::getDailyBalanceAt(const Model_Account::Data *account, const 
                 nextValueDate = precValueDate;
             }
             if (precValue > 0.0 && nextValue > 0.0 && precValueDate >= stock.PURCHASEDATE && nextValueDate >= stock.PURCHASEDATE)
+            {
                 valueAtDate = precValue;
+            }
         }
 
         totBalance[stock.id()] += stock.NUMSHARES * valueAtDate;
     }
 
     double balance = 0.0;
-    for (const auto& it : totBalance)
+    for (const auto &it : totBalance)
+    {
         balance += it.second;
+    }
 
     return balance;
 }

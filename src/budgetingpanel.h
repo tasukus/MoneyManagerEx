@@ -33,7 +33,7 @@ class budgetingListCtrl : public mmListCtrl
     wxDECLARE_EVENT_TABLE();
 
 public:
-    budgetingListCtrl(mmBudgetingPanel* cp, wxWindow *parent, const wxWindowID id);
+    budgetingListCtrl(mmBudgetingPanel *cp, wxWindow *parent, const wxWindowID id);
 
 public:
     /* required overrides for virtual style list control */
@@ -41,12 +41,12 @@ public:
     virtual wxListItemAttr *OnGetItemAttr(long item) const;
     virtual int OnGetItemImage(long item) const;
 
-    void OnListItemSelected(wxListEvent& event);
-    void OnListItemActivated(wxListEvent& event);
+    void OnListItemSelected(wxListEvent &event);
+    void OnListItemActivated(wxListEvent &event);
 
 private:
     wxListItemAttr attr3_; // style3
-    mmBudgetingPanel* cp_;
+    mmBudgetingPanel *cp_;
     long selectedIndex_;
 };
 
@@ -58,10 +58,10 @@ public:
     mmBudgetingPanel(int budgetYearID
                      , wxWindow *parent
                      , wxWindowID winid = wxID_ANY
-                     , const wxPoint& pos = wxDefaultPosition
-                     , const wxSize& size = wxDefaultSize
+                     , const wxPoint &pos = wxDefaultPosition
+                     , const wxSize &size = wxDefaultSize
                      , long style = wxTAB_TRAVERSAL | wxNO_BORDER
-                     , const wxString& name = "mmBudgetingPanel");
+                     , const wxString &name = "mmBudgetingPanel");
     ~mmBudgetingPanel();
 
     /* updates the checking panel data */
@@ -104,25 +104,25 @@ private:
     std::map<int, std::map<int, double> > budgetAmt_;
     std::map<int, std::map<int, std::map<int, double> > > categoryStats_;
     bool monthlyBudget_;
-    budgetingListCtrl* listCtrlBudget_=nullptr;
+    budgetingListCtrl *listCtrlBudget_=nullptr;
     wxString currentView_;
     int budgetYearID_;
     wxString m_budget_offset_date;
 
-    wxImageList* m_imageList=nullptr;
-    wxStaticText* budgetReportHeading_=nullptr;
-    wxStaticText* income_estimated_=nullptr;
-    wxStaticText* income_actual_=nullptr;
-    wxStaticText* income_diff_=nullptr;
-    wxStaticText* expenses_estimated_=nullptr;
-    wxStaticText* expenses_actual_=nullptr;
-    wxStaticText* expenses_diff_=nullptr;
+    wxImageList *m_imageList=nullptr;
+    wxStaticText *budgetReportHeading_=nullptr;
+    wxStaticText *income_estimated_=nullptr;
+    wxStaticText *income_actual_=nullptr;
+    wxStaticText *income_diff_=nullptr;
+    wxStaticText *expenses_estimated_=nullptr;
+    wxStaticText *expenses_actual_=nullptr;
+    wxStaticText *expenses_diff_=nullptr;
 
     bool Create(wxWindow *parent, wxWindowID winid
-                , const wxPoint& pos = wxDefaultPosition
-                , const wxSize& size = wxDefaultSize
+                , const wxPoint &pos = wxDefaultPosition
+                , const wxSize &size = wxDefaultSize
                 , long style = wxTAB_TRAVERSAL | wxNO_BORDER
-                , const wxString& name = "mmBudgetingPanel");
+                , const wxString &name = "mmBudgetingPanel");
 
     void CreateControls();
     void sortTable();
@@ -132,8 +132,8 @@ private:
     wxString GetPanelTitle() const;
 
     /* Event handlers for Buttons */
-    void OnViewPopupSelected(wxCommandEvent& event);
-    void OnMouseLeftDown(wxMouseEvent& event);
+    void OnViewPopupSelected(wxCommandEvent &event);
+    void OnMouseLeftDown(wxMouseEvent &event);
 
     enum EColumn
     {

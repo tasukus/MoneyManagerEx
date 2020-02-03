@@ -58,10 +58,16 @@ void  mmReportSummaryStocks::RefreshData()
     account_holder account;
     const wxDate today = wxDate::Today();
 
-    for (const auto& a : Model_Account::instance().all(Model_Account::COL_ACCOUNTNAME))
+    for (const auto &a : Model_Account::instance().all(Model_Account::COL_ACCOUNTNAME))
     {
-        if (Model_Account::type(a) != Model_Account::INVESTMENT) continue;
-        if (Model_Account::status(a) != Model_Account::OPEN) continue;
+        if (Model_Account::type(a) != Model_Account::INVESTMENT)
+        {
+            continue;
+        }
+        if (Model_Account::status(a) != Model_Account::OPEN)
+        {
+            continue;
+        }
 
         account.id = a.id();
         account.name = a.ACCOUNTNAME;
@@ -69,9 +75,9 @@ void  mmReportSummaryStocks::RefreshData()
         account.total = Model_Account::investment_balance(a).first;
         account.data.clear();
 
-        for (const auto& stock : Model_Stock::instance().find(Model_Stock::HELDAT(a.ACCOUNTID)))
+        for (const auto &stock : Model_Stock::instance().find(Model_Stock::HELDAT(a.ACCOUNTID)))
         {
-            const Model_Currency::Data* currency = Model_Account::currency(a);
+            const Model_Currency::Data *currency = Model_Account::currency(a);
             const double today_rate = Model_CurrencyHistory::getDayRate(currency->CURRENCYID, today);
             m_stock_balance += today_rate * Model_Stock::CurrentValue(stock);
             account.gainloss += Model_Stock::CurrentValue(stock) - Model_Stock::InvestmentValue(stock);
@@ -106,17 +112,17 @@ wxString mmReportSummaryStocks::getHTMLText()
     hb.addDivRow();
     hb.addDivCol17_67();
 
-    for (const auto& acct : m_stocks)
+    for (const auto &acct : m_stocks)
     {
-        const Model_Account::Data* account = Model_Account::instance().get(acct.id);
-        const Model_Currency::Data* currency = Model_Account::currency(account);
+        const Model_Account::Data *account = Model_Account::instance().get(acct.id);
+        const Model_Currency::Data *currency = Model_Account::currency(account);
         hb.addHeader(3, acct.name);
 
         hb.startTable();
         display_header(hb);
 
         hb.startTbody();
-        for (const auto& entry : acct.data)
+        for (const auto &entry : acct.data)
         {
             hb.startTableRow();
             hb.addTableCell(entry.name);
@@ -172,7 +178,7 @@ wxString mmReportSummaryStocks::getHTMLText()
     return hb.getHTMLText();
 }
 
-void mmReportSummaryStocks::display_header(mmHTMLBuilder& hb)
+void mmReportSummaryStocks::display_header(mmHTMLBuilder &hb)
 {
     hb.startThead();
     hb.startTableRow();
@@ -213,27 +219,35 @@ wxString mmReportChartStocks::getHTMLText()
 
     wxTimeSpan dtDiff = m_date_range->end_date() - m_date_range->start_date();
     if (m_date_range->is_with_date() && dtDiff.GetDays() <= 366)
+    {
         hb.DisplayDateHeading(m_date_range->start_date(), m_date_range->end_date(), true);
+    }
     hb.addHorizontalLine();
 
     bool pointDot = false, showGridLines = false;
     wxTimeSpan dist;
     wxDate precDateDt = wxInvalidDateTime;
-    for (const auto& stock : Model_Stock::instance().all(Model_Stock::COL_HELDAT))
+    for (const auto &stock : Model_Stock::instance().all(Model_Stock::COL_HELDAT))
     {
         int dataCount = 0, freq = 1;
         Model_StockHistory::Data_Set histData = Model_StockHistory::instance().find(Model_StockHistory::SYMBOL(stock.SYMBOL),
-            Model_StockHistory::DATE(m_date_range->start_date(), GREATER_OR_EQUAL),
-            Model_StockHistory::DATE(m_date_range->end_date(), LESS_OR_EQUAL));
+                                                Model_StockHistory::DATE(m_date_range->start_date(), GREATER_OR_EQUAL),
+                                                Model_StockHistory::DATE(m_date_range->end_date(), LESS_OR_EQUAL));
         std::stable_sort(histData.begin(), histData.end(), SorterByDATE());
         if (histData.size() <= 30)
+        {
             showGridLines = pointDot = true;
+        }
         else if (histData.size() <= 366)
+        {
             showGridLines = true;
+        }
         else
+        {
             freq = histData.size() / 366;
+        }
         std::vector<LineGraphData> aData;
-        for (const auto& hist : histData)
+        for (const auto &hist : histData)
         {
             if (dataCount % freq == 0)
             {
@@ -241,11 +255,17 @@ wxString mmReportChartStocks::getHTMLText()
                 val.xPos = mmGetDateForDisplay(hist.DATE);
                 const wxDate dateDt = Model_StockHistory::DATE(hist);
                 if (histData.size() <= 30)
+                {
                     val.label = val.xPos;
+                }
                 else if (precDateDt.IsValid() && dateDt.GetMonth() != precDateDt.GetMonth())
+                {
                     val.label = wxGetTranslation(dateDt.GetEnglishMonthName(dateDt.GetMonth()));
+                }
                 else
+                {
                     val.label = "";
+                }
                 val.amount = hist.VALUE;
                 aData.push_back(val);
                 precDateDt = dateDt;
@@ -255,7 +275,7 @@ wxString mmReportChartStocks::getHTMLText()
         if (!aData.empty())
         {
             hb.addDivRow();
-            Model_Account::Data* account = Model_Account::instance().get(stock.HELDAT);
+            Model_Account::Data *account = Model_Account::instance().get(stock.HELDAT);
             hb.addHeader(1, wxString::Format("%s - (%s)", stock.STOCKNAME, account->ACCOUNTNAME));
             hb.addDivCol17_67();
             hb.addLineChart(aData, stock.STOCKNAME, 0, 1000, 400, pointDot, showGridLines);

@@ -19,27 +19,28 @@
 #pragma once
 #include "reportbase.h"
 
-const char* bugreport_template = R"(
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title><TMPL_VAR REPORTNAME></title>
-    <link href='master.css' rel='stylesheet' />
-    <style>
+const char *bugreport_template = R"(
+                                 <!DOCTYPE html>
+                                 <html>
+                                 <head>
+                                 <meta http-equiv="content-type" content="text/html;
+charset=utf-8" />
+        <title><TMPL_VAR REPORTNAME></title>
+        <link href='master.css' rel='stylesheet' />
+        <style>
         canvas {min-height: 100px}
         body {font-size: <TMPL_VAR HTMLSCALE>%}
-    </style>
-</head>
-<body>
-<div class = "container">
-<h3><TMPL_VAR HEADER></h3>
-<div class = "col-xs-8">
-<TMPL_VAR CONTENTS>
-</div>
-</body>
-</html>
-)";
+        </style>
+        </head>
+        <body>
+        <div class = "container">
+        <h3><TMPL_VAR HEADER></h3>
+        <div class = "col-xs-8">
+        <TMPL_VAR CONTENTS>
+        </div>
+        </body>
+        </html>
+        )";
 
 class mmBugReport: public mmPrintableBase
 {
@@ -74,20 +75,22 @@ wxString mmBugReport::getHTMLText()
 
     wxURI req = mmex::weblink::BugReport + "/new?body=" + info + "\n<hr>" + diag;
 
-    const wxString texts[] = {
+    const wxString texts[] =
+    {
         _("Use Help->Check for Updates in MMEX to get latest version, where your problem might be already fixed."),
         wxString::Format(_("Search <a href='%s'>a list of known issues</a> for similar problem. If so, update existing issue instead of creating a new one.")
-            ,  mmex::weblink::BugReport),
+                         ,  mmex::weblink::BugReport),
         wxString::Format(_("Read <a href='%s'>How to Report Bugs Effectively</a> for useful tips."), mmex::weblink::Chiark),
         _("Come up with a descriptive name for your problem."),
         _("Include steps to reproduce your problem, attach screenshots where appropriate."),
         wxString::Format(_("Before click the following link, be sure that you have already signed in to the <a href='%s'>GitHub</a>.")
-            ,  mmex::weblink::GitHub),
+                         ,  mmex::weblink::GitHub),
         wxString::Format(_("Finally, report a bug using GitHub <a href='%s'>online form</a> opened in your web browser."), req.BuildURI())
     };
 
     wxString msg = "<ol>";
-    for (const auto& string : texts) {
+    for (const auto &string : texts)
+    {
         msg += "<li>" + string + "</li>" + "\n";
     }
     msg += "</ol>\n";
@@ -103,7 +106,7 @@ wxString mmBugReport::getHTMLText()
     {
         out = report.Process();
     }
-    catch (const syntax_ex & e)
+    catch (const syntax_ex &e)
     {
         return e.what();
     }

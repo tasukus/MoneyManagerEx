@@ -40,29 +40,29 @@ public:
     * Return the static instance address for Model_Category table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Category& instance(wxSQLite3Database* db);
+    static Model_Category &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_Category table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Category& instance();
+    static Model_Category &instance();
 
 public:
     /** Return the Data record for the given category name */
-    Data* get(const wxString& name);
+    Data *get(const wxString &name);
 
     static const std::map<wxString, std::pair<int, int> > all_categories();
-    static Model_Subcategory::Data_Set sub_category(const Data* r);
-    static Model_Subcategory::Data_Set sub_category(const Data& r);
-    static const wxString full_name(const Data* category, const Model_Subcategory::Data* sub_category = nullptr);
+    static Model_Subcategory::Data_Set sub_category(const Data *r);
+    static Model_Subcategory::Data_Set sub_category(const Data &r);
+    static const wxString full_name(const Data *category, const Model_Subcategory::Data *sub_category = nullptr);
     static const wxString full_name(const int category_id, const int subcategory_id);
     static bool is_used(int id, int sub_id = -1);
     static bool has_income(int id, int sub_id = -1);
     static void getCategoryStats(
         std::map<int, std::map<int, std::map<int, double> > > &categoryStats
-        , const wxArrayString* accountArray
-        , mmDateRange* date_range, bool ignoreFuture
+        , const wxArrayString *accountArray
+        , mmDateRange *date_range, bool ignoreFuture
         , bool group_by_month = true
         , std::map<int, std::map<int, double> > *budgetAmt = nullptr);
 };

@@ -35,50 +35,50 @@ class mmNewAcctDialog : public wxDialog
 
 public:
     mmNewAcctDialog();
-    mmNewAcctDialog(Model_Account::Data* account, wxWindow* parent, const wxString &name = "mmAccountDialog");
+    mmNewAcctDialog(Model_Account::Data *account, wxWindow *parent, const wxString &name = "mmAccountDialog");
     ~mmNewAcctDialog();
 
-    bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style
-        , const wxString& name);
+    bool Create(wxWindow *parent
+                , wxWindowID id
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
+                , long style
+                , const wxString &name);
 
 private:
     void CreateControls();
 
     // utility functions
-    void OnOk(wxCommandEvent& event);
-    void OnCancel(wxCommandEvent& event);
-    void OnCurrency(wxCommandEvent& event);
+    void OnOk(wxCommandEvent &event);
+    void OnCancel(wxCommandEvent &event);
+    void OnCurrency(wxCommandEvent &event);
     void fillControls(void);
-    void OnCustonImage(wxCommandEvent& event);
-    void OnTextEntered(wxCommandEvent& event);
-    void OnAttachments(wxCommandEvent& event);
+    void OnCustonImage(wxCommandEvent &event);
+    void OnTextEntered(wxCommandEvent &event);
+    void OnAttachments(wxCommandEvent &event);
 
-    void OnImageButton(wxCommandEvent& event);
-    void OnChangeFocus(wxChildFocusEvent& event);
+    void OnImageButton(wxCommandEvent &event);
+    void OnChangeFocus(wxChildFocusEvent &event);
 
 private:
-    Model_Account::Data* m_account = nullptr;
-    wxTextCtrl* m_textAccountName = nullptr;
-    wxTextCtrl* m_notesCtrl = nullptr;
-    mmTextCtrl* m_initbalance_ctrl = nullptr;
-    wxImageList* m_imageList = nullptr;
-    wxBitmapButton* m_bitmapButtons = nullptr;
-    wxBitmapButton* bAttachments_ = nullptr;
+    Model_Account::Data *m_account = nullptr;
+    wxTextCtrl *m_textAccountName = nullptr;
+    wxTextCtrl *m_notesCtrl = nullptr;
+    mmTextCtrl *m_initbalance_ctrl = nullptr;
+    wxImageList *m_imageList = nullptr;
+    wxBitmapButton *m_bitmapButtons = nullptr;
+    wxBitmapButton *bAttachments_ = nullptr;
     wxString m_accessInfo;
 
-    wxCheckBox* m_statement_lock_ctrl = nullptr;
-    wxDatePickerCtrl* m_statement_date_ctrl = nullptr;
-    mmTextCtrl* m_minimum_balance_ctrl = nullptr;
+    wxCheckBox *m_statement_lock_ctrl = nullptr;
+    wxDatePickerCtrl *m_statement_date_ctrl = nullptr;
+    mmTextCtrl *m_minimum_balance_ctrl = nullptr;
 
-    mmTextCtrl* m_credit_limit_ctrl = nullptr;
-    mmTextCtrl* m_interest_rate_ctrl = nullptr;
-    wxDatePickerCtrl* m_payment_due_date_ctrl = nullptr;
-    mmTextCtrl* m_minimum_payment_ctrl = nullptr;
+    mmTextCtrl *m_credit_limit_ctrl = nullptr;
+    mmTextCtrl *m_interest_rate_ctrl = nullptr;
+    wxDatePickerCtrl *m_payment_due_date_ctrl = nullptr;
+    mmTextCtrl *m_minimum_payment_ctrl = nullptr;
 
     int m_currencyID = -1;
     bool m_accessinfo_infocus = false;

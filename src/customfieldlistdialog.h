@@ -30,7 +30,7 @@ class mmCustomFieldListDialog : public wxDialog
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmCustomFieldListDialog(wxWindow* parent, const wxString& RefType);
+    mmCustomFieldListDialog(wxWindow *parent, const wxString &RefType);
 
 private:
     enum cols
@@ -49,14 +49,14 @@ private:
         MENU_UPDATE_FIELD,
     };
 
-    wxDataViewListCtrl* fieldListBox_ = nullptr;
+    wxDataViewListCtrl *fieldListBox_ = nullptr;
 
     wxString m_RefType;
     int m_field_id=-1;
     mmCustomFieldListDialog() {}
     std::map<int, wxString> ColName_;
 
-    void Create(wxWindow* parent);
+    void Create(wxWindow *parent);
     void CreateControls();
     void fillControls();
 
@@ -64,13 +64,13 @@ private:
     void EditField();
     void DeleteField();
     void UpdateField();
-    void OnClose(wxCommandEvent& WXUNUSED(event));
+    void OnClose(wxCommandEvent &WXUNUSED(event));
 
-    void OnListItemSelected(wxDataViewEvent& event);
-    void OnMenuSelected(wxCommandEvent& event);
-    void OnItemRightClick(wxDataViewEvent& event);
-    void OnListItemActivated(wxDataViewEvent& event);
-    void OnMagicButton(wxCommandEvent& event);
+    void OnListItemSelected(wxDataViewEvent &event);
+    void OnMenuSelected(wxCommandEvent &event);
+    void OnItemRightClick(wxDataViewEvent &event);
+    void OnListItemActivated(wxDataViewEvent &event);
+    void OnMagicButton(wxCommandEvent &event);
 
     bool debug_ = false;
 };

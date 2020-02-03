@@ -29,7 +29,7 @@
 #define CATEGORY_SORT_BY_AMOUNT      2
 
 mmReportCategoryExpenses::mmReportCategoryExpenses
-(const wxString& title, enum TYPE type)
+(const wxString &title, enum TYPE type)
     : mmPrintableBase(title)
     , type_(type)
 {
@@ -50,45 +50,61 @@ void  mmReportCategoryExpenses::RefreshData()
     wxString color;
     std::map<int, std::map<int, std::map<int, double> > > categoryStats;
     Model_Category::instance().getCategoryStats(categoryStats
-        , accountArray_
-        , const_cast<mmDateRange*>(m_date_range)
-        , Option::instance().getIgnoreFutureTransactions()
-        , false);
+            , accountArray_
+            , const_cast<mmDateRange *>(m_date_range)
+            , Option::instance().getIgnoreFutureTransactions()
+            , false);
 
     data_holder line;
     int i = 0;
     mmHTMLBuilder hb;
     int groupID = 1;
-    for (const auto& category : Model_Category::instance().all(Model_Category::COL_CATEGNAME))
+    for (const auto &category : Model_Category::instance().all(Model_Category::COL_CATEGNAME))
     {
-        const wxString& sCategName = category.CATEGNAME;
+        const wxString &sCategName = category.CATEGNAME;
         double amt = categoryStats[category.CATEGID][-1][0];
-        if (type_ == COME && amt < 0.0) amt = 0;
-        if (type_ == GOES && amt > 0.0) amt = 0;
+        if (type_ == COME && amt < 0.0)
+        {
+            amt = 0;
+        }
+        if (type_ == GOES && amt > 0.0)
+        {
+            amt = 0;
+        }
         if (amt != 0.0)
-            data_.push_back({ hb.getColor(i++), sCategName, amt, groupID });
+            data_.push_back( { hb.getColor(i++), sCategName, amt, groupID });
 
         auto subcategories = Model_Category::sub_category(category);
         std::stable_sort(subcategories.begin(), subcategories.end(), SorterBySUBCATEGNAME());
-        for (const auto& sub_category : subcategories)
+        for (const auto &sub_category : subcategories)
         {
             wxString sFullCategName = Model_Category::full_name(category.CATEGID, sub_category.SUBCATEGID);
             amt = categoryStats[category.CATEGID][sub_category.SUBCATEGID][0];
-            if (type_ == COME && amt < 0.0) amt = 0;
-            if (type_ == GOES && amt > 0.0) amt = 0;
+            if (type_ == COME && amt < 0.0)
+            {
+                amt = 0;
+            }
+            if (type_ == GOES && amt > 0.0)
+            {
+                amt = 0;
+            }
             if (amt != 0.0)
-                data_.push_back({ hb.getColor(i++), sFullCategName, amt, groupID });
+                data_.push_back( { hb.getColor(i++), sFullCategName, amt, groupID });
         }
         groupID++;
     }
 }
 
-bool DataSorter(const ValueTrio& x, const ValueTrio& y)
+bool DataSorter(const ValueTrio &x, const ValueTrio &y)
 {
     if (x.amount != y.amount)
+    {
         return fabs(x.amount) > fabs(y.amount);
+    }
     else
+    {
         return x.label < y.label;
+    }
 }
 
 wxString mmReportCategoryExpenses::getHTMLText()
@@ -100,7 +116,7 @@ wxString mmReportCategoryExpenses::getHTMLText()
     std::vector<ValueTrio> expensesList, incomeList;
     std::map <int, int> group_counter;
     std::map <int, double> group_total;
-    for (const auto& entry : sortedData)
+    for (const auto &entry : sortedData)
     {
         group_counter[entry.categs]++;
         group_total[entry.categs] += entry.amount;
@@ -109,9 +125,9 @@ wxString mmReportCategoryExpenses::getHTMLText()
         if (getChartSelection() == 0)
         {
             if (entry.amount < 0)
-                expensesList.push_back({ entry.color, entry.name, entry.amount });
+                expensesList.push_back( { entry.color, entry.name, entry.amount });
             else if (entry.amount > 0)
-                incomeList.push_back({ entry.color, entry.name, entry.amount });
+                incomeList.push_back( { entry.color, entry.name, entry.amount });
         }
     }
 
@@ -140,10 +156,14 @@ wxString mmReportCategoryExpenses::getHTMLText()
             hb.addText(_("Income"));
             hb.addText("</th></tr><tr><td>");
             if (!expensesList.empty())
+            {
                 hb.addPieChart(expensesList, "Expenses");
+            }
             hb.addText("</td><td /><td>");
             if (!incomeList.empty())
+            {
                 hb.addPieChart(incomeList, "Income");
+            }
             hb.addText("</td></tr></table>");
             hb.endDiv();
         }
@@ -151,9 +171,13 @@ wxString mmReportCategoryExpenses::getHTMLText()
         {
             hb.addDivCol25_50();
             if (!expensesList.empty())
+            {
                 hb.addPieChart(expensesList, "Expenses");
+            }
             if (!incomeList.empty())
+            {
                 hb.addPieChart(incomeList, "Income");
+            }
             hb.endDiv();
         }
     }
@@ -161,7 +185,10 @@ wxString mmReportCategoryExpenses::getHTMLText()
     hb.startTable();
     hb.startThead();
     hb.startTableRow();
-    if (getChartSelection() == 0) hb.addTableHeaderCell(" ");
+    if (getChartSelection() == 0)
+    {
+        hb.addTableHeaderCell(" ");
+    }
     hb.addTableHeaderCell(_("Category"));
     hb.addTableHeaderCell(_("Amount"), true);
     hb.addTableHeaderCell(_("Total"), true);
@@ -170,30 +197,41 @@ wxString mmReportCategoryExpenses::getHTMLText()
 
     hb.startTbody();
     int group = 0;
-    for (const auto& entry : sortedData)
+    for (const auto &entry : sortedData)
     {
         group++;
         hb.startTableRow();
-        if (getChartSelection() == 0) hb.addColorMarker(entry.color);
+        if (getChartSelection() == 0)
+        {
+            hb.addColorMarker(entry.color);
+        }
         hb.addTableCell(entry.name);
         hb.addMoneyCell(entry.amount);
         if (group_counter[entry.categs] > 1)
+        {
             hb.addEmptyTableCell();
+        }
         else
+        {
             hb.addMoneyCell(entry.amount);
+        }
         hb.endTableRow();
 
         if (group_counter[entry.categs] == group && group_counter[entry.categs] > 1)
         {
             group = 0;
             hb.startTableRow("WhiteSmoke");
-            if (getChartSelection() == 0) hb.addEmptyTableCell();
+            if (getChartSelection() == 0)
+            {
+                hb.addEmptyTableCell();
+            }
             hb.addTableCell(_("Category Total: "));
             hb.addEmptyTableCell();
             hb.addMoneyCell(group_total[entry.categs]);
             hb.endTableRow();
         }
-        if (group_counter[entry.categs] == 1 || group == 0) {
+        if (group_counter[entry.categs] == 1 || group == 0)
+        {
             group = 0;
         }
     }

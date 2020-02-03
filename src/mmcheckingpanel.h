@@ -36,7 +36,7 @@ class TransactionListCtrl : public mmListCtrl
 {
 public:
 
-    TransactionListCtrl(mmCheckingPanel* cp, wxWindow* parent
+    TransactionListCtrl(mmCheckingPanel *cp, wxWindow *parent
                         , const wxWindowID id = wxID_ANY);
 
     ~TransactionListCtrl();
@@ -112,18 +112,18 @@ public:
     void setColumnImage(EColumn col, int image);
 
 public:
-    void OnNewTransaction(wxCommandEvent& event);
-    void OnNewTransferTransaction(wxCommandEvent& event);
-    void OnDeleteTransaction(wxCommandEvent& event);
-    void OnEditTransaction(wxCommandEvent& event);
-    void OnDuplicateTransaction(wxCommandEvent& event);
-    void OnSetUserColour(wxCommandEvent& event);
-    void OnMoveTransaction(wxCommandEvent& event);
-    void OnOpenAttachment(wxCommandEvent& event);
+    void OnNewTransaction(wxCommandEvent &event);
+    void OnNewTransferTransaction(wxCommandEvent &event);
+    void OnDeleteTransaction(wxCommandEvent &event);
+    void OnEditTransaction(wxCommandEvent &event);
+    void OnDuplicateTransaction(wxCommandEvent &event);
+    void OnSetUserColour(wxCommandEvent &event);
+    void OnMoveTransaction(wxCommandEvent &event);
+    void OnOpenAttachment(wxCommandEvent &event);
     /// Displays the split categories for the selected transaction
-    void OnViewSplitTransaction(wxCommandEvent& event);
-    void OnOrganizeAttachments(wxCommandEvent& event);
-    void OnCreateReoccurance(wxCommandEvent& event);
+    void OnViewSplitTransaction(wxCommandEvent &event);
+    void OnOrganizeAttachments(wxCommandEvent &event);
+    void OnCreateReoccurance(wxCommandEvent &event);
     void refreshVisualList(int trans_id = -1, bool filter = true);
     long m_selectedIndex=-1;
     long m_selectedForCopy = -1; //The transaction ID if selected for copy
@@ -132,7 +132,7 @@ public:
 
 protected:
     /* Sort Columns */
-    virtual void OnColClick(wxListEvent& event);
+    virtual void OnColClick(wxListEvent &event);
 
 private:
     enum
@@ -188,7 +188,7 @@ private:
     wxDECLARE_EVENT_TABLE();
 
 private:
-    mmCheckingPanel* m_cp = nullptr;
+    mmCheckingPanel *m_cp = nullptr;
 
     wxListItemAttr m_attr1;  // style1
     wxListItemAttr m_attr2;  // style2
@@ -205,23 +205,23 @@ private:
     /* required overrides for virtual style list control */
     virtual wxString OnGetItemText(long item, long column) const;
     virtual int OnGetItemColumnImage(long item, long column) const;
-    virtual wxListItemAttr* OnGetItemAttr(long item) const;
+    virtual wxListItemAttr *OnGetItemAttr(long item) const;
 
 private:
-    void OnMouseRightClick(wxMouseEvent& event);
-    void OnListLeftClick(wxMouseEvent& event);
-    void OnListItemSelected(wxListEvent& event);
-    void OnListItemActivated(wxListEvent& event);
-    void OnListItemFocused(wxListEvent& event);
-    void OnMarkTransaction(wxCommandEvent& event);
-    void OnMarkAllTransactions(wxCommandEvent& event);
-    void OnListKeyDown(wxListEvent& event);
-    void OnChar(wxKeyEvent& event);
-    void OnCopy(wxCommandEvent& WXUNUSED(event));
-    void OnPaste(wxCommandEvent& WXUNUSED(event));
-    int OnPaste(Model_Checking::Data* tran);
+    void OnMouseRightClick(wxMouseEvent &event);
+    void OnListLeftClick(wxMouseEvent &event);
+    void OnListItemSelected(wxListEvent &event);
+    void OnListItemActivated(wxListEvent &event);
+    void OnListItemFocused(wxListEvent &event);
+    void OnMarkTransaction(wxCommandEvent &event);
+    void OnMarkAllTransactions(wxCommandEvent &event);
+    void OnListKeyDown(wxListEvent &event);
+    void OnChar(wxKeyEvent &event);
+    void OnCopy(wxCommandEvent &WXUNUSED(event));
+    void OnPaste(wxCommandEvent &WXUNUSED(event));
+    int OnPaste(Model_Checking::Data *tran);
 
-    bool TransactionLocked(const wxString& transdate);
+    bool TransactionLocked(const wxString &transdate);
 
     /* The topmost visible item - this will be used to set
     where to display the list again after refresh */
@@ -235,8 +235,8 @@ class mmCheckingPanel : public mmPanelBase
 {
 public:
 
-    mmCheckingPanel(wxWindow* parent
-                    , mmGUIFrame* frame
+    mmCheckingPanel(wxWindow *parent
+                    , mmGUIFrame *frame
                     , int accountID
                     , int id = wxID_ANY
                    );
@@ -304,16 +304,16 @@ private:
     wxDECLARE_EVENT_TABLE();
     friend class TransactionListCtrl; // needs access to m_core, initdb_, ...
 
-    wxButton* m_btnNew=nullptr;
-    wxButton* m_btnEdit=nullptr;
-    wxButton* m_btnDuplicate=nullptr;
-    wxButton* m_btnDelete=nullptr;
-    wxButton* m_btnAttachment=nullptr;
-    wxStaticText* m_header_text=nullptr;
-    wxStaticText* m_info_panel=nullptr;
-    wxStaticText* m_info_panel_mini=nullptr;
-    wxButton* m_bitmapTransFilter=nullptr;
-    mmFilterTransactionsDialog* m_trans_filter_dlg = nullptr;
+    wxButton *m_btnNew=nullptr;
+    wxButton *m_btnEdit=nullptr;
+    wxButton *m_btnDuplicate=nullptr;
+    wxButton *m_btnDelete=nullptr;
+    wxButton *m_btnAttachment=nullptr;
+    wxStaticText *m_header_text=nullptr;
+    wxStaticText *m_info_panel=nullptr;
+    wxStaticText *m_info_panel_mini=nullptr;
+    wxButton *m_bitmapTransFilter=nullptr;
+    mmFilterTransactionsDialog *m_trans_filter_dlg = nullptr;
 
     int m_currentView;
     int m_AccountID;
@@ -324,9 +324,9 @@ private:
     double m_account_balance;
     double m_reconciled_balance;
 
-    TransactionListCtrl* m_listCtrlAccount = nullptr;
-    Model_Account::Data* m_account = nullptr;
-    Model_Currency::Data* m_currency = nullptr;
+    TransactionListCtrl *m_listCtrlAccount = nullptr;
+    Model_Account::Data *m_account = nullptr;
+    Model_Currency::Data *m_currency = nullptr;
     wxScopedPtr<wxImageList> m_imageList;
     Model_Checking::Full_Data_Set m_trans;
 
@@ -340,32 +340,32 @@ private:
     void CreateControls();
 
     bool Create(
-        wxWindow* parent,
+        wxWindow *parent,
         wxWindowID winid,
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
+        const wxPoint &pos = wxDefaultPosition,
+        const wxSize &size = wxDefaultSize,
         long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-        const wxString& name = "mmCheckingPanel"
+        const wxString &name = "mmCheckingPanel"
     );
     void enableEditDeleteButtons(bool en);
 
-    void OnNewTransaction(wxCommandEvent& event);
-    void OnDeleteTransaction(wxCommandEvent& event);
-    void OnEditTransaction(wxCommandEvent& event);
-    void OnDuplicateTransaction(wxCommandEvent& event);
-    void OnMoveTransaction(wxCommandEvent& event);
-    void OnOpenAttachment(wxCommandEvent& event);
-    void OnMouseLeftDown( wxCommandEvent& event );
-    void OnViewPopupSelected(wxCommandEvent& event);
-    void OnSearchTxtEntered(wxCommandEvent& event);
+    void OnNewTransaction(wxCommandEvent &event);
+    void OnDeleteTransaction(wxCommandEvent &event);
+    void OnEditTransaction(wxCommandEvent &event);
+    void OnDuplicateTransaction(wxCommandEvent &event);
+    void OnMoveTransaction(wxCommandEvent &event);
+    void OnOpenAttachment(wxCommandEvent &event);
+    void OnMouseLeftDown( wxCommandEvent &event );
+    void OnViewPopupSelected(wxCommandEvent &event);
+    void OnSearchTxtEntered(wxCommandEvent &event);
 
     void DeleteViewedTransactions();
-    void DeleteFlaggedTransactions(const wxString& status);
+    void DeleteFlaggedTransactions(const wxString &status);
 
     /* updates the checking panel data */
     void showTips();
     void updateExtraTransactionData(int selIndex);
-    const wxString GetPanelTitle(const Model_Account::Data& account) const;
+    const wxString GetPanelTitle(const Model_Account::Data &account) const;
 
     /* Getter for Virtual List Control */
     const wxString getItem(long item, long column);
@@ -373,29 +373,29 @@ private:
 private:
     static void mmPlayTransactionSound();
 private:
-    mmGUIFrame* m_frame;
+    mmGUIFrame *m_frame;
 };
 //----------------------------------------------------------------------------
 #endif // MM_EX_CHECKINGPANEL_H_
 //----------------------------------------------------------------------------
 
-inline static bool SorterByUDFC01(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j)
+inline static bool SorterByUDFC01(const Model_Checking::Full_Data &i, const Model_Checking::Full_Data &j)
 {
     return (i.UDFC01 < j.UDFC01);
 }
-inline static bool SorterByUDFC02(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j)
+inline static bool SorterByUDFC02(const Model_Checking::Full_Data &i, const Model_Checking::Full_Data &j)
 {
     return (i.UDFC02 < j.UDFC02);
 }
-inline static bool SorterByUDFC03(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j)
+inline static bool SorterByUDFC03(const Model_Checking::Full_Data &i, const Model_Checking::Full_Data &j)
 {
     return (i.UDFC03 < j.UDFC03);
 }
-inline static bool SorterByUDFC04(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j)
+inline static bool SorterByUDFC04(const Model_Checking::Full_Data &i, const Model_Checking::Full_Data &j)
 {
     return (i.UDFC04 < j.UDFC04);
 }
-inline static bool SorterByUDFC05(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j)
+inline static bool SorterByUDFC05(const Model_Checking::Full_Data &i, const Model_Checking::Full_Data &j)
 {
     return (i.UDFC05 < j.UDFC05);
 }

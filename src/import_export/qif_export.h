@@ -32,44 +32,43 @@ public:
     mmQIFExportDialog() {}
     //virtual ~mmQIFExportDialog() {}
 
-    mmQIFExportDialog(wxWindow* parent /*, int gotoAccountID*/);
+    mmQIFExportDialog(wxWindow *parent /*, int gotoAccountID*/);
 
-    bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString&
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+    bool Create(wxWindow *parent
+                , wxWindowID id
+                , const wxString &
+                , const wxPoint &pos
+                , const wxSize &size
+                , long style);
 
 private:
     void mmExportQIF();
-    void OnAccountsButton(wxCommandEvent& WXUNUSED(event));
-    void OnCheckboxClick(wxCommandEvent& WXUNUSED(event));
-    void OnFileNameEntered(wxCommandEvent& event);
-    void OnFileNameChanged(wxCommandEvent& event);
-    void OnFileSearch(wxCommandEvent& event);
-    void OnButtonClear(wxCommandEvent& WXUNUSED(event));
+    void OnAccountsButton(wxCommandEvent &WXUNUSED(event));
+    void OnCheckboxClick(wxCommandEvent &WXUNUSED(event));
+    void OnFileNameEntered(wxCommandEvent &event);
+    void OnFileNameChanged(wxCommandEvent &event);
+    void OnFileSearch(wxCommandEvent &event);
+    void OnButtonClear(wxCommandEvent &WXUNUSED(event));
     void CreateControls();
     void fillControls();
-    void OnQuit(wxCloseEvent& event);
-    void OnCancel(wxCommandEvent& event);
-    void OnOk(wxCommandEvent& WXUNUSED(event));
+    void OnQuit(wxCloseEvent &event);
+    void OnCancel(wxCommandEvent &event);
+    void OnOk(wxCommandEvent &WXUNUSED(event));
 
-
-    wxCheckBox* cCategs_;
-    wxCheckBox* accountsCheckBox_;
-    wxButton* bSelectedAccounts_;
-    wxCheckBox* dateFromCheckBox_;
-    wxCheckBox* dateToCheckBox_;
-    wxDatePickerCtrl* fromDateCtrl_;
-    wxDatePickerCtrl* toDateCtrl_;
-    wxStaticText* choiceDateFormat_label_;
-    wxComboBox* m_choiceDateFormat;
-    wxCheckBox* toFileCheckBox_;
-    wxStaticText* file_name_label_;
-    wxButton* button_search_;
-    wxTextCtrl* m_text_ctrl_;
-    wxTextCtrl* log_field_;
+    wxCheckBox *cCategs_;
+    wxCheckBox *accountsCheckBox_;
+    wxButton *bSelectedAccounts_;
+    wxCheckBox *dateFromCheckBox_;
+    wxCheckBox *dateToCheckBox_;
+    wxDatePickerCtrl *fromDateCtrl_;
+    wxDatePickerCtrl *toDateCtrl_;
+    wxStaticText *choiceDateFormat_label_;
+    wxComboBox *m_choiceDateFormat;
+    wxCheckBox *toFileCheckBox_;
+    wxStaticText *file_name_label_;
+    wxButton *button_search_;
+    wxTextCtrl *m_text_ctrl_;
+    wxTextCtrl *log_field_;
     //wxLog *logger_;
 
     /* Selected accounts values */

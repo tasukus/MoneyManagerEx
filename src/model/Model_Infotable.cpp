@@ -21,7 +21,7 @@
 #include "util.h"
 
 Model_Infotable::Model_Infotable()
-: Model<DB_Table_INFOTABLE>()
+    : Model<DB_Table_INFOTABLE>()
 {
 }
 
@@ -33,9 +33,9 @@ Model_Infotable::~Model_Infotable()
 * Initialize the global Model_Infotable.
 * Reset the Model_Infotable or create the table if it does not exist.
 */
-Model_Infotable& Model_Infotable::instance(wxSQLite3Database* db)
+Model_Infotable &Model_Infotable::instance(wxSQLite3Database *db)
 {
-    Model_Infotable& ins = Singleton<Model_Infotable>::instance();
+    Model_Infotable &ins = Singleton<Model_Infotable>::instance();
     ins.db_ = db;
     ins.destroy_cache();
     ins.ensure(db);
@@ -51,31 +51,37 @@ Model_Infotable& Model_Infotable::instance(wxSQLite3Database* db)
 }
 
 /** Return the static instance of Model_Infotable */
-Model_Infotable& Model_Infotable::instance()
+Model_Infotable &Model_Infotable::instance()
 {
     return Singleton<Model_Infotable>::instance();
 }
 
 // Setter
-void Model_Infotable::Set(const wxString& key, int value)
+void Model_Infotable::Set(const wxString &key, int value)
 {
     this->Set(key, wxString::Format("%d", value));
 }
 
-void Model_Infotable::Set(const wxString& key, const wxDateTime& date)
+void Model_Infotable::Set(const wxString &key, const wxDateTime &date)
 {
     this->Set(key, date.FormatISODate());
 }
 
-void Model_Infotable::Set(const wxString& key, const wxString& value)
+void Model_Infotable::Set(const wxString &key, const wxString &value)
 {
-    if (!this->db_) return;
+    if (!this->db_)
+    {
+        return;
+    }
 
-    Data* info = this->get_one(INFONAME(key));
+    Data *info = this->get_one(INFONAME(key));
     if (!info) // not cached
     {
         Data_Set items = this->find(INFONAME(key));
-        if (!items.empty()) info = this->get(items[0].INFOID);
+        if (!items.empty())
+        {
+            info = this->get(items[0].INFOID);
+        }
     }
     if (info)
     {
@@ -91,13 +97,13 @@ void Model_Infotable::Set(const wxString& key, const wxString& value)
     }
 }
 
-void Model_Infotable::Set(const wxString& key, const wxColour& value)
+void Model_Infotable::Set(const wxString &key, const wxColour &value)
 {
     this->Set(key, wxString::Format("%d,%d,%d", value.Red(), value.Green(), value.Blue()));
 }
 
 //Deleter
-void Model_Infotable::Delete(const wxString& key)
+void Model_Infotable::Delete(const wxString &key)
 {
     Data_Set items = this->find(INFONAME(key));
     for (const auto entry : items)
@@ -107,42 +113,54 @@ void Model_Infotable::Delete(const wxString& key)
 }
 
 // Getter
-bool Model_Infotable::GetBoolInfo(const wxString& key, bool default_value)
+bool Model_Infotable::GetBoolInfo(const wxString &key, bool default_value)
 {
     const wxString value = this->GetStringInfo(key, "");
     if (value == "1" || value.CmpNoCase("TRUE") == 0)
+    {
         return true;
+    }
     else if (value == "0" || value.CmpNoCase("FALSE") == 0)
+    {
         return false;
+    }
     else
+    {
         return default_value;
+    }
 }
 
-int Model_Infotable::GetIntInfo(const wxString& key, int default_value)
+int Model_Infotable::GetIntInfo(const wxString &key, int default_value)
 {
     const wxString value = this->GetStringInfo(key, "");
     if (!value.IsEmpty() && value.IsNumber())
-        return wxAtoi(value);
-
-    return default_value;
-}
-
-wxString Model_Infotable::GetStringInfo(const wxString& key, const wxString& default_value)
-{
-    Data* info = this->get_one(INFONAME(key));
-    if (info)
-        return info->INFOVALUE;
-    else // not cached
     {
-        Data_Set items = this->find(INFONAME(key));
-        if (!items.empty())
-            return items[0].INFOVALUE;
+        return wxAtoi(value);
     }
 
     return default_value;
 }
 
-const wxColour Model_Infotable::GetColourSetting(const wxString& key, const wxColour& default_value)
+wxString Model_Infotable::GetStringInfo(const wxString &key, const wxString &default_value)
+{
+    Data *info = this->get_one(INFONAME(key));
+    if (info)
+    {
+        return info->INFOVALUE;
+    }
+    else // not cached
+    {
+        Data_Set items = this->find(INFONAME(key));
+        if (!items.empty())
+        {
+            return items[0].INFOVALUE;
+        }
+    }
+
+    return default_value;
+}
+
+const wxColour Model_Infotable::GetColourSetting(const wxString &key, const wxColour &default_value)
 {
     const wxString value = this->GetStringInfo(key, "");
     if (!value.IsEmpty())
@@ -166,14 +184,17 @@ const wxColour Model_Infotable::GetColourSetting(const wxString& key, const wxCo
 }
 
 /* Returns true if key setting found */
-bool Model_Infotable::KeyExists(const wxString& key)
+bool Model_Infotable::KeyExists(const wxString &key)
 {
     return !this->find(INFONAME(key)).empty();
 }
 
 bool Model_Infotable::checkDBVersion()
 {
-    if (!this->KeyExists("DATAVERSION")) return false;
+    if (!this->KeyExists("DATAVERSION"))
+    {
+        return false;
+    }
 
     return this->GetIntInfo("DATAVERSION", 0) >= mmex::MIN_DATAVERSION;
 }
@@ -182,28 +203,30 @@ loop_t Model_Infotable::to_loop_t()
 {
     loop_t loop;
     for (const auto &r: instance().all())
+    {
         loop += r.to_row_t();
+    }
     return loop;
 }
 
 //-------------------------------------------------------------------
-bool Model_Infotable::OpenCustomDialog(const wxString& RefType)
+bool Model_Infotable::OpenCustomDialog(const wxString &RefType)
 {
     return GetBoolInfo("CUSTOMDIALOG_OPEN:" + RefType, false);
 }
 
-void Model_Infotable::SetOpenCustomDialog(const wxString& RefType, const bool Status)
+void Model_Infotable::SetOpenCustomDialog(const wxString &RefType, const bool Status)
 {
     Set("CUSTOMDIALOG_OPEN:" + RefType, Status);
 }
 
-wxSize Model_Infotable::CustomDialogSize(const wxString& RefType)
+wxSize Model_Infotable::CustomDialogSize(const wxString &RefType)
 {
     wxString strSize = GetStringInfo("CUSTOMDIALOG_SIZE:" + RefType, "0;0");
     return wxSize(wxAtoi(strSize.BeforeFirst(';')), wxAtoi(strSize.AfterFirst(';')));
 }
 
-void Model_Infotable::SetCustomDialogSize(const wxString& RefType, const wxSize& Size)
+void Model_Infotable::SetCustomDialogSize(const wxString &RefType, const wxSize &Size)
 {
     wxString strSize;
     strSize << Size.GetWidth() << ";" << Size.GetHeight();

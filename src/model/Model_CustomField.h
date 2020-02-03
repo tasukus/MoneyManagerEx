@@ -40,33 +40,33 @@ public:
     * Return the static instance address for Model_CustomField table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_CustomField& instance(wxSQLite3Database* db);
+    static Model_CustomField &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_CustomField table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_CustomField& instance();
+    static Model_CustomField &instance();
 
 public:
-    bool Delete(const int& FieldID);
+    bool Delete(const int &FieldID);
     static const wxString fieldtype_desc(const int FieldTypeEnum);
-    static FIELDTYPE type(const Data* r);
-    static FIELDTYPE type(const Data& r);
+    static FIELDTYPE type(const Data *r);
+    static FIELDTYPE type(const Data &r);
     static const wxArrayString all_type();
-    static const wxString getRegEx(const wxString& Properties);
-    static const wxString getTooltip(const wxString& Properties);
-    static bool getAutocomplete(const wxString& Properties);
-    static const wxString getDefault(const wxString& Properties);
-    static const wxArrayString getChoices(const wxString& Properties);
-    static const wxArrayString getUDFCList(DB_Table_CUSTOMFIELD::Data* r);
-    static const wxString getUDFC(const wxString& Properties);
-    static const wxString getUDFCName(const wxString& ref_type, const wxString& name);
-    static int getUDFCID(const wxString& ref_type, const wxString& name);
+    static const wxString getRegEx(const wxString &Properties);
+    static const wxString getTooltip(const wxString &Properties);
+    static bool getAutocomplete(const wxString &Properties);
+    static const wxString getDefault(const wxString &Properties);
+    static const wxArrayString getChoices(const wxString &Properties);
+    static const wxArrayString getUDFCList(DB_Table_CUSTOMFIELD::Data *r);
+    static const wxString getUDFC(const wxString &Properties);
+    static const wxString getUDFCName(const wxString &ref_type, const wxString &name);
+    static int getUDFCID(const wxString &ref_type, const wxString &name);
     static const std::map<wxString, int> getMatrix(Model_Attachment::REFTYPE reftype);
-    static int getDigitScale(const wxString& Properties);
-    static const wxString formatProperties(const wxString& Tooltip, const wxString& RegEx
-        , bool Autocomplete, const wxString& Default, const wxArrayString& Choices
-        , const int DigitScale, const wxString& udfc_str);
+    static int getDigitScale(const wxString &Properties);
+    static const wxString formatProperties(const wxString &Tooltip, const wxString &RegEx
+                                           , bool Autocomplete, const wxString &Default, const wxArrayString &Choices
+                                           , const int DigitScale, const wxString &udfc_str);
     static const wxArrayString UDFC_FIELDS();
 };

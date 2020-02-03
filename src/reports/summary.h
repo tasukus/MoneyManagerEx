@@ -25,7 +25,12 @@
 #include <vector>
 
 // structure for sorting of data
-struct summary_data_holder { wxString name; wxString link; double balance; };
+struct summary_data_holder
+{
+    wxString name;
+    wxString link;
+    double balance;
+};
 
 class mmReportSummary : public mmPrintableBase
 {

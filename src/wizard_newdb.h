@@ -34,8 +34,8 @@ public:
     void RunIt(bool modal);
 
 private:
-    wxWizardPageSimple* page1;
-    void OnWizardCancel(wxWizardEvent& event);
+    wxWizardPageSimple *page1;
+    void OnWizardCancel(wxWizardEvent &event);
 
     wxDECLARE_EVENT_TABLE();
 };
@@ -44,14 +44,14 @@ private:
 class mmNewDatabaseWizardPage : public wxWizardPageSimple
 {
 public:
-    mmNewDatabaseWizardPage(mmNewDatabaseWizard* parent);
+    mmNewDatabaseWizardPage(mmNewDatabaseWizard *parent);
 
-    void OnCurrency(wxCommandEvent& WXUNUSED(event));
+    void OnCurrency(wxCommandEvent &WXUNUSED(event));
     virtual bool TransferDataFromWindow();
 
 private:
-    wxButton* itemButtonCurrency_;
-    wxTextCtrl* itemUserName_;
+    wxButton *itemButtonCurrency_;
+    wxTextCtrl *itemUserName_;
     int currencyID_;
 
     wxDECLARE_EVENT_TABLE();

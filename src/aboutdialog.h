@@ -34,29 +34,29 @@ public:
     mmAboutDialog()
     {
     }
-    mmAboutDialog(wxWindow* parent, int TabToOpen, const wxString &name = "mmAboutDialog");
+    mmAboutDialog(wxWindow *parent, int TabToOpen, const wxString &name = "mmAboutDialog");
 
 private:
-    bool Create(wxWindow* parent
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style
                 , int TabToOpen
                 , const wxString &name
                );
     void CreateControls(int TabToOpen);
     void InitControls();
-    void OnVersionHistory(wxCommandEvent& event);
-    void OnContributerList(wxCommandEvent& event);
-    void OnLinkClicked(wxHtmlLinkEvent& event);
+    void OnVersionHistory(wxCommandEvent &event);
+    void OnContributerList(wxCommandEvent &event);
+    void OnLinkClicked(wxHtmlLinkEvent &event);
 
-    wxHtmlWindow* about_text_ = nullptr;
-    wxHtmlWindow* authors_text_ = nullptr;
-    wxHtmlWindow* sponsors_text_ = nullptr;
-    wxHtmlWindow* license_text_ = nullptr;
-    wxHtmlWindow* privacy_text_ = nullptr;
+    wxHtmlWindow *about_text_ = nullptr;
+    wxHtmlWindow *authors_text_ = nullptr;
+    wxHtmlWindow *sponsors_text_ = nullptr;
+    wxHtmlWindow *license_text_ = nullptr;
+    wxHtmlWindow *privacy_text_ = nullptr;
 };
 
 #endif // MM_EX_ABOUTDIALOG_H_

@@ -31,22 +31,22 @@ public:
 class UpdateCallbackHook : public wxSQLite3Hook
 {
 public:
-    virtual void UpdateCallback (wxUpdateType type, const wxString& database, const wxString& table, wxLongLong rowid)
+    virtual void UpdateCallback (wxUpdateType type, const wxString &database, const wxString &table, wxLongLong rowid)
     {
         switch (type)
         {
-        case SQLITE_DELETE:
-            wxLogDebug("SQLITE_DELETE");
-            break;
-        case SQLITE_INSERT:
-            wxLogDebug("SQLITE_INSERT");
-            break;
-        case SQLITE_UPDATE:
-            wxLogDebug("SQLITE_UPDATE");
-            break;
-        default:
-            wxLogDebug("UNKNOWN type");
-            break;
+            case SQLITE_DELETE:
+                wxLogDebug("SQLITE_DELETE");
+                break;
+            case SQLITE_INSERT:
+                wxLogDebug("SQLITE_INSERT");
+                break;
+            case SQLITE_UPDATE:
+                wxLogDebug("SQLITE_UPDATE");
+                break;
+            default:
+                wxLogDebug("UNKNOWN type");
+                break;
         }
         wxLogDebug("database: %s, table: %s, rowid: %lld", database, table, rowid);
 

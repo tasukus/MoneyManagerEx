@@ -36,18 +36,18 @@ class StocksListCtrl: public mmListCtrl
     wxDECLARE_EVENT_TABLE();
 
 public:
-    StocksListCtrl(mmStocksPanel* cp, wxWindow *parent, wxWindowID winid = wxID_ANY);
+    StocksListCtrl(mmStocksPanel *cp, wxWindow *parent, wxWindowID winid = wxID_ANY);
     ~StocksListCtrl();
 
     void RefreshList(int id = -1);
     void doRefreshItems(int trx_id = -1);
-    void OnNewStocks(wxCommandEvent& event);
-    void OnDeleteStocks(wxCommandEvent& event);
-    void OnMoveStocks(wxCommandEvent& event);
-    void OnEditStocks(wxCommandEvent& event);
-    void OnOrganizeAttachments(wxCommandEvent& event);
-    void OnStockWebPage(wxCommandEvent& event);
-    void OnOpenAttachment(wxCommandEvent& event);
+    void OnNewStocks(wxCommandEvent &event);
+    void OnDeleteStocks(wxCommandEvent &event);
+    void OnMoveStocks(wxCommandEvent &event);
+    void OnEditStocks(wxCommandEvent &event);
+    void OnOrganizeAttachments(wxCommandEvent &event);
+    void OnStockWebPage(wxCommandEvent &event);
+    void OnOpenAttachment(wxCommandEvent &event);
     long get_selectedIndex()
     {
         return m_selected_row;
@@ -64,7 +64,7 @@ public:
     /* Helper Functions/data */
     Model_Stock::Data_Set m_stocks;
     /* updates thstockide checking panel data */
-    void OnListItemSelected(wxListEvent& event);
+    void OnListItemSelected(wxListEvent &event);
     int initVirtualListControl(int trx_id = -1, int col = 0, bool asc = true);
 
 private:
@@ -72,13 +72,13 @@ private:
     virtual wxString OnGetItemText(long item, long column) const;
     virtual int OnGetItemImage(long item) const;
 
-    void OnMouseRightClick(wxMouseEvent& event);
-    void OnListLeftClick(wxMouseEvent& event);
-    void OnListItemActivated(wxListEvent& event);
-    void OnColClick(wxListEvent& event);
-    void OnListKeyDown(wxListEvent& event);
+    void OnMouseRightClick(wxMouseEvent &event);
+    void OnListLeftClick(wxMouseEvent &event);
+    void OnListItemActivated(wxListEvent &event);
+    void OnColClick(wxListEvent &event);
+    void OnListKeyDown(wxListEvent &event);
 
-    mmStocksPanel* m_stock_panel;
+    mmStocksPanel *m_stock_panel;
     enum EColumn
     {
         COL_ICON = 0,
@@ -97,7 +97,7 @@ private:
         COL_NOTES,
         COL_MAX, // number of columns
     };
-    wxImageList* m_imageList=nullptr;
+    wxImageList *m_imageList=nullptr;
     double GetGainLoss(long item) const;
     void sortTable();
 };
@@ -110,33 +110,33 @@ class mmStocksPanel : public mmPanelBase
 public:
     mmStocksPanel(
         int accountID,
-        mmGUIFrame* frame,
+        mmGUIFrame *frame,
         wxWindow *parent,
         wxWindowID winid = wxID_ANY,
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
+        const wxPoint &pos = wxDefaultPosition,
+        const wxSize &size = wxDefaultSize,
         long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-        const wxString& name = "mmStocksPanel"
+        const wxString &name = "mmStocksPanel"
     );
     ~mmStocksPanel();
 
     bool Create( wxWindow *parent, wxWindowID winid,
-                 const wxPoint& pos = wxDefaultPosition,
-                 const wxSize& size = wxDefaultSize,
+                 const wxPoint &pos = wxDefaultPosition,
+                 const wxSize &size = wxDefaultSize,
                  long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-                 const wxString& name = "mmStocksPanel");
+                 const wxString &name = "mmStocksPanel");
 
     void RefreshList();
 
-    mmGUIFrame* m_frame;
-    Model_Currency::Data* m_currency=nullptr;
+    mmGUIFrame *m_frame;
+    Model_Currency::Data *m_currency=nullptr;
 
     /* Event handlers for Buttons */
-    void OnNewStocks(wxCommandEvent& event);
-    void OnDeleteStocks(wxCommandEvent& event);
-    void OnMoveStocks(wxCommandEvent& event);
-    void OnEditStocks(wxCommandEvent& event);
-    void OnOpenAttachment(wxCommandEvent& event);
+    void OnNewStocks(wxCommandEvent &event);
+    void OnDeleteStocks(wxCommandEvent &event);
+    void OnMoveStocks(wxCommandEvent &event);
+    void OnEditStocks(wxCommandEvent &event);
+    void OnOpenAttachment(wxCommandEvent &event);
     //Unhide the Edit and Delete buttons if any record selected
     void enableEditDeleteButtons(bool en);
     void AddStockTransaction(int selectedIndex);
@@ -144,33 +144,33 @@ public:
 
     wxString BuildPage() const;
     void updateHeader();
-    void m_stock_details_short(const wxString& miniInfo);
+    void m_stock_details_short(const wxString &miniInfo);
     int getAccountID();
     void setAccountID(int id);
     void OnListItemActivated(int selectedIndex);
     void OnListItemSelected(int selectedIndex);
 
 private:
-    void OnRefreshQuotes(wxCommandEvent& WXUNUSED(event));
+    void OnRefreshQuotes(wxCommandEvent &WXUNUSED(event));
 
     int m_account_id;
     void CreateControls();
     void updateExtraStocksData(int selIndex);
-    wxStaticText* stock_details_short_;
+    wxStaticText *stock_details_short_;
 
-    StocksListCtrl* listCtrlAccount_;
-    wxStaticText* stock_details_;
+    StocksListCtrl *listCtrlAccount_;
+    wxStaticText *stock_details_;
     void call_dialog(int selectedIndex);
     void sortTable() {}
     const wxString Total_Shares();
 
-    wxStaticText* header_text_ = nullptr;
-    wxStaticText* header_total_ = nullptr;
-    wxBitmapButton* attachment_button_ = nullptr;
-    wxBitmapButton* refresh_button_ = nullptr;
+    wxStaticText *header_text_ = nullptr;
+    wxStaticText *header_total_ = nullptr;
+    wxBitmapButton *attachment_button_ = nullptr;
+    wxBitmapButton *refresh_button_ = nullptr;
 
-    bool onlineQuoteRefresh(wxString& sError);
-    wxString GetPanelTitle(const Model_Account::Data& account) const;
+    bool onlineQuoteRefresh(wxString &sError);
+    wxString GetPanelTitle(const Model_Account::Data &account) const;
 
     wxString strLastUpdate_;
     bool StocksRefreshStatus_;

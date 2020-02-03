@@ -50,7 +50,7 @@ class wxToolBar;
 class mmGUIFrame : public wxFrame
 {
 public:
-    mmGUIFrame(mmGUIApp* m_app, const wxString& title, const wxPoint& pos, const wxSize& size);
+    mmGUIFrame(mmGUIApp *m_app, const wxString &title, const wxPoint &pos, const wxSize &size);
     ~mmGUIFrame();
 public:
     mmGUIApp *m_app;
@@ -67,17 +67,17 @@ public:
         return helpFileIndex_;
     }
 
-    void setAccountNavTreeSection(const wxString& accountName);
+    void setAccountNavTreeSection(const wxString &accountName);
     bool setNavTreeSection(const wxString &sectionName);
     void menuPrintingEnable(bool enable);
-    void OnToggleFullScreen(wxCommandEvent& WXUNUSED(event));
-    void OnClose(wxCloseEvent&);
+    void OnToggleFullScreen(wxCommandEvent &WXUNUSED(event));
+    void OnClose(wxCloseEvent &);
     std::vector<WebsiteNews> g_WebsiteNewsList;
 
     void RefreshNavigationTree();
 
 private:
-    std::vector<const ModelBase*> m_all_models;
+    std::vector<const ModelBase *> m_all_models;
 private:
     /* handles to SQLite Database */
     wxSharedPtr<wxSQLite3Database> m_db;
@@ -93,19 +93,19 @@ private:
 
     /* Repeat Transactions automatic processing delay */
     wxTimer autoRepeatTransactionsTimer_;
-    void OnAutoRepeatTransactionsTimer(wxTimerEvent& event);
+    void OnAutoRepeatTransactionsTimer(wxTimerEvent &event);
 
     /* controls */
-    mmPanelBase* panelCurrent_=nullptr;
-    wxPanel* homePanel_=nullptr;
-    wxTreeCtrl* m_nav_tree_ctrl=nullptr;
-    wxMenuBar* menuBar_=nullptr;
-    wxToolBar* toolBar_=nullptr;
+    mmPanelBase *panelCurrent_=nullptr;
+    wxPanel *homePanel_=nullptr;
+    wxTreeCtrl *m_nav_tree_ctrl=nullptr;
+    wxMenuBar *menuBar_=nullptr;
+    wxToolBar *toolBar_=nullptr;
 
-    mmTreeItemData* selectedItemData_=nullptr;
+    mmTreeItemData *selectedItemData_=nullptr;
 
-    wxTreeItemId getTreeItemfor(const wxTreeItemId& itemID, const wxString& accountName) const;
-    bool setAccountInSection(const wxString& sectionName, const wxString& accountName);
+    wxTreeItemId getTreeItemfor(const wxTreeItemId &itemID, const wxString &accountName) const;
+    bool setAccountInSection(const wxString &sectionName, const wxString &accountName);
 
     /* printing */
     int helpFileIndex_=-1;
@@ -117,28 +117,28 @@ private:
 
     void cleanup();
     void resetNavTreeControl();
-    void cleanupNavTreeControl(wxTreeItemId& item);
-    wxSizer* cleanupHomePanel(bool new_sizer = true);
-    bool openFile(const wxString& fileName, const bool openingNew, const bool encrypt, const wxString &password = wxEmptyString);
-    bool createDataStore(const wxString& fileName, const bool openingNew, const bool encrypt, const wxString &passwd);
+    void cleanupNavTreeControl(wxTreeItemId &item);
+    wxSizer *cleanupHomePanel(bool new_sizer = true);
+    bool openFile(const wxString &fileName, const bool openingNew, const bool encrypt, const wxString &password = wxEmptyString);
+    bool createDataStore(const wxString &fileName, const bool openingNew, const bool encrypt, const wxString &passwd);
     void InitializeModelTables();
     void createMenu();
     void createToolBar();
-    void createReportsPage(mmPrintableBase* rb, bool cleanup);
+    void createReportsPage(mmPrintableBase *rb, bool cleanup);
     void createHelpPage();
     void refreshPanelData();
 
-    mmHomePagePanel* homePage_=nullptr;
+    mmHomePagePanel *homePage_=nullptr;
     void createHomePage();
-    mmCheckingPanel* checkingAccountPage_=nullptr;
-    mmStocksPanel* stockAccountPage_=nullptr;
+    mmCheckingPanel *checkingAccountPage_=nullptr;
+    mmStocksPanel *stockAccountPage_=nullptr;
     void createCheckingAccountPage(int accountID);
     void createStocksAccountPage(int accountID);
 
-    mmBillsDepositsPanel* billsDepositsPanel_=nullptr;
+    mmBillsDepositsPanel *billsDepositsPanel_=nullptr;
     void createBillsDeposits();
 
-    mmBudgetingPanel* budgetingPage_=nullptr;
+    mmBudgetingPanel *budgetingPage_=nullptr;
     void createBudgetingPage(int budgetYearID);
 
     void createControls();
@@ -148,35 +148,35 @@ private:
     void saveSettings();
     void menuEnableItems(bool enable);
     void updateNavTreeControl();
-    void updateReportNavigation(wxTreeItemId& reports, bool budget);
-    void showTreePopupMenu(const wxTreeItemId& id, const wxPoint& pt);
+    void updateReportNavigation(wxTreeItemId &reports, bool budget);
+    void showTreePopupMenu(const wxTreeItemId &id, const wxPoint &pt);
     void showBeginAppDialog(bool fromScratch = false);
-    void SetDataBaseParameters(const wxString& fileName);
-    void OnLaunchAccountWebsite(wxCommandEvent& event);
-    void OnAccountAttachments(wxCommandEvent& event);
+    void SetDataBaseParameters(const wxString &fileName);
+    void OnLaunchAccountWebsite(wxCommandEvent &event);
+    void OnAccountAttachments(wxCommandEvent &event);
 
-    void OnNew(wxCommandEvent& event);
-    void OnOpen(wxCommandEvent& event);
-    void OnSetPassword(wxCommandEvent& event);
-    void OnRemovePassword(wxCommandEvent& event);
-    void OnVacuumDB(wxCommandEvent& event);
-    void OnDebugDB(wxCommandEvent& event);
-    void OnSaveAs(wxCommandEvent& event);
-    void OnExportToCSV(wxCommandEvent& event);
-    void OnExportToXML(wxCommandEvent& event);
-    void OnExportToQIF(wxCommandEvent& event);
-    void OnExportToHtml(wxCommandEvent& event);
-    void OnExportToWebApp(wxCommandEvent& event);
-    void OnImportUniversalCSV(wxCommandEvent& event);
-    void OnImportXML(wxCommandEvent& event);
-    void OnImportQIF(wxCommandEvent& event);
-    void OnImportWebApp(wxCommandEvent& event);
-    void OnPrintPage(wxCommandEvent& WXUNUSED(event));
-    void OnQuit(wxCommandEvent& event);
-    void OnBillsDeposits(wxCommandEvent& event);
-    void OnAssets(wxCommandEvent& event);
-    void OnGotoAccount(wxCommandEvent& WXUNUSED(event));
-    void OnGotoStocksAccount(wxCommandEvent& WXUNUSED(event));
+    void OnNew(wxCommandEvent &event);
+    void OnOpen(wxCommandEvent &event);
+    void OnSetPassword(wxCommandEvent &event);
+    void OnRemovePassword(wxCommandEvent &event);
+    void OnVacuumDB(wxCommandEvent &event);
+    void OnDebugDB(wxCommandEvent &event);
+    void OnSaveAs(wxCommandEvent &event);
+    void OnExportToCSV(wxCommandEvent &event);
+    void OnExportToXML(wxCommandEvent &event);
+    void OnExportToQIF(wxCommandEvent &event);
+    void OnExportToHtml(wxCommandEvent &event);
+    void OnExportToWebApp(wxCommandEvent &event);
+    void OnImportUniversalCSV(wxCommandEvent &event);
+    void OnImportXML(wxCommandEvent &event);
+    void OnImportQIF(wxCommandEvent &event);
+    void OnImportWebApp(wxCommandEvent &event);
+    void OnPrintPage(wxCommandEvent &WXUNUSED(event));
+    void OnQuit(wxCommandEvent &event);
+    void OnBillsDeposits(wxCommandEvent &event);
+    void OnAssets(wxCommandEvent &event);
+    void OnGotoAccount(wxCommandEvent &WXUNUSED(event));
+    void OnGotoStocksAccount(wxCommandEvent &WXUNUSED(event));
 
     bool m_hide_share_accounts=true;
     void OnHideShareAccounts(wxCommandEvent &event);
@@ -192,67 +192,67 @@ private:
     void OnViewToolbarUpdateUI(wxUpdateUIEvent &event);
     void OnViewLinksUpdateUI(wxUpdateUIEvent &event);
 
-    void OnNewAccount(wxCommandEvent& event);
-    void OnAccountList(wxCommandEvent& event);
-    void OnEditAccount(wxCommandEvent& event);
-    void OnDeleteAccount(wxCommandEvent& event);
-    void OnReallocateAccount(wxCommandEvent& event);
+    void OnNewAccount(wxCommandEvent &event);
+    void OnAccountList(wxCommandEvent &event);
+    void OnEditAccount(wxCommandEvent &event);
+    void OnDeleteAccount(wxCommandEvent &event);
+    void OnReallocateAccount(wxCommandEvent &event);
 
-    void OnOrgCategories(wxCommandEvent& event);
-    void OnOrgPayees(wxCommandEvent& event);
-    void OnCategoryRelocation(wxCommandEvent& event);
-    void OnPayeeRelocation(wxCommandEvent& event);
-    void OnNewTransaction(wxCommandEvent& event);
-    void refreshPanelData(wxCommandEvent& WXUNUSED(event));
+    void OnOrgCategories(wxCommandEvent &event);
+    void OnOrgPayees(wxCommandEvent &event);
+    void OnCategoryRelocation(wxCommandEvent &event);
+    void OnPayeeRelocation(wxCommandEvent &event);
+    void OnNewTransaction(wxCommandEvent &event);
+    void refreshPanelData(wxCommandEvent &WXUNUSED(event));
 
-    void OnOptions(wxCommandEvent& event);
-    void OnBudgetSetupDialog(wxCommandEvent& event);
-    void OnCurrency(wxCommandEvent& event);
-    void OnRates(wxCommandEvent& event);
-    void OnTransactionReport(wxCommandEvent& event);
-    void OnGeneralReportManager(wxCommandEvent& event);
-    void OnCustomFieldsManager(wxCommandEvent& event);
+    void OnOptions(wxCommandEvent &event);
+    void OnBudgetSetupDialog(wxCommandEvent &event);
+    void OnCurrency(wxCommandEvent &event);
+    void OnRates(wxCommandEvent &event);
+    void OnTransactionReport(wxCommandEvent &event);
+    void OnGeneralReportManager(wxCommandEvent &event);
+    void OnCustomFieldsManager(wxCommandEvent &event);
 
-    void OnHelp(wxCommandEvent& event);
-    void OnShowAppStartDialog(wxCommandEvent& WXUNUSED(event));
-    void OnCheckUpdate(wxCommandEvent& event);
-    void OnBeNotified(wxCommandEvent& event);
-    void OnSimpleURLOpen(wxCommandEvent& event);
-    void OnReportBug(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
+    void OnHelp(wxCommandEvent &event);
+    void OnShowAppStartDialog(wxCommandEvent &WXUNUSED(event));
+    void OnCheckUpdate(wxCommandEvent &event);
+    void OnBeNotified(wxCommandEvent &event);
+    void OnSimpleURLOpen(wxCommandEvent &event);
+    void OnReportBug(wxCommandEvent &event);
+    void OnAbout(wxCommandEvent &event);
 
-    void OnItemRightClick(wxTreeEvent& event);
-    void OnItemMenu(wxTreeEvent& event);
-    void OnSelChanged(wxTreeEvent& event);
-    void OnPopupDeleteAccount(wxCommandEvent& event);
-    void OnPopupEditAccount(wxCommandEvent& event);
-    void OnPopupReallocateAccount(wxCommandEvent& event);
-    void OnPopupAccountBaseBalance(wxCommandEvent& event);
+    void OnItemRightClick(wxTreeEvent &event);
+    void OnItemMenu(wxTreeEvent &event);
+    void OnSelChanged(wxTreeEvent &event);
+    void OnPopupDeleteAccount(wxCommandEvent &event);
+    void OnPopupEditAccount(wxCommandEvent &event);
+    void OnPopupReallocateAccount(wxCommandEvent &event);
+    void OnPopupAccountBaseBalance(wxCommandEvent &event);
 
-    void OnViewAccountsTemporaryChange(wxCommandEvent& event);
+    void OnViewAccountsTemporaryChange(wxCommandEvent &event);
 
-    void OnTreeItemExpanded(wxTreeEvent& event);
-    void OnTreeItemCollapsed(wxTreeEvent& event);
+    void OnTreeItemExpanded(wxTreeEvent &event);
+    void OnTreeItemCollapsed(wxTreeEvent &event);
     void navTreeStateToJson();
 
     void processPendingEvents();
     void ReallocateAccount(int accountID);
 
     /* Recent Files */
-    mmFileHistory* m_recentFiles;
-    wxMenu* m_menuRecentFiles;
+    mmFileHistory *m_recentFiles;
+    wxMenu *m_menuRecentFiles;
 
-    void OnRecentFiles(wxCommandEvent& event);
-    void OnClearRecentFiles(wxCommandEvent& WXUNUSED(event));
+    void OnRecentFiles(wxCommandEvent &event);
+    void OnClearRecentFiles(wxCommandEvent &WXUNUSED(event));
 
-    void OnHideShowReport(wxCommandEvent& event);
+    void OnHideShowReport(wxCommandEvent &event);
 
     /** Sets the database to the new database selected by the user */
-    void SetDatabaseFile(const wxString& dbFileName, bool newDatabase = false, bool eencrypt = false, const wxString& password = wxEmptyString);
+    void SetDatabaseFile(const wxString &dbFileName, bool newDatabase = false, bool eencrypt = false, const wxString &password = wxEmptyString);
 
     // Required to prevent memory leaks.
-    CommitCallbackHook* m_commit_callback_hook=nullptr;
-    UpdateCallbackHook* m_update_callback_hook=nullptr;
+    CommitCallbackHook *m_commit_callback_hook=nullptr;
+    UpdateCallbackHook *m_update_callback_hook=nullptr;
     void ShutdownDatabase();
 
     // any class wishing to process wxWindows events must use this macro

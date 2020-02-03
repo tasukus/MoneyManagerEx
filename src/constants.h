@@ -49,7 +49,7 @@ extern const wxString DEFDELIMTER;
 const wxString getProgramName();
 const wxString getTitleProgramVersion();
 const wxString getProgramCopyright();
-const wxString getCaption(const wxString& caption);
+const wxString getCaption(const wxString &caption);
 
 /*************************************************************************
  MMEX_VERSION
@@ -67,7 +67,7 @@ int getDbLatestVersion();
 
 namespace weblink
 {
-const wxString addReferralToURL(const wxString& BaseURL, const wxString& CampSource);
+const wxString addReferralToURL(const wxString &BaseURL, const wxString &CampSource);
 extern const wxString GA;
 extern const wxString WebSite;
 extern const wxString Releases;

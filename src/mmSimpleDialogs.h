@@ -31,8 +31,8 @@ class wxChoice;
 class mmChoiceAmountMask : public wxChoice
 {
 public:
-    mmChoiceAmountMask(wxWindow* parent, wxWindowID id);
-    virtual void SetDecimalChar(const wxString& str);
+    mmChoiceAmountMask(wxWindow *parent, wxWindowID id);
+    virtual void SetDecimalChar(const wxString &str);
 };
 
 class mmSingleChoiceDialog : public wxSingleChoiceDialog
@@ -41,10 +41,10 @@ public:
     using wxSingleChoiceDialog::ShowModal;
 
     mmSingleChoiceDialog();
-    mmSingleChoiceDialog(wxWindow *parent, const wxString& message,
-                         const wxString& caption, const wxArrayString& choices);
-    mmSingleChoiceDialog(wxWindow* parent, const wxString& message,
-                         const wxString& caption, const Model_Account::Data_Set& accounts);
+    mmSingleChoiceDialog(wxWindow *parent, const wxString &message,
+                         const wxString &caption, const wxArrayString &choices);
+    mmSingleChoiceDialog(wxWindow *parent, const wxString &message,
+                         const wxString &caption, const Model_Account::Data_Set &accounts);
     int ShowModal()
     {
         return wxSingleChoiceDialog::ShowModal();
@@ -57,8 +57,8 @@ public:
     using wxMultiChoiceDialog::ShowModal;
 
     mmMultiChoiceDialog();
-    mmMultiChoiceDialog(wxWindow* parent, const wxString& message,
-                        const wxString& caption, const Model_Account::Data_Set& accounts);
+    mmMultiChoiceDialog(wxWindow *parent, const wxString &message,
+                        const wxString &caption, const Model_Account::Data_Set &accounts);
     int ShowModal()
     {
         return wxMultiChoiceDialog::ShowModal();
@@ -69,17 +69,17 @@ class mmDialogComboBoxAutocomplete : public wxDialog
 {
 public:
     mmDialogComboBoxAutocomplete();
-    mmDialogComboBoxAutocomplete(wxWindow *parent, const wxString& message, const wxString& caption,
-                                 const wxString& defaultText, const wxArrayString& choices);
+    mmDialogComboBoxAutocomplete(wxWindow *parent, const wxString &message, const wxString &caption,
+                                 const wxString &defaultText, const wxArrayString &choices);
 
     wxString getText();
 
 private:
-    bool Create(wxWindow* parent, wxWindowID id,
-                const wxString& caption, const wxPoint& pos, const wxSize& size, long style);
+    bool Create(wxWindow *parent, wxWindowID id,
+                const wxString &caption, const wxPoint &pos, const wxSize &size, long style);
     wxString Message, Default;
     wxArrayString Choices;
-    wxComboBox* cbText_ = nullptr;
+    wxComboBox *cbText_ = nullptr;
 };
 
 class mmErrorDialogs

@@ -35,48 +35,48 @@ class mmReportsPanel : public mmPanelBase
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmReportsPanel(mmPrintableBase* rb,
+    mmReportsPanel(mmPrintableBase *rb,
                    bool cleanupReport,
                    wxWindow *parent,
                    mmGUIFrame *frame,
                    wxWindowID winid = wxID_ANY,
-                   const wxPoint& pos = wxDefaultPosition,
-                   const wxSize& size = wxDefaultSize,
+                   const wxPoint &pos = wxDefaultPosition,
+                   const wxSize &size = wxDefaultSize,
                    long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-                   const wxString& name = "mmReportsPanel");
+                   const wxString &name = "mmReportsPanel");
     ~mmReportsPanel();
 
     bool Create(wxWindow *parent, wxWindowID winid,
-                const wxPoint& pos = wxDefaultPosition,
-                const wxSize& size = wxDefaultSize,
+                const wxPoint &pos = wxDefaultPosition,
+                const wxSize &size = wxDefaultSize,
                 long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-                const wxString& name = "mmReportsPanel");
+                const wxString &name = "mmReportsPanel");
 
     void CreateControls();
     void sortTable() {}
 
-    bool saveReportText(wxString& error, bool initial = true);
-    mmPrintableBase* getPrintableBase()
+    bool saveReportText(wxString &error, bool initial = true);
+    mmPrintableBase *getPrintableBase()
     {
         return rb_;
     }
     void PrintPage();
 
 public:
-    void OnDateRangeChanged(wxCommandEvent& event);
-    void OnAccountChanged(wxCommandEvent& event);
-    void OnStartEndDateChanged(wxDateEvent& event);
-    void OnChartChanged(wxCommandEvent& event);
+    void OnDateRangeChanged(wxCommandEvent &event);
+    void OnAccountChanged(wxCommandEvent &event);
+    void OnStartEndDateChanged(wxDateEvent &event);
+    void OnChartChanged(wxCommandEvent &event);
 
 protected:
-    std::vector<mmDateRange*> m_all_date_ranges;
-    wxChoice* m_date_ranges=nullptr;
+    std::vector<mmDateRange *> m_all_date_ranges;
+    wxChoice *m_date_ranges=nullptr;
     wxDatePickerCtrl *m_start_date, *m_end_date;
-    mmDateRange* m_cust_date=nullptr;
-    wxChoice* m_accounts;
-    wxChoice* m_chart;
-    wxWebView * browser_;
-    mmPrintableBase* rb_;
+    mmDateRange *m_cust_date=nullptr;
+    wxChoice *m_accounts;
+    wxChoice *m_chart;
+    wxWebView *browser_;
+    mmPrintableBase *rb_;
 
     friend class WebViewHandlerReportsPage;
 
@@ -85,8 +85,8 @@ private:
     bool cleanupmem_=false;
     wxString htmlreport_;
 
-    void OnPrevReport(wxCommandEvent& event);
-    void OnNextReport(wxCommandEvent& event);
+    void OnPrevReport(wxCommandEvent &event);
+    void OnNextReport(wxCommandEvent &event);
 
 public:
     mmGUIFrame *m_frame;

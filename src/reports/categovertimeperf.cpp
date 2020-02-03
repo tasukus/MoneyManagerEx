@@ -51,7 +51,8 @@ int mmReportCategoryOverTimePerformance::report_parameters()
 wxString mmReportCategoryOverTimePerformance::getHTMLText()
 {
     const int MONTHS_IN_PERIOD = 12; // including current month
-    if (m_date_range) {
+    if (m_date_range)
+    {
         delete m_date_range;
     }
     m_date_range = new mmLast12Months();
@@ -59,18 +60,23 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
     //Get statistic
     std::map<int, std::map<int, std::map<int, double> > > categoryStats;
     Model_Category::instance().getCategoryStats(categoryStats
-        , accountArray_
-        , const_cast<mmDateRange*>(m_date_range)
-        , Option::instance().getIgnoreFutureTransactions());
+            , accountArray_
+            , const_cast<mmDateRange *>(m_date_range)
+            , Option::instance().getIgnoreFutureTransactions());
 
     //Init totals
     //Type(Withdrawal/Income/Summ), month, value
     std::map<int, std::map<int, double> > totals;
 
     // structure for sorting of data
-    struct data_holder {wxString name; double period[MONTHS_IN_PERIOD]; double overall; } line;
+    struct data_holder
+    {
+        wxString name;
+        double period[MONTHS_IN_PERIOD];
+        double overall;
+    } line;
     std::vector<data_holder> data;
-    for (const auto& category: Model_Category::instance().all(Model_Category::COL_CATEGNAME))
+    for (const auto &category: Model_Category::instance().all(Model_Category::COL_CATEGNAME))
     {
         const int categID = category.CATEGID;
         line.name = category.CATEGNAME;
@@ -87,7 +93,7 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
         }
         data.push_back(line);
 
-        for (const auto& sub_category: Model_Category::sub_category(category))
+        for (const auto &sub_category: Model_Category::sub_category(category))
         {
             const int subcategID = sub_category.SUBCATEGID;
             line.name = category.CATEGNAME + " : " + sub_category.SUBCATEGNAME;
@@ -129,12 +135,16 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
 
             double val_negative = 0;
             double val_positive = 0;
-            for (const auto& entry : data)
+            for (const auto &entry : data)
             {
                 if (entry.period[i] < 0)
+                {
                     val_negative += -entry.period[i];
+                }
                 else
+                {
                     val_positive += entry.period[i];
+                }
             }
 
             data_negative.data.push_back(val_negative);
@@ -172,7 +182,7 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
     {
         const wxDateTime d = start_date.Add(wxDateSpan::Months(i));
         hb.addTableHeaderCell(wxGetTranslation(wxDateTime::GetEnglishMonthName(d.GetMonth()
-            , wxDateTime::Name_Abbr)) + wxString::Format("<br>%i", d.GetYear()), true);
+                                               , wxDateTime::Name_Abbr)) + wxString::Format("<br>%i", d.GetYear()), true);
     }
     hb.addTableHeaderCell(_("Overall"), true);
     hb.endTableRow();
@@ -180,13 +190,16 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
 
     hb.startTbody();
     //Begin of table
-    for (const auto& entry : data)
+    for (const auto &entry : data)
     {
-        if (entry.overall != 0.0) {
+        if (entry.overall != 0.0)
+        {
             hb.startTableRow();
             hb.addTableCell(entry.name);
             for (int i = 0; i < MONTHS_IN_PERIOD; i++)
+            {
                 hb.addMoneyCell(entry.period[i]);
+            }
             hb.addMoneyCell(entry.overall);
             hb.endTableRow();
         }
@@ -199,12 +212,12 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
     totalLabels[INCOME] = _("Incomes");
     totalLabels[EXPENSES] = _("Expenses");
     totalLabels[TOTAL] = _("Total");
-    for (const auto& print_totals : totals)
+    for (const auto &print_totals : totals)
     {
         hb.startTotalTableRow();
         hb.addTableCell(totalLabels[print_totals.first]);
         double overall = 0;
-        for (const auto& range : totals[print_totals.first])
+        for (const auto &range : totals[print_totals.first])
         {
             const double amount = range.second;
             overall += amount;

@@ -31,20 +31,20 @@
 #include "mmreportspanel.h"
 
 #if defined (__WXMSW__)
-    #include <wx/msw/registry.h>
+#include <wx/msw/registry.h>
 #endif
 
 class Record : public std::map<std::wstring, std::wstring>
 {
 public:
-    Record(){}
-    ~Record(){}
+    Record() {}
+    ~Record() {}
     /* Access functions for LuaGlue (The required conversion between char and wchar_t is done through wxString.) */
-    std::string get(const char* index)
+    std::string get(const char *index)
     {
         return std::string(wxString((*this)[wxString(index).ToStdWstring()]).ToUTF8());
     }
-    void set(const char* index, const char * val)
+    void set(const char *index, const char *val)
     {
         (*this)[wxString(index).ToStdWstring()] = wxString::FromUTF8(val).ToStdWstring();
     }
@@ -59,7 +59,7 @@ Model_Report::~Model_Report()
 }
 
 /** Return the static instance of Model_Report table */
-Model_Report& Model_Report::instance()
+Model_Report &Model_Report::instance()
 {
     return Singleton<Model_Report>::instance();
 }
@@ -68,9 +68,9 @@ Model_Report& Model_Report::instance()
 * Initialize the global Model_Report table.
 * Reset the Model_Report table or create the table if it does not exist.
 */
-Model_Report& Model_Report::instance(wxSQLite3Database* db)
+Model_Report &Model_Report::instance(wxSQLite3Database *db)
 {
-    Model_Report& ins = Singleton<Model_Report>::instance();
+    Model_Report &ins = Singleton<Model_Report>::instance();
     ins.db_ = db;
     ins.destroy_cache();
     ins.ensure(db);
@@ -85,18 +85,19 @@ const std::vector<Model_Report::Values> Model_Report::SqlPlaceHolders()
     const wxString def_day = Model_Infotable::instance().GetStringInfo("FINANCIAL_YEAR_START_DAY", "1");
     const wxString def_mon = Model_Infotable::instance().GetStringInfo("FINANCIAL_YEAR_START_MONTH", "1");
 
-    const std::vector<Model_Report::Values> v = {
-    {"&begin_date", "wxDatePickerCtrl", def_date, mmReportsPanel::RepPanel::ID_CHOICE_START_DATE},
-    {"&single_date", "wxDatePickerCtrl", def_date, mmReportsPanel::RepPanel::ID_CHOICE_START_DATE},
-    {"&end_date", "wxDatePickerCtrl", def_date, mmReportsPanel::RepPanel::ID_CHOICE_END_DATE},
-    {"&budget_years", "wxChoice", def_year, mmReportsPanel::RepPanel::ID_CHOICE_DATE_RANGE },
-    {"&fin_year_day", "wxString", def_day, -1},
-    {"&fin_year_month", "wxString", def_mon, -1},
+    const std::vector<Model_Report::Values> v =
+    {
+        {"&begin_date", "wxDatePickerCtrl", def_date, mmReportsPanel::RepPanel::ID_CHOICE_START_DATE},
+        {"&single_date", "wxDatePickerCtrl", def_date, mmReportsPanel::RepPanel::ID_CHOICE_START_DATE},
+        {"&end_date", "wxDatePickerCtrl", def_date, mmReportsPanel::RepPanel::ID_CHOICE_END_DATE},
+        {"&budget_years", "wxChoice", def_year, mmReportsPanel::RepPanel::ID_CHOICE_DATE_RANGE },
+        {"&fin_year_day", "wxString", def_day, -1},
+        {"&fin_year_month", "wxString", def_mon, -1},
     };
     return v;
 };
 
-bool Model_Report::get_objects_from_sql(const wxString& query, PrettyWriter<StringBuffer>& json_writer)
+bool Model_Report::get_objects_from_sql(const wxString &query, PrettyWriter<StringBuffer> &json_writer)
 {
     wxSQLite3Statement stmt;
     try
@@ -109,7 +110,7 @@ bool Model_Report::get_objects_from_sql(const wxString& query, PrettyWriter<Stri
             return false;
         }
     }
-    catch (const wxSQLite3Exception& e)
+    catch (const wxSQLite3Exception &e)
     {
         json_writer.Key("msg");
         json_writer.String(e.GetMessage().c_str());
@@ -154,7 +155,7 @@ bool Model_Report::get_objects_from_sql(const wxString& query, PrettyWriter<Stri
 
         json_writer.EndArray();
     }
-    catch (const wxSQLite3Exception& e)
+    catch (const wxSQLite3Exception &e)
     {
         json_writer.Key("msg");
         json_writer.String(e.GetMessage().c_str());
@@ -179,13 +180,19 @@ wxArrayString Model_Report::allGroupNames()
     return groups;
 }
 
-bool Model_Report::PrepareSQL(wxString& sql, std::map <wxString, wxString>& rep_params)
+bool Model_Report::PrepareSQL(wxString &sql, std::map <wxString, wxString> &rep_params)
 {
     sql.Trim();
-    if (sql.empty()) return false;
-    if (sql.Last() != ';') sql += ';';
+    if (sql.empty())
+    {
+        return false;
+    }
+    if (sql.Last() != ';')
+    {
+        sql += ';';
+    }
 
-    for (const auto& entry : SqlPlaceHolders())
+    for (const auto &entry : SqlPlaceHolders())
     {
         wxString value;
         int pos = sql.Lower().Find(entry.label);
@@ -199,13 +206,13 @@ bool Model_Report::PrepareSQL(wxString& sql, std::map <wxString, wxString>& rep_
             //const auto name = w->GetClassInfo()->GetClassName();
             if (w && entry.type == "wxDatePickerCtrl")
             {
-                    wxDatePickerCtrl* date = static_cast<wxDatePickerCtrl*>(w);
-                    value = date->GetValue().FormatISODate();
+                wxDatePickerCtrl *date = static_cast<wxDatePickerCtrl *>(w);
+                value = date->GetValue().FormatISODate();
             }
             else if (w && entry.type == "wxChoice")
             {
-                    wxChoice* year = static_cast<wxChoice*>(w);
-                    value = year->GetStringSelection();
+                wxChoice *year = static_cast<wxChoice *>(w);
+                value = year->GetStringSelection();
             }
 
             rep_params[entry.label.Mid(1)] = value;
@@ -221,7 +228,7 @@ bool Model_Report::PrepareSQL(wxString& sql, std::map <wxString, wxString>& rep_
     return true;
 }
 
-wxString Model_Report::get_html(const Data* r)
+wxString Model_Report::get_html(const Data *r)
 {
     mm_html_template report(r->TEMPLATECONTENT);
     r->to_template(report);
@@ -250,7 +257,7 @@ wxString Model_Report::get_html(const Data* r)
             columnCount = q.GetColumnCount();
         }
     }
-    catch (const wxSQLite3Exception& e)
+    catch (const wxSQLite3Exception &e)
     {
         return e.GetMessage();
     }
@@ -271,11 +278,11 @@ wxString Model_Report::get_html(const Data* r)
 
     LuaGlue state;
     state.
-        Class<Record>("Record").
-        ctor("new").
-        method("get", &Record::get).
-        method("set", &Record::set).
-        end().open().glue();
+    Class<Record>("Record").
+    ctor("new").
+    method("get", &Record::get).
+    method("set", &Record::set).
+    end().open().glue();
 
     bool skip_lua = r->LUACONTENT.IsEmpty();
     bool lua_status = state.doString(std::string(r->LUACONTENT.ToUTF8()));
@@ -300,12 +307,12 @@ wxString Model_Report::get_html(const Data* r)
             {
                 state.invokeVoidFunction("handle_record", &rec);
             }
-            catch (const std::runtime_error& e)
+            catch (const std::runtime_error &e)
             {
                 error(L"ERROR") = wxString("failed to call handle_record : ") + wxString(e.what());
                 errors += error;
             }
-            catch (const std::exception& e)
+            catch (const std::exception &e)
             {
                 error(L"ERROR") = wxString("failed to call handle_record : ") + wxString(e.what());
                 errors += error;
@@ -317,7 +324,7 @@ wxString Model_Report::get_html(const Data* r)
             }
         }
         row_t row;
-        for (const auto& item : rec)
+        for (const auto &item : rec)
         {
             row(item.first) = item.second;
         }
@@ -333,12 +340,12 @@ wxString Model_Report::get_html(const Data* r)
         {
             state.invokeVoidFunction("complete", &result);
         }
-        catch (const std::runtime_error& e)
+        catch (const std::runtime_error &e)
         {
             error(L"ERROR") = wxString("failed to call complete: ") + wxString(e.what());
             errors += error;
         }
-        catch (const std::exception& e)
+        catch (const std::exception &e)
         {
             error(L"ERROR") = wxString("failed to call complete: ") + wxString(e.what());
             errors += error;
@@ -350,12 +357,14 @@ wxString Model_Report::get_html(const Data* r)
         }
     }
 
-    for (const auto& item : result)
+    for (const auto &item : result)
+    {
         report(item.first) = item.second;
+    }
 
     report(L"CONTENTS") = contents;
     {
-        for (const auto& item : rep_params)
+        for (const auto &item : rep_params)
         {
             report(item.first.Upper().ToStdWstring()) = item.second;
         }
@@ -376,7 +385,7 @@ wxString Model_Report::get_html(const Data* r)
     {
         out = report.Process();
     }
-    catch (const syntax_ex& e)
+    catch (const syntax_ex &e)
     {
         return e.what();
     }
@@ -395,18 +404,22 @@ void Model_Report::prepareTempFolder()
     wxFileName::Mkdir(tempDir, 511, wxPATH_MKDIR_FULL);
     wxArrayString filesArray;
     wxDir::GetAllFiles(resDir, &filesArray);
-    for (const auto& sourceFile : filesArray)
+    for (const auto &sourceFile : filesArray)
     {
         const wxString repFile = tempDir + wxFileName(sourceFile).GetFullName();
         if (::wxFileExists(sourceFile))
         {
             if (!::wxFileExists(repFile)
-                || wxFileName(sourceFile).GetModificationTime() > wxFileName(repFile).GetModificationTime())
+                    || wxFileName(sourceFile).GetModificationTime() > wxFileName(repFile).GetModificationTime())
             {
                 if (!::wxCopyFile(sourceFile, repFile))
+                {
                     wxLogError("Could not copy %s !", sourceFile);
+                }
                 else
+                {
                     wxLogDebug("Coping file:\n %s \nto\n %s", sourceFile, repFile);
+                }
             }
         }
     }
@@ -419,15 +432,19 @@ bool Model_Report::WindowsUpdateRegistry()
     // https://kevinragsdale.net/windows-10-and-the-web-browser-control/
     wxRegKey Key(wxRegKey::HKCU, "Software\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION");
     if (Key.Create(true) && Key.SetValue(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetFullName(), 11001))
+    {
         return true;
+    }
     else
+    {
         return false;
+    }
 #else
     return true;
 #endif
 }
 
-bool Model_Report::outputReportFile(const wxString& str, const wxString& name)
+bool Model_Report::outputReportFile(const wxString &str, const wxString &name)
 {
     bool ok = true;
     wxFileOutputStream index_output(mmex::getReportFullFileName(name));
@@ -444,18 +461,24 @@ bool Model_Report::outputReportFile(const wxString& str, const wxString& name)
     return ok;
 }
 
-wxString Model_Report::get_html(const Data& r)
+wxString Model_Report::get_html(const Data &r)
 {
     return get_html(&r);
 }
 
-Model_Report::Data* Model_Report::get(const wxString& name)
+Model_Report::Data *Model_Report::get(const wxString &name)
 {
-    Data* report = this->get_one(REPORTNAME(name));
-    if (report) return report;
+    Data *report = this->get_one(REPORTNAME(name));
+    if (report)
+    {
+        return report;
+    }
 
     Data_Set items = this->find(REPORTNAME(name));
-    if (!items.empty()) report = this->get(items[0].id(), this->db_);
+    if (!items.empty())
+    {
+        report = this->get(items[0].id(), this->db_);
+    }
     return report;
 }
 

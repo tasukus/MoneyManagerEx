@@ -44,36 +44,36 @@ public:
     * Return the static instance address for Model_Asset table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Asset& instance(wxSQLite3Database* db);
+    static Model_Asset &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_Asset table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Asset& instance();
+    static Model_Asset &instance();
 
 public:
     static DB_Table_ASSETS::ASSETTYPE ASSETTYPE(TYPE type, OP op = EQUAL);
-    static DB_Table_ASSETS::STARTDATE STARTDATE(const wxDate& date, OP op = EQUAL);
+    static DB_Table_ASSETS::STARTDATE STARTDATE(const wxDate &date, OP op = EQUAL);
 
 public:
     static wxArrayString all_rate();
     static wxArrayString all_type();
     double balance();
-    static wxDate STARTDATE(const Data* r);
-    static wxDate STARTDATE(const Data& r);
+    static wxDate STARTDATE(const Data *r);
+    static wxDate STARTDATE(const Data &r);
 
-    static TYPE type(const Data* r);
-    static TYPE type(const Data& r);
-    static RATE rate(const Data* r);
-    static RATE rate(const Data& r);
+    static TYPE type(const Data *r);
+    static TYPE type(const Data &r);
+    static RATE rate(const Data *r);
+    static RATE rate(const Data &r);
 
     /** Returns the base currency Data record pointer*/
-    static Model_Currency::Data* currency(const Data* /* r */);
+    static Model_Currency::Data *currency(const Data * /* r */);
     /** Returns the calculated current value */
-    static double value(const Data* r);
+    static double value(const Data *r);
     /** Returns the calculated current value */
-    static double value(const Data& r);
+    static double value(const Data &r);
 };
 
 #endif

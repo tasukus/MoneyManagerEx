@@ -41,26 +41,26 @@ public:
     * Return the static instance address for Model_Attachment table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Attachment& instance(wxSQLite3Database* db);
+    static Model_Attachment &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_Attachment table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Attachment& instance();
+    static Model_Attachment &instance();
 
 public:
     /** Return all attachments references */
     wxArrayString all_type();
 
     /** Return a dataset with attachments linked to a specific object */
-    const Data_Set FilterAttachments(const wxString& RefType, const int RefId);
+    const Data_Set FilterAttachments(const wxString &RefType, const int RefId);
 
     /** Return the number of attachments linked to a specific object */
-    static int NrAttachments(const wxString& RefType, const int RefId);
+    static int NrAttachments(const wxString &RefType, const int RefId);
 
     /** Return the last attachment number linked to a specific object */
-    static int LastAttachmentNumber(const wxString& RefType, const int RefId);
+    static int LastAttachmentNumber(const wxString &RefType, const int RefId);
 
     /** Return the description of the choice reftype */
     static const wxString reftype_desc(const int RefTypeEnum);

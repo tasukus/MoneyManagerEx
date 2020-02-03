@@ -120,19 +120,19 @@ public:
 public:
     mmQIFImport() {}
 
-    static bool isLineOK(const wxString& line);
-    static wxString getLineData(const wxString& line);
-    static wxString getFileLine(wxTextInputStream& textFile, int& lineNumber);
-    static wxString getFinancistoProject(wxString& sSubCateg);
+    static bool isLineOK(const wxString &line);
+    static wxString getLineData(const wxString &line);
+    static wxString getFileLine(wxTextInputStream &textFile, int &lineNumber);
+    static wxString getFinancistoProject(wxString &sSubCateg);
 
-    static qifAccountInfoType accountInfoType(const wxString& line);
-    static qifLineType lineType(const wxString& line);
+    static qifAccountInfoType accountInfoType(const wxString &line);
+    static qifLineType lineType(const wxString &line);
 
 public:
-    bool handle_file(wxFileInputStream& input);
-    bool handle_file(const wxString& input_file);
-    bool handle_line(const wxString& line, QIF_Line& qif_line);
-    bool handle_qif_record(const QIF_Record & qif_record, QIF_Transaction& tran);
-    bool handle_qif_line(const QIF_Line& qif_line, QIF_Transaction& tran);
+    bool handle_file(wxFileInputStream &input);
+    bool handle_file(const wxString &input_file);
+    bool handle_line(const wxString &line, QIF_Line &qif_line);
+    bool handle_qif_record(const QIF_Record &qif_record, QIF_Transaction &tran);
+    bool handle_qif_line(const QIF_Line &qif_line, QIF_Transaction &tran);
 };
 #endif

@@ -28,7 +28,7 @@ struct DB_Table_STOCK : public DB_Table
             PrettyWriter<StringBuffer> json_writer(json_buffer);
 
             json_writer.StartArray();
-            for (const auto & item: *this)
+            for (const auto &item: *this)
             {
                 json_writer.StartObject();
                 item.as_json(json_writer);
@@ -41,11 +41,11 @@ struct DB_Table_STOCK : public DB_Table
     };
 
     /** A container to hold a list of Data record pointers for the table in memory*/
-    typedef std::vector<Self::Data*> Cache;
-    typedef std::map<int, Self::Data*> Index_By_Id;
+    typedef std::vector<Self::Data *> Cache;
+    typedef std::map<int, Self::Data *> Index_By_Id;
     Cache cache_;
     Index_By_Id index_by_id_;
-    Data* fake_; // in case the entity not found
+    Data *fake_; // in case the entity not found
 
     /** Destructor: clears any data records stored in memory */
     ~DB_Table_STOCK()
@@ -63,7 +63,7 @@ struct DB_Table_STOCK : public DB_Table
     }
 
     /** Creates the database table if the table does not exist*/
-    bool ensure(wxSQLite3Database* db)
+    bool ensure(wxSQLite3Database *db)
     {
         if (!exists(db))
         {
@@ -84,7 +84,7 @@ struct DB_Table_STOCK : public DB_Table
         return true;
     }
 
-    bool ensure_index(wxSQLite3Database* db)
+    bool ensure_index(wxSQLite3Database *db)
     {
         try
         {
@@ -99,7 +99,7 @@ struct DB_Table_STOCK : public DB_Table
         return true;
     }
 
-    void ensure_data(wxSQLite3Database* db)
+    void ensure_data(wxSQLite3Database *db)
     {
         db->Begin();
         db->Commit();
@@ -107,67 +107,100 @@ struct DB_Table_STOCK : public DB_Table
 
     struct STOCKID : public DB_Column<int>
     {
-        static wxString name() { return "STOCKID"; }
+        static wxString name()
+        {
+            return "STOCKID";
+        }
         explicit STOCKID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct HELDAT : public DB_Column<int>
     {
-        static wxString name() { return "HELDAT"; }
+        static wxString name()
+        {
+            return "HELDAT";
+        }
         explicit HELDAT(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct PURCHASEDATE : public DB_Column<wxString>
     {
-        static wxString name() { return "PURCHASEDATE"; }
+        static wxString name()
+        {
+            return "PURCHASEDATE";
+        }
         explicit PURCHASEDATE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct STOCKNAME : public DB_Column<wxString>
     {
-        static wxString name() { return "STOCKNAME"; }
+        static wxString name()
+        {
+            return "STOCKNAME";
+        }
         explicit STOCKNAME(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct SYMBOL : public DB_Column<wxString>
     {
-        static wxString name() { return "SYMBOL"; }
+        static wxString name()
+        {
+            return "SYMBOL";
+        }
         explicit SYMBOL(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct NUMSHARES : public DB_Column<double>
     {
-        static wxString name() { return "NUMSHARES"; }
+        static wxString name()
+        {
+            return "NUMSHARES";
+        }
         explicit NUMSHARES(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
     struct PURCHASEPRICE : public DB_Column<double>
     {
-        static wxString name() { return "PURCHASEPRICE"; }
+        static wxString name()
+        {
+            return "PURCHASEPRICE";
+        }
         explicit PURCHASEPRICE(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
     struct NOTES : public DB_Column<wxString>
     {
-        static wxString name() { return "NOTES"; }
+        static wxString name()
+        {
+            return "NOTES";
+        }
         explicit NOTES(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct CURRENTPRICE : public DB_Column<double>
     {
-        static wxString name() { return "CURRENTPRICE"; }
+        static wxString name()
+        {
+            return "CURRENTPRICE";
+        }
         explicit CURRENTPRICE(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
     struct VALUE : public DB_Column<double>
     {
-        static wxString name() { return "VALUE"; }
+        static wxString name()
+        {
+            return "VALUE";
+        }
         explicit VALUE(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
     struct COMMISSION : public DB_Column<double>
     {
-        static wxString name() { return "COMMISSION"; }
+        static wxString name()
+        {
+            return "COMMISSION";
+        }
         explicit COMMISSION(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
@@ -193,37 +226,82 @@ struct DB_Table_STOCK : public DB_Table
     {
         switch(col)
         {
-            case COL_STOCKID: return "STOCKID";
-            case COL_HELDAT: return "HELDAT";
-            case COL_PURCHASEDATE: return "PURCHASEDATE";
-            case COL_STOCKNAME: return "STOCKNAME";
-            case COL_SYMBOL: return "SYMBOL";
-            case COL_NUMSHARES: return "NUMSHARES";
-            case COL_PURCHASEPRICE: return "PURCHASEPRICE";
-            case COL_NOTES: return "NOTES";
-            case COL_CURRENTPRICE: return "CURRENTPRICE";
-            case COL_VALUE: return "VALUE";
-            case COL_COMMISSION: return "COMMISSION";
-            default: break;
+            case COL_STOCKID:
+                return "STOCKID";
+            case COL_HELDAT:
+                return "HELDAT";
+            case COL_PURCHASEDATE:
+                return "PURCHASEDATE";
+            case COL_STOCKNAME:
+                return "STOCKNAME";
+            case COL_SYMBOL:
+                return "SYMBOL";
+            case COL_NUMSHARES:
+                return "NUMSHARES";
+            case COL_PURCHASEPRICE:
+                return "PURCHASEPRICE";
+            case COL_NOTES:
+                return "NOTES";
+            case COL_CURRENTPRICE:
+                return "CURRENTPRICE";
+            case COL_VALUE:
+                return "VALUE";
+            case COL_COMMISSION:
+                return "COMMISSION";
+            default:
+                break;
         }
 
         return "UNKNOWN";
     }
 
     /** Returns the column number from the given column name*/
-    static COLUMN name_to_column(const wxString& name)
+    static COLUMN name_to_column(const wxString &name)
     {
-        if ("STOCKID" == name) return COL_STOCKID;
-        else if ("HELDAT" == name) return COL_HELDAT;
-        else if ("PURCHASEDATE" == name) return COL_PURCHASEDATE;
-        else if ("STOCKNAME" == name) return COL_STOCKNAME;
-        else if ("SYMBOL" == name) return COL_SYMBOL;
-        else if ("NUMSHARES" == name) return COL_NUMSHARES;
-        else if ("PURCHASEPRICE" == name) return COL_PURCHASEPRICE;
-        else if ("NOTES" == name) return COL_NOTES;
-        else if ("CURRENTPRICE" == name) return COL_CURRENTPRICE;
-        else if ("VALUE" == name) return COL_VALUE;
-        else if ("COMMISSION" == name) return COL_COMMISSION;
+        if ("STOCKID" == name)
+        {
+            return COL_STOCKID;
+        }
+        else if ("HELDAT" == name)
+        {
+            return COL_HELDAT;
+        }
+        else if ("PURCHASEDATE" == name)
+        {
+            return COL_PURCHASEDATE;
+        }
+        else if ("STOCKNAME" == name)
+        {
+            return COL_STOCKNAME;
+        }
+        else if ("SYMBOL" == name)
+        {
+            return COL_SYMBOL;
+        }
+        else if ("NUMSHARES" == name)
+        {
+            return COL_NUMSHARES;
+        }
+        else if ("PURCHASEPRICE" == name)
+        {
+            return COL_PURCHASEPRICE;
+        }
+        else if ("NOTES" == name)
+        {
+            return COL_NOTES;
+        }
+        else if ("CURRENTPRICE" == name)
+        {
+            return COL_CURRENTPRICE;
+        }
+        else if ("VALUE" == name)
+        {
+            return COL_VALUE;
+        }
+        else if ("COMMISSION" == name)
+        {
+            return COL_COMMISSION;
+        }
 
         return COL_UNKNOWN;
     }
@@ -233,7 +311,7 @@ struct DB_Table_STOCK : public DB_Table
     {
         friend struct DB_Table_STOCK;
         /** This is a instance pointer to itself in memory. */
-        Self* table_;
+        Self *table_;
 
         int STOCKID; // primary key
         int HELDAT;
@@ -257,17 +335,17 @@ struct DB_Table_STOCK : public DB_Table
             STOCKID = id;
         }
 
-        bool operator < (const Data& r) const
+        bool operator < (const Data &r) const
         {
             return this->id() < r.id();
         }
 
-        bool operator < (const Data* r) const
+        bool operator < (const Data *r) const
         {
             return this->id() < r->id();
         }
 
-        explicit Data(Self* table = 0)
+        explicit Data(Self *table = 0)
         {
             table_ = table;
 
@@ -280,7 +358,7 @@ struct DB_Table_STOCK : public DB_Table
             COMMISSION = 0.0;
         }
 
-        explicit Data(wxSQLite3ResultSet& q, Self* table = 0)
+        explicit Data(wxSQLite3ResultSet &q, Self *table = 0)
         {
             table_ = table;
 
@@ -297,9 +375,12 @@ struct DB_Table_STOCK : public DB_Table
             COMMISSION = q.GetDouble(10);
         }
 
-        Data& operator=(const Data& other)
+        Data &operator=(const Data &other)
         {
-            if (this == &other) return *this;
+            if (this == &other)
+            {
+                return *this;
+            }
 
             STOCKID = other.STOCKID;
             HELDAT = other.HELDAT;
@@ -314,7 +395,6 @@ struct DB_Table_STOCK : public DB_Table
             COMMISSION = other.COMMISSION;
             return *this;
         }
-
 
         bool match(const Self::STOCKID &in) const
         {
@@ -385,7 +465,7 @@ struct DB_Table_STOCK : public DB_Table
         }
 
         /** Add the field data as json key:value pairs */
-        void as_json(PrettyWriter<StringBuffer>& json_writer) const
+        void as_json(PrettyWriter<StringBuffer> &json_writer) const
         {
             json_writer.Key("STOCKID");
             json_writer.Int(this->STOCKID);
@@ -428,7 +508,7 @@ struct DB_Table_STOCK : public DB_Table
             return row;
         }
 
-        void to_template(html_template& t) const
+        void to_template(html_template &t) const
         {
             t(L"STOCKID") = STOCKID;
             t(L"HELDAT") = HELDAT;
@@ -444,9 +524,12 @@ struct DB_Table_STOCK : public DB_Table
         }
 
         /** Save the record instance in memory to the database. */
-        bool save(wxSQLite3Database* db)
+        bool save(wxSQLite3Database *db)
         {
-            if (db && db->IsReadOnly()) return false;
+            if (db && db->IsReadOnly())
+            {
+                return false;
+            }
             if (!table_ || !db)
             {
                 wxLogError("can not save STOCK");
@@ -457,7 +540,7 @@ struct DB_Table_STOCK : public DB_Table
         }
 
         /** Remove the record instance from memory and the database. */
-        bool remove(wxSQLite3Database* db)
+        bool remove(wxSQLite3Database *db)
         {
             if (!table_ || !db)
             {
@@ -479,10 +562,16 @@ struct DB_Table_STOCK : public DB_Table
         NUM_COLUMNS = 11
     };
 
-    size_t num_columns() const { return NUM_COLUMNS; }
+    size_t num_columns() const
+    {
+        return NUM_COLUMNS;
+    }
 
     /** Name of the table */
-    wxString name() const { return "STOCK"; }
+    wxString name() const
+    {
+        return "STOCK";
+    }
 
     DB_Table_STOCK() : fake_(new Data())
     {
@@ -490,17 +579,17 @@ struct DB_Table_STOCK : public DB_Table
     }
 
     /** Create a new Data record and add to memory table (cache) */
-    Self::Data* create()
+    Self::Data *create()
     {
-        Self::Data* entity = new Self::Data(this);
+        Self::Data *entity = new Self::Data(this);
         cache_.push_back(entity);
         return entity;
     }
 
     /** Create a copy of the Data record and add to memory table (cache) */
-    Self::Data* clone(const Data* e)
+    Self::Data *clone(const Data *e)
     {
-        Self::Data* entity = create();
+        Self::Data *entity = create();
         *entity = *e;
         entity->id(-1);
         return entity;
@@ -511,7 +600,7 @@ struct DB_Table_STOCK : public DB_Table
     * Either create a new record or update the existing record.
     * Remove old record from the memory table (cache)
     */
-    bool save(Self::Data* entity, wxSQLite3Database* db)
+    bool save(Self::Data *entity, wxSQLite3Database *db)
     {
         wxString sql = wxEmptyString;
         if (entity->id() <= 0) //  new & insert
@@ -538,7 +627,9 @@ struct DB_Table_STOCK : public DB_Table
             stmt.Bind(9, entity->VALUE);
             stmt.Bind(10, entity->COMMISSION);
             if (entity->id() > 0)
+            {
                 stmt.Bind(11, entity->STOCKID);
+            }
 
             stmt.ExecuteUpdate();
             stmt.Finalize();
@@ -547,9 +638,11 @@ struct DB_Table_STOCK : public DB_Table
             {
                 for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
                 {
-                    Self::Data* e = *it;
+                    Self::Data *e = *it;
                     if (e->id() == entity->id())
-                        *e = *entity;  // in-place update
+                    {
+                        *e = *entity;    // in-place update
+                    }
                 }
             }
         }
@@ -568,9 +661,12 @@ struct DB_Table_STOCK : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(int id, wxSQLite3Database* db)
+    bool remove(int id, wxSQLite3Database *db)
     {
-        if (id <= 0) return false;
+        if (id <= 0)
+        {
+            return false;
+        }
         try
         {
             wxString sql = "DELETE FROM STOCK WHERE STOCKID = ?";
@@ -582,7 +678,7 @@ struct DB_Table_STOCK : public DB_Table
             Cache c;
             for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
             {
-                Self::Data* entity = *it;
+                Self::Data *entity = *it;
                 if (entity->id() == id)
                 {
                     index_by_id_.erase(entity->id());
@@ -606,7 +702,7 @@ struct DB_Table_STOCK : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(Self::Data* entity, wxSQLite3Database* db)
+    bool remove(Self::Data *entity, wxSQLite3Database *db)
     {
         if (remove(entity->id(), db))
         {
@@ -618,11 +714,11 @@ struct DB_Table_STOCK : public DB_Table
     }
 
     template<typename... Args>
-    Self::Data* get_one(const Args& ... args)
+    Self::Data *get_one(const Args &... args)
     {
         for (Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it)
         {
-            Self::Data* item = it->second;
+            Self::Data *item = it->second;
             if (item->id() > 0 && match(item, args...))
             {
                 ++ hit_;
@@ -639,7 +735,7 @@ struct DB_Table_STOCK : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data* get(int id, wxSQLite3Database* db)
+    Self::Data *get(int id, wxSQLite3Database *db)
     {
         if (id <= 0)
         {
@@ -655,7 +751,7 @@ struct DB_Table_STOCK : public DB_Table
         }
 
         ++ miss_;
-        Self::Data* entity = 0;
+        Self::Data *entity = 0;
         wxString where = wxString::Format(" WHERE %s = ?", PRIMARY::name().c_str());
         try
         {
@@ -689,7 +785,7 @@ struct DB_Table_STOCK : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all(wxSQLite3Database* db, COLUMN col = COLUMN(0), bool asc = true)
+    const Data_Set all(wxSQLite3Database *db, COLUMN col = COLUMN(0), bool asc = true)
     {
         Data_Set result;
         try

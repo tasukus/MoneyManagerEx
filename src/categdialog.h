@@ -25,15 +25,15 @@
 class mmTreeItemCateg : public wxTreeItemData
 {
 public:
-    mmTreeItemCateg(const Model_Category::Data& categData, const Model_Subcategory::Data& subcategData)
+    mmTreeItemCateg(const Model_Category::Data &categData, const Model_Subcategory::Data &subcategData)
         : categData_(categData)
         , subcategData_(subcategData)
     {}
-    Model_Category::Data* getCategData()
+    Model_Category::Data *getCategData()
     {
         return &categData_;
     }
-    Model_Subcategory::Data* getSubCategData()
+    Model_Subcategory::Data *getSubCategData()
     {
         return &subcategData_;
     }
@@ -50,16 +50,16 @@ class mmCategDialog : public wxDialog
 
 public:
     mmCategDialog();
-    mmCategDialog(wxWindow* parent
+    mmCategDialog(wxWindow *parent
                   , const int category_id = -1, const int subcategory_id = -1
                   , const bool bEnableRelocate = false
                   , const bool bEnableSelect = true);
 
-    bool Create(wxWindow* parent
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
 
     int getCategId( )const noexcept
@@ -81,33 +81,33 @@ private:
     void fillControls();
     void setTreeSelection(int category_id, int subcategory_id);
 
-    void OnCancel(wxCommandEvent& event);
-    void OnAdd(wxCommandEvent& event);
-    void OnDelete(wxCommandEvent& event);
-    void OnBSelect(wxCommandEvent& event);
-    void OnEdit(wxCommandEvent& event);
-    void OnSelChanged(wxTreeEvent& event);
-    void OnDoubleClicked(wxTreeEvent& event);
+    void OnCancel(wxCommandEvent &event);
+    void OnAdd(wxCommandEvent &event);
+    void OnDelete(wxCommandEvent &event);
+    void OnBSelect(wxCommandEvent &event);
+    void OnEdit(wxCommandEvent &event);
+    void OnSelChanged(wxTreeEvent &event);
+    void OnDoubleClicked(wxTreeEvent &event);
     void showCategDialogDeleteError(bool category = true);
-    void OnCategoryRelocation(wxCommandEvent& WXUNUSED(event));
-    void OnExpandChbClick(wxCommandEvent& WXUNUSED(event));
-    void OnShowHiddenChbClick(wxCommandEvent& WXUNUSED(event));
-    void OnMenuSelected(wxCommandEvent& event);
-    void OnItemRightClick(wxTreeEvent& event);
+    void OnCategoryRelocation(wxCommandEvent &WXUNUSED(event));
+    void OnExpandChbClick(wxCommandEvent &WXUNUSED(event));
+    void OnShowHiddenChbClick(wxCommandEvent &WXUNUSED(event));
+    void OnMenuSelected(wxCommandEvent &event);
+    void OnItemRightClick(wxTreeEvent &event);
     bool categShowStatus(int categId, int subCategId);
-    void setTreeSelection(const wxString& catName, const wxString& subCatName);
+    void setTreeSelection(const wxString &catName, const wxString &subCatName);
 
-    wxTreeCtrl* m_treeCtrl = nullptr;
-    wxButton* m_buttonAdd = nullptr;
-    wxButton* m_buttonEdit = nullptr;
-    wxButton* m_buttonSelect = nullptr;
-    wxButton* m_buttonDelete = nullptr;
-    wxBitmapButton* m_buttonRelocate = nullptr;
-    wxCheckBox* m_cbExpand = nullptr;
-    wxCheckBox* m_cbShowAll = nullptr;
+    wxTreeCtrl *m_treeCtrl = nullptr;
+    wxButton *m_buttonAdd = nullptr;
+    wxButton *m_buttonEdit = nullptr;
+    wxButton *m_buttonSelect = nullptr;
+    wxButton *m_buttonDelete = nullptr;
+    wxBitmapButton *m_buttonRelocate = nullptr;
+    wxCheckBox *m_cbExpand = nullptr;
+    wxCheckBox *m_cbShowAll = nullptr;
     wxTreeItemId selectedItemId_;
     wxTreeItemId root_;
-    wxTreeItemId getTreeItemFor(const wxTreeItemId& itemID, const wxString& itemText);
+    wxTreeItemId getTreeItemFor(const wxTreeItemId &itemID, const wxString &itemText);
     bool m_enable_select = false;
     bool m_enable_relocate = false;
     int m_categ_id = -1;

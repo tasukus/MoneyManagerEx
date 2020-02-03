@@ -29,33 +29,33 @@ class relocatePayeeDialog : public wxDialog
 
 public:
     relocatePayeeDialog();
-    relocatePayeeDialog(wxWindow* parent, int source_payee_id = -1);
+    relocatePayeeDialog(wxWindow *parent, int source_payee_id = -1);
 
     int updatedPayeesCount();
 
 private:
-    bool Create(wxWindow* parent
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
 
     void CreateControls();
     void IsOkOk();
-    void OnOk(wxCommandEvent& event);
-    void OnCancel(wxCommandEvent& event);
+    void OnOk(wxCommandEvent &event);
+    void OnCancel(wxCommandEvent &event);
 
-    void OnPayeeChanged(wxCommandEvent& event);
+    void OnPayeeChanged(wxCommandEvent &event);
 
     int sourcePayeeID_ = -1;
     int destPayeeID_=-1;
 
-    wxComboBox* cbSourcePayee_=nullptr;
-    wxComboBox* cbDestPayee_=nullptr;
+    wxComboBox *cbSourcePayee_=nullptr;
+    wxComboBox *cbDestPayee_=nullptr;
     int m_changed_records = 0;
-    wxStaticText* m_info=nullptr;
-    wxCheckBox* cbDelete_ = nullptr;
+    wxStaticText *m_info=nullptr;
+    wxCheckBox *cbDelete_ = nullptr;
 };
 
 #endif

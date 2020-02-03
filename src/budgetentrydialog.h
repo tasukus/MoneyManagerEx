@@ -31,30 +31,30 @@ class mmBudgetEntryDialog : public wxDialog
 
 public:
     mmBudgetEntryDialog();
-    mmBudgetEntryDialog(wxWindow* parent
-                        , Model_Budget::Data* entry
-                        , const wxString& categoryEstimate, const wxString& CategoryActual);
+    mmBudgetEntryDialog(wxWindow *parent
+                        , Model_Budget::Data *entry
+                        , const wxString &categoryEstimate, const wxString &CategoryActual);
 
-    bool Create(wxWindow* parent, wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+    bool Create(wxWindow *parent, wxWindowID id
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
 
     void CreateControls();
-    void onChoiceChar(wxKeyEvent& event);
+    void onChoiceChar(wxKeyEvent &event);
     // utility functions
-    void OnOk(wxCommandEvent& event);
+    void OnOk(wxCommandEvent &event);
 
     void fillControls();
 
 private:
-    void OnTextEntered(wxCommandEvent& event);
+    void OnTextEntered(wxCommandEvent &event);
 
-    Model_Budget::Data* budgetEntry_ = nullptr;
-    wxChoice* m_FrequencyChooser = nullptr;
-    mmTextCtrl* m_textAmount = nullptr;
-    wxChoice* m_choiceType = nullptr;
+    Model_Budget::Data *budgetEntry_ = nullptr;
+    wxChoice *m_FrequencyChooser = nullptr;
+    mmTextCtrl *m_textAmount = nullptr;
+    wxChoice *m_choiceType = nullptr;
 
     wxString catEstimateAmountStr_;
     wxString catActualAmountStr_;

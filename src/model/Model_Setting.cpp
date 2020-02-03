@@ -22,7 +22,7 @@
 #include "paths.h"
 
 Model_Setting::Model_Setting()
-: Model<DB_Table_SETTING_V1>()
+    : Model<DB_Table_SETTING_V1>()
 {
 }
 
@@ -34,9 +34,9 @@ Model_Setting::~Model_Setting()
 * Initialize the global Model_Setting table.
 * Reset the Model_Setting table or create the table if it does not exist.
 */
-Model_Setting& Model_Setting::instance(wxSQLite3Database* db)
+Model_Setting &Model_Setting::instance(wxSQLite3Database *db)
 {
-    Model_Setting& ins = Singleton<Model_Setting>::instance();
+    Model_Setting &ins = Singleton<Model_Setting>::instance();
     ins.db_ = db;
     ins.destroy_cache();
     ins.ensure(db);
@@ -46,34 +46,37 @@ Model_Setting& Model_Setting::instance(wxSQLite3Database* db)
 }
 
 /** Return the static instance of Model_Setting table. */
-Model_Setting& Model_Setting::instance()
+Model_Setting &Model_Setting::instance()
 {
     return Singleton<Model_Setting>::instance();
 }
 
 // Setter
-void Model_Setting::Set(const wxString& key, int value)
+void Model_Setting::Set(const wxString &key, int value)
 {
     this->Set(key, wxString::Format("%d", value));
 }
 
-void Model_Setting::Set(const wxString& key, bool value)
+void Model_Setting::Set(const wxString &key, bool value)
 {
     this->Set(key, wxString::Format("%s", value ? "TRUE" : "FALSE"));
 }
 
-void Model_Setting::Set(const wxString& key, const wxColour& value)
+void Model_Setting::Set(const wxString &key, const wxColour &value)
 {
     this->Set(key, wxString::Format("%d,%d,%d", value.Red(), value.Green(), value.Blue()));
 }
 
-void Model_Setting::Set(const wxString& key, const wxString& value)
+void Model_Setting::Set(const wxString &key, const wxString &value)
 {
-    Data* setting = this->get_one(SETTINGNAME(key));
+    Data *setting = this->get_one(SETTINGNAME(key));
     if (!setting) // not cached
     {
         Data_Set items = this->find(SETTINGNAME(key));
-        if (!items.empty()) setting = this->get(items[0].SETTINGID, this->db_);
+        if (!items.empty())
+        {
+            setting = this->get(items[0].SETTINGID, this->db_);
+        }
     }
     if (setting)
     {
@@ -90,30 +93,42 @@ void Model_Setting::Set(const wxString& key, const wxString& value)
 }
 
 // Getter
-bool Model_Setting::GetBoolSetting(const wxString& key, bool default_value)
+bool Model_Setting::GetBoolSetting(const wxString &key, bool default_value)
 {
     wxString value = this->GetStringSetting(key, "");
-    if (value == "TRUE") return true;
-    if (value == "FALSE") return false;
+    if (value == "TRUE")
+    {
+        return true;
+    }
+    if (value == "FALSE")
+    {
+        return false;
+    }
 
     return default_value;
 }
 
-int Model_Setting::GetIntSetting(const wxString& key, int default_value)
+int Model_Setting::GetIntSetting(const wxString &key, int default_value)
 {
     wxString value = this->GetStringSetting(key, "");
-    if (!value.IsEmpty() && value.IsNumber()) return wxAtoi(value);
+    if (!value.IsEmpty() && value.IsNumber())
+    {
+        return wxAtoi(value);
+    }
 
     return default_value;
 }
 
-wxString Model_Setting::GetStringSetting(const wxString& key, const wxString& default_value)
+wxString Model_Setting::GetStringSetting(const wxString &key, const wxString &default_value)
 {
-    Data* setting = this->get_one(SETTINGNAME(key));
+    Data *setting = this->get_one(SETTINGNAME(key));
     if (!setting) // not cached
     {
         Data_Set items = this->find(SETTINGNAME(key));
-        if (!items.empty()) return items[0].SETTINGVALUE;
+        if (!items.empty())
+        {
+            return items[0].SETTINGVALUE;
+        }
     }
     else
     {
@@ -126,7 +141,10 @@ wxString Model_Setting::getLastDbPath()
 {
     wxString path = this->GetStringSetting("LASTFILENAME", "");
 
-    if (!mmex::isPortableMode()) return path;
+    if (!mmex::isPortableMode())
+    {
+        return path;
+    }
 
     wxString vol = wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetVolume();
 
@@ -136,7 +154,8 @@ wxString Model_Setting::getLastDbPath()
         wxFileName fname(path);
         fname.SetVolume(vol); // database should be on portable device
 
-        if (fname.FileExists()) {
+        if (fname.FileExists())
+        {
             path = fname.GetFullPath();
         }
     }
@@ -145,7 +164,7 @@ wxString Model_Setting::getLastDbPath()
 }
 
 /* Returns true if key setting found */
-bool Model_Setting::ContainsSetting(const wxString& key)
+bool Model_Setting::ContainsSetting(const wxString &key)
 {
     return !this->find(SETTINGNAME(key)).empty();
 }
@@ -154,7 +173,9 @@ row_t Model_Setting::to_row_t()
 {
     row_t row;
     for (const auto &r: instance().all())
+    {
         row(r.SETTINGNAME.ToStdWstring()) = r.SETTINGVALUE;
+    }
     return row;
 }
 
@@ -166,7 +187,7 @@ wxString Model_Setting::ViewAccounts()
     return val == "ALL" ? VIEW_ACCOUNTS_ALL_STR : val;
 }
 
-void Model_Setting::SetViewAccounts(const wxString& value)
+void Model_Setting::SetViewAccounts(const wxString &value)
 {
     Set("VIEWACCOUNTS", value);
 }
@@ -177,7 +198,7 @@ wxString Model_Setting::ViewTransactions()
     return GetStringSetting("VIEWTRANSACTIONS", VIEW_TRANS_ALL_STR);
 }
 
-void Model_Setting::SetViewTransactions(const wxString& value)
+void Model_Setting::SetViewTransactions(const wxString &value)
 {
     Set("VIEWTRANSACTIONS", value);
 }
@@ -200,7 +221,7 @@ void Model_Setting::ShrinkUsageTable()
         wxString sql = wxString::Format("delete from USAGE_V1 where USAGEDATE < \"%s\";", date.FormatISODate());
         db_->ExecuteUpdate(sql);
     }
-    catch (const wxSQLite3Exception& /*e*/)
+    catch (const wxSQLite3Exception & /*e*/)
     {
         db_->Rollback(save_point);
     }

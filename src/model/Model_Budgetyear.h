@@ -38,25 +38,25 @@ public:
     * Return the static instance address for Model_Budgetyear table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Budgetyear& instance(wxSQLite3Database* db);
+    static Model_Budgetyear &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_Budgetyear table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Budgetyear& instance();
+    static Model_Budgetyear &instance();
 
     bool remove(int id);
 
 public:
-    void Set(int year_id, const wxString& value);
-    int Add(const wxString& value);
+    void Set(int year_id, const wxString &value);
+    int Add(const wxString &value);
 
     wxString Get(int year_id);
-    int Get(const wxString& year_name);
+    int Get(const wxString &year_name);
 
     bool Exists(int year_id);
-    bool Exists(const wxString& year_name);
+    bool Exists(const wxString &year_name);
 };
 
 #endif

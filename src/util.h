@@ -30,9 +30,9 @@ class mmGUIApp;
 class wxConvAuto;
 
 //Returns a JSON formatted string in readable form
-wxString JSON_PrettyFormated(rapidjson::Document& j_doc);
+wxString JSON_PrettyFormated(rapidjson::Document &j_doc);
 //Returns a JSON formatted string from RapidJson DOM
-wxString JSON_Formated(rapidjson::Document& j_doc);
+wxString JSON_Formated(rapidjson::Document &j_doc);
 
 struct ValuePair
 {
@@ -70,7 +70,7 @@ struct WebsiteNews
 class mmListBoxItem: public wxClientData
 {
 public:
-    mmListBoxItem(int index, const wxString& name)
+    mmListBoxItem(int index, const wxString &name)
         : index_(index), name_(name)
     {}
 
@@ -92,9 +92,9 @@ class mmTreeItemData : public wxTreeItemData
 {
 public:
     mmTreeItemData(int id, bool isBudget);
-    mmTreeItemData(const wxString& string, mmPrintableBase* report);
-    mmTreeItemData(mmPrintableBase* report);
-    mmTreeItemData(const wxString& string);
+    mmTreeItemData(const wxString &string, mmPrintableBase *report);
+    mmTreeItemData(mmPrintableBase *report);
+    mmTreeItemData(const wxString &string);
     ~mmTreeItemData();
     int getData() const
     {
@@ -104,7 +104,7 @@ public:
     {
         return stringData_;
     }
-    mmPrintableBase* get_report() const
+    mmPrintableBase *get_report() const
     {
         return report_;
     }
@@ -122,13 +122,13 @@ private:
     bool isString_=false;
     bool isBudgetingNode_=false;
     wxString stringData_;
-    mmPrintableBase* report_=nullptr;
+    mmPrintableBase *report_=nullptr;
 };
 
 int CaseInsensitiveCmp(const wxString &s1, const wxString &s2);
-const wxString inQuotes(const wxString& label, const wxString& delimiter);
-void csv2tab_separated_values(wxString& line, const wxString& delimit);
-void correctEmptyFileExt(const wxString& ext, wxString & fileName);
+const wxString inQuotes(const wxString &label, const wxString &delimiter);
+void csv2tab_separated_values(wxString &line, const wxString &delimit);
+void correctEmptyFileExt(const wxString &ext, wxString &fileName);
 
 const wxString readPasswordFromUser(const bool confirm = false);
 
@@ -154,35 +154,35 @@ public:
 };
 //----------------------------------------------------------------------------
 enum yahoo_price_type {FIAT = 0, SHARES};
-bool GetOnlineCurrencyRates(wxString& msg, int curr_id = -1, bool used_only = true);
-bool get_yahoo_prices(std::vector<wxString>& symbols
-                      , std::map<wxString, double>& out
+bool GetOnlineCurrencyRates(wxString &msg, int curr_id = -1, bool used_only = true);
+bool get_yahoo_prices(std::vector<wxString> &symbols
+                      , std::map<wxString, double> &out
                       , const wxString base_currency_symbol
-                      , wxString& output
+                      , wxString &output
                       , int type);
-bool get_crypto_currency_prices(std::vector<wxString>& symbols, double& usd_rate
-                                , std::map<wxString, double>& out
-                                , wxString& output);
+bool get_crypto_currency_prices(std::vector<wxString> &symbols, double &usd_rate
+                                , std::map<wxString, double> &out
+                                , wxString &output);
 
 const wxString getProgramDescription(bool simple = false);
-bool getNewsRSS(std::vector<WebsiteNews>& WebsiteNewsList);
-CURLcode http_get_data(const wxString& site, wxString& output, const wxString& useragent = wxEmptyString);
-CURLcode http_post_data(const wxString& site, const wxString& data, const wxString& contentType, wxString& output);
-CURLcode http_download_file(const wxString& site, const wxString& path);
-const wxString getURL(const wxString& file);
+bool getNewsRSS(std::vector<WebsiteNews> &WebsiteNewsList);
+CURLcode http_get_data(const wxString &site, wxString &output, const wxString &useragent = wxEmptyString);
+CURLcode http_post_data(const wxString &site, const wxString &data, const wxString &contentType, wxString &output);
+CURLcode http_download_file(const wxString &site, const wxString &path);
+const wxString getURL(const wxString &file);
 
 const wxString mmPlatformType();
-void windowsFreezeThaw(wxWindow* w);
+void windowsFreezeThaw(wxWindow *w);
 
 //* Date Functions----------------------------------------------------------*//
 const wxDateTime getUserDefinedFinancialYear(bool prevDayRequired = false);
 const std::unordered_map<wxString, wxString> &date_formats_regex();
-const wxDateTime mmParseISODate(const wxString& str);
+const wxDateTime mmParseISODate(const wxString &str);
 const wxString mmGetDateForDisplay(const wxString &iso_date);
-bool mmParseDisplayStringToDate(wxDateTime& date, const wxString& sDate, const wxString& sDateMask);
+bool mmParseDisplayStringToDate(wxDateTime &date, const wxString &sDate, const wxString &sDateMask);
 extern const std::map<wxString, wxString> g_date_formats_map();
 extern const std::map<int, std::pair<wxConvAuto, wxString> > g_encoding;
-const wxString mmTrimAmount(const wxString& value, const wxString& decimal);
+const wxString mmTrimAmount(const wxString &value, const wxString &decimal);
 
 class mmDates
 {

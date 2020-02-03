@@ -31,7 +31,7 @@ class mmWebAppDialog : public wxDialog
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmWebAppDialog(wxWindow* parent, const wxString& name = "mmWebAppDialog");
+    mmWebAppDialog(wxWindow *parent, const wxString &name = "mmWebAppDialog");
 
     bool getRefreshRequested() const
     {
@@ -60,7 +60,7 @@ private:
         MENU_DELETE_WEBTRAN
     };
 
-    wxDataViewListCtrl* webtranListBox_ = nullptr;
+    wxDataViewListCtrl *webtranListBox_ = nullptr;
 
     mmWebApp::WebTranVector WebAppTransactions_;
     bool refreshRequested_=false;
@@ -70,20 +70,20 @@ private:
         webtranListBox_ = nullptr;
     }
 
-    void Create(wxWindow* parent, const wxString& name = "mmWebAppDialog");
+    void Create(wxWindow *parent, const wxString &name = "mmWebAppDialog");
     void CreateControls();
     void fillControls();
 
-    void OnCancel(wxCommandEvent& WXUNUSED(event));
-    void OnApply(wxCommandEvent& WXUNUSED(event));
-    void OnOk(wxCommandEvent& WXUNUSED(event));
+    void OnCancel(wxCommandEvent &WXUNUSED(event));
+    void OnApply(wxCommandEvent &WXUNUSED(event));
+    void OnOk(wxCommandEvent &WXUNUSED(event));
 
     bool ImportWebTr(int WebTrID, bool open);
     void ImportAllWebTr(const bool open);
 
-    void OnListItemActivated(wxDataViewEvent& event);
-    void OnMenuSelected(wxCommandEvent& event);
-    void OnItemRightClick(wxDataViewEvent& event);
+    void OnListItemActivated(wxDataViewEvent &event);
+    void OnMenuSelected(wxCommandEvent &event);
+    void OnItemRightClick(wxDataViewEvent &event);
 
     void ImportWebTrSelected();
     void DeleteWebTr();

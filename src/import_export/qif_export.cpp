@@ -36,14 +36,14 @@ wxBEGIN_EVENT_TABLE(mmQIFExportDialog, wxDialog)
     EVT_CLOSE(mmQIFExportDialog::OnQuit)
 wxEND_EVENT_TABLE()
 
-mmQIFExportDialog::mmQIFExportDialog(wxWindow * parent /*, int gotoAccountID*/)
+mmQIFExportDialog::mmQIFExportDialog(wxWindow *parent /*, int gotoAccountID*/)
 {
     long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("QIF Export"), wxDefaultPosition, wxSize(500, 300), style);
 }
 
-bool mmQIFExportDialog::Create(wxWindow* parent, wxWindowID id, const wxString& caption
-    , const wxPoint& pos, const wxSize& size, long style)
+bool mmQIFExportDialog::Create(wxWindow *parent, wxWindowID id, const wxString &caption
+                               , const wxPoint &pos, const wxSize &size, long style)
 {
     SetExtraStyle(GetExtraStyle() | wxWS_EX_BLOCK_EVENTS);
     wxDialog::Create(parent, id, caption, pos, size, style);
@@ -68,10 +68,10 @@ void mmQIFExportDialog::fillControls()
     accounts_id_.clear();
 
     Model_Account::Data_Set selected_accounts = Model_Account::instance().find(
-            Model_Account::ACCOUNTTYPE(Model_Account::all_type()[Model_Account::INVESTMENT], NOT_EQUAL)
-    );
+                Model_Account::ACCOUNTTYPE(Model_Account::all_type()[Model_Account::INVESTMENT], NOT_EQUAL)
+            );
 
-    for (const auto& a : selected_accounts)
+    for (const auto &a : selected_accounts)
     {
         m_accounts_name.Add(a.ACCOUNTNAME);
         selected_accounts_id_.Add(a.ACCOUNTID);
@@ -88,60 +88,60 @@ void mmQIFExportDialog::CreateControls()
     int border = 5;
     int fieldWidth = 180;
 
-    wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *main_sizer = new wxBoxSizer(wxVERTICAL);
     this->SetSizer(main_sizer);
-    wxBoxSizer* box_sizer1 = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *box_sizer1 = new wxBoxSizer(wxVERTICAL);
     main_sizer->Add(box_sizer1, g_flagsExpand);
 
-    wxNotebook* export_notebook = new wxNotebook(this
-        , wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_MULTILINE );
-    wxPanel* main_tab = new wxPanel(export_notebook, wxID_ANY);
+    wxNotebook *export_notebook = new wxNotebook(this
+            , wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_MULTILINE );
+    wxPanel *main_tab = new wxPanel(export_notebook, wxID_ANY);
     export_notebook->AddPage(main_tab, _("Parameters"));
     wxBoxSizer *tab1_sizer = new wxBoxSizer(wxVERTICAL);
     main_tab->SetSizer(tab1_sizer);
 
-    wxPanel* log_tab = new wxPanel(export_notebook, wxID_ANY);
+    wxPanel *log_tab = new wxPanel(export_notebook, wxID_ANY);
     export_notebook->AddPage(log_tab, _("Log"));
     wxBoxSizer *tab2_sizer = new wxBoxSizer(wxVERTICAL);
     log_tab->SetSizer(tab2_sizer);
 
     box_sizer1->Add(export_notebook, g_flagsExpand);
 
-    wxFlexGridSizer* flex_sizer = new wxFlexGridSizer(0, 2, 0, 0);
+    wxFlexGridSizer *flex_sizer = new wxFlexGridSizer(0, 2, 0, 0);
     tab1_sizer->Add(flex_sizer, wxSizerFlags(g_flagsV).Left());
 
     // Categories -------------------------------------------------
     cCategs_ = new wxCheckBox(main_tab, wxID_ANY
-        , _("Categories"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
+                              , _("Categories"), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
     cCategs_->SetValue(FALSE);
     flex_sizer->Add(cCategs_, g_flagsH);
     flex_sizer->AddSpacer(1);
 
     // Accounts --------------------------------------------
     accountsCheckBox_ = new wxCheckBox( main_tab, wxID_ANY, _("Accounts")
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+                                        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
     bSelectedAccounts_ = new wxButton(main_tab, wxID_STATIC, _("All")
-        , wxDefaultPosition, wxSize(fieldWidth,-1));
+                                      , wxDefaultPosition, wxSize(fieldWidth,-1));
     bSelectedAccounts_->Connect(wxID_ANY, wxEVT_COMMAND_BUTTON_CLICKED
-        , wxCommandEventHandler(mmQIFExportDialog::OnAccountsButton), nullptr, this);
+                                , wxCommandEventHandler(mmQIFExportDialog::OnAccountsButton), nullptr, this);
     accountsCheckBox_->SetValue(true);
     flex_sizer->Add(accountsCheckBox_, g_flagsH);
     flex_sizer->Add(bSelectedAccounts_, g_flagsH);
 
     // From Date --------------------------------------------
     dateFromCheckBox_ = new wxCheckBox(main_tab, wxID_ANY, _("From Date")
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+                                       , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
     fromDateCtrl_ = new wxDatePickerCtrl(main_tab, wxID_STATIC, wxDefaultDateTime
-        , wxDefaultPosition, wxSize(fieldWidth,-1), wxDP_DROPDOWN);
+                                         , wxDefaultPosition, wxSize(fieldWidth,-1), wxDP_DROPDOWN);
     fromDateCtrl_->Enable(false);
     flex_sizer->Add(dateFromCheckBox_, g_flagsH);
     flex_sizer->Add(fromDateCtrl_, g_flagsH);
 
     // To Date --------------------------------------------
     dateToCheckBox_ = new wxCheckBox(main_tab, wxID_ANY, _("To Date")
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+                                     , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
     toDateCtrl_ = new wxDatePickerCtrl(main_tab, wxID_STATIC, wxDefaultDateTime
-        , wxDefaultPosition, wxSize(fieldWidth,-1), wxDP_DROPDOWN);
+                                       , wxDefaultPosition, wxSize(fieldWidth,-1), wxDP_DROPDOWN);
     toDateCtrl_->Enable(false);
     flex_sizer->Add(dateToCheckBox_, g_flagsH);
     flex_sizer->Add(toDateCtrl_, g_flagsH);
@@ -153,10 +153,13 @@ void mmQIFExportDialog::CreateControls()
 
     choiceDateFormat_label_ = new wxStaticText(main_tab, wxID_STATIC, _("Date Format"));
     m_choiceDateFormat = new wxComboBox(main_tab, wxID_ANY);
-    for (const auto& i : g_date_formats_map())
+    for (const auto &i : g_date_formats_map())
     {
         m_choiceDateFormat->Append(i.second, new wxStringClientData(i.first));
-        if (dateFormatStr == i.first) m_choiceDateFormat->SetStringSelection(i.second);
+        if (dateFormatStr == i.first)
+        {
+            m_choiceDateFormat->SetStringSelection(i.second);
+        }
     }
 
     flex_sizer->Add(choiceDateFormat_label_, g_flagsH);
@@ -164,19 +167,19 @@ void mmQIFExportDialog::CreateControls()
 
     // File Name --------------------------------------------
     toFileCheckBox_ = new wxCheckBox(main_tab, wxID_ANY, _("Write to File")
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+                                     , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
     toFileCheckBox_->SetValue(true);
     file_name_label_ = new wxStaticText(main_tab, wxID_ANY, _("File Name:"));
     button_search_ = new wxButton(main_tab, wxID_SAVE, _("File"));
     button_search_->Connect(wxID_SAVE, wxEVT_COMMAND_BUTTON_CLICKED
-        , wxCommandEventHandler(mmQIFExportDialog::OnFileSearch), nullptr, this);
+                            , wxCommandEventHandler(mmQIFExportDialog::OnFileSearch), nullptr, this);
 
     m_text_ctrl_ = new wxTextCtrl(main_tab, wxID_FILE, wxEmptyString,
-        wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
+                                  wxDefaultPosition, wxDefaultSize, wxTE_PROCESS_ENTER );
     m_text_ctrl_->Connect(wxID_FILE, wxEVT_COMMAND_TEXT_UPDATED
-        , wxCommandEventHandler(mmQIFExportDialog::OnFileNameChanged), nullptr, this);
+                          , wxCommandEventHandler(mmQIFExportDialog::OnFileNameChanged), nullptr, this);
     m_text_ctrl_->Connect(wxID_FILE, wxEVT_COMMAND_TEXT_ENTER
-        , wxCommandEventHandler(mmQIFExportDialog::OnFileNameEntered), nullptr, this);
+                          , wxCommandEventHandler(mmQIFExportDialog::OnFileNameEntered), nullptr, this);
 
     flex_sizer->Add(toFileCheckBox_, g_flagsH);
     flex_sizer->AddSpacer(1);
@@ -186,27 +189,27 @@ void mmQIFExportDialog::CreateControls()
 
     //Log viewer
     log_field_ = new wxTextCtrl(log_tab, wxID_ANY, ""
-        , wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
+                                , wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE | wxHSCROLL);
     tab2_sizer->Add(log_field_, 1, wxGROW|wxALL, border);
 
-    wxButton* itemClearButton = new wxButton(log_tab, wxID_CLEAR, _("Clear"));
+    wxButton *itemClearButton = new wxButton(log_tab, wxID_CLEAR, _("Clear"));
     tab2_sizer->Add(itemClearButton, wxSizerFlags(g_flagsV).Center());
     itemClearButton->Connect(wxID_CLEAR, wxEVT_COMMAND_BUTTON_CLICKED
-        , wxCommandEventHandler(mmQIFExportDialog::OnButtonClear), nullptr, this);
+                             , wxCommandEventHandler(mmQIFExportDialog::OnButtonClear), nullptr, this);
 
     /**********************************************************************************************
      Button Panel with OK and Cancel Buttons
     ***********************************************************************************************/
-    wxPanel* buttons_panel = new wxPanel(this, wxID_ANY);
+    wxPanel *buttons_panel = new wxPanel(this, wxID_ANY);
     main_sizer->Add(buttons_panel, wxSizerFlags(g_flagsV).Center().Border(wxALL, 0));
 
-    wxStdDialogButtonSizer*  buttons_sizer = new wxStdDialogButtonSizer;
+    wxStdDialogButtonSizer  *buttons_sizer = new wxStdDialogButtonSizer;
     buttons_panel->SetSizer(buttons_sizer);
 
-    wxButton* itemButtonOK = new wxButton(buttons_panel, wxID_OK, _("&OK "));
-    wxButton* itemButtonCancel_ = new wxButton(buttons_panel, wxID_CANCEL, wxGetTranslation(g_CancelLabel));
+    wxButton *itemButtonOK = new wxButton(buttons_panel, wxID_OK, _("&OK "));
+    wxButton *itemButtonCancel_ = new wxButton(buttons_panel, wxID_CANCEL, wxGetTranslation(g_CancelLabel));
     itemButtonOK->Connect(wxID_OK, wxEVT_COMMAND_BUTTON_CLICKED
-        , wxCommandEventHandler(mmQIFExportDialog::OnOk), nullptr, this);
+                          , wxCommandEventHandler(mmQIFExportDialog::OnOk), nullptr, this);
 
     buttons_sizer->Add(itemButtonOK, g_flagsH);
     buttons_sizer->Add(itemButtonCancel_, g_flagsH);
@@ -214,21 +217,27 @@ void mmQIFExportDialog::CreateControls()
     buttons_sizer->Realize();
 }
 
-void mmQIFExportDialog::OnButtonClear(wxCommandEvent& WXUNUSED(event))
+void mmQIFExportDialog::OnButtonClear(wxCommandEvent &WXUNUSED(event))
 {
     log_field_->Clear();
 }
 
-void mmQIFExportDialog::OnAccountsButton(wxCommandEvent& WXUNUSED(event))
+void mmQIFExportDialog::OnAccountsButton(wxCommandEvent &WXUNUSED(event))
 {
     selected_accounts_id_.clear();
     bSelectedAccounts_->UnsetToolTip();
     wxMultiChoiceDialog s_acc(this, _("Choose Account to Export from:")
-        , _("QIF Export"), m_accounts_name);
-    wxButton* ok = static_cast<wxButton*>(s_acc.FindWindow(wxID_OK));
-    if (ok) ok->SetLabel(_("&OK "));
-    wxButton* ca = static_cast<wxButton*>(s_acc.FindWindow(wxID_CANCEL));
-    if (ca) ca->SetLabel(wxGetTranslation(g_CancelLabel));
+                              , _("QIF Export"), m_accounts_name);
+    wxButton *ok = static_cast<wxButton *>(s_acc.FindWindow(wxID_OK));
+    if (ok)
+    {
+        ok->SetLabel(_("&OK "));
+    }
+    wxButton *ca = static_cast<wxButton *>(s_acc.FindWindow(wxID_CANCEL));
+    if (ca)
+    {
+        ca->SetLabel(wxGetTranslation(g_CancelLabel));
+    }
 
     wxString baloon = "";
     wxArrayInt selected_items;
@@ -240,7 +249,10 @@ void mmQIFExportDialog::OnAccountsButton(wxCommandEvent& WXUNUSED(event))
             int index = entry;
             const wxString accounts_name = m_accounts_name[index];
             const auto account = Model_Account::instance().get(accounts_name);
-            if (account) selected_accounts_id_.Add(account->ACCOUNTID);
+            if (account)
+            {
+                selected_accounts_id_.Add(account->ACCOUNTID);
+            }
             baloon += accounts_name + "\n";
         }
     }
@@ -253,8 +265,11 @@ void mmQIFExportDialog::OnAccountsButton(wxCommandEvent& WXUNUSED(event))
     else if (selected_accounts_id_.GetCount() == 1)
     {
         int account_id = accounts_id_[selected_items[0]];
-        const Model_Account::Data* account = Model_Account::instance().get(account_id);
-        if (account) bSelectedAccounts_->SetLabelText(account->ACCOUNTNAME);
+        const Model_Account::Data *account = Model_Account::instance().get(account_id);
+        if (account)
+        {
+            bSelectedAccounts_->SetLabelText(account->ACCOUNTNAME);
+        }
     }
     else if (selected_accounts_id_.GetCount() > 1)
     {
@@ -264,52 +279,68 @@ void mmQIFExportDialog::OnAccountsButton(wxCommandEvent& WXUNUSED(event))
 
 }
 
-void mmQIFExportDialog::OnFileSearch(wxCommandEvent& WXUNUSED(event))
+void mmQIFExportDialog::OnFileSearch(wxCommandEvent &WXUNUSED(event))
 {
     wxString fileName = m_text_ctrl_->GetValue();
 
     fileName = wxFileSelector(_("Choose QIF data file to Export")
-        , wxEmptyString, fileName, wxEmptyString
-        , _("QIF Files (*.qif)") + "|*.qif;*.QIF"
-        , wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+                              , wxEmptyString, fileName, wxEmptyString
+                              , _("QIF Files (*.qif)") + "|*.qif;*.QIF"
+                              , wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
 
     if (!fileName.IsEmpty())
+    {
         correctEmptyFileExt("qif", fileName);
+    }
     m_text_ctrl_->SetValue(fileName);
 }
 
-void mmQIFExportDialog::OnOk(wxCommandEvent& WXUNUSED(event))
+void mmQIFExportDialog::OnOk(wxCommandEvent &WXUNUSED(event))
 {
     if (toFileCheckBox_->IsChecked() && m_text_ctrl_->IsEmpty())
+    {
         return mmErrorDialogs::InvalidFile(m_text_ctrl_);
+    }
 
     bool bCorrect = false;
     wxString sErrorMsg = "";
     if (Model_Account::instance().all().empty() && accountsCheckBox_->IsChecked())
+    {
         sErrorMsg =_("No Account available for export");
+    }
     else if (selected_accounts_id_.Count() < 1 && accountsCheckBox_->IsChecked())
+    {
         sErrorMsg =_("No Accounts selected for export");
+    }
     else if (dateToCheckBox_->IsChecked() && dateFromCheckBox_->IsChecked() && fromDateCtrl_->GetValue() > toDateCtrl_->GetValue())
+    {
         sErrorMsg =_("To Date less than From Date");
+    }
     else
+    {
         bCorrect = true;
+    }
 
     if (bCorrect)
+    {
         mmExportQIF();
+    }
     else
+    {
         wxMessageBox(sErrorMsg, _("QIF Export"), wxOK|wxICON_WARNING);
+    }
 }
 
-void mmQIFExportDialog::OnCancel(wxCommandEvent& WXUNUSED(event))
+void mmQIFExportDialog::OnCancel(wxCommandEvent &WXUNUSED(event))
 {
     EndModal(wxID_CANCEL);
 }
 
-void mmQIFExportDialog::OnQuit(wxCloseEvent& WXUNUSED(event))
+void mmQIFExportDialog::OnQuit(wxCloseEvent &WXUNUSED(event))
 {
     EndModal(wxID_CANCEL);
 }
-void mmQIFExportDialog::OnCheckboxClick( wxCommandEvent& WXUNUSED(event) )
+void mmQIFExportDialog::OnCheckboxClick( wxCommandEvent &WXUNUSED(event) )
 {
     bSelectedAccounts_->Enable(accountsCheckBox_->IsChecked());
     dateFromCheckBox_->Enable(accountsCheckBox_->IsChecked());
@@ -323,7 +354,7 @@ void mmQIFExportDialog::OnCheckboxClick( wxCommandEvent& WXUNUSED(event) )
     m_choiceDateFormat->Enable(accountsCheckBox_->IsChecked());
 }
 
-void mmQIFExportDialog::OnFileNameChanged(wxCommandEvent& event)
+void mmQIFExportDialog::OnFileNameChanged(wxCommandEvent &event)
 {
     wxString file_name = m_text_ctrl_->GetValue();
     if (file_name.Contains("\n") || file_name.Contains("file://"))
@@ -343,7 +374,7 @@ void mmQIFExportDialog::OnFileNameChanged(wxCommandEvent& event)
     wxFileName csv_file(file_name);
 
 }
-void mmQIFExportDialog::OnFileNameEntered(wxCommandEvent& event)
+void mmQIFExportDialog::OnFileNameEntered(wxCommandEvent &event)
 {
     wxString file_name = m_text_ctrl_->GetValue();
     file_name.Trim();
@@ -362,7 +393,7 @@ void mmQIFExportDialog::mmExportQIF()
     wxString buffer;
     size_t numRecords = 0, numCategories = 0, numAccounts = 0;
 
-    wxStringClientData* data_obj = static_cast<wxStringClientData*>(m_choiceDateFormat->GetClientObject(m_choiceDateFormat->GetSelection()));
+    wxStringClientData *data_obj = static_cast<wxStringClientData *>(m_choiceDateFormat->GetClientObject(m_choiceDateFormat->GetSelection()));
     const wxString dateMask = data_obj->GetData();
 
     //Export categories
@@ -380,35 +411,44 @@ void mmQIFExportDialog::mmExportQIF()
         std::unordered_map <int /*account ID*/, wxString> extraTransfers;
 
         wxProgressDialog progressDlg(_("Please wait"), _("Exporting")
-            , 100, this, wxPD_APP_MODAL | wxPD_CAN_ABORT);
+                                     , 100, this, wxPD_APP_MODAL | wxPD_CAN_ABORT);
 
         const auto splits = Model_Splittransaction::instance().get_all();
 
         const wxString begin_date = fromDateCtrl_->GetValue().FormatISODate();
         const wxString end_date = toDateCtrl_->GetValue().FormatISODate();
 
-
-        for (const auto& transaction : Model_Checking::instance().find(
-            Model_Checking::STATUS(Model_Checking::VOID_, NOT_EQUAL)
-        ))
+        for (const auto &transaction : Model_Checking::instance().find(
+                    Model_Checking::STATUS(Model_Checking::VOID_, NOT_EQUAL)
+                ))
         {
             //Filtering
             if (dateFromCheckBox_->IsChecked() && transaction.TRANSDATE < begin_date)
+            {
                 continue;
+            }
             if (dateToCheckBox_->IsChecked() && transaction.TRANSDATE > end_date)
+            {
                 continue;
+            }
             if (!Model_Checking::is_transfer(transaction.TRANSCODE)
-                && (selected_accounts_id_.Index(transaction.ACCOUNTID) == wxNOT_FOUND))
+                    && (selected_accounts_id_.Index(transaction.ACCOUNTID) == wxNOT_FOUND))
+            {
                 continue;
+            }
             if (Model_Checking::is_transfer(transaction.TRANSCODE)
-                && (selected_accounts_id_.Index(transaction.ACCOUNTID) == wxNOT_FOUND)
-                && (selected_accounts_id_.Index(transaction.TOACCOUNTID) == wxNOT_FOUND))
+                    && (selected_accounts_id_.Index(transaction.ACCOUNTID) == wxNOT_FOUND)
+                    && (selected_accounts_id_.Index(transaction.TOACCOUNTID) == wxNOT_FOUND))
+            {
                 continue;
+            }
             //
 
             // if Cancel clicked
             if (!progressDlg.Pulse(wxString::Format(_("Exporting transaction %zu"), ++numRecords)))
-                break; // abort processing
+            {
+                break;    // abort processing
+            }
 
             wxString trx_str;
             Model_Checking::Full_Data full_tran(0, transaction, splits);
@@ -443,13 +483,13 @@ void mmQIFExportDialog::mmExportQIF()
             ++numAccounts;
         }
 
-            //Append extra transters
-            for (const auto &entry : extraTransfers)
-            {
-                buffer << mmExportTransaction::getAccountHeaderQIF(entry.first);
-                buffer << entry.second;
-                ++numAccounts;
-            }
+        //Append extra transters
+        for (const auto &entry : extraTransfers)
+        {
+            buffer << mmExportTransaction::getAccountHeaderQIF(entry.first);
+            buffer << entry.second;
+            ++numAccounts;
+        }
     }
 
     if (write_to_file)
@@ -460,18 +500,22 @@ void mmQIFExportDialog::mmExportQIF()
         text << buffer;
         output.Close();
         if (numCategories || numRecords || numAccounts)
+        {
             m_text_ctrl_->ChangeValue(wxEmptyString);
+        }
     }
     else
+    {
         *log_field_ << buffer;
+    }
 
     wxMessageDialog msgDlg(this
-        , wxString::Format(_("Number of categories exported: %zu"), numCategories)
-        + "\n"
-        + wxString::Format(_("Number of transactions exported: %zu"), numRecords)
-        + "\n"
-        + wxString::Format(_("Number of accounts exported: %zu"), numAccounts)
-        , _("Export to QIF"), wxOK | wxICON_INFORMATION);
+                           , wxString::Format(_("Number of categories exported: %zu"), numCategories)
+                           + "\n"
+                           + wxString::Format(_("Number of transactions exported: %zu"), numRecords)
+                           + "\n"
+                           + wxString::Format(_("Number of accounts exported: %zu"), numAccounts)
+                           , _("Export to QIF"), wxOK | wxICON_INFORMATION);
 
     msgDlg.ShowModal();
 }

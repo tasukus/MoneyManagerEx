@@ -39,56 +39,56 @@ public:
     mmAssetDialog( )
     {
     };
-    mmAssetDialog(wxWindow *parent, mmGUIFrame* gui_frame, Model_Asset::Data* asset, bool trans_data = false);
-    mmAssetDialog(wxWindow *parent, mmGUIFrame* gui_frame, Model_Translink::Data* transfer_entry, Model_Checking::Data* checking_entry);
+    mmAssetDialog(wxWindow *parent, mmGUIFrame *gui_frame, Model_Asset::Data *asset, bool trans_data = false);
+    mmAssetDialog(wxWindow *parent, mmGUIFrame *gui_frame, Model_Translink::Data *transfer_entry, Model_Checking::Data *checking_entry);
 
-    void SetTransactionAccountName(const wxString& account_name);
+    void SetTransactionAccountName(const wxString &account_name);
     void SetTransactionDate();
-    Model_Asset::Data* getAssetData( )
+    Model_Asset::Data *getAssetData( )
     {
         return m_asset;
     }
 
 private:
-    Model_Asset::Data* m_asset = nullptr;
-    bool Create(wxWindow* parent
+    Model_Asset::Data *m_asset = nullptr;
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
     void CreateControls();
-    void OnOk(wxCommandEvent& event);
-    void OnCancel(wxCommandEvent& event);
-    void OnAttachments(wxCommandEvent& event);
-    void OnChangeAppreciationType(wxCommandEvent& event);
+    void OnOk(wxCommandEvent &event);
+    void OnCancel(wxCommandEvent &event);
+    void OnAttachments(wxCommandEvent &event);
+    void OnChangeAppreciationType(wxCommandEvent &event);
     void enableDisableRate(bool en);
-    void onTextEntered(wxCommandEvent& event);
+    void onTextEntered(wxCommandEvent &event);
     void dataToControls();
-    void changeFocus(wxChildFocusEvent& event);
-    void OnQuit(wxCloseEvent& event);
+    void changeFocus(wxChildFocusEvent &event);
+    void OnQuit(wxCloseEvent &event);
 
     void CreateAssetAccount();
     void HideTransactionPanel();
     bool m_hidden_trans_entry = true;
-    Model_Translink::Data* m_transfer_entry = nullptr;
-    Model_Checking::Data* m_checking_entry = nullptr;
+    Model_Translink::Data *m_transfer_entry = nullptr;
+    Model_Checking::Data *m_checking_entry = nullptr;
 
     bool assetRichText = false;
 
-    mmTextCtrl* m_assetName = nullptr;
-    wxDatePickerCtrl* m_dpc = nullptr;
-    mmTextCtrl* m_notes = nullptr;
-    mmTextCtrl* m_value = nullptr;
-    mmTextCtrl* m_valueChangeRate = nullptr;
-    wxChoice* m_assetType = nullptr;
-    wxChoice* m_valueChange = nullptr;
-    wxStaticText* m_valueChangeRateLabel = nullptr;
-    wxBitmapButton* bAttachments_ = nullptr;
-    wxStaticBox* m_transaction_frame = nullptr;
-    UserTransactionPanel* m_transaction_panel = nullptr;
+    mmTextCtrl *m_assetName = nullptr;
+    wxDatePickerCtrl *m_dpc = nullptr;
+    mmTextCtrl *m_notes = nullptr;
+    mmTextCtrl *m_value = nullptr;
+    mmTextCtrl *m_valueChangeRate = nullptr;
+    wxChoice *m_assetType = nullptr;
+    wxChoice *m_valueChange = nullptr;
+    wxStaticText *m_valueChangeRateLabel = nullptr;
+    wxBitmapButton *bAttachments_ = nullptr;
+    wxStaticBox *m_transaction_frame = nullptr;
+    UserTransactionPanel *m_transaction_panel = nullptr;
     wxString m_dialog_heading;
-    mmGUIFrame* m_gui_frame = nullptr;
+    mmGUIFrame *m_gui_frame = nullptr;
 
     enum
     {

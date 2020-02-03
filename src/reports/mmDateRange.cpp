@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <wx/intl.h>
 
 mmDateRange::mmDateRange()
-: today_(wxDateTime::Today())
+    : today_(wxDateTime::Today())
 {
     start_date_ = today_;
     end_date_ = today_;
@@ -67,7 +67,7 @@ const wxString mmDateRange::local_title() const
 }
 
 mmCurrentMonth::mmCurrentMonth()
-: mmDateRange()
+    : mmDateRange()
 {
     start_date_.SetDay(1);
     end_date_ = end_date_.GetLastMonthDay();
@@ -75,13 +75,13 @@ mmCurrentMonth::mmCurrentMonth()
 }
 
 mmToday::mmToday()
-: mmDateRange()
+    : mmDateRange()
 {
     title_ = wxTRANSLATE("Today");
 }
 
 mmCurrentMonthToDate::mmCurrentMonthToDate()
-: mmDateRange()
+    : mmDateRange()
 {
     start_date_.SetDay(1);
     // no change to end_date_
@@ -89,7 +89,7 @@ mmCurrentMonthToDate::mmCurrentMonthToDate()
 }
 
 mmLastMonth::mmLastMonth()
-: mmDateRange()
+    : mmDateRange()
 {
     start_date_.Subtract(wxDateSpan::Months(1)).SetDay(1);
     end_date_ = start_date_.GetLastMonthDay();
@@ -97,7 +97,7 @@ mmLastMonth::mmLastMonth()
 }
 
 mmLast30Days::mmLast30Days()
-: mmDateRange()
+    : mmDateRange()
 {
     start_date_.Subtract(wxDateSpan::Months(1)).Add(wxDateSpan::Days(1));
     // no change to end_date_
@@ -105,7 +105,7 @@ mmLast30Days::mmLast30Days()
 }
 
 mmLast90Days::mmLast90Days()
-: mmDateRange()
+    : mmDateRange()
 {
     start_date_.Subtract(wxDateSpan::Months(3)).Add(wxDateSpan::Days(1));
     // no change to end_date_
@@ -113,27 +113,27 @@ mmLast90Days::mmLast90Days()
 }
 
 mmLast3Months::mmLast3Months()
-: mmDateRange()
+    : mmDateRange()
 {
     end_date_ = end_date_.GetLastMonthDay();
     start_date_.SetDay(1)
-        .Add(wxDateSpan::Months(1))
-        .Subtract(wxDateSpan::Months(3));
+    .Add(wxDateSpan::Months(1))
+    .Subtract(wxDateSpan::Months(3));
     title_ = wxTRANSLATE("Last 3 Months");
 }
 
 mmLast12Months::mmLast12Months()
-: mmDateRange()
+    : mmDateRange()
 {
     end_date_ = end_date_.GetLastMonthDay();
     start_date_.SetDay(1)
-        .Add(wxDateSpan::Months(1))
-        .Subtract(wxDateSpan::Years(1));
+    .Add(wxDateSpan::Months(1))
+    .Subtract(wxDateSpan::Years(1));
     title_ = wxTRANSLATE("Last 12 Months");
 }
 
 mmCurrentYear::mmCurrentYear()
-: mmDateRange()
+    : mmDateRange()
 {
     start_date_.SetDay(1).SetMonth(wxDateTime::Jan);
     end_date_.SetMonth(wxDateTime::Dec).SetDay(31);
@@ -141,7 +141,7 @@ mmCurrentYear::mmCurrentYear()
 }
 
 mmCurrentYearToDate::mmCurrentYearToDate()
-: mmDateRange()
+    : mmDateRange()
 {
     start_date_.SetDay(1).SetMonth(wxDateTime::Jan);
     // no change to end_date_
@@ -149,7 +149,7 @@ mmCurrentYearToDate::mmCurrentYearToDate()
 }
 
 mmLastYear::mmLastYear()
-: mmDateRange()
+    : mmDateRange()
 {
     start_date_.Subtract(wxDateSpan::Years(1)).SetDay(1).SetMonth(wxDateTime::Jan);
     end_date_ = start_date_.SetMonth(wxDateTime::Dec).SetDay(31);
@@ -157,7 +157,7 @@ mmLastYear::mmLastYear()
 }
 
 mmCurrentFinancialYear::mmCurrentFinancialYear(const int day, const int month)
-: mmDateRange()
+    : mmDateRange()
 {
     int this_month = today_.GetMonth() + 1;
     auto finDate = start_date_.SetDay(1).SetMonth(wxDateTime::Month(month - 1));
@@ -166,9 +166,13 @@ mmCurrentFinancialYear::mmCurrentFinancialYear(const int day, const int month)
     finDate.SetDay(day <= last_month_day ? day : last_month_day);
 
     if (finDate.IsLaterThan(start_date_))
+    {
         start_date_.Subtract(wxDateSpan::Year()).Add(wxDateSpan::Months(month - this_month));
+    }
     else
+    {
         start_date_.Subtract(wxDateSpan::Months(this_month - month));
+    }
 
     start_date_.Subtract(wxDateSpan::Days(start_date_.GetDay() - 1)).Add(wxDateSpan::Days(day - 1));
 
@@ -178,7 +182,7 @@ mmCurrentFinancialYear::mmCurrentFinancialYear(const int day, const int month)
 }
 
 mmCurrentFinancialYearToDate::mmCurrentFinancialYearToDate(const int day, const int month)
-: mmDateRange()
+    : mmDateRange()
 {
     mmCurrentFinancialYear current_financial_year(day, month);
     start_date_ = current_financial_year.start_date();
@@ -187,7 +191,7 @@ mmCurrentFinancialYearToDate::mmCurrentFinancialYearToDate(const int day, const 
 }
 
 mmLastFinancialYear::mmLastFinancialYear(const int day, const int month)
-: mmDateRange()
+    : mmDateRange()
 {
     mmCurrentFinancialYear current_financial_year(day, month);
     start_date_ = current_financial_year.start_date().Subtract(wxDateSpan::Year());
@@ -196,7 +200,7 @@ mmLastFinancialYear::mmLastFinancialYear(const int day, const int month)
 }
 
 mmAllTime::mmAllTime()
-: mmDateRange()
+    : mmDateRange()
 {
     start_date_ = wxDateTime(1, wxDateTime::Jan, 1601);
     end_date_ = wxDateTime(31, wxDateTime::Dec, 9999);
@@ -208,8 +212,8 @@ bool mmAllTime::is_with_date() const
     return false;
 }
 
-mmSpecifiedRange::mmSpecifiedRange(const wxDateTime& start, const wxDateTime& end)
-: mmDateRange()
+mmSpecifiedRange::mmSpecifiedRange(const wxDateTime &start, const wxDateTime &end)
+    : mmDateRange()
 {
     title_ = wxTRANSLATE("Custom");
     start_date_ = start;

@@ -32,7 +32,7 @@ public:
     }
 
     // Filter keystrokes
-    void OnChar(wxKeyEvent& event);
+    void OnChar(wxKeyEvent &event);
 
 private:
     wxDECLARE_NO_ASSIGN_CLASS(mmCalcValidator);

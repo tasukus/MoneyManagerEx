@@ -44,16 +44,16 @@ public:
 private:
     void Create();
 
-    void OnProxyChanged(wxCommandEvent& event);
-    void OnWebAppTest(wxCommandEvent& event);
+    void OnProxyChanged(wxCommandEvent &event);
+    void OnWebAppTest(wxCommandEvent &event);
 
 private:
-    wxSpinCtrl* m_network_timeout = nullptr;
-    wxCheckBox* m_send_data = nullptr;
-    wxTextCtrl* m_proxy_address = nullptr;
-    wxSpinCtrl* m_proxy_port = nullptr;
-    wxCheckBox* m_check_update = nullptr;
-    wxChoice* m_update_source = nullptr;
+    wxSpinCtrl *m_network_timeout = nullptr;
+    wxCheckBox *m_send_data = nullptr;
+    wxTextCtrl *m_proxy_address = nullptr;
+    wxSpinCtrl *m_proxy_port = nullptr;
+    wxCheckBox *m_check_update = nullptr;
+    wxChoice *m_update_source = nullptr;
 
     enum
     {

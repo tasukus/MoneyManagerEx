@@ -86,10 +86,10 @@ public:
 
     /// Constructors
     mmUnivCSVDialog();
-    mmUnivCSVDialog(wxWindow* parent, EDialogType dialogType,
+    mmUnivCSVDialog(wxWindow *parent, EDialogType dialogType,
                     wxWindowID id = SYMBOL_UNIVCSVDIALOG_IDNAME,
-                    const wxPoint& pos = SYMBOL_UNIVCSVDIALOG_POSITION,
-                    const wxSize& size = SYMBOL_UNIVCSVDIALOG_SIZE,
+                    const wxPoint &pos = SYMBOL_UNIVCSVDIALOG_POSITION,
+                    const wxSize &size = SYMBOL_UNIVCSVDIALOG_SIZE,
                     long style = SYMBOL_UNIVCSVDIALOG_STYLE);
 
     bool ImportCompletedSuccessfully()
@@ -155,30 +155,30 @@ private:
     wxString decimal_;
 
     std::vector<int> csvFieldOrder_;
-    wxListBox* csvFieldCandicate_;
-    wxListBox* csvListBox_;
+    wxListBox *csvFieldCandicate_;
+    wxListBox *csvListBox_;
 
-    wxButton* m_button_add_;
-    wxButton* m_button_remove_;
-    wxChoice* m_choice_account_;
-    wxListCtrl* m_list_ctrl_; //preview
-    wxTextCtrl* m_text_ctrl_;
-    wxTextCtrl* log_field_;
-    wxTextCtrl* m_textDelimiter;
-    wxStaticBox* m_rowSelectionStaticBox_;
-    wxSpinCtrl* m_spinIgnoreFirstRows_;
-    wxSpinCtrl* m_spinIgnoreLastRows_;
+    wxButton *m_button_add_;
+    wxButton *m_button_remove_;
+    wxChoice *m_choice_account_;
+    wxListCtrl *m_list_ctrl_; //preview
+    wxTextCtrl *m_text_ctrl_;
+    wxTextCtrl *log_field_;
+    wxTextCtrl *m_textDelimiter;
+    wxStaticBox *m_rowSelectionStaticBox_;
+    wxSpinCtrl *m_spinIgnoreFirstRows_;
+    wxSpinCtrl *m_spinIgnoreLastRows_;
 
     std::map<int, wxString> CSVFieldName_;
 
-    wxChoice* choiceDateFormat_;
-    wxChoice* m_choiceEncoding;
+    wxChoice *choiceDateFormat_;
+    wxChoice *m_choiceEncoding;
     wxString date_format_;
 
-    wxChoice* m_choiceAmountFieldSign;
-    mmChoiceAmountMask* m_choiceDecimalSeparator;
+    wxChoice *m_choiceAmountFieldSign;
+    mmChoiceAmountMask *m_choiceDecimalSeparator;
     enum amountFieldSignValues { PositiveIsDeposit, PositiveIsWithdrawal };
-    wxCheckBox* m_checkBoxExportTitles;
+    wxCheckBox *m_checkBoxExportTitles;
 
     int fromAccountID_;
     bool importSuccessful_;
@@ -187,37 +187,37 @@ private:
     bool m_reverce_sign;
 
     /// Creation
-    bool Create(wxWindow* parent,
-                const wxString& caption,
+    bool Create(wxWindow *parent,
+                const wxString &caption,
                 wxWindowID id = SYMBOL_UNIVCSVDIALOG_IDNAME,
-                const wxPoint& pos = SYMBOL_UNIVCSVDIALOG_POSITION,
-                const wxSize& size = SYMBOL_UNIVCSVDIALOG_SIZE,
+                const wxPoint &pos = SYMBOL_UNIVCSVDIALOG_POSITION,
+                const wxSize &size = SYMBOL_UNIVCSVDIALOG_SIZE,
                 long style = SYMBOL_UNIVCSVDIALOG_STYLE);
 
     /// Creates the controls and sizers
     void CreateControls();
-    void OnAdd(wxCommandEvent& event);
-    bool validateData(tran_holder & holder);
-    void OnImport(wxCommandEvent& event);
-    void OnExport(wxCommandEvent& event);
-    void OnRemove(wxCommandEvent& event);
+    void OnAdd(wxCommandEvent &event);
+    bool validateData(tran_holder &holder);
+    void OnImport(wxCommandEvent &event);
+    void OnExport(wxCommandEvent &event);
+    void OnRemove(wxCommandEvent &event);
     bool isIndexPresent(int index) const;
     const wxString getCSVFieldName(int index) const;
-    void parseToken(int index, const wxString& token, tran_holder & holder);
-    void OnSave(wxCommandEvent& event);
-    void OnMoveUp(wxCommandEvent& event);
-    void OnMoveDown(wxCommandEvent& event);
-    void OnStandard(wxCommandEvent& event);
-    void OnBrowse(wxCommandEvent& event);
-    void OnListBox(wxCommandEvent& event);
-    void OnDelimiterChange(wxCommandEvent& event);
-    void OnDecimalChange(wxCommandEvent& event);
-    void OnButtonClear(wxCommandEvent& event);
-    void OnFileNameEntered(wxCommandEvent& event);
-    void OnFileNameChanged(wxCommandEvent& event);
-    void OnDateFormatChanged(wxCommandEvent& event);
-    void changeFocus(wxChildFocusEvent& event);
-    void OnSpinCtrlIgnoreRows(wxSpinEvent& event);
+    void parseToken(int index, const wxString &token, tran_holder &holder);
+    void OnSave(wxCommandEvent &event);
+    void OnMoveUp(wxCommandEvent &event);
+    void OnMoveDown(wxCommandEvent &event);
+    void OnStandard(wxCommandEvent &event);
+    void OnBrowse(wxCommandEvent &event);
+    void OnListBox(wxCommandEvent &event);
+    void OnDelimiterChange(wxCommandEvent &event);
+    void OnDecimalChange(wxCommandEvent &event);
+    void OnButtonClear(wxCommandEvent &event);
+    void OnFileNameEntered(wxCommandEvent &event);
+    void OnFileNameChanged(wxCommandEvent &event);
+    void OnDateFormatChanged(wxCommandEvent &event);
+    void changeFocus(wxChildFocusEvent &event);
+    void OnSpinCtrlIgnoreRows(wxSpinEvent &event);
 
     void OnLoad();
     void UpdateListItemBackground();
@@ -226,7 +226,7 @@ private:
     void initDateMask();
 
     bool ShowToolTips();
-    void OnSettingsSelected(wxCommandEvent& event);
+    void OnSettingsSelected(wxCommandEvent &event);
     wxString GetStoredSettings(int id);
     void SetSettings(const wxString &data);
     ITransactionsFile *CreateFileHandler();

@@ -28,7 +28,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             PrettyWriter<StringBuffer> json_writer(json_buffer);
 
             json_writer.StartArray();
-            for (const auto & item: *this)
+            for (const auto &item: *this)
             {
                 json_writer.StartObject();
                 item.as_json(json_writer);
@@ -41,11 +41,11 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     };
 
     /** A container to hold a list of Data record pointers for the table in memory*/
-    typedef std::vector<Self::Data*> Cache;
-    typedef std::map<int, Self::Data*> Index_By_Id;
+    typedef std::vector<Self::Data *> Cache;
+    typedef std::map<int, Self::Data *> Index_By_Id;
     Cache cache_;
     Index_By_Id index_by_id_;
-    Data* fake_; // in case the entity not found
+    Data *fake_; // in case the entity not found
 
     /** Destructor: clears any data records stored in memory */
     ~DB_Table_ACCOUNTLIST()
@@ -63,7 +63,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     }
 
     /** Creates the database table if the table does not exist*/
-    bool ensure(wxSQLite3Database* db)
+    bool ensure(wxSQLite3Database *db)
     {
         if (!exists(db))
         {
@@ -84,7 +84,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         return true;
     }
 
-    bool ensure_index(wxSQLite3Database* db)
+    bool ensure_index(wxSQLite3Database *db)
     {
         try
         {
@@ -99,7 +99,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         return true;
     }
 
-    void ensure_data(wxSQLite3Database* db)
+    void ensure_data(wxSQLite3Database *db)
     {
         db->Begin();
         db->Commit();
@@ -107,121 +107,181 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
 
     struct ACCOUNTID : public DB_Column<int>
     {
-        static wxString name() { return "ACCOUNTID"; }
+        static wxString name()
+        {
+            return "ACCOUNTID";
+        }
         explicit ACCOUNTID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct ACCOUNTNAME : public DB_Column<wxString>
     {
-        static wxString name() { return "ACCOUNTNAME"; }
+        static wxString name()
+        {
+            return "ACCOUNTNAME";
+        }
         explicit ACCOUNTNAME(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct ACCOUNTTYPE : public DB_Column<wxString>
     {
-        static wxString name() { return "ACCOUNTTYPE"; }
+        static wxString name()
+        {
+            return "ACCOUNTTYPE";
+        }
         explicit ACCOUNTTYPE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct ACCOUNTNUM : public DB_Column<wxString>
     {
-        static wxString name() { return "ACCOUNTNUM"; }
+        static wxString name()
+        {
+            return "ACCOUNTNUM";
+        }
         explicit ACCOUNTNUM(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct STATUS : public DB_Column<wxString>
     {
-        static wxString name() { return "STATUS"; }
+        static wxString name()
+        {
+            return "STATUS";
+        }
         explicit STATUS(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct NOTES : public DB_Column<wxString>
     {
-        static wxString name() { return "NOTES"; }
+        static wxString name()
+        {
+            return "NOTES";
+        }
         explicit NOTES(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct HELDAT : public DB_Column<wxString>
     {
-        static wxString name() { return "HELDAT"; }
+        static wxString name()
+        {
+            return "HELDAT";
+        }
         explicit HELDAT(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct WEBSITE : public DB_Column<wxString>
     {
-        static wxString name() { return "WEBSITE"; }
+        static wxString name()
+        {
+            return "WEBSITE";
+        }
         explicit WEBSITE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct CONTACTINFO : public DB_Column<wxString>
     {
-        static wxString name() { return "CONTACTINFO"; }
+        static wxString name()
+        {
+            return "CONTACTINFO";
+        }
         explicit CONTACTINFO(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct ACCESSINFO : public DB_Column<wxString>
     {
-        static wxString name() { return "ACCESSINFO"; }
+        static wxString name()
+        {
+            return "ACCESSINFO";
+        }
         explicit ACCESSINFO(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct INITIALBAL : public DB_Column<double>
     {
-        static wxString name() { return "INITIALBAL"; }
+        static wxString name()
+        {
+            return "INITIALBAL";
+        }
         explicit INITIALBAL(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
     struct FAVORITEACCT : public DB_Column<wxString>
     {
-        static wxString name() { return "FAVORITEACCT"; }
+        static wxString name()
+        {
+            return "FAVORITEACCT";
+        }
         explicit FAVORITEACCT(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct CURRENCYID : public DB_Column<int>
     {
-        static wxString name() { return "CURRENCYID"; }
+        static wxString name()
+        {
+            return "CURRENCYID";
+        }
         explicit CURRENCYID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct STATEMENTLOCKED : public DB_Column<int>
     {
-        static wxString name() { return "STATEMENTLOCKED"; }
+        static wxString name()
+        {
+            return "STATEMENTLOCKED";
+        }
         explicit STATEMENTLOCKED(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
     };
 
     struct STATEMENTDATE : public DB_Column<wxString>
     {
-        static wxString name() { return "STATEMENTDATE"; }
+        static wxString name()
+        {
+            return "STATEMENTDATE";
+        }
         explicit STATEMENTDATE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct MINIMUMBALANCE : public DB_Column<double>
     {
-        static wxString name() { return "MINIMUMBALANCE"; }
+        static wxString name()
+        {
+            return "MINIMUMBALANCE";
+        }
         explicit MINIMUMBALANCE(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
     struct CREDITLIMIT : public DB_Column<double>
     {
-        static wxString name() { return "CREDITLIMIT"; }
+        static wxString name()
+        {
+            return "CREDITLIMIT";
+        }
         explicit CREDITLIMIT(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
     struct INTERESTRATE : public DB_Column<double>
     {
-        static wxString name() { return "INTERESTRATE"; }
+        static wxString name()
+        {
+            return "INTERESTRATE";
+        }
         explicit INTERESTRATE(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
     struct PAYMENTDUEDATE : public DB_Column<wxString>
     {
-        static wxString name() { return "PAYMENTDUEDATE"; }
+        static wxString name()
+        {
+            return "PAYMENTDUEDATE";
+        }
         explicit PAYMENTDUEDATE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
     };
 
     struct MINIMUMPAYMENT : public DB_Column<double>
     {
-        static wxString name() { return "MINIMUMPAYMENT"; }
+        static wxString name()
+        {
+            return "MINIMUMPAYMENT";
+        }
         explicit MINIMUMPAYMENT(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
     };
 
@@ -256,55 +316,136 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     {
         switch(col)
         {
-            case COL_ACCOUNTID: return "ACCOUNTID";
-            case COL_ACCOUNTNAME: return "ACCOUNTNAME";
-            case COL_ACCOUNTTYPE: return "ACCOUNTTYPE";
-            case COL_ACCOUNTNUM: return "ACCOUNTNUM";
-            case COL_STATUS: return "STATUS";
-            case COL_NOTES: return "NOTES";
-            case COL_HELDAT: return "HELDAT";
-            case COL_WEBSITE: return "WEBSITE";
-            case COL_CONTACTINFO: return "CONTACTINFO";
-            case COL_ACCESSINFO: return "ACCESSINFO";
-            case COL_INITIALBAL: return "INITIALBAL";
-            case COL_FAVORITEACCT: return "FAVORITEACCT";
-            case COL_CURRENCYID: return "CURRENCYID";
-            case COL_STATEMENTLOCKED: return "STATEMENTLOCKED";
-            case COL_STATEMENTDATE: return "STATEMENTDATE";
-            case COL_MINIMUMBALANCE: return "MINIMUMBALANCE";
-            case COL_CREDITLIMIT: return "CREDITLIMIT";
-            case COL_INTERESTRATE: return "INTERESTRATE";
-            case COL_PAYMENTDUEDATE: return "PAYMENTDUEDATE";
-            case COL_MINIMUMPAYMENT: return "MINIMUMPAYMENT";
-            default: break;
+            case COL_ACCOUNTID:
+                return "ACCOUNTID";
+            case COL_ACCOUNTNAME:
+                return "ACCOUNTNAME";
+            case COL_ACCOUNTTYPE:
+                return "ACCOUNTTYPE";
+            case COL_ACCOUNTNUM:
+                return "ACCOUNTNUM";
+            case COL_STATUS:
+                return "STATUS";
+            case COL_NOTES:
+                return "NOTES";
+            case COL_HELDAT:
+                return "HELDAT";
+            case COL_WEBSITE:
+                return "WEBSITE";
+            case COL_CONTACTINFO:
+                return "CONTACTINFO";
+            case COL_ACCESSINFO:
+                return "ACCESSINFO";
+            case COL_INITIALBAL:
+                return "INITIALBAL";
+            case COL_FAVORITEACCT:
+                return "FAVORITEACCT";
+            case COL_CURRENCYID:
+                return "CURRENCYID";
+            case COL_STATEMENTLOCKED:
+                return "STATEMENTLOCKED";
+            case COL_STATEMENTDATE:
+                return "STATEMENTDATE";
+            case COL_MINIMUMBALANCE:
+                return "MINIMUMBALANCE";
+            case COL_CREDITLIMIT:
+                return "CREDITLIMIT";
+            case COL_INTERESTRATE:
+                return "INTERESTRATE";
+            case COL_PAYMENTDUEDATE:
+                return "PAYMENTDUEDATE";
+            case COL_MINIMUMPAYMENT:
+                return "MINIMUMPAYMENT";
+            default:
+                break;
         }
 
         return "UNKNOWN";
     }
 
     /** Returns the column number from the given column name*/
-    static COLUMN name_to_column(const wxString& name)
+    static COLUMN name_to_column(const wxString &name)
     {
-        if ("ACCOUNTID" == name) return COL_ACCOUNTID;
-        else if ("ACCOUNTNAME" == name) return COL_ACCOUNTNAME;
-        else if ("ACCOUNTTYPE" == name) return COL_ACCOUNTTYPE;
-        else if ("ACCOUNTNUM" == name) return COL_ACCOUNTNUM;
-        else if ("STATUS" == name) return COL_STATUS;
-        else if ("NOTES" == name) return COL_NOTES;
-        else if ("HELDAT" == name) return COL_HELDAT;
-        else if ("WEBSITE" == name) return COL_WEBSITE;
-        else if ("CONTACTINFO" == name) return COL_CONTACTINFO;
-        else if ("ACCESSINFO" == name) return COL_ACCESSINFO;
-        else if ("INITIALBAL" == name) return COL_INITIALBAL;
-        else if ("FAVORITEACCT" == name) return COL_FAVORITEACCT;
-        else if ("CURRENCYID" == name) return COL_CURRENCYID;
-        else if ("STATEMENTLOCKED" == name) return COL_STATEMENTLOCKED;
-        else if ("STATEMENTDATE" == name) return COL_STATEMENTDATE;
-        else if ("MINIMUMBALANCE" == name) return COL_MINIMUMBALANCE;
-        else if ("CREDITLIMIT" == name) return COL_CREDITLIMIT;
-        else if ("INTERESTRATE" == name) return COL_INTERESTRATE;
-        else if ("PAYMENTDUEDATE" == name) return COL_PAYMENTDUEDATE;
-        else if ("MINIMUMPAYMENT" == name) return COL_MINIMUMPAYMENT;
+        if ("ACCOUNTID" == name)
+        {
+            return COL_ACCOUNTID;
+        }
+        else if ("ACCOUNTNAME" == name)
+        {
+            return COL_ACCOUNTNAME;
+        }
+        else if ("ACCOUNTTYPE" == name)
+        {
+            return COL_ACCOUNTTYPE;
+        }
+        else if ("ACCOUNTNUM" == name)
+        {
+            return COL_ACCOUNTNUM;
+        }
+        else if ("STATUS" == name)
+        {
+            return COL_STATUS;
+        }
+        else if ("NOTES" == name)
+        {
+            return COL_NOTES;
+        }
+        else if ("HELDAT" == name)
+        {
+            return COL_HELDAT;
+        }
+        else if ("WEBSITE" == name)
+        {
+            return COL_WEBSITE;
+        }
+        else if ("CONTACTINFO" == name)
+        {
+            return COL_CONTACTINFO;
+        }
+        else if ("ACCESSINFO" == name)
+        {
+            return COL_ACCESSINFO;
+        }
+        else if ("INITIALBAL" == name)
+        {
+            return COL_INITIALBAL;
+        }
+        else if ("FAVORITEACCT" == name)
+        {
+            return COL_FAVORITEACCT;
+        }
+        else if ("CURRENCYID" == name)
+        {
+            return COL_CURRENCYID;
+        }
+        else if ("STATEMENTLOCKED" == name)
+        {
+            return COL_STATEMENTLOCKED;
+        }
+        else if ("STATEMENTDATE" == name)
+        {
+            return COL_STATEMENTDATE;
+        }
+        else if ("MINIMUMBALANCE" == name)
+        {
+            return COL_MINIMUMBALANCE;
+        }
+        else if ("CREDITLIMIT" == name)
+        {
+            return COL_CREDITLIMIT;
+        }
+        else if ("INTERESTRATE" == name)
+        {
+            return COL_INTERESTRATE;
+        }
+        else if ("PAYMENTDUEDATE" == name)
+        {
+            return COL_PAYMENTDUEDATE;
+        }
+        else if ("MINIMUMPAYMENT" == name)
+        {
+            return COL_MINIMUMPAYMENT;
+        }
 
         return COL_UNKNOWN;
     }
@@ -314,7 +455,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     {
         friend struct DB_Table_ACCOUNTLIST;
         /** This is a instance pointer to itself in memory. */
-        Self* table_;
+        Self *table_;
 
         int ACCOUNTID; // primary key
         wxString ACCOUNTNAME;
@@ -347,17 +488,17 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             ACCOUNTID = id;
         }
 
-        bool operator < (const Data& r) const
+        bool operator < (const Data &r) const
         {
             return this->id() < r.id();
         }
 
-        bool operator < (const Data* r) const
+        bool operator < (const Data *r) const
         {
             return this->id() < r->id();
         }
 
-        explicit Data(Self* table = 0)
+        explicit Data(Self *table = 0)
         {
             table_ = table;
 
@@ -371,7 +512,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             MINIMUMPAYMENT = 0.0;
         }
 
-        explicit Data(wxSQLite3ResultSet& q, Self* table = 0)
+        explicit Data(wxSQLite3ResultSet &q, Self *table = 0)
         {
             table_ = table;
 
@@ -397,9 +538,12 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             MINIMUMPAYMENT = q.GetDouble(19);
         }
 
-        Data& operator=(const Data& other)
+        Data &operator=(const Data &other)
         {
-            if (this == &other) return *this;
+            if (this == &other)
+            {
+                return *this;
+            }
 
             ACCOUNTID = other.ACCOUNTID;
             ACCOUNTNAME = other.ACCOUNTNAME;
@@ -423,7 +567,6 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             MINIMUMPAYMENT = other.MINIMUMPAYMENT;
             return *this;
         }
-
 
         bool match(const Self::ACCOUNTID &in) const
         {
@@ -539,7 +682,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         }
 
         /** Add the field data as json key:value pairs */
-        void as_json(PrettyWriter<StringBuffer>& json_writer) const
+        void as_json(PrettyWriter<StringBuffer> &json_writer) const
         {
             json_writer.Key("ACCOUNTID");
             json_writer.Int(this->ACCOUNTID);
@@ -609,7 +752,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             return row;
         }
 
-        void to_template(html_template& t) const
+        void to_template(html_template &t) const
         {
             t(L"ACCOUNTID") = ACCOUNTID;
             t(L"ACCOUNTNAME") = ACCOUNTNAME;
@@ -634,9 +777,12 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         }
 
         /** Save the record instance in memory to the database. */
-        bool save(wxSQLite3Database* db)
+        bool save(wxSQLite3Database *db)
         {
-            if (db && db->IsReadOnly()) return false;
+            if (db && db->IsReadOnly())
+            {
+                return false;
+            }
             if (!table_ || !db)
             {
                 wxLogError("can not save ACCOUNTLIST");
@@ -647,7 +793,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         }
 
         /** Remove the record instance from memory and the database. */
-        bool remove(wxSQLite3Database* db)
+        bool remove(wxSQLite3Database *db)
         {
             if (!table_ || !db)
             {
@@ -669,10 +815,16 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         NUM_COLUMNS = 20
     };
 
-    size_t num_columns() const { return NUM_COLUMNS; }
+    size_t num_columns() const
+    {
+        return NUM_COLUMNS;
+    }
 
     /** Name of the table */
-    wxString name() const { return "ACCOUNTLIST"; }
+    wxString name() const
+    {
+        return "ACCOUNTLIST";
+    }
 
     DB_Table_ACCOUNTLIST() : fake_(new Data())
     {
@@ -680,17 +832,17 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     }
 
     /** Create a new Data record and add to memory table (cache) */
-    Self::Data* create()
+    Self::Data *create()
     {
-        Self::Data* entity = new Self::Data(this);
+        Self::Data *entity = new Self::Data(this);
         cache_.push_back(entity);
         return entity;
     }
 
     /** Create a copy of the Data record and add to memory table (cache) */
-    Self::Data* clone(const Data* e)
+    Self::Data *clone(const Data *e)
     {
-        Self::Data* entity = create();
+        Self::Data *entity = create();
         *entity = *e;
         entity->id(-1);
         return entity;
@@ -701,7 +853,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     * Either create a new record or update the existing record.
     * Remove old record from the memory table (cache)
     */
-    bool save(Self::Data* entity, wxSQLite3Database* db)
+    bool save(Self::Data *entity, wxSQLite3Database *db)
     {
         wxString sql = wxEmptyString;
         if (entity->id() <= 0) //  new & insert
@@ -737,7 +889,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             stmt.Bind(18, entity->PAYMENTDUEDATE);
             stmt.Bind(19, entity->MINIMUMPAYMENT);
             if (entity->id() > 0)
+            {
                 stmt.Bind(20, entity->ACCOUNTID);
+            }
 
             stmt.ExecuteUpdate();
             stmt.Finalize();
@@ -746,9 +900,11 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             {
                 for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
                 {
-                    Self::Data* e = *it;
+                    Self::Data *e = *it;
                     if (e->id() == entity->id())
-                        *e = *entity;  // in-place update
+                    {
+                        *e = *entity;    // in-place update
+                    }
                 }
             }
         }
@@ -767,9 +923,12 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(int id, wxSQLite3Database* db)
+    bool remove(int id, wxSQLite3Database *db)
     {
-        if (id <= 0) return false;
+        if (id <= 0)
+        {
+            return false;
+        }
         try
         {
             wxString sql = "DELETE FROM ACCOUNTLIST WHERE ACCOUNTID = ?";
@@ -781,7 +940,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             Cache c;
             for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
             {
-                Self::Data* entity = *it;
+                Self::Data *entity = *it;
                 if (entity->id() == id)
                 {
                     index_by_id_.erase(entity->id());
@@ -805,7 +964,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(Self::Data* entity, wxSQLite3Database* db)
+    bool remove(Self::Data *entity, wxSQLite3Database *db)
     {
         if (remove(entity->id(), db))
         {
@@ -817,11 +976,11 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     }
 
     template<typename... Args>
-    Self::Data* get_one(const Args& ... args)
+    Self::Data *get_one(const Args &... args)
     {
         for (Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it)
         {
-            Self::Data* item = it->second;
+            Self::Data *item = it->second;
             if (item->id() > 0 && match(item, args...))
             {
                 ++ hit_;
@@ -838,7 +997,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data* get(int id, wxSQLite3Database* db)
+    Self::Data *get(int id, wxSQLite3Database *db)
     {
         if (id <= 0)
         {
@@ -854,7 +1013,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         }
 
         ++ miss_;
-        Self::Data* entity = 0;
+        Self::Data *entity = 0;
         wxString where = wxString::Format(" WHERE %s = ?", PRIMARY::name().c_str());
         try
         {
@@ -888,7 +1047,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all(wxSQLite3Database* db, COLUMN col = COLUMN(0), bool asc = true)
+    const Data_Set all(wxSQLite3Database *db, COLUMN col = COLUMN(0), bool asc = true)
     {
         Data_Set result;
         try

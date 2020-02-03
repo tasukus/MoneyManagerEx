@@ -29,7 +29,7 @@ class OptionSettingsGeneral : public OptionSettingsBase
 public:
     OptionSettingsGeneral();
 
-    OptionSettingsGeneral(wxWindow *parent, mmGUIApp* app
+    OptionSettingsGeneral(wxWindow *parent, mmGUIApp *app
                           , wxWindowID id = wxID_ANY
                           , const wxPoint &pos = wxDefaultPosition
                           , const wxSize &size = wxDefaultSize
@@ -44,22 +44,22 @@ public:
 private:
     void Create();
 
-    void OnCurrency(wxCommandEvent& event);
-    void OnDateFormatChanged(wxCommandEvent& event);
+    void OnCurrency(wxCommandEvent &event);
+    void OnDateFormatChanged(wxCommandEvent &event);
 
     bool SaveFinancialYearStart();
 
 private:
-    mmGUIApp* m_app = nullptr;
-    wxChoice* m_date_format_choice = nullptr;
-    wxChoice* m_month_selection = nullptr;
-    wxStaticText* m_sample_date_text = nullptr;
+    mmGUIApp *m_app = nullptr;
+    wxChoice *m_date_format_choice = nullptr;
+    wxChoice *m_month_selection = nullptr;
+    wxStaticText *m_sample_date_text = nullptr;
 
     int m_currency_id = -1;
     wxString m_date_format;
 
-    wxCheckBox* m_use_org_date_copy_paste = nullptr;
-    wxCheckBox* m_use_sound = nullptr;
+    wxCheckBox *m_use_org_date_copy_paste = nullptr;
+    wxCheckBox *m_use_sound = nullptr;
 
     enum
     {

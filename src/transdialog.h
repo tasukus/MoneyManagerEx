@@ -46,25 +46,25 @@ public:
     virtual ~mmTransDialog();
 
     mmTransDialog(
-        wxWindow* parent
+        wxWindow *parent
         , int account_id
         , int transaction_id
         , double current_balance
         , bool duplicate = false
         , int type = Model_Checking::WITHDRAWAL
-        , const wxString& name = "mmTransDialog"
+        , const wxString &name = "mmTransDialog"
     );
 
-    bool Create(wxWindow* parent
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style
-                , const wxString& name = "mmTransDialog"
+                , const wxString &name = "mmTransDialog"
                );
 
-    void SetDialogTitle(const wxString& title);
+    void SetDialogTitle(const wxString &title);
     int GetAccountID()
     {
         return m_trx_data.ACCOUNTID;
@@ -79,52 +79,52 @@ public:
     }
 
 private:
-    mmCustomData* m_custom_fields = nullptr;
+    mmCustomData *m_custom_fields = nullptr;
     void CreateControls();
     void dataToControls();
     bool ValidateData();
     void SetEventHandlers();
 
-    void OnSplitChecked(wxCommandEvent& event);
-    void OnOk(wxCommandEvent& event);
-    void OnCancel(wxCommandEvent& event);
-    void OnMoreFields(wxCommandEvent& event);
-    void OnQuit(wxCloseEvent& event);
-    void OnCategs(wxCommandEvent& event);
-    void OnAttachments(wxCommandEvent& event);
-    void OnAccountOrPayeeUpdated(wxCommandEvent& event);
-    void OnDpcKillFocus(wxFocusEvent& event);
-    void OnAutoTransNum(wxCommandEvent& event);
-    void OnFrequentUsedNotes(wxCommandEvent& event);
-    void OnNoteSelected(wxCommandEvent& event);
-    void OnTransTypeChanged(wxCommandEvent& event);
-    void OnTransDateSpin(wxSpinEvent&);
-    void OnDateChanged(wxDateEvent& event);
-    void OnFocusChange(wxChildFocusEvent& event);
-    void OnTextEntered(wxCommandEvent& event);
-    void OnAdvanceChecked(wxCommandEvent& event);
+    void OnSplitChecked(wxCommandEvent &event);
+    void OnOk(wxCommandEvent &event);
+    void OnCancel(wxCommandEvent &event);
+    void OnMoreFields(wxCommandEvent &event);
+    void OnQuit(wxCloseEvent &event);
+    void OnCategs(wxCommandEvent &event);
+    void OnAttachments(wxCommandEvent &event);
+    void OnAccountOrPayeeUpdated(wxCommandEvent &event);
+    void OnDpcKillFocus(wxFocusEvent &event);
+    void OnAutoTransNum(wxCommandEvent &event);
+    void OnFrequentUsedNotes(wxCommandEvent &event);
+    void OnNoteSelected(wxCommandEvent &event);
+    void OnTransTypeChanged(wxCommandEvent &event);
+    void OnTransDateSpin(wxSpinEvent &);
+    void OnDateChanged(wxDateEvent &event);
+    void OnFocusChange(wxChildFocusEvent &event);
+    void OnTextEntered(wxCommandEvent &event);
+    void OnAdvanceChecked(wxCommandEvent &event);
     void ActivateSplitTransactionsDlg();
     void SetTooltips();
     void SetCategoryForPayee(const Model_Payee::Data *payee);
 
-    mmTextCtrl* textNumber_ = nullptr;
-    mmTextCtrl* m_textAmount = nullptr;
-    mmTextCtrl* toTextAmount_ = nullptr;
-    wxTextCtrl* textNotes_ = nullptr;
-    wxButton* bCategory_ = nullptr;
-    wxButton* bAttachments_ = nullptr;
-    wxComboBox* cbAccount_ = nullptr;
-    wxComboBox* cbPayee_ = nullptr;
-    wxCheckBox* cSplit_ = nullptr;
-    wxCheckBox* cAdvanced_ = nullptr;
-    wxButton* itemButtonCancel_ = nullptr;
-    wxChoice* choiceStatus_ = nullptr;
-    wxChoice* transaction_type_ = nullptr;
-    wxDatePickerCtrl* dpc_ = nullptr;
-    wxSpinButton* spinCtrl_ = nullptr;
-    wxStaticText* itemStaticTextWeek_ = nullptr;
-    wxStaticText* account_label_ = nullptr;
-    wxStaticText* payee_label_ = nullptr;
+    mmTextCtrl *textNumber_ = nullptr;
+    mmTextCtrl *m_textAmount = nullptr;
+    mmTextCtrl *toTextAmount_ = nullptr;
+    wxTextCtrl *textNotes_ = nullptr;
+    wxButton *bCategory_ = nullptr;
+    wxButton *bAttachments_ = nullptr;
+    wxComboBox *cbAccount_ = nullptr;
+    wxComboBox *cbPayee_ = nullptr;
+    wxCheckBox *cSplit_ = nullptr;
+    wxCheckBox *cAdvanced_ = nullptr;
+    wxButton *itemButtonCancel_ = nullptr;
+    wxChoice *choiceStatus_ = nullptr;
+    wxChoice *transaction_type_ = nullptr;
+    wxDatePickerCtrl *dpc_ = nullptr;
+    wxSpinButton *spinCtrl_ = nullptr;
+    wxStaticText *itemStaticTextWeek_ = nullptr;
+    wxStaticText *account_label_ = nullptr;
+    wxStaticText *payee_label_ = nullptr;
 
     bool m_transfer = false;
     bool m_new_trx = false;
@@ -139,8 +139,8 @@ private:
 
     DB_Table_CHECKINGACCOUNT::Data m_trx_data;
     std::vector<Split> local_splits;
-    Model_Currency::Data* m_currency = nullptr;
-    Model_Currency::Data* m_to_currency = nullptr;
+    Model_Currency::Data *m_currency = nullptr;
+    Model_Currency::Data *m_to_currency = nullptr;
 
     std::vector<wxString> frequentNotes_;
 

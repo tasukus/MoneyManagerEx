@@ -28,7 +28,7 @@ class mmReportCategoryExpenses : public mmPrintableBase
 {
 public:
     enum TYPE { CATEGORY = 0, GOES, COME };
-    explicit mmReportCategoryExpenses(const wxString& title, enum TYPE type);
+    explicit mmReportCategoryExpenses(const wxString &title, enum TYPE type);
     virtual ~mmReportCategoryExpenses();
 
     virtual void RefreshData();
@@ -40,7 +40,13 @@ protected:
 
 private:
     // structure for sorting of data
-    struct data_holder { wxString color;  wxString name; double amount; int categs; };
+    struct data_holder
+    {
+        wxString color;
+        wxString name;
+        double amount;
+        int categs;
+    };
     std::vector<data_holder> data_;
 };
 

@@ -34,30 +34,30 @@ class mmOptionsDialog: public wxDialog
 
 public:
     mmOptionsDialog( );
-    mmOptionsDialog(wxWindow* parent, mmGUIApp* app);
+    mmOptionsDialog(wxWindow *parent, mmGUIApp *app);
     ~mmOptionsDialog( );
 
 public:
     /// Saves the updated System Options to the appropriate databases.
     void SaveNewSystemSettings();
-    mmGUIApp* m_app = nullptr;
+    mmGUIApp *m_app = nullptr;
 
 private:
     /// Dialog Creation - Used by constructor
-    bool Create(wxWindow* parent, wxWindowID id,
-                const wxString& caption,
-                const wxPoint& pos,
-                const wxSize& size,
+    bool Create(wxWindow *parent, wxWindowID id,
+                const wxString &caption,
+                const wxPoint &pos,
+                const wxSize &size,
                 long style);
 
     void CreateControls();
-    void OnOk(wxCommandEvent& WXUNUSED(event));
-    void OnApply(wxCommandEvent& WXUNUSED(event));
+    void OnOk(wxCommandEvent &WXUNUSED(event));
+    void OnApply(wxCommandEvent &WXUNUSED(event));
 
 private:
-    wxImageList* m_imageList = nullptr;
-    wxListbook* m_notebook = nullptr;
-    std::vector<OptionSettingsBase*> m_panel_list;
+    wxImageList *m_imageList = nullptr;
+    wxListbook *m_notebook = nullptr;
+    std::vector<OptionSettingsBase *> m_panel_list;
 };
 
 #endif

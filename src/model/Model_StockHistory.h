@@ -39,23 +39,23 @@ public:
     * Return the static instance address for Model_Stock table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_StockHistory& instance(wxSQLite3Database* db);
+    static Model_StockHistory &instance(wxSQLite3Database *db);
 
     /**
     * Return the static instance address for Model_StockHistory table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_StockHistory& instance();
+    static Model_StockHistory &instance();
 
 public:
-    Data* get(const wxString& symbol, const wxDate& date);
-    static wxDate DATE(const Data& hist);
+    Data *get(const wxString &symbol, const wxDate &date);
+    static wxDate DATE(const Data &hist);
 
-    static DB_Table_STOCKHISTORY::DATE DATE(const wxDate& date, OP op = EQUAL);
+    static DB_Table_STOCKHISTORY::DATE DATE(const wxDate &date, OP op = EQUAL);
     /**
     Adds or updates an element in stock history
     */
-    int addUpdate(const wxString& symbol, const wxDate& date, double price, UPDTYPE type);
+    int addUpdate(const wxString &symbol, const wxDate &date, double price, UPDTYPE type);
 };
 
 #endif

@@ -27,7 +27,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "Model_Checking.h"
 #include "Model_CurrencyHistory.h"
 
-
 mmReportIncomeExpenses::mmReportIncomeExpenses()
     : mmPrintableBase(_("Income vs Expenses"))
 {
@@ -54,29 +53,40 @@ wxString mmReportIncomeExpenses::getHTMLText()
     hb.addDateNow();
 
     std::pair<double, double> income_expenses_pair;
-    for (const auto& transaction : Model_Checking::instance().find(
-        Model_Checking::TRANSDATE(m_date_range->start_date(), GREATER_OR_EQUAL)
-        , Model_Checking::TRANSDATE(m_date_range->end_date(), LESS_OR_EQUAL)
-        , Model_Checking::STATUS(Model_Checking::VOID_, NOT_EQUAL)))
+    for (const auto &transaction : Model_Checking::instance().find(
+                Model_Checking::TRANSDATE(m_date_range->start_date(), GREATER_OR_EQUAL)
+                , Model_Checking::TRANSDATE(m_date_range->end_date(), LESS_OR_EQUAL)
+                , Model_Checking::STATUS(Model_Checking::VOID_, NOT_EQUAL)))
     {
         // Do not include asset or stock transfers in income expense calculations.
         if (Model_Checking::foreignTransactionAsTransfer(transaction))
+        {
             continue;
+        }
 
         Model_Account::Data *account = Model_Account::instance().get(transaction.ACCOUNTID);
         if (accountArray_)
         {
             if (!account || wxNOT_FOUND == accountArray_->Index(account->ACCOUNTNAME))
+            {
                 continue;
+            }
         }
         double convRate = 1;
         // We got this far, get the currency conversion rate for this account
-        if (account) convRate = Model_CurrencyHistory::getDayRate(Model_Account::currency(account)->CURRENCYID,transaction.TRANSDATE);
+        if (account)
+        {
+            convRate = Model_CurrencyHistory::getDayRate(Model_Account::currency(account)->CURRENCYID,transaction.TRANSDATE);
+        }
 
         if (Model_Checking::type(transaction) == Model_Checking::DEPOSIT)
+        {
             income_expenses_pair.first += transaction.TRANSAMOUNT * convRate;
+        }
         else if (Model_Checking::type(transaction) == Model_Checking::WITHDRAWAL)
+        {
             income_expenses_pair.second += transaction.TRANSAMOUNT * convRate;
+        }
     }
 
     BarGraphData vt;
@@ -103,7 +113,9 @@ wxString mmReportIncomeExpenses::getHTMLText()
             hb.startTableCell(" style='vertical-align:middle' width='70%'");
             hb.addDivCol17_67();
             if (!valueList.empty())
+            {
                 hb.addBarChart(labels, valueList, "BarChart");
+            }
             hb.endDiv();
             hb.endTableCell();
 
@@ -160,28 +172,37 @@ wxString mmReportIncomeExpensesMonthly::getHTMLText()
 
     std::map<int, std::pair<double, double> > incomeExpensesStats;
     //TODO: init all the map values with 0.0
-    for (const auto& transaction : Model_Checking::instance().find(
-        Model_Checking::TRANSDATE(m_date_range->start_date(), GREATER_OR_EQUAL)
-        , Model_Checking::TRANSDATE(m_date_range->end_date(), LESS_OR_EQUAL)
-        , Model_Checking::STATUS(Model_Checking::VOID_, NOT_EQUAL)))
+    for (const auto &transaction : Model_Checking::instance().find(
+                Model_Checking::TRANSDATE(m_date_range->start_date(), GREATER_OR_EQUAL)
+                , Model_Checking::TRANSDATE(m_date_range->end_date(), LESS_OR_EQUAL)
+                , Model_Checking::STATUS(Model_Checking::VOID_, NOT_EQUAL)))
     {
         Model_Account::Data *account = Model_Account::instance().get(transaction.ACCOUNTID);
         if (accountArray_)
         {
             if (!account || wxNOT_FOUND == accountArray_->Index(account->ACCOUNTNAME))
+            {
                 continue;
+            }
         }
         double convRate = 1;
         // We got this far, get the currency conversion rate for this account
-        if (account) convRate = Model_CurrencyHistory::getDayRate(Model_Account::currency(account)->CURRENCYID, transaction.TRANSDATE);
+        if (account)
+        {
+            convRate = Model_CurrencyHistory::getDayRate(Model_Account::currency(account)->CURRENCYID, transaction.TRANSDATE);
+        }
 
         int idx = (Model_Checking::TRANSDATE(transaction).GetYear() * 100
-            + Model_Checking::TRANSDATE(transaction).GetMonth());
+                   + Model_Checking::TRANSDATE(transaction).GetMonth());
 
         if (Model_Checking::type(transaction) == Model_Checking::DEPOSIT)
+        {
             incomeExpensesStats[idx].first += transaction.TRANSAMOUNT * convRate;
+        }
         else if (Model_Checking::type(transaction) == Model_Checking::WITHDRAWAL)
+        {
             incomeExpensesStats[idx].second += transaction.TRANSAMOUNT * convRate;
+        }
     }
 
     mmHTMLBuilder hb;
@@ -201,11 +222,11 @@ wxString mmReportIncomeExpensesMonthly::getHTMLText()
         hb.startThead();
         {
             hb.startTableRow();
-              hb.addTableHeaderCell(_("Year"));
-              hb.addTableHeaderCell(_("Month"));
-              hb.addTableHeaderCell(_("Income"), true);
-              hb.addTableHeaderCell(_("Expenses"), true);
-              hb.addTableHeaderCell(_("Difference"), true);
+            hb.addTableHeaderCell(_("Year"));
+            hb.addTableHeaderCell(_("Month"));
+            hb.addTableHeaderCell(_("Income"), true);
+            hb.addTableHeaderCell(_("Expenses"), true);
+            hb.addTableHeaderCell(_("Difference"), true);
             hb.endTableRow();
         }
         hb.endThead();

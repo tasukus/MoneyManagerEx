@@ -42,15 +42,15 @@ public:
 private:
     void Create();
 
-    void OnAttachmentsButton(wxCommandEvent& event);
-    void OnAttachmentsMenu(wxCommandEvent& event);
-    void OnAttachmentsPathChanged(wxCommandEvent& event);
-    void OnAttachmentsSubfolderChanged(wxCommandEvent& event);
+    void OnAttachmentsButton(wxCommandEvent &event);
+    void OnAttachmentsMenu(wxCommandEvent &event);
+    void OnAttachmentsPathChanged(wxCommandEvent &event);
+    void OnAttachmentsSubfolderChanged(wxCommandEvent &event);
 
 private:
-    wxCheckBox* m_attachments_subfolder = nullptr;
-    wxCheckBox* m_delete_attachments = nullptr;
-    wxCheckBox* m_trash_attachments = nullptr;
+    wxCheckBox *m_attachments_subfolder = nullptr;
+    wxCheckBox *m_delete_attachments = nullptr;
+    wxCheckBox *m_trash_attachments = nullptr;
     wxString m_old_path;
 
     enum

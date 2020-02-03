@@ -42,7 +42,7 @@ public:
                 , const wxWindowID id);
     virtual wxString OnGetItemText(long item, long column) const;
 private:
-    mmGeneralReportManager* m_grm;
+    mmGeneralReportManager *m_grm;
 };
 
 class mmGeneralReportManager: public wxDialog
@@ -55,66 +55,66 @@ public:
     mmGeneralReportManager( ) {}
     virtual ~mmGeneralReportManager();
 
-    mmGeneralReportManager(wxWindow* parent, wxSQLite3Database* db);
+    mmGeneralReportManager(wxWindow *parent, wxSQLite3Database *db);
     wxString OnGetItemText(long item, long column) const;
 
 private:
-    bool Create(wxWindow* parent
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
     /// Creates the controls and sizers
     void CreateControls();
     void fillControls();
-    void OnImportReportEvt(wxCommandEvent& event);
+    void OnImportReportEvt(wxCommandEvent &event);
     void importReport();
     bool openZipFile(const wxString &reportFileName
                      , wxString &htt, wxString &sql, wxString &lua, wxString &readme);
-    void OnUpdateReport(wxCommandEvent& event);
-    void OnExportReport(wxCommandEvent& event);
-    void OnRun(wxCommandEvent& event);
-    void OnClose(wxCommandEvent& event);
-    void OnSqlTest(wxCommandEvent& event);
-    void OnNewTemplate(wxCommandEvent& event);
-    void OnItemRightClick(wxTreeEvent& event);
-    void OnSelChanged(wxTreeEvent& event);
+    void OnUpdateReport(wxCommandEvent &event);
+    void OnExportReport(wxCommandEvent &event);
+    void OnRun(wxCommandEvent &event);
+    void OnClose(wxCommandEvent &event);
+    void OnSqlTest(wxCommandEvent &event);
+    void OnNewTemplate(wxCommandEvent &event);
+    void OnItemRightClick(wxTreeEvent &event);
+    void OnSelChanged(wxTreeEvent &event);
     //void OnLabelChanged(wxTreeEvent& event);
     void viewControls(bool enable);
     void renameReport(int id);
     bool DeleteReport(int id);
     bool changeReportGroup(int id, bool ungroup);
-    bool renameReportGroup(const wxString& GroupName);
-    void OnMenuSelected(wxCommandEvent& event);
+    bool renameReportGroup(const wxString &GroupName);
+    void OnMenuSelected(wxCommandEvent &event);
     void newReport(int sample = ID_NEW_EMPTY);
-    void createEditorTab(wxNotebook* notebook, int type);
-    void createOutputTab(wxNotebook* notebook, int type);
+    void createEditorTab(wxNotebook *notebook, int type);
+    void createOutputTab(wxNotebook *notebook, int type);
     void showHelp();
 
-    bool getColumns(const wxString& sql, std::vector<std::pair<wxString, int> > &colHeaders);
+    bool getColumns(const wxString &sql, std::vector<std::pair<wxString, int> > &colHeaders);
     void getSqlTableInfo(std::vector<std::pair<wxString, wxArrayString>> &sqlTableInfo);
-    bool getSqlQuery(/*in*/ wxString& sql, /*out*/ std::vector <std::vector <wxString> > &sqlQueryData, wxString& SqlError);
-    wxString getTemplate(const wxString& sql);
+    bool getSqlQuery(/*in*/ wxString &sql, /*out*/ std::vector <std::vector <wxString> > &sqlQueryData, wxString &SqlError);
+    wxString getTemplate(const wxString &sql);
     std::vector <std::vector <wxString> > m_sqlQueryData;
 
-    wxSQLite3Database* m_db = nullptr;
-    wxWebView* m_outputHTML=nullptr;
+    wxSQLite3Database *m_db = nullptr;
+    wxWebView *m_outputHTML=nullptr;
 
-    wxButton* m_buttonOpen = nullptr;
-    wxButton* m_buttonSave = nullptr;
-    wxButton* m_buttonSaveAs = nullptr;
-    wxButton* m_buttonRun = nullptr;
-    wxTreeCtrl* m_treeCtrl = nullptr;
-    wxTreeCtrl* m_dbView = nullptr;
-    sqlListCtrl* m_sqlListBox = nullptr;
+    wxButton *m_buttonOpen = nullptr;
+    wxButton *m_buttonSave = nullptr;
+    wxButton *m_buttonSaveAs = nullptr;
+    wxButton *m_buttonRun = nullptr;
+    wxTreeCtrl *m_treeCtrl = nullptr;
+    wxTreeCtrl *m_dbView = nullptr;
+    sqlListCtrl *m_sqlListBox = nullptr;
     wxTreeItemId m_rootItem;
     wxTreeItemId m_selectedItemID;
     int m_selectedReportID = 0;
     wxString m_selectedGroup;
 
 #if wxUSE_DRAG_AND_DROP
-    void OnBeginDrag(wxTreeEvent& event);
+    void OnBeginDrag(wxTreeEvent &event);
 #endif // wxUSE_DRAG_AND_DROP
 
     enum

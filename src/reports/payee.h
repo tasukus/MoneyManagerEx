@@ -36,13 +36,19 @@ public:
 
 protected:
     void getPayeeStats(std::map<int, std::pair<double, double> > &payeeStats
-        , mmDateRange* date_range, bool ignoreFuture) const;
+                       , mmDateRange *date_range, bool ignoreFuture) const;
 
     enum TYPE {INCOME = 0, EXPENSES, MAX};
 
 private:
     // structure for sorting of data
-    struct data_holder { wxString color; wxString name; double incomes; double expenses; };
+    struct data_holder
+    {
+        wxString color;
+        wxString name;
+        double incomes;
+        double expenses;
+    };
     std::vector<data_holder> data_;
     std::vector<ValueTrio> valueList_;
     double positiveTotal_;

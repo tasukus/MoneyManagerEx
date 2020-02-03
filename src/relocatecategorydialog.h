@@ -32,21 +32,21 @@ class relocateCategoryDialog : public wxDialog
 
 public:
     relocateCategoryDialog();
-    relocateCategoryDialog(wxWindow* parent, int sourceCatID = -1, int sourceSubCatID = -1);
+    relocateCategoryDialog(wxWindow *parent, int sourceCatID = -1, int sourceSubCatID = -1);
 
-    bool Create(wxWindow* parent
+    bool Create(wxWindow *parent
                 , wxWindowID id
-                , const wxString& caption
-                , const wxPoint& pos
-                , const wxSize& size
+                , const wxString &caption
+                , const wxPoint &pos
+                , const wxSize &size
                 , long style);
 
     void CreateControls();
 
     // utility functions
-    void OnSelectSource(wxCommandEvent& event);
-    void OnSelectDest(wxCommandEvent& event);
-    void OnOk(wxCommandEvent& event);
+    void OnSelectSource(wxCommandEvent &event);
+    void OnSelectDest(wxCommandEvent &event);
+    void OnOk(wxCommandEvent &event);
 
     int updatedCategoriesCount() const;
 
@@ -54,12 +54,12 @@ private:
     void IsOkOk();
     int m_sourceCatID = -1;
     int m_sourceSubCatID = -1;
-    wxButton* m_buttonSource = nullptr;
-    wxStaticText* m_info = nullptr;
+    wxButton *m_buttonSource = nullptr;
+    wxStaticText *m_info = nullptr;
 
     int m_destCatID = -1;
     int m_destSubCatID = -1;
-    wxButton* m_buttonDest=nullptr;
+    wxButton *m_buttonDest=nullptr;
     int m_changedRecords = 0;
 };
 

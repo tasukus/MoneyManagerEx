@@ -54,11 +54,11 @@ class mmWebApp
 
 //Internal function
     const static wxString WebApp_getApiVersion();
-    static int WebApp_SendJson(wxString& Website, const wxString& JsonData, wxString& Output);
+    static int WebApp_SendJson(wxString &Website, const wxString &JsonData, wxString &Output);
     static bool WebApp_DeleteAllAccount();
     static bool WebApp_DeleteAllPayee();
     static bool WebApp_DeleteAllCategory();
-    static wxString WebApp_DownloadOneAttachment(const wxString& AttachmentName, int DesktopTransactionID, int AttachmentNr);
+    static wxString WebApp_DownloadOneAttachment(const wxString &AttachmentName, int DesktopTransactionID, int AttachmentNr);
 
 public:
     /*WebApp transaction Structure*/
@@ -79,7 +79,7 @@ public:
     };
     typedef std::vector<webtran_holder> WebTranVector;
 
-    static bool returnResult(int& ErrorCode, wxString& outputMessage);
+    static bool returnResult(int &ErrorCode, wxString &outputMessage);
 
     /** Return true if WebApp is enabled */
     static bool WebApp_CheckEnabled();
@@ -100,16 +100,16 @@ public:
     static bool WebApp_UpdateCategory();
 
     /** Download new transaction */
-    static bool WebApp_DownloadNewTransaction(WebTranVector& WebAppTransactions_, const bool CheckOnly);
+    static bool WebApp_DownloadNewTransaction(WebTranVector &WebAppTransactions_, const bool CheckOnly);
 
     /** Insert transaction in MMEX desktop, returns transaction ID */
-    static int MMEX_InsertNewTransaction(webtran_holder& WebAppTrans);
+    static int MMEX_InsertNewTransaction(webtran_holder &WebAppTrans);
 
     /** Delete transaction from WebApp */
     static bool WebApp_DeleteOneTransaction(int WebAppTransactionId);
 
     /* Return attachment URL */
-    static wxString WebApp_GetAttachment(const wxString& AttachmentFileName);
+    static wxString WebApp_GetAttachment(const wxString &AttachmentFileName);
 
     //FUNCTIONS CALLED IN MMEX TO UPDATE ON CHANGE
     /** Update all payees on WebApp if enabled */

@@ -40,7 +40,7 @@ public:
     /// Constructors
     SplitDetailDialog();
     SplitDetailDialog(
-        wxWindow* parent
+        wxWindow *parent
         , Split &split
         , int transType
         , int accountID
@@ -51,24 +51,24 @@ public:
     }
 
 private:
-    bool Create(wxWindow* parent);
+    bool Create(wxWindow *parent);
     void CreateControls();
     void DataToControls();
 
-    void OnButtonCategoryClick( wxCommandEvent& event );
+    void OnButtonCategoryClick( wxCommandEvent &event );
 
-    void OnButtonOKClick( wxCommandEvent& event );
-    void onTextEntered(wxCommandEvent& event);
-    void OnCancel(wxCommandEvent& WXUNUSED(event));
+    void OnButtonOKClick( wxCommandEvent &event );
+    void onTextEntered(wxCommandEvent &event);
+    void OnCancel(wxCommandEvent &WXUNUSED(event));
 
     Split split_;
-    Model_Currency::Data* m_currency = nullptr;
+    Model_Currency::Data *m_currency = nullptr;
     int transType_ = -1;
 
-    wxChoice* m_choice_type = nullptr;
-    mmTextCtrl* m_text_mount = nullptr;
-    wxButton* m_bcategory = nullptr;
-    wxButton* m_cancel_button = nullptr;
+    wxChoice *m_choice_type = nullptr;
+    mmTextCtrl *m_text_mount = nullptr;
+    wxButton *m_bcategory = nullptr;
+    wxButton *m_cancel_button = nullptr;
 };
 
 #endif
