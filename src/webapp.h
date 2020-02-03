@@ -26,39 +26,39 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //Parameters used in services.php
 namespace WebAppParam
 {
-    extern const wxString ServicesPage;
-    extern const wxString ApiExpectedVersion;
-    extern const wxString CheckGuid;
-    extern const wxString CheckApiVersion;
-    extern const wxString DeleteAccount;
-    extern const wxString ImportAccount;
-    extern const wxString DeletePayee;
-    extern const wxString ImportPayee;
-    extern const wxString DeleteCategory;
-    extern const wxString ImportCategory;
-    extern const wxString DeleteOneTransaction;
-    extern const wxString DownloadNewTransaction;
-    extern const wxString DownloadAttachments;
-    extern const wxString DeleteAttachment;
-    extern const wxString MessageSuccedeed;
-    extern const wxString MessageWrongGuid;
+extern const wxString ServicesPage;
+extern const wxString ApiExpectedVersion;
+extern const wxString CheckGuid;
+extern const wxString CheckApiVersion;
+extern const wxString DeleteAccount;
+extern const wxString ImportAccount;
+extern const wxString DeletePayee;
+extern const wxString ImportPayee;
+extern const wxString DeleteCategory;
+extern const wxString ImportCategory;
+extern const wxString DeleteOneTransaction;
+extern const wxString DownloadNewTransaction;
+extern const wxString DownloadAttachments;
+extern const wxString DeleteAttachment;
+extern const wxString MessageSuccedeed;
+extern const wxString MessageWrongGuid;
 }
 
 class mmWebApp
 {
-const static wxString getUrl();
-const static wxString getGuid();
+    const static wxString getUrl();
+    const static wxString getGuid();
 
-/** Return services page URL with GUID inserted */
-const static wxString getServicesPageURL();
+    /** Return services page URL with GUID inserted */
+    const static wxString getServicesPageURL();
 
 //Internal function
-const static wxString WebApp_getApiVersion();
-static int WebApp_SendJson(wxString& Website, const wxString& JsonData, wxString& Output);
-static bool WebApp_DeleteAllAccount();
-static bool WebApp_DeleteAllPayee();
-static bool WebApp_DeleteAllCategory();
-static wxString WebApp_DownloadOneAttachment(const wxString& AttachmentName, int DesktopTransactionID, int AttachmentNr);
+    const static wxString WebApp_getApiVersion();
+    static int WebApp_SendJson(wxString& Website, const wxString& JsonData, wxString& Output);
+    static bool WebApp_DeleteAllAccount();
+    static bool WebApp_DeleteAllPayee();
+    static bool WebApp_DeleteAllCategory();
+    static wxString WebApp_DownloadOneAttachment(const wxString& AttachmentName, int DesktopTransactionID, int AttachmentNr);
 
 public:
     /*WebApp transaction Structure*/

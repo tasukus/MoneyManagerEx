@@ -42,7 +42,7 @@ static const wxCmdLineEntryDesc g_cmdLineDesc [] =
 //----------------------------------------------------------------------------
 
 mmGUIApp::mmGUIApp()
-: m_locale(wxLanguage::wxLANGUAGE_DEFAULT)
+    : m_locale(wxLanguage::wxLANGUAGE_DEFAULT)
 {
 #if wxUSE_ON_FATAL_EXCEPTION
     // catch fatal exceptions
@@ -57,10 +57,12 @@ wxLanguage mmGUIApp::getGUILanguage() const
 
 bool mmGUIApp::setGUILanguage(wxLanguage lang)
 {
-    if (lang == wxLANGUAGE_UNKNOWN) {
+    if (lang == wxLANGUAGE_UNKNOWN)
+    {
         lang = wxLANGUAGE_DEFAULT;
     }
-    if (lang == this->m_lang) {
+    if (lang == this->m_lang)
+    {
         return false;
     }
     wxTranslations *trans = new wxTranslations;
@@ -81,19 +83,26 @@ bool mmGUIApp::setGUILanguage(wxLanguage lang)
             best = trans->GetBestTranslation("mmex");
 #endif
             if (best.IsEmpty())
+            {
                 best = wxLocale::GetLanguageName(wxLocale::GetSystemLanguage());
+            }
             msg = wxString::Format(_("Cannot load a translation for the default language of your system (%s)."),
-                best);
+                                   best);
         }
-        else {
+        else
+        {
             msg = wxString::Format(_("Cannot load a translation for the selected language (%s).")
-                , wxLocale::GetLanguageName(lang));
+                                   , wxLocale::GetLanguageName(lang));
         }
         msg += "\n\n";
         if (count)
+        {
             msg += wxString::Format(_("Please use the Switch Application Language option in View menu to select one of the %zu available languages."), count + 1);
+        }
         else
+        {
             msg += _("There are no translation files installed.");
+        }
 
         mmErrorDialogs::MessageWarning(nullptr, msg, _("Language change"));
         wxDELETE(trans);
@@ -105,15 +114,17 @@ bool mmGUIApp::setGUILanguage(wxLanguage lang)
     return true;
 }
 
-void mmGUIApp::OnInitCmdLine(wxCmdLineParser& parser)
+void mmGUIApp::OnInitCmdLine(wxCmdLineParser &parser)
 {
     parser.SetDesc (g_cmdLineDesc);
 }
 
-bool mmGUIApp::OnCmdLineParsed(wxCmdLineParser& parser)
+bool mmGUIApp::OnCmdLineParsed(wxCmdLineParser &parser)
 {
     if(parser.GetParamCount() > 0)
+    {
         m_optParam = parser.GetParam(0);
+    }
     return true;
 }
 
@@ -129,21 +140,22 @@ void mmGUIApp::reportFatalException(wxDebugReport::Context ctx)
     if (!report.IsOk())
     {
         return wxSafeShowMessage(mmex::getProgramName()
-            , _("Fatal error occurred.\nApplication will be terminated."));
+                                 , _("Fatal error occurred.\nApplication will be terminated."));
     }
 
     report.AddAll(ctx);
 
     wxDebugReportPreviewStd preview;
 
-    if (preview.Show(report) && report.Process()) {
+    if (preview.Show(report) && report.Process())
+    {
         report.Reset();
     }
 }
 /*
     This method allows catching the exceptions thrown by any event handler.
 */
-void mmGUIApp::HandleEvent(wxEvtHandler *handler, wxEventFunction func, wxEvent& event) const
+void mmGUIApp::HandleEvent(wxEvtHandler *handler, wxEventFunction func, wxEvent &event) const
 {
     try
     {
@@ -165,7 +177,7 @@ int mmGUIApp::FilterEvent(wxEvent &event)
 
     if (event.GetEventType() == wxEVT_SHOW)
     {
-        wxWindow *win = static_cast<wxWindow*>(event.GetEventObject());
+        wxWindow *win = static_cast<wxWindow *>(event.GetEventObject());
 
         if (win && win->IsTopLevel() && win != this->m_frame) // wxDialog & wxFrame http://docs.wxwidgets.org/trunk/classwx_top_level_window.html
         {
@@ -184,7 +196,7 @@ void mmGUIApp::OnFatalException()
 }
 //----------------------------------------------------------------------------
 
-bool OnInitImpl(mmGUIApp* app)
+bool OnInitImpl(mmGUIApp *app)
 {
     app->SetAppName(mmex::GetAppName());
 
@@ -236,13 +248,22 @@ bool OnInitImpl(mmGUIApp* app)
     const int valh = Model_Setting::instance().GetIntSetting("SIZEH", sys_screen_y/4*3);
 
     //BUGFIX: #214 MMEX Window is "off screen"
-    if (valx >= sys_screen_x ) valx = sys_screen_x - valw;
-    if (valy >= sys_screen_y ) valy = sys_screen_y - valh;
+    if (valx >= sys_screen_x )
+    {
+        valx = sys_screen_x - valw;
+    }
+    if (valy >= sys_screen_y )
+    {
+        valy = sys_screen_y - valh;
+    }
 
     app->m_frame = new mmGUIFrame(app, mmex::getProgramName(), wxPoint(valx, valy), wxSize(valw, valh));
 
     const bool ok = app->m_frame->Show();
-    if (isMax) app->m_frame->Maximize(true);
+    if (isMax)
+    {
+        app->m_frame->Maximize(true);
+    }
 
     // success: wxApp::OnRun() will be called which will enter the main message
     // loop and the application will run. If we returned FALSE here, the
@@ -258,8 +279,8 @@ bool mmGUIApp::OnInit()
     if (m_checker->IsAnotherRunning())
     {
         wxMessageBox(_(
-            "MMEX is already running...\n\n"
-            "Multiple instances are no longer supported."), _("MMEX Instance Check"));
+                         "MMEX is already running...\n\n"
+                         "Multiple instances are no longer supported."), _("MMEX Instance Check"));
         delete m_checker;
         return false;
     }
@@ -285,7 +306,7 @@ bool mmGUIApp::OnInit()
 int mmGUIApp::OnExit()
 {
     wxLogDebug("OnExit()");
-    Model_Usage::Data* usage = Model_Usage::instance().create();
+    Model_Usage::Data *usage = Model_Usage::instance().create();
     usage->USAGEDATE = wxDate::Today().FormatISODate();
 
     wxString rj = Model_Usage::instance().To_JSON_String();
@@ -300,7 +321,10 @@ int mmGUIApp::OnExit()
     usage->JSONCONTENT = rj;
     Model_Usage::instance().save(usage);
 
-    if (m_setting_db) delete m_setting_db;
+    if (m_setting_db)
+    {
+        delete m_setting_db;
+    }
 
     /* CURL Cleanup */
     curl_global_cleanup();

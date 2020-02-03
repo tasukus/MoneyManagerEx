@@ -35,21 +35,24 @@ class mmHomePagePanel : public mmPanelBase
 
 public:
     mmHomePagePanel(wxWindow *parent, mmGUIFrame *frame,
-        wxWindowID winid = wxID_ANY,
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
-        long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-        const wxString& name = "mmHomePagePanel");
+                    wxWindowID winid = wxID_ANY,
+                    const wxPoint& pos = wxDefaultPosition,
+                    const wxSize& size = wxDefaultSize,
+                    long style = wxTAB_TRAVERSAL | wxNO_BORDER,
+                    const wxString& name = "mmHomePagePanel");
 
     bool Create(wxWindow *parent, wxWindowID winid,
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
-        long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-        const wxString& name = "mmHomePagePanel");
+                const wxPoint& pos = wxDefaultPosition,
+                const wxSize& size = wxDefaultSize,
+                long style = wxTAB_TRAVERSAL | wxNO_BORDER,
+                const wxString& name = "mmHomePagePanel");
 
     ~mmHomePagePanel();
 
-    wxString BuildPage() const { return GetHomePageText(); }
+    wxString BuildPage() const
+    {
+        return GetHomePageText();
+    }
     void PrintPage();
     void createHTML();
 
@@ -77,10 +80,10 @@ private:
     const wxString getGrandTotalsJSON(double& tBalance) const;
 
     const wxString getAccountsHTML(double& tBalance, std::map<int, std::pair<double, double> > &accountStats
-        , enum Model_Account::TYPE type = Model_Account::CHECKING) const;
+                                   , enum Model_Account::TYPE type = Model_Account::CHECKING) const;
     void setAccountsData(std::map<int, std::pair<double, double> > &accountStats);
     void setExpensesIncomeStatsData(std::map<int, std::pair<double, double> > &incomeExpensesStats
-        , mmDateRange* date_range) const;
+                                    , mmDateRange* date_range) const;
     int countFollowUp_=0;
     int total_transactions_=0;
 };

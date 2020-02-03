@@ -36,13 +36,16 @@ void mmTextCtrl::SetValueNoEvent(double value, int precision)
     this->ChangeValue(Model_Currency::toString(value, m_currency, precision));
 }
 
-void mmTextCtrl::SetValue(double value, const Model_Account::Data* account, int precision)
+void mmTextCtrl::SetValue(double value, const Model_Account::Data *account, int precision)
 {
-    if (account) m_currency = Model_Currency::instance().get(account->CURRENCYID);
+    if (account)
+    {
+        m_currency = Model_Currency::instance().get(account->CURRENCYID);
+    }
     this->SetValue(value, precision > -1 ? precision : log10(m_currency->SCALE));
 }
 
-void mmTextCtrl::SetValue(double value, const Model_Currency::Data* currency, int precision)
+void mmTextCtrl::SetValue(double value, const Model_Currency::Data *currency, int precision)
 {
     m_currency = (currency ? currency : Model_Currency::GetBaseCurrency());
     this->SetValue(value, precision > -1 ? precision : log10(m_currency->SCALE));
@@ -51,7 +54,10 @@ void mmTextCtrl::SetValue(double value, const Model_Currency::Data* currency, in
 bool mmTextCtrl::Calculate(int alt_precision)
 {
     const wxString str = Model_Currency::fromString2Default(this->GetValue(), m_currency);
-    if (str.empty()) return false;
+    if (str.empty())
+    {
+        return false;
+    }
 
     LuaGlue state;
     state.open().glue();
@@ -80,9 +86,9 @@ bool mmTextCtrl::checkValue(double &amount, bool positive_value)
     if (!GetDouble(amount) || (positive_value && amount < 0))
     {
         wxRichToolTip tip(_("Invalid Amount."),
-            wxString(positive_value ? _("Please enter a positive or calculated value.") : _("Please enter a calculated value."))
-            + "\n\n"
-            + _("Tip: For calculations, enter expressions like (2+2)*(2+2)\nCalculations will be evaluated and the result used as the entry."));
+                          wxString(positive_value ? _("Please enter a positive or calculated value.") : _("Please enter a calculated value."))
+                          + "\n\n"
+                          + _("Tip: For calculations, enter expressions like (2+2)*(2+2)\nCalculations will be evaluated and the result used as the entry."));
         tip.SetIcon(wxICON_WARNING);
         tip.ShowFor(this);
         SetFocus();

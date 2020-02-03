@@ -34,8 +34,14 @@ class mmPayeeDialog : public wxDialog
 public:
     mmPayeeDialog(wxWindow* parent, bool payee_choose, const wxString &name = "mmPayeeDialog");
 
-    int getPayeeId() const {return m_payee_id;}
-    bool getRefreshRequested() const {return refreshRequested_;}
+    int getPayeeId() const
+    {
+        return m_payee_id;
+    }
+    bool getRefreshRequested() const
+    {
+        return refreshRequested_;
+    }
     void DisableTools();
 
 private:

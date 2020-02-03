@@ -94,11 +94,11 @@ private:
 
     /// Creation
     bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+                , wxWindowID id
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style);
 
     /// Creates the controls and sizers
     void CreateControls();

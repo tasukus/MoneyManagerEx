@@ -17,7 +17,6 @@ along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 ********************************************************/
 
-
 #include "dbupgrade.h"
 #include "util.h"
 
@@ -28,7 +27,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #include <wx/textfile.h>
 #include <wx/tokenzr.h>
 
-int dbUpgrade::FixVersionStatus(wxSQLite3Database* db, int version)
+int dbUpgrade::FixVersionStatus(wxSQLite3Database *db, int version)
 {
     if (version == 7)
     {
@@ -44,20 +43,20 @@ int dbUpgrade::FixVersionStatus(wxSQLite3Database* db, int version)
     return version;
 }
 
-int dbUpgrade::GetCurrentVersion(wxSQLite3Database * db)
+int dbUpgrade::GetCurrentVersion(wxSQLite3Database *db)
 {
     try
     {
-        const int ver = FixVersionStatus( db , db->ExecuteScalar( "PRAGMA user_version;" ) );
+        const int ver = FixVersionStatus( db, db->ExecuteScalar( "PRAGMA user_version;" ) );
         return ver;
     }
-    catch (const wxSQLite3Exception& /*e*/)
+    catch (const wxSQLite3Exception & /*e*/)
     {
         return -1;
     }
 }
 
-std::vector<wxString> dbUpgrade::SplitQueries(const wxString & statement)
+std::vector<wxString> dbUpgrade::SplitQueries(const wxString &statement)
 {
     std::vector<wxString> queries;
     wxStringTokenizer tokenizer(statement, ";");
@@ -65,23 +64,25 @@ std::vector<wxString> dbUpgrade::SplitQueries(const wxString & statement)
     {
         wxString token = tokenizer.GetNextToken().Trim().Trim(false);
         if (token != "" && !(token.StartsWith("--") && !token.Contains("\n"))) // Remove queries with comments only
+        {
             queries.push_back(token);
+        }
     }
     return queries;
 }
 
-bool dbUpgrade::UpgradeToVersion(wxSQLite3Database * db, int version)
+bool dbUpgrade::UpgradeToVersion(wxSQLite3Database *db, int version)
 {
     wxString UpgradeQueries = dbUpgradeQuery[version];
 
     db->Savepoint("MMEX_Upgrade");
-    for (const wxString& query : SplitQueries(UpgradeQueries))
+    for (const wxString &query : SplitQueries(UpgradeQueries))
     {
         try
         {
             db->ExecuteUpdate(query);
         }
-        catch (const wxSQLite3Exception& e)
+        catch (const wxSQLite3Exception &e)
         {
             UpgradeFailedMessage(e.GetMessage(), _("upgrade"), version);
             db->Rollback("MMEX_Upgrade");
@@ -90,14 +91,16 @@ bool dbUpgrade::UpgradeToVersion(wxSQLite3Database * db, int version)
     }
 
     if (!InitializeVersion(db, version))
+    {
         return false;
+    }
 
     db->ReleaseSavepoint("MMEX_Upgrade");
 
     return true;
 }
 
-bool dbUpgrade::InitializeVersion(wxSQLite3Database* db, int version)
+bool dbUpgrade::InitializeVersion(wxSQLite3Database *db, int version)
 {
     try
     {
@@ -105,7 +108,7 @@ bool dbUpgrade::InitializeVersion(wxSQLite3Database* db, int version)
         db->ExecuteUpdate("PRAGMA application_id = 0x4d4d4558;");
         return true;
     }
-    catch (const wxSQLite3Exception& e)
+    catch (const wxSQLite3Exception &e)
     {
         UpgradeFailedMessage(e.GetMessage(), _("initialization"), version);
         db->Rollback("MMEX_Upgrade");
@@ -113,22 +116,22 @@ bool dbUpgrade::InitializeVersion(wxSQLite3Database* db, int version)
     }
 }
 
-bool dbUpgrade::CheckUpgradeDB(wxSQLite3Database* db)
+bool dbUpgrade::CheckUpgradeDB(wxSQLite3Database *db)
 {
     const int ver = GetCurrentVersion(db);
 
     return (ver != dbLatestVersion) ? true : false;
 }
 
-bool dbUpgrade::UpgradeDB(wxSQLite3Database* db, const wxString& DbFileName)
+bool dbUpgrade::UpgradeDB(wxSQLite3Database *db, const wxString &DbFileName)
 {
     int ver = GetCurrentVersion(db);
 
     if (ver == -1 || ver > dbLatestVersion)
     {
         wxMessageBox(_("MMEX database error!") + "\n\n"
-            + wxString::Format(_("MMEX database version %i doesn't work with this MMEX version.\nPlease upgrade MMEX to newer version."), ver)
-            , _("MMEX database upgrade"), wxOK | wxICON_ERROR);
+                     + wxString::Format(_("MMEX database version %i doesn't work with this MMEX version.\nPlease upgrade MMEX to newer version."), ver)
+                     , _("MMEX database upgrade"), wxOK | wxICON_ERROR);
         return false;
     }
 
@@ -136,18 +139,20 @@ bool dbUpgrade::UpgradeDB(wxSQLite3Database* db, const wxString& DbFileName)
     {
         BackupDB(DbFileName, dbUpgrade::BACKUPTYPE::VERSION_UPGRADE, 999, ver);
         if (!UpgradeToVersion(db, ver + 1))
+        {
             return false;
+        }
     }
 
     try
     {
         db->Vacuum();
     }
-    catch (const wxSQLite3Exception& e)
+    catch (const wxSQLite3Exception &e)
     {
         wxMessageBox(_("MMEX database vacuum failed!") + "\n\n"
-            + _("MMEX still should work, but try to re-optimize it from Tools -> Database -> Optimize") + "\n\n"
-            + e.GetMessage(), _("MMEX database upgrade"), wxOK | wxICON_WARNING);
+                     + _("MMEX still should work, but try to re-optimize it from Tools -> Database -> Optimize") + "\n\n"
+                     + e.GetMessage(), _("MMEX database upgrade"), wxOK | wxICON_WARNING);
     }
 
     wxMessageBox(wxString::Format(_("MMEX database successfully upgraded to version %i"), ver), _("MMEX database upgrade"), wxOK | wxICON_INFORMATION);
@@ -155,34 +160,37 @@ bool dbUpgrade::UpgradeDB(wxSQLite3Database* db, const wxString& DbFileName)
     return true;
 }
 
-void dbUpgrade::UpgradeFailedMessage(const wxString& error, const wxString& step, int version)
+void dbUpgrade::UpgradeFailedMessage(const wxString &error, const wxString &step, int version)
 {
     wxMessageBox(wxString::Format(_("MMEX database %s to version %i failed!"), step, version) + "\n\n"
-        + _("Please restore DB from autocreated pre-upgrade backup and retry or contact MMEX support") + "\n\n"
-        + error, _("MMEX database upgrade"), wxOK | wxICON_ERROR);
+                 + _("Please restore DB from autocreated pre-upgrade backup and retry or contact MMEX support") + "\n\n"
+                 + error, _("MMEX database upgrade"), wxOK | wxICON_ERROR);
 }
 
-void dbUpgrade::BackupDB(const wxString& FileName, enum BACKUPTYPE BackupType, unsigned FilesToKeep, int UpgradeVersion)
+void dbUpgrade::BackupDB(const wxString &FileName, enum BACKUPTYPE BackupType, unsigned FilesToKeep, int UpgradeVersion)
 {
     wxFileName fn(FileName);
-    if (!fn.IsOk()) return;
+    if (!fn.IsOk())
+    {
+        return;
+    }
 
     wxString BackupName = "";
 
     // define string in backup filename
     switch (BackupType)
     {
-    case BACKUPTYPE::START :
-        BackupName = "_start_";
-        break;
-    case BACKUPTYPE::CLOSE :
-        BackupName = "_update_";
-        break;
-    case BACKUPTYPE::VERSION_UPGRADE :
-        BackupName = wxString::Format("_upgrade_v%i_", UpgradeVersion);
-        break;
-    default:
-        break;
+        case BACKUPTYPE::START :
+            BackupName = "_start_";
+            break;
+        case BACKUPTYPE::CLOSE :
+            BackupName = "_update_";
+            break;
+        case BACKUPTYPE::VERSION_UPGRADE :
+            BackupName = wxString::Format("_upgrade_v%i_", UpgradeVersion);
+            break;
+        default:
+            break;
     }
 
     wxString backupFileName = FileName + BackupName + wxDateTime().Today().FormatISODate() + "." + fn.GetExt();
@@ -191,23 +199,23 @@ void dbUpgrade::BackupDB(const wxString& FileName, enum BACKUPTYPE BackupType, u
     // process backup
     switch (BackupType)
     {
-    case BACKUPTYPE::START:
-        if (!fnBak.FileExists())
-        {
+        case BACKUPTYPE::START:
+            if (!fnBak.FileExists())
+            {
+                wxCopyFile(FileName, backupFileName, true);
+            }
+            break;
+        case BACKUPTYPE::CLOSE:
             wxCopyFile(FileName, backupFileName, true);
-        }
-        break;
-    case BACKUPTYPE::CLOSE:
-        wxCopyFile(FileName, backupFileName, true);
-        break;
-    case BACKUPTYPE::VERSION_UPGRADE:
-        if (!fnBak.FileExists())
-        {
-            wxCopyFile(FileName, backupFileName, true);
-        }
-        break;
-    default:
-        break;
+            break;
+        case BACKUPTYPE::VERSION_UPGRADE:
+            if (!fnBak.FileExists())
+            {
+                wxCopyFile(FileName, backupFileName, true);
+            }
+            break;
+        default:
+            break;
     }
 
     // Cleanup old backups
@@ -227,24 +235,35 @@ void dbUpgrade::BackupDB(const wxString& FileName, enum BACKUPTYPE BackupType, u
             backupFileArray.Sort(true);
             // ensure file is not read only before deleting file.
             wxFileName fnLastFile(backupFileArray.Last());
-            if (fnLastFile.IsFileWritable()) wxRemoveFile(backupFileArray.Last());
+            if (fnLastFile.IsFileWritable())
+            {
+                wxRemoveFile(backupFileArray.Last());
+            }
         }
     }
 }
 
-void dbUpgrade::SqlFileDebug(wxSQLite3Database* db)
+void dbUpgrade::SqlFileDebug(wxSQLite3Database *db)
 {
     wxFileDialog fileDlgLoad(nullptr,_("Load debug file"),"","",_("MMEX debug files (*.mmdbg)")+"|*.mmdbg", wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     if (fileDlgLoad.ShowModal() != wxID_OK)
+    {
         return;
+    }
 
     wxTextFile txtFile;
     txtFile.Open(fileDlgLoad.GetPath());
     bool readonly;
 
     wxString txtLine = txtFile.GetFirstLine();
-    if (txtLine == "-- MMEX Debug SQL - Read --") readonly=true;
-    else if (txtLine == "-- MMEX Debug SQL - Update --") readonly=false;
+    if (txtLine == "-- MMEX Debug SQL - Read --")
+    {
+        readonly=true;
+    }
+    else if (txtLine == "-- MMEX Debug SQL - Update --")
+    {
+        readonly=false;
+    }
     else
     {
         wxMessageBox(_("Invalid debug file content, please contact MMEX support!"), _("MMEX debug error"), wxOK | wxICON_ERROR);
@@ -270,21 +289,28 @@ void dbUpgrade::SqlFileDebug(wxSQLite3Database* db)
                 return;
             }
             if (!txtFile.Eof())
+            {
                 txtLine = txtFile.GetNextLine();
+            }
         }
     }
 
     wxString txtMsg;
     for (; !txtFile.Eof() && txtLine.StartsWith("-- ",&txtLine); txtLine = txtFile.GetNextLine())
     {
-            txtMsg << txtLine << "\n";
+        txtMsg << txtLine << "\n";
 
     }
     if (!txtMsg.IsEmpty())
         if (wxMessageBox(_("Debug script description:") + "\n\n" + txtMsg + "\n" + _("Please confirm running this SQL script."), _("MMEX debug"), wxOK | wxCANCEL) != wxOK)
+        {
             return;
+        }
 
-    if (txtFile.Eof()) return; // only comments in file
+    if (txtFile.Eof())
+    {
+        return;    // only comments in file
+    }
 
     if (readonly)
     {
@@ -309,11 +335,13 @@ void dbUpgrade::SqlFileDebug(wxSQLite3Database* db)
                     {
                         wxString strRow = "";
                         for (int i = 0; i < columnCount; ++i)
+                        {
                             strRow << "'" + rs.GetAsString(i) + "'   ";
+                        }
                         txtLog << strRow + wxTextFile::GetEOL();
                     }
                 }
-                catch (const wxSQLite3Exception& e)
+                catch (const wxSQLite3Exception &e)
                 {
                     wxMessageBox(_("Query error, please contact MMEX support!") + "\n\n" + e.GetMessage(), _("MMEX debug error"), wxOK | wxICON_ERROR);
                     return;
@@ -327,7 +355,7 @@ void dbUpgrade::SqlFileDebug(wxSQLite3Database* db)
         }
 
         wxTextEntryDialog dlg(nullptr, _("Send this log to MMEX support team:\npress OK to save to file or Cancel to exit"),
-            _("MMEX debug"), txtLog, wxOK | wxCANCEL | wxCENTRE | wxTE_MULTILINE);
+                              _("MMEX debug"), txtLog, wxOK | wxCANCEL | wxCENTRE | wxTE_MULTILINE);
         if (dlg.ShowModal() == wxID_OK)
         {
             wxFileDialog fileDlgSave(nullptr, _("Save debug file"), "", "", _("Text files (*.txt)")+"|*.txt", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
@@ -351,7 +379,7 @@ void dbUpgrade::SqlFileDebug(wxSQLite3Database* db)
             {
                 db->ExecuteUpdate(txtLine);
             }
-            catch (const wxSQLite3Exception& e)
+            catch (const wxSQLite3Exception &e)
             {
                 wxMessageBox(_("Query error, please contact MMEX support!") + "\n\n" + e.GetMessage(), _("MMEX debug error"), wxOK | wxICON_ERROR);
                 db->Rollback("MMEX_Debug");

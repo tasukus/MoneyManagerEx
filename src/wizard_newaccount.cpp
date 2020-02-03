@@ -24,7 +24,7 @@
 
 mmAddAccountWizard::mmAddAccountWizard(wxFrame *frame)
     : wxWizard(frame,wxID_ANY,_("Add Account Wizard")
-    , wxBitmap(addacctwiz_xpm), wxDefaultPosition
+               , wxBitmap(addacctwiz_xpm), wxDefaultPosition
     , wxDEFAULT_DIALOG_STYLE), currencyID_(-1)
     , accountType_(0), acctID_(-1)
 {
@@ -32,15 +32,15 @@ mmAddAccountWizard::mmAddAccountWizard(wxFrame *frame)
     page1 = new wxWizardPageSimple(this);
 
     wxString noteString = wxString::Format(
-        _("%s models all transactions as belonging to accounts."), mmex::getProgramName()) + "\n\n"
-        + _("The next pages will help you create a new account.\n"
-            "To help you get started, begin by making a list of all\n"
-            "financial institutions where you hold an account.");
+                              _("%s models all transactions as belonging to accounts."), mmex::getProgramName()) + "\n\n"
+                          + _("The next pages will help you create a new account.\n"
+                              "To help you get started, begin by making a list of all\n"
+                              "financial institutions where you hold an account.");
 
     new wxStaticText(page1, wxID_ANY, noteString);
 
-    mmAddAccountTypePage* page2 = new mmAddAccountTypePage(this);
-    mmAddAccountNamePage* page3 = new mmAddAccountNamePage(this);
+    mmAddAccountTypePage *page2 = new mmAddAccountTypePage(this);
+    mmAddAccountNamePage *page3 = new mmAddAccountNamePage(this);
 
     // set the page order using a convenience function - could also use
     // SetNext/Prev directly as below
@@ -54,9 +54,10 @@ mmAddAccountWizard::mmAddAccountWizard(wxFrame *frame)
 
 void mmAddAccountWizard::RunIt()
 {
-    if (RunWizard(page1)) {
+    if (RunWizard(page1))
+    {
         // Success
-        Model_Account::Data* account = Model_Account::instance().create();
+        Model_Account::Data *account = Model_Account::instance().create();
 
         account->FAVORITEACCT = "TRUE";
         account->STATUS = Model_Account::all_status()[Model_Account::OPEN];
@@ -92,7 +93,7 @@ bool mmAddAccountNamePage::TransferDataFromWindow()
     return result;
 }
 
-mmAddAccountNamePage::mmAddAccountNamePage(mmAddAccountWizard* parent)
+mmAddAccountNamePage::mmAddAccountNamePage(mmAddAccountWizard *parent)
     : wxWizardPageSimple(parent), parent_(parent)
 {
     textAccountName_ = new wxTextCtrl(this, wxID_ANY, wxGetEmptyString(), wxDefaultPosition, wxSize(130,-1), 0 );
@@ -103,8 +104,8 @@ mmAddAccountNamePage::mmAddAccountNamePage(mmAddAccountWizard* parent)
 
     wxString helpMsg;
     helpMsg  << "\n" << _("Specify a descriptive name for the account.") << "\n"
-            << _("This is generally the name of a financial institution\n"
-            "where the account is held. For example: 'ABC Bank'.");
+             << _("This is generally the name of a financial institution\n"
+                  "where the account is held. For example: 'ABC Bank'.");
     mainSizer->Add(new wxStaticText(this, wxID_ANY, helpMsg ), 0, wxALL, 5);
 
     SetSizer(mainSizer);
@@ -116,8 +117,10 @@ mmAddAccountTypePage::mmAddAccountTypePage(mmAddAccountWizard *parent)
     , parent_(parent)
 {
     itemChoiceType_ = new wxChoice(this, wxID_ANY);
-    for (const auto& type: Model_Account::all_type())
+    for (const auto &type: Model_Account::all_type())
+    {
         itemChoiceType_->Append(wxGetTranslation(type), new wxStringClientData(type));
+    }
     itemChoiceType_->SetToolTip(_("Specify the type of account to be created."));
     itemChoiceType_->SetSelection(Model_Account::CHECKING);
 
@@ -129,19 +132,19 @@ mmAddAccountTypePage::mmAddAccountTypePage(mmAddAccountWizard *parent)
     wxString textMsg = "\n";
     textMsg << _("Select the type of account you want to create:") << "\n\n"
             << _("General bank accounts cover a wide variety of account\n"
-            "types like Checking, Savings etc.");
+                 "types like Checking, Savings etc.");
     mainSizer->Add(new wxStaticText(this, wxID_ANY, textMsg), 0, wxALL, 5);
 
     textMsg = "\n";
     textMsg << _("Investment accounts are specialized accounts that only\n"
-        "have stock/mutual fund investments associated with them.");
+                 "have stock/mutual fund investments associated with them.");
     mainSizer->Add( new wxStaticText(this, wxID_ANY,textMsg), 0, wxALL, 5);
 
     textMsg = "\n";
     textMsg << _("Term accounts are specialized bank accounts. Intended for asset\n"
-        "type accounts such as Term Deposits and Bonds. These accounts\n"
-        "can have regular money coming in and out, being outside the\n"
-        "general income stream.");
+                 "type accounts such as Term Deposits and Bonds. These accounts\n"
+                 "can have regular money coming in and out, being outside the\n"
+                 "general income stream.");
     mainSizer->Add( new wxStaticText(this, wxID_ANY,textMsg), 0, wxALL, 5);
 
     SetSizer(mainSizer);

@@ -47,7 +47,7 @@ SplitDetailDialog::SplitDetailDialog()
 }
 
 SplitDetailDialog::SplitDetailDialog(
-    wxWindow* parent
+    wxWindow *parent
     , Split &split
     , int transType
     , int accountID)
@@ -57,15 +57,17 @@ SplitDetailDialog::SplitDetailDialog(
     transType_ = transType;
     Model_Account::Data *account = Model_Account::instance().get(accountID);
     if (account)
+    {
         m_currency = Model_Account::currency(account);
+    }
     Create(parent);
 }
 
-bool SplitDetailDialog::Create(wxWindow* parent)
+bool SplitDetailDialog::Create(wxWindow *parent)
 {
     constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
     wxDialog::Create(parent, wxID_ANY, _("Split Detail Dialog")
-        , wxDefaultPosition, wxDefaultSize, style);
+                     , wxDefaultPosition, wxDefaultSize, style);
 
     CreateControls();
     DataToControls();
@@ -81,12 +83,14 @@ bool SplitDetailDialog::Create(wxWindow* parent)
 
 void SplitDetailDialog::DataToControls()
 {
-    const wxString& category_name = Model_Category::full_name(split_.CATEGID
-        , split_.SUBCATEGID);
+    const wxString &category_name = Model_Category::full_name(split_.CATEGID
+                                    , split_.SUBCATEGID);
     m_bcategory->SetLabelText(category_name);
 
     if (split_.SPLITTRANSAMOUNT)
+    {
         m_text_mount->SetValue(split_.SPLITTRANSAMOUNT, Model_Currency::precision(m_currency));
+    }
 
     if (category_name.empty())
     {
@@ -97,22 +101,22 @@ void SplitDetailDialog::DataToControls()
 
 void SplitDetailDialog::CreateControls()
 {
-    wxBoxSizer* itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
     this->SetSizer(itemBoxSizer2);
 
-    wxStaticBox* sb4 = new wxStaticBox(this
-        , wxID_ANY, _("Split Transaction Details"));
-    wxStaticBoxSizer* bs4 = new wxStaticBoxSizer(sb4, wxVERTICAL);
+    wxStaticBox *sb4 = new wxStaticBox(this
+                                       , wxID_ANY, _("Split Transaction Details"));
+    wxStaticBoxSizer *bs4 = new wxStaticBoxSizer(sb4, wxVERTICAL);
     itemBoxSizer2->Add(bs4, g_flagsExpand);
 
-    wxPanel* itemPanel7 = new wxPanel(this, wxID_ANY
-        , wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+    wxPanel *itemPanel7 = new wxPanel(this, wxID_ANY
+                                      , wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     bs4->Add(itemPanel7, g_flagsExpand);
 
-    wxFlexGridSizer* controlSizer = new wxFlexGridSizer(0, 2, 0, 0);
+    wxFlexGridSizer *controlSizer = new wxFlexGridSizer(0, 2, 0, 0);
     itemPanel7->SetSizer(controlSizer);
 
-    wxStaticText* staticTextType = new wxStaticText(itemPanel7, wxID_STATIC, _("Type"));
+    wxStaticText *staticTextType = new wxStaticText(itemPanel7, wxID_STATIC, _("Type"));
     controlSizer->Add(staticTextType, g_flagsH);
 
     const wxString itemChoiceStrings[] =
@@ -121,43 +125,43 @@ void SplitDetailDialog::CreateControls()
         _("Deposit"),
     };
     m_choice_type = new wxChoice(itemPanel7, ID_DIALOG_SPLTTRANS_TYPE
-        , wxDefaultPosition, wxDefaultSize
-        , 2, itemChoiceStrings);
+                                 , wxDefaultPosition, wxDefaultSize
+                                 , 2, itemChoiceStrings);
     m_choice_type->SetSelection(split_.SPLITTRANSAMOUNT < 0 ? !transType_ : transType_);
     m_choice_type->SetToolTip(_("Specify the type of transactions to be created."));
     controlSizer->Add(m_choice_type, g_flagsExpand);
 
-    wxStaticText* staticTextAmount = new wxStaticText(itemPanel7
-        , wxID_STATIC, _("Amount"));
+    wxStaticText *staticTextAmount = new wxStaticText(itemPanel7
+            , wxID_STATIC, _("Amount"));
     controlSizer->Add(staticTextAmount, g_flagsH);
 
     m_text_mount = new mmTextCtrl(itemPanel7, ID_TEXTCTRLAMOUNT, ""
-        , wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER
-        , mmCalcValidator());
+                                  , wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER
+                                  , mmCalcValidator());
     controlSizer->Add(m_text_mount, g_flagsExpand);
 
-    wxStaticText* staticTextCategory = new wxStaticText(itemPanel7
-        , wxID_STATIC, _("Category"));
+    wxStaticText *staticTextCategory = new wxStaticText(itemPanel7
+            , wxID_STATIC, _("Category"));
     controlSizer->Add(staticTextCategory, g_flagsH);
     m_bcategory = new wxButton(itemPanel7, ID_BUTTONCATEGORY, ""
-        , wxDefaultPosition, wxSize(200, -1));
+                               , wxDefaultPosition, wxSize(200, -1));
     m_bcategory->SetMinSize(wxSize(180, -1));
     controlSizer->Add(m_bcategory, g_flagsExpand);
 
     /**************************************************************************
      Control Buttons
     ***************************************************************************/
-    wxPanel* buttons_panel = new wxPanel(this, wxID_ANY);
+    wxPanel *buttons_panel = new wxPanel(this, wxID_ANY);
     itemBoxSizer2->Add(buttons_panel, wxSizerFlags(g_flagsV).Center().Border(wxALL, 10));
 
-    wxStdDialogButtonSizer*  buttons_sizer = new wxStdDialogButtonSizer;
+    wxStdDialogButtonSizer  *buttons_sizer = new wxStdDialogButtonSizer;
     buttons_panel->SetSizer(buttons_sizer);
 
-    wxButton* itemButtonOK = new wxButton(buttons_panel, wxID_OK, _("&OK "));
+    wxButton *itemButtonOK = new wxButton(buttons_panel, wxID_OK, _("&OK "));
     buttons_sizer->Add(itemButtonOK, g_flagsH);
 
     m_cancel_button = new wxButton(buttons_panel
-        , wxID_CANCEL, wxGetTranslation(g_CancelLabel));
+                                   , wxID_CANCEL, wxGetTranslation(g_CancelLabel));
     buttons_sizer->Add(m_cancel_button, g_flagsH);
 }
 
@@ -165,7 +169,7 @@ void SplitDetailDialog::CreateControls()
  * wxEVT_COMMAND_BUTTON_CLICKED event handler for ID_BUTTONCATEGORY
  */
 
-void SplitDetailDialog::OnButtonCategoryClick( wxCommandEvent& event )
+void SplitDetailDialog::OnButtonCategoryClick( wxCommandEvent &event )
 {
     mmCategDialog dlg(this, split_.CATEGID, split_.SUBCATEGID);
     if (dlg.ShowModal() == wxID_APPLY)
@@ -177,30 +181,38 @@ void SplitDetailDialog::OnButtonCategoryClick( wxCommandEvent& event )
     onTextEntered(event);
 }
 
-void SplitDetailDialog::onTextEntered(wxCommandEvent& WXUNUSED(event))
+void SplitDetailDialog::onTextEntered(wxCommandEvent &WXUNUSED(event))
 {
     if (m_text_mount->Calculate(Model_Currency::precision(m_currency)))
+    {
         m_text_mount->GetDouble(split_.SPLITTRANSAMOUNT);
+    }
 
     DataToControls();
 }
 
-void SplitDetailDialog::OnButtonOKClick( wxCommandEvent& event )
+void SplitDetailDialog::OnButtonOKClick( wxCommandEvent &event )
 {
     onTextEntered(event);
     if (!m_text_mount->checkValue(split_.SPLITTRANSAMOUNT))
+    {
         return;
+    }
 
     if (Model_Category::full_name(split_.CATEGID, split_.SUBCATEGID).empty())
+    {
         return mmErrorDialogs::InvalidCategory(wxDynamicCast(m_bcategory, wxWindow));
+    }
 
     if (m_choice_type->GetSelection() != transType_)
+    {
         split_.SPLITTRANSAMOUNT = -split_.SPLITTRANSAMOUNT;
+    }
 
     EndModal(wxID_OK);
 }
 
-void SplitDetailDialog::OnCancel(wxCommandEvent& WXUNUSED(event))
+void SplitDetailDialog::OnCancel(wxCommandEvent &WXUNUSED(event))
 {
     EndModal(wxID_CANCEL);
 }

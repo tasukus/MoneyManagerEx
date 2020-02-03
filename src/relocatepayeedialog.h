@@ -35,11 +35,11 @@ public:
 
 private:
     bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+                , wxWindowID id
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style);
 
     void CreateControls();
     void IsOkOk();

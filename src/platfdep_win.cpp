@@ -33,7 +33,9 @@ static const wxFileName GetInstallDir()
     const wxArrayString &dirs = fname.GetDirs();
 
     if (dirs.Last().Upper() == "BIN") // bin\mmex.exe
+    {
         fname.RemoveLastDir();
+    }
 
     return fname;
 }

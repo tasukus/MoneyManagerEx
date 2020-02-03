@@ -33,7 +33,10 @@ class mmWebAppDialog : public wxDialog
 public:
     mmWebAppDialog(wxWindow* parent, const wxString& name = "mmWebAppDialog");
 
-    bool getRefreshRequested() const { return refreshRequested_; }
+    bool getRefreshRequested() const
+    {
+        return refreshRequested_;
+    }
 
 private:
     enum cols

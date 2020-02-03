@@ -42,7 +42,7 @@ public:
     mmMainCurrencyDialog( ) {}
 
     mmMainCurrencyDialog(wxWindow* parent
-        , int currencyID = -1, bool bEnableSelect = true);
+                         , int currencyID = -1, bool bEnableSelect = true);
 
     static bool Execute(wxWindow* parent, int& currencyID);
     // Return the base currency
@@ -67,11 +67,11 @@ private:
     };
 
     bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+                , wxWindowID id
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style);
 
     /// Creates the controls and sizers
 

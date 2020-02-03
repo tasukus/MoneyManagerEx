@@ -18,7 +18,6 @@
  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  ********************************************************/
 
-
 #include "option.h"
 #include "constants.h"
 #include "images_list.h"
@@ -43,7 +42,8 @@
 
 struct Option::ReportInfo
 {
-    enum Reports {
+    enum Reports
+    {
         MyUsage = 0,
         MonthlySummaryofAccounts,
         YearlySummaryofAccounts,
@@ -68,24 +68,32 @@ struct Option::ReportInfo
     wxString name;
     bool type;
     Reports id;
-    bool operator < (const ReportInfo& rep) const
+    bool operator < (const ReportInfo &rep) const
     {
         if (group.IsEmpty())
         {
             if (rep.group.IsEmpty())
+            {
                 return name.Cmp(rep.name) < 0;
+            }
             else
+            {
                 return name.Cmp(rep.group) < 0;
+            }
         }
         else
         {
             if (rep.group.IsEmpty())
+            {
                 return group.Cmp(rep.name) < 0;
+            }
             else
             {
                 int r = group.Cmp(rep.group);
                 if (r == 0)
+                {
                     r = name.Cmp(rep.name);
+                }
                 return r < 0;
             }
         }
@@ -94,7 +102,7 @@ struct Option::ReportInfo
 
 //----------------------------------------------------------------------------
 Option::Option()
-:   m_language(wxLANGUAGE_UNKNOWN)
+    :   m_language(wxLANGUAGE_UNKNOWN)
     , m_databaseUpdated(false)
     , m_budgetFinancialYears(false)
     , m_budgetIncludeTransfers(false)
@@ -137,7 +145,7 @@ Option::Option()
 }
 
 //----------------------------------------------------------------------------
-Option& Option::instance()
+Option &Option::instance()
 {
     return Singleton<Option>::instance();
 }
@@ -166,11 +174,12 @@ void Option::LoadOptions(bool include_infotable)
         }
     }
 
-    if (m_dateFormat.empty()) {
+    if (m_dateFormat.empty())
+    {
         m_dateFormat = mmex::DEFDATEFORMAT;
     }
     m_language = static_cast<wxLanguage>(Model_Setting::instance()
-        .GetIntSetting(LANGUAGE_PARAMETER, wxLANGUAGE_UNKNOWN));
+                                         .GetIntSetting(LANGUAGE_PARAMETER, wxLANGUAGE_UNKNOWN));
 
     m_budgetFinancialYears = Model_Setting::instance().GetBoolSetting(INIDB_BUDGET_FINANCIAL_YEARS, false);
     m_budgetIncludeTransfers = Model_Setting::instance().GetBoolSetting(INIDB_BUDGET_INCLUDE_TRANSFERS, false);
@@ -213,11 +222,12 @@ void Option::LoadOptions(bool include_infotable)
     m_hideReport = Model_Setting::instance().GetIntSetting("HIDE_REPORT", 0);
 }
 
-void Option::setDateFormat(const wxString& dateformat)
+void Option::setDateFormat(const wxString &dateformat)
 {
     const auto local_date_fmt = wxLocale::GetInfo(wxLOCALE_SHORT_DATE_FMT);
     m_dateFormat = dateformat;
-    if (dateformat == local_date_fmt) {
+    if (dateformat == local_date_fmt)
+    {
         Model_Infotable::instance().Delete("DATEFORMAT");
     }
     else
@@ -226,7 +236,7 @@ void Option::setDateFormat(const wxString& dateformat)
     }
 }
 
-void Option::setLanguage(wxLanguage& language)
+void Option::setLanguage(wxLanguage &language)
 {
     m_language = language;
     Model_Setting::instance().Set(LANGUAGE_PARAMETER, language);
@@ -246,27 +256,31 @@ const wxString Option::getLanguageISO6391(bool get_db)
 {
     Option::getLanguageID(get_db);
     if (m_language == wxLANGUAGE_UNKNOWN)
+    {
         return wxEmptyString;
+    }
     if (m_language == wxLANGUAGE_DEFAULT)
+    {
         return wxTranslations::Get()->GetBestTranslation("mmex", wxLANGUAGE_ENGLISH_US).Left(2);
+    }
 
     const auto lang = wxLocale::GetLanguageCanonicalName(m_language);
     return lang.Left(2);
 }
 
-void Option::setUserName(const wxString& username)
+void Option::setUserName(const wxString &username)
 {
     Model_Infotable::instance().Set("USERNAME", username);
     m_userNameString = username;
 }
 
-void Option::setFinancialYearStartDay(const wxString& setting)
+void Option::setFinancialYearStartDay(const wxString &setting)
 {
     Model_Infotable::instance().Set("FINANCIAL_YEAR_START_DAY", setting);
     m_financialYearStartDayString = setting;
 }
 
-void Option::setFinancialYearStartMonth(const wxString& setting)
+void Option::setFinancialYearStartMonth(const wxString &setting)
 {
     Model_Infotable::instance().Set("FINANCIAL_YEAR_START_MONTH", setting);
     m_financialYearStartMonthString = setting;
@@ -363,10 +377,12 @@ void Option::setBudgetDaysOffset(int value)
     m_budget_days_offset = value;
 }
 
-void Option::setBudgetDateOffset(wxDateTime& date) const
+void Option::setBudgetDateOffset(wxDateTime &date) const
 {
     if (m_budget_days_offset != 0)
+    {
         date.Add(wxDateSpan::Days(m_budget_days_offset));
+    }
 }
 
 void Option::setIconSize(int value)
@@ -380,16 +396,21 @@ int Option::getAccountImageId(int account_id, bool def) const
     constexpr int min = 1;
 
     int custom_img_id = Model_Infotable::instance().GetIntInfo(wxString::Format("ACC_IMAGE_ID_%i", account_id), 0);
-    if (custom_img_id > max) custom_img_id = custom_img_id - 20; //Bug #963 fix
+    if (custom_img_id > max)
+    {
+        custom_img_id = custom_img_id - 20;    //Bug #963 fix
+    }
     if (!def && (custom_img_id >= min && custom_img_id <= max))
+    {
         return custom_img_id + img::LAST_NAVTREE_PNG - 1;
+    }
 
     int selectedImage = img::SAVINGS_ACC_NORMAL_PNG; //Default value
     wxString acctStatus = VIEW_ACCOUNTS_OPEN_STR;
     Model_Account::TYPE acctType = Model_Account::CHECKING;
     bool favorite = true;
 
-    Model_Account::Data* account = Model_Account::instance().get(account_id);
+    Model_Account::Data *account = Model_Account::instance().get(account_id);
     if (account)
     {
         acctType = Model_Account::type(account);
@@ -400,53 +421,134 @@ int Option::getAccountImageId(int account_id, bool def) const
 
     switch (acctType)
     {
-    case (Model_Account::CHECKING) :
-        if (closed) selectedImage = img::SAVINGS_ACC_CLOSED_PNG;
-        else if (favorite) selectedImage = img::SAVINGS_ACC_FAVORITE_PNG;
-        else selectedImage = img::SAVINGS_ACC_NORMAL_PNG;
-        break;
-    case (Model_Account::TERM) :
-        if (closed) selectedImage = img::TERM_ACC_CLOSED_PNG;
-        else if (favorite) selectedImage = img::TERM_ACC_FAVORITE_PNG;
-        else  selectedImage = img::TERMACCOUNT_PNG;
-        break;
-    case (Model_Account::INVESTMENT) :
-        if (closed) selectedImage = img::STOCK_ACC_CLOSED_PNG;
-        else if (favorite) selectedImage = img::STOCK_ACC_FAVORITE_PNG;
-        else  selectedImage = img::STOCK_ACC_PNG;
-        break;
-    case (Model_Account::CREDIT_CARD) :
-        if (closed) selectedImage = img::CARD_ACC_CLOSED_PNG;
-        else if (favorite)   selectedImage = img::CARD_ACC_FAVORITE_PNG;
-        else   selectedImage = img::CARD_ACC_PNG;
-        break;
-    case (Model_Account::CASH) :
-        if (closed) selectedImage = img::CASH_ACC_CLOSED_PNG;
-        else if (favorite) selectedImage = img::CASH_ACC_FAVORITE_PNG;
-        else selectedImage = img::CASH_ACC_NORMAL_PNG;
-        break;
-    case (Model_Account::LOAN) :
-        if (closed) selectedImage = img::LOAN_ACC_CLOSED_PNG;
-        else if (favorite) selectedImage = img::LOAN_ACC_FAVORITE_PNG;
-        else selectedImage = img::LOAN_ACC_NORMAL_PNG;
-        break;
-    case (Model_Account::ASSET) :
-        if (closed) selectedImage = img::CASH_ACC_CLOSED_PNG;
-        else if (favorite) selectedImage = img::CASH_ACC_FAVORITE_PNG;
-        else selectedImage = img::CASH_ACC_NORMAL_PNG;
-        break;
-    case (Model_Account::SHARES) :
-        if (closed) selectedImage = img::LOAN_ACC_CLOSED_PNG;
-        else if (favorite) selectedImage = img::LOAN_ACC_FAVORITE_PNG;
-        else selectedImage = img::LOAN_ACC_NORMAL_PNG;
-        break;
-    case (Model_Account::CRYPTO):
-        if (closed) selectedImage = img::CRYPTO_ACC_CLOSED_PNG;
-        else if (favorite) selectedImage = img::CRYPTO_ACC_FAVORITE_PNG;
-        else selectedImage = img::CRYPTO_ACC_NORMAL_PNG;
-        break;
-    default:
-        wxFAIL_MSG("unknown account type");
+        case (Model_Account::CHECKING) :
+            if (closed)
+            {
+                selectedImage = img::SAVINGS_ACC_CLOSED_PNG;
+            }
+            else if (favorite)
+            {
+                selectedImage = img::SAVINGS_ACC_FAVORITE_PNG;
+            }
+            else
+            {
+                selectedImage = img::SAVINGS_ACC_NORMAL_PNG;
+            }
+            break;
+        case (Model_Account::TERM) :
+            if (closed)
+            {
+                selectedImage = img::TERM_ACC_CLOSED_PNG;
+            }
+            else if (favorite)
+            {
+                selectedImage = img::TERM_ACC_FAVORITE_PNG;
+            }
+            else
+            {
+                selectedImage = img::TERMACCOUNT_PNG;
+            }
+            break;
+        case (Model_Account::INVESTMENT) :
+            if (closed)
+            {
+                selectedImage = img::STOCK_ACC_CLOSED_PNG;
+            }
+            else if (favorite)
+            {
+                selectedImage = img::STOCK_ACC_FAVORITE_PNG;
+            }
+            else
+            {
+                selectedImage = img::STOCK_ACC_PNG;
+            }
+            break;
+        case (Model_Account::CREDIT_CARD) :
+            if (closed)
+            {
+                selectedImage = img::CARD_ACC_CLOSED_PNG;
+            }
+            else if (favorite)
+            {
+                selectedImage = img::CARD_ACC_FAVORITE_PNG;
+            }
+            else
+            {
+                selectedImage = img::CARD_ACC_PNG;
+            }
+            break;
+        case (Model_Account::CASH) :
+            if (closed)
+            {
+                selectedImage = img::CASH_ACC_CLOSED_PNG;
+            }
+            else if (favorite)
+            {
+                selectedImage = img::CASH_ACC_FAVORITE_PNG;
+            }
+            else
+            {
+                selectedImage = img::CASH_ACC_NORMAL_PNG;
+            }
+            break;
+        case (Model_Account::LOAN) :
+            if (closed)
+            {
+                selectedImage = img::LOAN_ACC_CLOSED_PNG;
+            }
+            else if (favorite)
+            {
+                selectedImage = img::LOAN_ACC_FAVORITE_PNG;
+            }
+            else
+            {
+                selectedImage = img::LOAN_ACC_NORMAL_PNG;
+            }
+            break;
+        case (Model_Account::ASSET) :
+            if (closed)
+            {
+                selectedImage = img::CASH_ACC_CLOSED_PNG;
+            }
+            else if (favorite)
+            {
+                selectedImage = img::CASH_ACC_FAVORITE_PNG;
+            }
+            else
+            {
+                selectedImage = img::CASH_ACC_NORMAL_PNG;
+            }
+            break;
+        case (Model_Account::SHARES) :
+            if (closed)
+            {
+                selectedImage = img::LOAN_ACC_CLOSED_PNG;
+            }
+            else if (favorite)
+            {
+                selectedImage = img::LOAN_ACC_FAVORITE_PNG;
+            }
+            else
+            {
+                selectedImage = img::LOAN_ACC_NORMAL_PNG;
+            }
+            break;
+        case (Model_Account::CRYPTO):
+            if (closed)
+            {
+                selectedImage = img::CRYPTO_ACC_CLOSED_PNG;
+            }
+            else if (favorite)
+            {
+                selectedImage = img::CRYPTO_ACC_FAVORITE_PNG;
+            }
+            else
+            {
+                selectedImage = img::CRYPTO_ACC_NORMAL_PNG;
+            }
+            break;
+        default:
+            wxFAIL_MSG("unknown account type");
     }
     return selectedImage;
 }
@@ -457,9 +559,13 @@ void Option::setHideReport(int report, bool value)
     {
         const int bitField = 1 << m_reports[report].id;
         if (value)
+        {
             m_hideReport |= bitField;
+        }
         else
+        {
             m_hideReport &= ~bitField;
+        }
 
         Model_Setting::instance().Set("HIDE_REPORT", m_hideReport);
     }
@@ -483,11 +589,13 @@ const wxString Option::getReportFullName(int reportID) const
     {
         name = m_reports.at(reportID).group;
         if (name.IsEmpty())
+        {
             name = wxGetTranslation(m_reports.at(reportID).name);
+        }
         else
             name = wxString::Format("%s (%s)"
-                , wxGetTranslation(name)
-                , wxGetTranslation(m_reports.at(reportID).name));
+                                    , wxGetTranslation(name)
+                                    , wxGetTranslation(m_reports.at(reportID).name));
     }
     return name;
 }
@@ -507,86 +615,90 @@ bool Option::getBudgetReport(int report) const
     return isReportIDCorrect(report) ? m_reports.at(report).type : false;
 }
 
-mmPrintableBase* Option::getReportFunction(int report) const
+mmPrintableBase *Option::getReportFunction(int report) const
 {
-    mmPrintableBase* function = nullptr;
+    mmPrintableBase *function = nullptr;
     if (isReportIDCorrect(report))
     {
         switch (m_reports[report].id)
         {
-        case ReportInfo::MyUsage:
-            function = new mmReportMyUsage();
-            break;
-        case ReportInfo::MonthlySummaryofAccounts:
-            function = new mmReportSummaryByDate(0);
-            break;
-        case ReportInfo::YearlySummaryofAccounts:
-            function = new mmReportSummaryByDate(1);
-            break;
-        case ReportInfo::WheretheMoneyGoes:
-            function = new mmReportCategoryExpensesGoes();
-            break;
-        case ReportInfo::WheretheMoneyComesFrom:
-            function = new mmReportCategoryExpensesComes();
-            break;
-        case ReportInfo::CategoriesSummary:
-            function = new mmReportCategoryExpensesCategories();
-            break;
-        case ReportInfo::CategoriesMonthly:
-            function = new mmReportCategoryOverTimePerformance();
-            break;
-        case ReportInfo::Payees:
-            function = new mmReportPayeeExpenses();
-            break;
-        case ReportInfo::IncomevsExpensesSummary:
-            function = new mmReportIncomeExpenses();
-            break;
-        case ReportInfo::IncomevsExpensesMonthly:
-            function = new mmReportIncomeExpensesMonthly();
-            break;
-        case ReportInfo::BudgetPerformance:
-            function = new mmReportBudgetingPerformance();
-            break;
-        case ReportInfo::BudgetCategorySummary:
-            function = new mmReportBudgetCategorySummary();
-            break;
-        case ReportInfo::MonthlyCashFlow:
-            function = new mmReportCashFlow(mmReportCashFlow::MONTHLY);
-            break;
-        case ReportInfo::DailyCashFlow:
-            function = new mmReportCashFlow(mmReportCashFlow::DAILY);
-            break;
-        case ReportInfo::StocksReportPerformance:
-            function = new mmReportChartStocks();
-            break;
-        case ReportInfo::StocksReportSummary:
-            function = new mmReportSummaryStocks();
-            break;
-        case ReportInfo::ForecastReport:
-            function = new mmReportForecast();
-            break;
-        default:
-            break;
+            case ReportInfo::MyUsage:
+                function = new mmReportMyUsage();
+                break;
+            case ReportInfo::MonthlySummaryofAccounts:
+                function = new mmReportSummaryByDate(0);
+                break;
+            case ReportInfo::YearlySummaryofAccounts:
+                function = new mmReportSummaryByDate(1);
+                break;
+            case ReportInfo::WheretheMoneyGoes:
+                function = new mmReportCategoryExpensesGoes();
+                break;
+            case ReportInfo::WheretheMoneyComesFrom:
+                function = new mmReportCategoryExpensesComes();
+                break;
+            case ReportInfo::CategoriesSummary:
+                function = new mmReportCategoryExpensesCategories();
+                break;
+            case ReportInfo::CategoriesMonthly:
+                function = new mmReportCategoryOverTimePerformance();
+                break;
+            case ReportInfo::Payees:
+                function = new mmReportPayeeExpenses();
+                break;
+            case ReportInfo::IncomevsExpensesSummary:
+                function = new mmReportIncomeExpenses();
+                break;
+            case ReportInfo::IncomevsExpensesMonthly:
+                function = new mmReportIncomeExpensesMonthly();
+                break;
+            case ReportInfo::BudgetPerformance:
+                function = new mmReportBudgetingPerformance();
+                break;
+            case ReportInfo::BudgetCategorySummary:
+                function = new mmReportBudgetCategorySummary();
+                break;
+            case ReportInfo::MonthlyCashFlow:
+                function = new mmReportCashFlow(mmReportCashFlow::MONTHLY);
+                break;
+            case ReportInfo::DailyCashFlow:
+                function = new mmReportCashFlow(mmReportCashFlow::DAILY);
+                break;
+            case ReportInfo::StocksReportPerformance:
+                function = new mmReportChartStocks();
+                break;
+            case ReportInfo::StocksReportSummary:
+                function = new mmReportSummaryStocks();
+                break;
+            case ReportInfo::ForecastReport:
+                function = new mmReportForecast();
+                break;
+            default:
+                break;
         }
         if (function != nullptr)
+        {
             function->setSettings(ReportSettings(m_reports.at(report).id));
+        }
     }
     return function;
 }
 
 const wxString Option::ReportSettings(int id) const
 {
-    const wxString& name = wxString::Format("REPORT_%d", id);
-    const wxString& settings = Model_Infotable::instance().GetStringInfo(name, "");
+    const wxString &name = wxString::Format("REPORT_%d", id);
+    const wxString &settings = Model_Infotable::instance().GetStringInfo(name, "");
     Document j_doc_main;
-    if (j_doc_main.Parse(settings.c_str()).HasParseError()) {
+    if (j_doc_main.Parse(settings.c_str()).HasParseError())
+    {
         j_doc_main.Parse(wxString::Format("{\"ID\":%i}", id).c_str());
     }
 
-    if (!j_doc_main.HasMember("ID")) {
+    if (!j_doc_main.HasMember("ID"))
+    {
         Value v_id(id);
         j_doc_main.AddMember("ID", v_id, j_doc_main.GetAllocator());
     }
-    const auto& json_data = JSON_PrettyFormated(j_doc_main);
+    const auto &json_data = JSON_PrettyFormated(j_doc_main);
     return json_data;
 }

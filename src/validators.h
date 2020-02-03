@@ -24,9 +24,12 @@ class mmCalcValidator : public wxTextValidator
 {
 public:
     mmCalcValidator();
-    virtual ~mmCalcValidator(){}
+    virtual ~mmCalcValidator() {}
 
-    virtual wxObject *Clone() const { return new mmCalcValidator(*this); }
+    virtual wxObject *Clone() const
+    {
+        return new mmCalcValidator(*this);
+    }
 
     // Filter keystrokes
     void OnChar(wxKeyEvent& event);

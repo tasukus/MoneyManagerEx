@@ -119,17 +119,18 @@ bool mmex::isPortableMode()
 }
 //----------------------------------------------------------------------------
 
-wxString mmex::getPathDoc(const EDocFile& f)
+wxString mmex::getPathDoc(const EDocFile &f)
 {
-    static const wxString files[DOC_FILES_MAX] = {
-      "README.TXT",
-      "contrib.txt",
-      "license.txt",
-      "version.txt",
-      "help/index.html",
-      "help/grm.html",
-      "help/stocks_and_shares.html",
-      "help/budget.html",
+    static const wxString files[DOC_FILES_MAX] =
+    {
+        "README.TXT",
+        "contrib.txt",
+        "license.txt",
+        "version.txt",
+        "help/index.html",
+        "help/grm.html",
+        "help/stocks_and_shares.html",
+        "help/budget.html",
     };
 
     wxASSERT(f >= 0 && f < DOC_FILES_MAX);
@@ -142,10 +143,11 @@ wxString mmex::getPathDoc(const EDocFile& f)
 
 wxString mmex::getPathResource(EResFile f)
 {
-    static const wxString files[RES_FILES_MAX] = {
-      "mmex.ico",
-      "kaching.wav",
-      "home_page.htt"
+    static const wxString files[RES_FILES_MAX] =
+    {
+        "mmex.ico",
+        "kaching.wav",
+        "home_page.htt"
     };
 
     wxASSERT(f >= 0 && f < RES_FILES_MAX);
@@ -159,8 +161,9 @@ wxString mmex::getPathResource(EResFile f)
 
 const wxString mmex::getPathShared(ESharedFile f)
 {
-    static const wxString files[SHARED_FILES_MAX] = {
-      "locale"
+    static const wxString files[SHARED_FILES_MAX] =
+    {
+        "locale"
     };
 
     wxASSERT(f >= 0 && f < SHARED_FILES_MAX);
@@ -173,9 +176,10 @@ const wxString mmex::getPathShared(ESharedFile f)
 
 const wxString mmex::getPathUser(EUserFile f)
 {
-    static const wxString files[USER_FILES_MAX] = {
-      getSettingsFileName(),
-      getDirectory()
+    static const wxString files[USER_FILES_MAX] =
+    {
+        getSettingsFileName(),
+        getDirectory()
     };
 
     wxASSERT(f >= 0 && f < USER_FILES_MAX);
@@ -194,27 +198,41 @@ For example %USERPROFILE%\MyBudget will be transformed to C:\Users\James\MyBudge
 const wxString mmex::getPathAttachment(const wxString &attachmentsFolder)
 {
     if (attachmentsFolder == wxEmptyString)
+    {
         return wxEmptyString;
+    }
 
     wxString AttachmentsFolder = attachmentsFolder;
     const wxString sep = wxFileName::GetPathSeparator();
     const wxString LastDBPath = Model_Setting::instance().getLastDbPath();
-    const wxString& LastDBFolder = wxFileName::FileName(LastDBPath).GetPath() + sep;
-    const wxString& UserFolder = mmex::GetUserDir(false).GetPath() + sep;
+    const wxString &LastDBFolder = wxFileName::FileName(LastDBPath).GetPath() + sep;
+    const wxString &UserFolder = mmex::GetUserDir(false).GetPath() + sep;
 
     if (attachmentsFolder.StartsWith(ATTACHMENTS_FOLDER_USERPROFILE, &AttachmentsFolder))
+    {
         AttachmentsFolder.Prepend(wxGetHomeDir() + sep);
+    }
     else if (attachmentsFolder.StartsWith(ATTACHMENTS_FOLDER_DOCUMENTS, &AttachmentsFolder))
+    {
         AttachmentsFolder.Prepend(wxStandardPaths::Get().GetDocumentsDir() + sep);
+    }
     else if (attachmentsFolder.StartsWith(ATTACHMENTS_FOLDER_DATABASE, &AttachmentsFolder))
+    {
         AttachmentsFolder.Prepend(LastDBFolder);
+    }
     else if (attachmentsFolder.StartsWith(ATTACHMENTS_FOLDER_APPDATA, &AttachmentsFolder))
+    {
         AttachmentsFolder.Prepend(UserFolder);
+    }
 
     if (AttachmentsFolder.Last() != sep)
+    {
         AttachmentsFolder.Append(sep);
+    }
     if (Model_Infotable::instance().GetBoolInfo("ATTACHMENTSSUBFOLDER", true))
+    {
         AttachmentsFolder += wxString::Format("MMEX_%s_Attachments%s", wxFileName::FileName(LastDBPath).GetName(), sep);
+    }
 
     return AttachmentsFolder;
 }
@@ -223,21 +241,21 @@ const wxString mmex::getTempFolder()
 {
     const wxString path = mmex::isPortableMode() ? mmex::GetUserDir(false).GetPath() : wxStandardPaths::Get().GetTempDir();
     const wxString folder = mmex::isPortableMode() ? "tmp"
-        : wxString::Format("%s_%s_tmp", mmex::GetAppName(), ::wxGetUserId());
+                            : wxString::Format("%s_%s_tmp", mmex::GetAppName(), ::wxGetUserId());
     return wxString::Format("%s%s%s%s", path, wxString(wxFILE_SEP_PATH), folder, wxString(wxFILE_SEP_PATH));
 }
 
-const wxString mmex::getReportFullFileName(const wxString& WXUNUSED(name))
+const wxString mmex::getReportFullFileName(const wxString &WXUNUSED(name))
 {
 // FIXME: remove name param or use it below inplace of "index"
     return wxString::Format("%s%s%shtml", mmex::getTempFolder()
-        , "index"
-        , wxString(wxFILE_SEP_EXT));
+                            , "index"
+                            , wxString(wxFILE_SEP_EXT));
 }
 
 //----------------------------------------------------------------------------
 
-const wxIcon& mmex::getProgramIcon()
+const wxIcon &mmex::getProgramIcon()
 {
     static wxIcon icon(mmexico_xpm);
     return icon;

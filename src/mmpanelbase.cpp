@@ -25,15 +25,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <wx/webviewfshandler.h>
 
 wxBEGIN_EVENT_TABLE(mmListCtrl, wxListCtrl)
-EVT_LIST_COL_END_DRAG(wxID_ANY, mmListCtrl::OnItemResize)
-EVT_LIST_COL_CLICK(wxID_ANY, mmListCtrl::OnColClick)
-EVT_LIST_COL_RIGHT_CLICK(wxID_ANY, mmListCtrl::OnColRightClick)
-EVT_MENU(wxID_ANY, mmListCtrl::PopupSelected)
+    EVT_LIST_COL_END_DRAG(wxID_ANY, mmListCtrl::OnItemResize)
+    EVT_LIST_COL_CLICK(wxID_ANY, mmListCtrl::OnColClick)
+    EVT_LIST_COL_RIGHT_CLICK(wxID_ANY, mmListCtrl::OnColRightClick)
+    EVT_MENU(wxID_ANY, mmListCtrl::PopupSelected)
 wxEND_EVENT_TABLE()
 
 mmListCtrl::mmListCtrl(wxWindow *parent, wxWindowID winid)
     : wxListCtrl(parent, winid, wxDefaultPosition, wxDefaultSize
-        , wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxLC_VIRTUAL | wxLC_SINGLE_SEL | wxLC_AUTOARRANGE)
+                 , wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxLC_VIRTUAL | wxLC_SINGLE_SEL | wxLC_AUTOARRANGE)
     , attr1_(new wxListItemAttr(mmColors::listBorderColor, mmColors::listAlternativeColor0, wxNullFont))
     , attr2_(new wxListItemAttr(mmColors::listBorderColor, mmColors::listAlternativeColor1, wxNullFont))
 {
@@ -41,8 +41,14 @@ mmListCtrl::mmListCtrl(wxWindow *parent, wxWindowID winid)
 
 mmListCtrl::~mmListCtrl()
 {
-    if (attr1_) delete attr1_;
-    if (attr2_) delete attr2_;
+    if (attr1_)
+    {
+        delete attr1_;
+    }
+    if (attr2_)
+    {
+        delete attr2_;
+    }
     /*
       Save the column widths of the list control. This will ensure that the
       column widths get set incase the OnItemResize does not work on some systems.
@@ -57,7 +63,7 @@ mmListCtrl::~mmListCtrl()
     }
 }
 
-wxListItemAttr* mmListCtrl::OnGetItemAttr(long row) const
+wxListItemAttr *mmListCtrl::OnGetItemAttr(long row) const
 {
     return (row % 2) ? attr2_ : attr1_;
 }
@@ -70,7 +76,7 @@ wxString mmListCtrl::BuildPage(const wxString &title) const
     text << "<meta charset = 'utf-8'>" + eol + "</head>" + eol;
     text << "<body>" << eol;
     text << wxString::Format("<table border=%s cellpadding=4 cellspacing=0 >"
-        , (GetWindowStyle() & wxLC_HRULES) || (GetWindowStyle() & wxLC_VRULES) ? "1" : "0") + eol;
+                             , (GetWindowStyle() & wxLC_HRULES) || (GetWindowStyle() & wxLC_VRULES) ? "1" : "0") + eol;
 
     text << "<tr>" << eol;
     for (int c = 0; c < GetColumnCount(); c++)
@@ -98,25 +104,30 @@ wxString mmListCtrl::BuildPage(const wxString &title) const
     return text;
 }
 
-void mmListCtrl::OnItemResize(wxListEvent& event)
+void mmListCtrl::OnItemResize(wxListEvent &event)
 {
     const int i = event.GetColumn();
     const int width = GetColumnWidth(i);
     if (!m_col_width.IsEmpty())
+    {
         Model_Setting::instance().Set(wxString::Format(m_col_width, i), width);
+    }
 }
 
-void mmListCtrl::OnColClick(wxListEvent& WXUNUSED(event))
+void mmListCtrl::OnColClick(wxListEvent &WXUNUSED(event))
 {
     // Default to do nothing and implement in derived class
 }
 
-void mmListCtrl::OnColRightClick(wxListEvent& event)
+void mmListCtrl::OnColRightClick(wxListEvent &event)
 {
     if (m_columns.size() > 0 && !m_col_width.IsEmpty())
     {
         m_ColumnHeaderNbr = event.GetColumn();
-        if (m_ColumnHeaderNbr < 0 || static_cast<size_t>(m_ColumnHeaderNbr) >= m_columns.size()) return;
+        if (m_ColumnHeaderNbr < 0 || static_cast<size_t>(m_ColumnHeaderNbr) >= m_columns.size())
+        {
+            return;
+        }
         wxMenu menu;
         wxMenu *submenu = new wxMenu;
         for (int i = 0; i < static_cast<int>(m_columns.size()); i++)
@@ -124,37 +135,41 @@ void mmListCtrl::OnColRightClick(wxListEvent& event)
             const int id = MENU_HEADER_COLUMN + i;
             submenu->AppendCheckItem(id, m_columns[i].HEADER);
             if (Model_Setting::instance().GetIntSetting(wxString::Format(m_col_width, i), m_columns[i].WIDTH) != 0)
+            {
                 submenu->Check(id, true);
+            }
         }
         menu.AppendSubMenu(submenu, _("Hide/Show Columns"));
         menu.Append(MENU_HEADER_HIDE, _("Hide this column"));
         if (m_default_sort_column >= 0)
+        {
             menu.Append(MENU_HEADER_SORT, _("Order by this column"));
+        }
         menu.Append(MENU_HEADER_RESET, _("Reset columns"));
         PopupMenu(&menu);
         this->SetFocus();
     }
 }
 
-void mmListCtrl::PopupSelected(wxCommandEvent& event)
+void mmListCtrl::PopupSelected(wxCommandEvent &event)
 {
     switch (event.GetId())
     {
-    case MENU_HEADER_HIDE:
-        OnHeaderHide(event);
-        break;
-    case MENU_HEADER_SORT:
-        OnHeaderSort(event);
-        break;
-    case MENU_HEADER_RESET:
-        OnHeaderReset(event);
-        break;
-    default:
-        OnHeaderColumn(event);
+        case MENU_HEADER_HIDE:
+            OnHeaderHide(event);
+            break;
+        case MENU_HEADER_SORT:
+            OnHeaderSort(event);
+            break;
+        case MENU_HEADER_RESET:
+            OnHeaderReset(event);
+            break;
+        default:
+            OnHeaderColumn(event);
     }
 }
 
-void mmListCtrl::OnHeaderHide(wxCommandEvent& WXUNUSED(event))
+void mmListCtrl::OnHeaderHide(wxCommandEvent &WXUNUSED(event))
 {
     if (m_ColumnHeaderNbr >= 0 && !m_col_width.IsEmpty())
     {
@@ -164,14 +179,14 @@ void mmListCtrl::OnHeaderHide(wxCommandEvent& WXUNUSED(event))
     }
 }
 
-void mmListCtrl::OnHeaderSort(wxCommandEvent& WXUNUSED(event))
+void mmListCtrl::OnHeaderSort(wxCommandEvent &WXUNUSED(event))
 {
     wxListEvent e;
     e.SetId(MENU_HEADER_SORT);
     OnColClick(e);
 }
 
-void mmListCtrl::OnHeaderReset(wxCommandEvent& WXUNUSED(event))
+void mmListCtrl::OnHeaderReset(wxCommandEvent &WXUNUSED(event))
 {
     wxString parameter_name;
     for (int i = 0; i < static_cast<int>(m_columns.size()); i++)
@@ -190,7 +205,7 @@ void mmListCtrl::OnHeaderReset(wxCommandEvent& WXUNUSED(event))
     OnColClick(e);
 }
 
-void mmListCtrl::OnHeaderColumn(wxCommandEvent& event)
+void mmListCtrl::OnHeaderColumn(wxCommandEvent &event)
 {
     const int id = event.GetId();
     const int columnNbr = id - MENU_HEADER_COLUMN;
@@ -198,7 +213,9 @@ void mmListCtrl::OnHeaderColumn(wxCommandEvent& event)
     {
         int default_width = m_columns[columnNbr].WIDTH;
         if (default_width == 0)
+        {
             default_width = wxLIST_AUTOSIZE_USEHEADER;
+        }
         const wxString parameter_name = wxString::Format(m_col_width, columnNbr);
         const int cur_width = Model_Setting::instance().GetIntSetting(parameter_name, default_width);
         const int new_width = (cur_width != 0 ? 0 : default_width);
@@ -215,18 +232,27 @@ int mmListCtrl::GetColumnWidthSetting(int column_number, int default_size)
 void mmListCtrl::SetColumnWidthSetting(int column_number, int column_width)
 {
     if (!m_col_width.IsEmpty())
+    {
         Model_Setting::instance().Set(wxString::Format(m_col_width, column_number), column_width);
+    }
 }
 
-std::vector<long> mmListCtrl::GetSelected() {
+std::vector<long> mmListCtrl::GetSelected()
+{
     std::vector<long> selected = std::vector<long>();
     long item = -1;
 
     for ( ;; )
     {
         item = GetNextItem(item, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED);
-        if (item == -1) break;
-        else selected.push_back(item);
+        if (item == -1)
+        {
+            break;
+        }
+        else
+        {
+            selected.push_back(item);
+        }
     }
 
     return selected;
@@ -242,14 +268,14 @@ mmPanelBase::~mmPanelBase()
 
 wxString mmPanelBase::BuildPage() const
 {
-    mmReportsPanel* rp = wxStaticCast(this, mmReportsPanel);
+    mmReportsPanel *rp = wxStaticCast(this, mmReportsPanel);
     return rp ? rp->getPrintableBase()->getHTMLText() : "TBD";
 }
 
 void mmPanelBase::PrintPage()
 {
     //this->Freeze();
-    wxWebView * htmlWindow = wxWebView::New(this, wxID_ANY);
+    wxWebView *htmlWindow = wxWebView::New(this, wxID_ANY);
     htmlWindow->RegisterHandler(wxSharedPtr<wxWebViewHandler>(new wxWebViewFSHandler("memory")));
     htmlWindow->SetPage(BuildPage(), "");
     htmlWindow->Print();

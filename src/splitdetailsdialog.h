@@ -45,7 +45,10 @@ public:
         , int transType
         , int accountID
     );
-    Split getResult() { return split_; }
+    Split getResult()
+    {
+        return split_;
+    }
 
 private:
     bool Create(wxWindow* parent);

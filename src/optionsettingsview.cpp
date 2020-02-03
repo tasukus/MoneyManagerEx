@@ -32,10 +32,10 @@ OptionSettingsView::OptionSettingsView()
 }
 
 OptionSettingsView::OptionSettingsView(wxWindow *parent
-    , wxWindowID id
-    , const wxPoint &pos
-    , const wxSize &size
-    , long style, const wxString &name)
+                                       , wxWindowID id
+                                       , const wxPoint &pos
+                                       , const wxSize &size
+                                       , long style, const wxString &name)
 {
     wxPanel::Create(parent, id, pos, size, style, name);
     Create();
@@ -47,16 +47,16 @@ OptionSettingsView::~OptionSettingsView()
 
 void OptionSettingsView::Create()
 {
-    wxBoxSizer* viewsPanelSizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *viewsPanelSizer = new wxBoxSizer(wxVERTICAL);
     SetSizer(viewsPanelSizer);
 
     // Account View Options
-    wxStaticBox* accountStaticBox = new wxStaticBox(this, wxID_STATIC, _("View Options"));
+    wxStaticBox *accountStaticBox = new wxStaticBox(this, wxID_STATIC, _("View Options"));
     SetBoldFont(accountStaticBox);
 
-    wxStaticBoxSizer* accountStaticBoxSizer = new wxStaticBoxSizer(accountStaticBox, wxVERTICAL);
+    wxStaticBoxSizer *accountStaticBoxSizer = new wxStaticBoxSizer(accountStaticBox, wxVERTICAL);
     viewsPanelSizer->Add(accountStaticBoxSizer, wxSizerFlags(g_flagsExpand).Proportion(0));
-    wxFlexGridSizer* view_sizer1 = new wxFlexGridSizer(0, 2, 0, 5);
+    wxFlexGridSizer *view_sizer1 = new wxFlexGridSizer(0, 2, 0, 5);
     accountStaticBoxSizer->Add(view_sizer1);
 
     view_sizer1->Add(new wxStaticText(this, wxID_STATIC, _("Accounts Visible")), g_flagsH);
@@ -68,11 +68,13 @@ void OptionSettingsView::Create()
     view_accounts.Add(VIEW_ACCOUNTS_FAVORITES_STR);
 
     m_choice_visible = new wxChoice(this, ID_DIALOG_OPTIONS_VIEW_ACCOUNTS);
-    for (const auto& entry : view_accounts)
+    for (const auto &entry : view_accounts)
     {
         m_choice_visible->Append(wxGetTranslation(entry), new wxStringClientData(entry));
         if (entry == vAccts)
+        {
             m_choice_visible->SetStringSelection(wxGetTranslation(entry));
+        }
     }
 
     view_sizer1->Add(m_choice_visible, g_flagsH);
@@ -95,9 +97,10 @@ void OptionSettingsView::Create()
     view_strings.Add(VIEW_TRANS_LAST_FIN_YEAR_STR);
 
     m_choice_trans_visible = new wxChoice(this, wxID_ANY, wxDefaultPosition, wxDefaultSize);
-    for (const auto &entry : view_strings) {
+    for (const auto &entry : view_strings)
+    {
         m_choice_trans_visible->Append(wxGetTranslation(entry)
-            , new wxStringClientData(entry));
+                                       , new wxStringClientData(entry));
     }
 
     view_sizer1->Add(m_choice_trans_visible, g_flagsH);
@@ -111,7 +114,7 @@ void OptionSettingsView::Create()
     constexpr int max = 300;
     constexpr int min = 25;
     m_scale_factor = new wxSpinCtrl(this, wxID_ANY
-        , wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, min, max);
+                                    , wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, min, max);
 
     const int vFontSize = Option::instance( ).getHtmlFontSize( );
     m_scale_factor->SetValue(vFontSize);
@@ -119,63 +122,63 @@ void OptionSettingsView::Create()
     view_sizer1->Add(m_scale_factor, g_flagsH);
 
     // Budget Options
-    wxStaticBox* budgetStaticBox = new wxStaticBox(this, wxID_STATIC, _("Budget Options"));
+    wxStaticBox *budgetStaticBox = new wxStaticBox(this, wxID_STATIC, _("Budget Options"));
     SetBoldFont(budgetStaticBox);
 
-    wxStaticBoxSizer* budgetSizer = new wxStaticBoxSizer(budgetStaticBox, wxVERTICAL);
+    wxStaticBoxSizer *budgetSizer = new wxStaticBoxSizer(budgetStaticBox, wxVERTICAL);
     viewsPanelSizer->Add(budgetSizer, wxSizerFlags(g_flagsExpand).Proportion(0));
 
     m_budget_financial_years = new wxCheckBox(this, wxID_STATIC, _("View as Financial Years")
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
+            , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
     m_budget_financial_years->SetValue(Option::instance().getBudgetFinancialYears());
     budgetSizer->Add(m_budget_financial_years, g_flagsV);
 
     m_budget_include_transfers = new wxCheckBox(this, wxID_STATIC
-        , _("View with 'transfer' transactions")
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
+            , _("View with 'transfer' transactions")
+            , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
     m_budget_include_transfers->SetValue(Option::instance().getBudgetIncludeTransfers());
     budgetSizer->Add(m_budget_include_transfers, g_flagsV);
 
     m_budget_setup_without_summary = new wxCheckBox(this, wxID_STATIC
-        , _("View Setup Without Budget Summaries")
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
+            , _("View Setup Without Budget Summaries")
+            , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
     m_budget_setup_without_summary->SetValue(Option::instance().getBudgetSetupWithoutSummaries());
     budgetSizer->Add(m_budget_setup_without_summary, g_flagsV);
 
     m_budget_summary_without_category = new wxCheckBox(this, wxID_STATIC
-        , _("View Category Report with Summaries")
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
+            , _("View Category Report with Summaries")
+            , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
     m_budget_summary_without_category->SetValue(Option::instance().getBudgetReportWithSummaries());
     budgetSizer->Add(m_budget_summary_without_category, g_flagsV);
 
     // Allows a year or financial year to start before or after the 1st of the month.
-    wxBoxSizer* budget_offset_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer *budget_offset_sizer = new wxBoxSizer(wxHORIZONTAL);
     budgetSizer->Add(budget_offset_sizer);
 
     budget_offset_sizer->Add(new wxStaticText(this, wxID_STATIC, _("Budget Offset (days):")), g_flagsH);
 
     m_budget_days_offset = new wxSpinCtrl(this, wxID_ANY
-        , wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -30, +30);
+                                          , wxEmptyString, wxDefaultPosition, wxDefaultSize, wxSP_ARROW_KEYS, -30, +30);
     m_budget_days_offset->SetToolTip(_("Advance or retard the start date from the 1st of the month or year by the number of days"));
     m_budget_days_offset->SetValue(Option::instance().getBudgetDaysOffset());
     budget_offset_sizer->Add(m_budget_days_offset, g_flagsH);
 
     // Report Options
-    wxStaticBox* reportStaticBox = new wxStaticBox(this, wxID_STATIC, _("Report Options"));
+    wxStaticBox *reportStaticBox = new wxStaticBox(this, wxID_STATIC, _("Report Options"));
     SetBoldFont(reportStaticBox);
 
-    wxStaticBoxSizer* reportSizer = new wxStaticBoxSizer(reportStaticBox, wxVERTICAL);
+    wxStaticBoxSizer *reportSizer = new wxStaticBoxSizer(reportStaticBox, wxVERTICAL);
     viewsPanelSizer->Add(reportSizer, wxSizerFlags(g_flagsExpand).Proportion(0));
     m_ignore_future_transactions = new wxCheckBox(this, wxID_STATIC
-        , _("View without Future Transactions")
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
+            , _("View without Future Transactions")
+            , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
     m_ignore_future_transactions->SetValue(Option::instance().getIgnoreFutureTransactions());
     reportSizer->Add(m_ignore_future_transactions, g_flagsV);
 
     // Colours settings
-    wxStaticBox* userColourSettingStBox = new wxStaticBox(this, wxID_ANY, _("User Colors"));
+    wxStaticBox *userColourSettingStBox = new wxStaticBox(this, wxID_ANY, _("User Colors"));
     SetBoldFont(userColourSettingStBox);
-    wxStaticBoxSizer* userColourSettingStBoxSizer = new wxStaticBoxSizer(userColourSettingStBox, wxHORIZONTAL);
+    wxStaticBoxSizer *userColourSettingStBoxSizer = new wxStaticBoxSizer(userColourSettingStBox, wxHORIZONTAL);
     viewsPanelSizer->Add(userColourSettingStBoxSizer, wxSizerFlags(g_flagsExpand).Proportion(0));
 
     constexpr int size_x = 55;
@@ -208,12 +211,12 @@ void OptionSettingsView::Create()
     userColourSettingStBoxSizer->Add(m_UDFCB7, g_flagsH);
 
     this->Connect(wxID_ANY, wxEVT_COMMAND_BUTTON_CLICKED
-        , wxCommandEventHandler(OptionSettingsView::OnNavTreeColorChanged), nullptr, this);
+                  , wxCommandEventHandler(OptionSettingsView::OnNavTreeColorChanged), nullptr, this);
 }
 
-void OptionSettingsView::OnNavTreeColorChanged(wxCommandEvent& event)
+void OptionSettingsView::OnNavTreeColorChanged(wxCommandEvent &event)
 {
-    wxButton* button = wxDynamicCast(FindWindow(event.GetId()), wxButton);
+    wxButton *button = wxDynamicCast(FindWindow(event.GetId()), wxButton);
     if (button)
     {
         wxColour colour = button->GetForegroundColour();
@@ -233,15 +236,19 @@ void OptionSettingsView::OnNavTreeColorChanged(wxCommandEvent& event)
 void OptionSettingsView::SaveSettings()
 {
     wxString accVisible = VIEW_ACCOUNTS_ALL_STR;
-    wxStringClientData* visible_acc_obj = static_cast<wxStringClientData*>(m_choice_visible->GetClientObject(m_choice_visible->GetSelection()));
+    wxStringClientData *visible_acc_obj = static_cast<wxStringClientData *>(m_choice_visible->GetClientObject(m_choice_visible->GetSelection()));
     if (visible_acc_obj)
+    {
         accVisible = visible_acc_obj->GetData();
+    }
     Model_Setting::instance().SetViewAccounts(accVisible);
 
     wxString transVisible = VIEW_TRANS_ALL_STR;
-    wxStringClientData* visible_obj = static_cast<wxStringClientData*>(m_choice_trans_visible->GetClientObject(m_choice_trans_visible->GetSelection()));
+    wxStringClientData *visible_obj = static_cast<wxStringClientData *>(m_choice_trans_visible->GetClientObject(m_choice_trans_visible->GetSelection()));
     if (visible_obj)
+    {
         transVisible = visible_obj->GetData();
+    }
     Model_Setting::instance().SetViewTransactions(transVisible);
 
     const int size = m_scale_factor->GetValue( );

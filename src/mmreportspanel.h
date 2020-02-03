@@ -36,27 +36,30 @@ class mmReportsPanel : public mmPanelBase
 
 public:
     mmReportsPanel(mmPrintableBase* rb,
-        bool cleanupReport,
-        wxWindow *parent,
-        mmGUIFrame *frame,
-        wxWindowID winid = wxID_ANY,
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
-        long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-        const wxString& name = "mmReportsPanel");
+                   bool cleanupReport,
+                   wxWindow *parent,
+                   mmGUIFrame *frame,
+                   wxWindowID winid = wxID_ANY,
+                   const wxPoint& pos = wxDefaultPosition,
+                   const wxSize& size = wxDefaultSize,
+                   long style = wxTAB_TRAVERSAL | wxNO_BORDER,
+                   const wxString& name = "mmReportsPanel");
     ~mmReportsPanel();
 
     bool Create(wxWindow *parent, wxWindowID winid,
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
-        long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-        const wxString& name = "mmReportsPanel");
+                const wxPoint& pos = wxDefaultPosition,
+                const wxSize& size = wxDefaultSize,
+                long style = wxTAB_TRAVERSAL | wxNO_BORDER,
+                const wxString& name = "mmReportsPanel");
 
     void CreateControls();
     void sortTable() {}
 
     bool saveReportText(wxString& error, bool initial = true);
-    mmPrintableBase* getPrintableBase() { return rb_; }
+    mmPrintableBase* getPrintableBase()
+    {
+        return rb_;
+    }
     void PrintPage();
 
 public:

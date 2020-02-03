@@ -56,7 +56,10 @@ private:
     wxString m_RefType;
     int m_RefId = 0;
 
-    mmAttachmentDialog() {}
+    mmAttachmentDialog( )
+    {
+        return;
+    }
 
     void Create(wxWindow* parent, const wxString& label, const wxString& name = "mmAttachmentDialog");
     void CreateControls();

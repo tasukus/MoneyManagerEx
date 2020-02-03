@@ -18,7 +18,8 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include <wx/imaglist.h>
 
-enum img {
+enum img
+{
     HOUSE_PNG,
     SCHEDULE_PNG,
     CALENDAR_PNG,
@@ -54,7 +55,8 @@ enum img {
 };
 
 /* Images set for accounts to be user assigned */
-enum acc_img {
+enum acc_img
+{
     MONEY_DOLLAR_XPM = LAST_NAVTREE_PNG, //First user img
     MONEY_EURO_XPM,
     FLAG_XPM,
@@ -72,7 +74,8 @@ enum acc_img {
     MAX_XPM,
 };
 
-enum png {
+enum png
+{
     NEW_DB,
     OPEN,
     SAVE,

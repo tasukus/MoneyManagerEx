@@ -36,22 +36,27 @@ class mmAssetDialog : public wxDialog
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmAssetDialog(){};
+    mmAssetDialog( )
+    {
+    };
     mmAssetDialog(wxWindow *parent, mmGUIFrame* gui_frame, Model_Asset::Data* asset, bool trans_data = false);
     mmAssetDialog(wxWindow *parent, mmGUIFrame* gui_frame, Model_Translink::Data* transfer_entry, Model_Checking::Data* checking_entry);
 
     void SetTransactionAccountName(const wxString& account_name);
     void SetTransactionDate();
-    Model_Asset::Data* getAssetData() { return m_asset; }
+    Model_Asset::Data* getAssetData( )
+    {
+        return m_asset;
+    }
 
 private:
     Model_Asset::Data* m_asset = nullptr;
     bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+                , wxWindowID id
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style);
     void CreateControls();
     void OnOk(wxCommandEvent& event);
     void OnCancel(wxCommandEvent& event);

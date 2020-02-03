@@ -35,11 +35,11 @@ public:
     relocateCategoryDialog(wxWindow* parent, int sourceCatID = -1, int sourceSubCatID = -1);
 
     bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+                , wxWindowID id
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style);
 
     void CreateControls();
 

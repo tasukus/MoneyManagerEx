@@ -49,14 +49,14 @@ mmOptionsDialog::~mmOptionsDialog( )
     delete m_imageList;
 }
 
-mmOptionsDialog::mmOptionsDialog(wxWindow* parent, mmGUIApp* app): m_app(app)
+mmOptionsDialog::mmOptionsDialog(wxWindow *parent, mmGUIApp *app): m_app(app)
 {
     constexpr long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create(parent, wxID_ANY, _("MMEX Options"), wxDefaultPosition, wxSize(500, 400), style);
 }
 
-bool mmOptionsDialog::Create(wxWindow* parent
-    , wxWindowID id, const wxString& caption, const wxPoint& pos, const wxSize& size, long style)
+bool mmOptionsDialog::Create(wxWindow *parent
+                             , wxWindowID id, const wxString &caption, const wxPoint &pos, const wxSize &size, long style)
 {
     SetExtraStyle(GetExtraStyle() | wxWS_EX_BLOCK_EVENTS);
     wxDialog::Create(parent, id, caption, pos, size, style);
@@ -74,7 +74,7 @@ bool mmOptionsDialog::Create(wxWindow* parent
 
 void mmOptionsDialog::CreateControls()
 {
-    const wxSize imageSize( 48 , 48 );
+    const wxSize imageSize( 48, 48 );
     m_imageList = new wxImageList(imageSize.GetWidth(), imageSize.GetHeight());
     m_imageList->Add(wxBitmap(view_xpm));
     m_imageList->Add(wxBitmap(preferences_attachments_xpm));
@@ -82,13 +82,13 @@ void mmOptionsDialog::CreateControls()
     m_imageList->Add(wxBitmap(preferences_other_xpm));
     m_imageList->Add(wxBitmap(preferences_network_xpm));
 
-    wxBoxSizer* mainDialogSizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *mainDialogSizer = new wxBoxSizer(wxVERTICAL);
     this->SetSizer(mainDialogSizer);
 
-    wxPanel* mainDialogPanel = new wxPanel(this, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+    wxPanel *mainDialogPanel = new wxPanel(this, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     mainDialogSizer->Add(mainDialogPanel, 1, wxGROW|wxALL, 5);
 
-    wxBoxSizer* mainDialogPanelSizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *mainDialogPanelSizer = new wxBoxSizer(wxVERTICAL);
     mainDialogPanel->SetSizer(mainDialogPanelSizer);
 
     m_notebook = new wxListbook(mainDialogPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLB_LEFT);
@@ -97,31 +97,31 @@ void mmOptionsDialog::CreateControls()
     /*********************************************************************************************
      General Panel
     **********************************************************************************************/
-    OptionSettingsGeneral* general_panel = new OptionSettingsGeneral(m_notebook, m_app);
+    OptionSettingsGeneral *general_panel = new OptionSettingsGeneral(m_notebook, m_app);
     m_panel_list.push_back(general_panel);
 
     /*********************************************************************************************
      Views Panel
     **********************************************************************************************/
-    OptionSettingsView* views_panel = new OptionSettingsView(m_notebook);
+    OptionSettingsView *views_panel = new OptionSettingsView(m_notebook);
     m_panel_list.push_back(views_panel);
 
     /*********************************************************************************************
      Attachments Panel
     **********************************************************************************************/
-    OptionSettingsAttachment* attachment_panel = new OptionSettingsAttachment(m_notebook);
+    OptionSettingsAttachment *attachment_panel = new OptionSettingsAttachment(m_notebook);
     m_panel_list.push_back(attachment_panel);
 
     /*********************************************************************************************
     Network Panel
     **********************************************************************************************/
-    OptionSettingsNet* network_panel = new OptionSettingsNet(m_notebook);
+    OptionSettingsNet *network_panel = new OptionSettingsNet(m_notebook);
     m_panel_list.push_back(network_panel);
 
     /*********************************************************************************************
     Others Panel
     **********************************************************************************************/
-    OptionSettingsMisc* others_panel = new OptionSettingsMisc(m_notebook);
+    OptionSettingsMisc *others_panel = new OptionSettingsMisc(m_notebook);
     m_panel_list.push_back(others_panel);
 
     /**********************************************************************************************
@@ -136,20 +136,20 @@ void mmOptionsDialog::CreateControls()
     mainDialogPanelSizer->Add(m_notebook, g_flagsExpand);
     mainDialogPanelSizer->Layout();
 
-   /**********************************************************************************************
-    Button Panel with OK and Cancel Buttons
-    **********************************************************************************************/
-    wxStaticLine* panelSeparatorLine = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+    /**********************************************************************************************
+     Button Panel with OK and Cancel Buttons
+     **********************************************************************************************/
+    wxStaticLine *panelSeparatorLine = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     mainDialogSizer->Add(panelSeparatorLine, 0, wxGROW | wxLEFT | wxRIGHT, 10);
 
-    wxPanel* buttonPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-    wxBoxSizer* buttonPanelSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxPanel *buttonPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+    wxBoxSizer *buttonPanelSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonPanel->SetSizer(buttonPanelSizer);
     mainDialogSizer->Add(buttonPanel, wxSizerFlags(g_flagsV).Center());
 
-    wxButton* itemButtonOK = new wxButton(buttonPanel, wxID_OK, _("&OK "));
-    wxButton* itemButtonApply = new wxButton(buttonPanel, wxID_APPLY, _("&Apply"));
-    wxButton* itemButtonCancel = new wxButton(buttonPanel, wxID_CANCEL, wxGetTranslation(g_CancelLabel));
+    wxButton *itemButtonOK = new wxButton(buttonPanel, wxID_OK, _("&OK "));
+    wxButton *itemButtonApply = new wxButton(buttonPanel, wxID_APPLY, _("&Apply"));
+    wxButton *itemButtonCancel = new wxButton(buttonPanel, wxID_CANCEL, wxGetTranslation(g_CancelLabel));
     buttonPanelSizer->Add(itemButtonOK, g_flagsH);
     buttonPanelSizer->Add(itemButtonApply, g_flagsH);
     buttonPanelSizer->Add(itemButtonCancel, g_flagsH);
@@ -163,19 +163,21 @@ void mmOptionsDialog::SaveNewSystemSettings()
     Model_Setting::instance().Savepoint();
 
     for (const auto notebook_panel : m_panel_list)
+    {
         notebook_panel->SaveSettings();
+    }
 
     Model_Setting::instance().ReleaseSavepoint();
     Model_Infotable::instance().ReleaseSavepoint();
 }
 
-void mmOptionsDialog::OnOk(wxCommandEvent& WXUNUSED(event))
+void mmOptionsDialog::OnOk(wxCommandEvent &WXUNUSED(event))
 {
     this->SaveNewSystemSettings();
     EndModal(wxID_OK);
 }
 
-void mmOptionsDialog::OnApply(wxCommandEvent& WXUNUSED(event))
+void mmOptionsDialog::OnApply(wxCommandEvent &WXUNUSED(event))
 {
     Model_Infotable::instance().Savepoint();
     Model_Setting::instance().Savepoint();
@@ -186,6 +188,6 @@ void mmOptionsDialog::OnApply(wxCommandEvent& WXUNUSED(event))
     Model_Setting::instance().ReleaseSavepoint();
     Model_Infotable::instance().ReleaseSavepoint();
 
-    const wxString& msg = wxString::Format(_("%s page has been saved."), m_notebook->GetPageText(selected_page));
+    const wxString &msg = wxString::Format(_("%s page has been saved."), m_notebook->GetPageText(selected_page));
     wxMessageBox(msg, _("MMEX Options"));
 }

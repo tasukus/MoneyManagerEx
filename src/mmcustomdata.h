@@ -22,7 +22,6 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "Model_CustomField.h"
 #include "Model_Checking.h"
 
-
 class wxDatePickerCtrl;
 class mmTextCtrl;
 class wxDialog;
@@ -60,14 +59,32 @@ public:
     bool SaveCustomValues(int ref_id);
     const wxString GetWidgetData(wxWindowID controlID) const;
     int GetWidgetType(wxWindowID controlID) const;
-    size_t GetCustomFieldsCount() const { return m_fields.size(); }
+    size_t GetCustomFieldsCount() const
+    {
+        return m_fields.size();
+    }
     size_t GetActiveCustomFieldsCount() const;
     std::map<wxString, wxString> GetActiveCustomFields() const;
-    void SetBaseID(const wxWindowID id) { m_init_control_id = id; }
-    wxWindowID GetBaseID() const { return m_init_control_id; }
-    void SetLabelID(const wxWindowID id) { m_init_label_id = id; }
-    wxWindowID GetLabelID() const { return m_init_label_id; }
-    void ResetRefID() { m_ref_id = wxID_ANY; }
+    void SetBaseID(const wxWindowID id)
+    {
+        m_init_control_id = id;
+    }
+    wxWindowID GetBaseID() const
+    {
+        return m_init_control_id;
+    }
+    void SetLabelID(const wxWindowID id)
+    {
+        m_init_label_id = id;
+    }
+    wxWindowID GetLabelID() const
+    {
+        return m_init_label_id;
+    }
+    void ResetRefID()
+    {
+        m_ref_id = wxID_ANY;
+    }
     // TODO: void SetRefID(int ref_id) { m_ref_id = ref_id; }
     bool IsSomeWidgetChanged() const;
     bool IsDataFound(const Model_Checking::Full_Data &tran);

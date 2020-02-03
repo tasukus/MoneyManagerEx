@@ -43,14 +43,17 @@ public:
     ~mmCurrencyDialog();
     mmCurrencyDialog(wxWindow* parent, const Model_Currency::Data * currency);
 
-    int getCurrencyID() { return m_currency->CURRENCYID; };
+    int getCurrencyID()
+    {
+        return m_currency->CURRENCYID;
+    };
 
 private:
     bool Create(wxWindow* parent, wxWindowID id,
-        const wxString& caption,
-        const wxPoint& pos,
-        const wxSize& size,
-        long style);
+                const wxString& caption,
+                const wxPoint& pos,
+                const wxSize& size,
+                long style);
 
     void CreateControls();
     void fillControls();

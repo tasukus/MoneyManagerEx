@@ -19,7 +19,6 @@
 #ifndef MM_EX_CATEGDIALOG_H_
 #define MM_EX_CATEGDIALOG_H_
 
-
 #include "defs.h"
 #include "Model_Category.h"
 
@@ -30,8 +29,14 @@ public:
         : categData_(categData)
         , subcategData_(subcategData)
     {}
-    Model_Category::Data* getCategData() { return &categData_; }
-    Model_Subcategory::Data* getSubCategData() { return &subcategData_; }
+    Model_Category::Data* getCategData()
+    {
+        return &categData_;
+    }
+    Model_Subcategory::Data* getSubCategData()
+    {
+        return &subcategData_;
+    }
 
 private:
     Model_Category::Data categData_;
@@ -46,16 +51,16 @@ class mmCategDialog : public wxDialog
 public:
     mmCategDialog();
     mmCategDialog(wxWindow* parent
-        , const int category_id = -1, const int subcategory_id = -1
-        , const bool bEnableRelocate = false
-        , const bool bEnableSelect = true);
+                  , const int category_id = -1, const int subcategory_id = -1
+                  , const bool bEnableRelocate = false
+                  , const bool bEnableSelect = true);
 
     bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+                , wxWindowID id
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style);
 
     int getCategId( )const noexcept
     {

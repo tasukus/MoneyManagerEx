@@ -32,9 +32,9 @@ wxBEGIN_EVENT_TABLE(mmUpdateWizard, wxWizard)
     EVT_HTML_LINK_CLICKED(wxID_ANY, mmUpdateWizard::LinkClicked)
 wxEND_EVENT_TABLE()
 
-mmUpdateWizard::mmUpdateWizard(wxFrame *frame, const Value& new_version)
+mmUpdateWizard::mmUpdateWizard(wxFrame *frame, const Value &new_version)
     : wxWizard(frame, wxID_ANY, _("Update Wizard")
-    , wxNullBitmap, wxDefaultPosition, wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER)
+               , wxNullBitmap, wxDefaultPosition, wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER)
     , m_new_version(new_version)
 {
     page1 = new wxWizardPageSimple(this);
@@ -43,11 +43,11 @@ mmUpdateWizard::mmUpdateWizard(wxFrame *frame, const Value& new_version)
     wxString::const_iterator end;
     pub_date.ParseFormat(wxString(m_new_version["published_at"].GetString()), "%Y-%m-%dT%H:%M:%SZ", &end);
     const wxString displayMsg = wxString()
-        << _("A new version of MMEX is available!") << "\n\n"
-        << wxString::Format(_("Your version is %s"), mmex::version::string) << "\n"
-        << wxString::Format(_("New version is %s (published at %s)")
-            , m_new_version["tag_name"].GetString()+1
-            , pub_date.Format(Option::instance().getDateFormat()) ) << "\n";
+                                << _("A new version of MMEX is available!") << "\n\n"
+                                << wxString::Format(_("Your version is %s"), mmex::version::string) << "\n"
+                                << wxString::Format(_("New version is %s (published at %s)")
+                                        , m_new_version["tag_name"].GetString()+1
+                                        , pub_date.Format(Option::instance().getDateFormat()) ) << "\n";
 
     wxBoxSizer *page1_sizer = new wxBoxSizer(wxVERTICAL);
     page1->SetSizer(page1_sizer);
@@ -55,12 +55,12 @@ mmUpdateWizard::mmUpdateWizard(wxFrame *frame, const Value& new_version)
     wxStaticText *updateText = new wxStaticText(page1, wxID_ANY, displayMsg);
     wxStaticText *whatsnew = new wxStaticText(page1, wxID_ANY, _("What's new:"));
     wxHtmlWindow *changelog = new wxHtmlWindow(page1
-        , wxID_ANY, wxDefaultPosition, wxSize(450, 250)
-        , wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL);
+            , wxID_ANY, wxDefaultPosition, wxSize(450, 250)
+            , wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL);
     wxStaticText *instruction = new wxStaticText(page1, wxID_ANY,
-        _("Click on Finish to open our download webpage."));
-        // _("Click on next to download it now or visit our website to download."));
-        // TODO: Download file in wizard page2
+            _("Click on Finish to open our download webpage."));
+    // _("Click on next to download it now or visit our website to download."));
+    // TODO: Download file in wizard page2
 
     page1_sizer->Add(updateText);
     page1_sizer->Add(whatsnew, wxSizerFlags(g_flagsV).Border(wxBOTTOM, 0));
@@ -128,7 +128,7 @@ void mmUpdateWizard::PageChanged(wxWizardEvent& evt)
 }
 */
 
-void mmUpdateWizard::LinkClicked(wxHtmlLinkEvent& evt)
+void mmUpdateWizard::LinkClicked(wxHtmlLinkEvent &evt)
 {
     wxLaunchDefaultBrowser(evt.GetLinkInfo().GetHref());
 }
@@ -250,9 +250,12 @@ struct Version
 {
     long v[5];
 
-    explicit Version(const wxString& tag)
+    explicit Version(const wxString &tag)
     {
-        for(int i=0; i<5; i++) v[i]=0;
+        for(int i=0; i<5; i++)
+        {
+            v[i]=0;
+        }
         wxRegEx re_ver("^v([0-9]+)\\.([0-9]+)(\\.([0-9]+))?(-(alpha|beta|rc)(\\.([0-9]+))?)?$", wxRE_EXTENDED);
         if (re_ver.Matches(tag))
             for (size_t i=0; i<re_ver.GetMatchCount(); i++)
@@ -260,65 +263,109 @@ struct Version
                 wxString val = re_ver.GetMatch(tag, i);
                 switch (i)
                 {
-                    case 1 : val.ToCLong(&v[0]); break;
-                    case 2 : val.ToCLong(&v[1]); break;
-                    case 4 : val.ToCLong(&v[2]); break;
-                    case 6 : if (val=="alpha") v[3]=-3;
-                             else if (val=="beta") v[3]=-2;
-                             else v[3]=-1;
-                             break;
-                    case 8 : val.ToCLong(&v[4]); break;
+                    case 1 :
+                        val.ToCLong(&v[0]);
+                        break;
+                    case 2 :
+                        val.ToCLong(&v[1]);
+                        break;
+                    case 4 :
+                        val.ToCLong(&v[2]);
+                        break;
+                    case 6 :
+                        if (val=="alpha")
+                        {
+                            v[3]=-3;
+                        }
+                        else if (val=="beta")
+                        {
+                            v[3]=-2;
+                        }
+                        else
+                        {
+                            v[3]=-1;
+                        }
+                        break;
+                    case 8 :
+                        val.ToCLong(&v[4]);
+                        break;
                 }
             }
     }
 
-    bool operator < (const Version& other)
+    bool operator < (const Version &other)
     {
         for(int i=0; i<5; i++)
-            if (v[i] < other.v[i]) return true;
-            else if (v[i] > other.v[i]) return false;
+            if (v[i] < other.v[i])
+            {
+                return true;
+            }
+            else if (v[i] > other.v[i])
+            {
+                return false;
+            }
         return false;
     }
 
-    bool operator > (const Version& other)
+    bool operator > (const Version &other)
     {
         for(int i=0; i<5; i++)
-            if (v[i] > other.v[i]) return true;
-            else if (v[i] < other.v[i]) return false;
+            if (v[i] > other.v[i])
+            {
+                return true;
+            }
+            else if (v[i] < other.v[i])
+            {
+                return false;
+            }
         return false;
     }
 
-    Version& operator = (const Version& other)
+    Version &operator = (const Version &other)
     {
         if (*this != other)
-            for(int i=0; i<5; i++) v[i]=other.v[i];
+            for(int i=0; i<5; i++)
+            {
+                v[i]=other.v[i];
+            }
         return *this;
     }
 
-    bool operator == (const Version& other)
+    bool operator == (const Version &other)
     {
-        for(int i=0; i<5; i++) if (v[i] != other.v[i]) return false;
+        for(int i=0; i<5; i++) if (v[i] != other.v[i])
+            {
+                return false;
+            }
         return true;
     }
 
-    bool operator != (const Version& other)
+    bool operator != (const Version &other)
     {
         return !(*this == other);
     }
 
-    friend wxString& operator << (wxString& str, const Version& ver)
+    friend wxString &operator << (wxString &str, const Version &ver)
     {
         str << 'v' << ver.v[0] << '.' << ver.v[1] << '.' << ver.v[2];
         if (ver.v[3]<0)
         {
             switch (ver.v[3])
             {
-                case -3: str << "-alpha"; break;
-                case -2: str << "-beta"; break;
-                case -1: str << "-rc"; break;
+                case -3:
+                    str << "-alpha";
+                    break;
+                case -2:
+                    str << "-beta";
+                    break;
+                case -1:
+                    str << "-rc";
+                    break;
             }
             if (ver.v[4]>0)
+            {
                 str << '.' << ver.v[4];
+            }
         }
         return str;
     }
@@ -335,8 +382,8 @@ void mmUpdate::checkUpdates(const bool bSilent, wxFrame *frame)
     {
         if (!bSilent)
         {
-            const wxString& msgStr = _("Unable to check for updates!")
-                + "\n\n" + _("Error: ") + curl_easy_strerror(err_code);
+            const wxString &msgStr = _("Unable to check for updates!")
+                                     + "\n\n" + _("Error: ") + curl_easy_strerror(err_code);
             wxMessageBox(msgStr, _("MMEX Update Check"));
         }
         return;
@@ -350,10 +397,10 @@ void mmUpdate::checkUpdates(const bool bSilent, wxFrame *frame)
     {
         if (!bSilent)
         {
-            const wxString& msgStr = _("Unable to check for updates!")
-                + "\n\n" + _("Error: ")
-                + ((!res) ? GetParseError_En(res.Code())
-                          : json_releases.GetString());
+            const wxString &msgStr = _("Unable to check for updates!")
+                                     + "\n\n" + _("Error: ")
+                                     + ((!res) ? GetParseError_En(res.Code())
+                                        : json_releases.GetString());
             wxMessageBox(msgStr, _("MMEX Update Check"));
         }
         return;
@@ -365,32 +412,38 @@ void mmUpdate::checkUpdates(const bool bSilent, wxFrame *frame)
 
     wxString current_tag("v"+mmex::version::string);
     wxString latest_tag=current_tag;
-    Value& latest_release = json_releases[0];
+    Value &latest_release = json_releases[0];
     Version latest(latest_tag);
     wxLogDebug("curr ver = %s", current_tag);
 
-    for (auto& r : json_releases.GetArray())
+    for (auto &r : json_releases.GetArray())
     {
-        if (_stable && r["prerelease"].IsTrue()) continue;
+        if (_stable && r["prerelease"].IsTrue())
+        {
+            continue;
+        }
         wxLogDebug("tag %s", r["tag_name"].GetString());
         const Version check(r["tag_name"].GetString());
         if(latest<check)
         {
             latest=check;
             latest_tag=r["tag_name"].GetString();
-            if (latest_release != r) latest_release=r;
+            if (latest_release != r)
+            {
+                latest_release=r;
+            }
         }
     }
 
     if (current_tag!=latest_tag)
     {
-        mmUpdateWizard* wizard = new mmUpdateWizard(frame, latest_release);
+        mmUpdateWizard *wizard = new mmUpdateWizard(frame, latest_release);
         wizard->CenterOnParent();
         wizard->RunIt(true);
     }
     else if (!bSilent)
     {
         wxMessageBox(_("You already have the latest version"),
-            _("MMEX Update Check"), wxICON_INFORMATION);
+                     _("MMEX Update Check"), wxICON_INFORMATION);
     }
 }

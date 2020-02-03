@@ -52,7 +52,7 @@ ShareTransactionDialog::ShareTransactionDialog()
 {
 }
 
-ShareTransactionDialog::ShareTransactionDialog(wxWindow* parent, Model_Stock::Data* stock)
+ShareTransactionDialog::ShareTransactionDialog(wxWindow *parent, Model_Stock::Data *stock)
     : m_dialog_heading(_("Add Share Transaction"))
     , m_stock(stock)
 {
@@ -60,7 +60,7 @@ ShareTransactionDialog::ShareTransactionDialog(wxWindow* parent, Model_Stock::Da
     Create(parent, wxID_ANY, m_dialog_heading, wxDefaultPosition, wxSize(400, 300), style);
 }
 
-ShareTransactionDialog::ShareTransactionDialog(wxWindow* parent, Model_Translink::Data* translink_entry, Model_Checking::Data* checking_entry)
+ShareTransactionDialog::ShareTransactionDialog(wxWindow *parent, Model_Translink::Data *translink_entry, Model_Checking::Data *checking_entry)
     : m_dialog_heading(_("Add Share Transaction"))
     , m_checking_entry(checking_entry)
     , m_translink_entry(translink_entry)
@@ -78,8 +78,8 @@ ShareTransactionDialog::ShareTransactionDialog(wxWindow* parent, Model_Translink
     Create(parent, wxID_ANY, m_dialog_heading, wxDefaultPosition, wxSize(400, 300), style);
 }
 
-bool ShareTransactionDialog::Create(wxWindow* parent, wxWindowID id, const wxString& caption
-    , const wxPoint& pos, const wxSize& size, long style)
+bool ShareTransactionDialog::Create(wxWindow *parent, wxWindowID id, const wxString &caption
+                                    , const wxPoint &pos, const wxSize &size, long style)
 {
     SetExtraStyle(GetExtraStyle()|wxWS_EX_BLOCK_EVENTS);
     wxDialog::Create(parent, id, caption, pos, size, style);
@@ -98,7 +98,10 @@ bool ShareTransactionDialog::Create(wxWindow* parent, wxWindowID id, const wxStr
 
 void ShareTransactionDialog::DataToControls()
 {
-    if (!m_stock) return;
+    if (!m_stock)
+    {
+        return;
+    }
 
     m_stock_id = m_stock->STOCKID;
     m_stock_name_ctrl->SetValue(m_stock->STOCKNAME);
@@ -113,7 +116,8 @@ void ShareTransactionDialog::DataToControls()
     Model_Translink::Data_Set translink_list = Model_Translink::TranslinkList(Model_Attachment::STOCK, m_stock->STOCKID);
 
     if (translink_list.empty())
-    {   // Set up the transaction as the first entry.
+    {
+        // Set up the transaction as the first entry.
         int precision = m_stock->NUMSHARES == floor(m_stock->NUMSHARES) ? 0 : Option::instance().getSharePrecision();
         m_share_num_ctrl->SetValue(m_stock->NUMSHARES, precision);
         m_share_price_ctrl->SetValue(m_stock->PURCHASEPRICE, Option::instance().getSharePrecision());
@@ -132,7 +136,7 @@ void ShareTransactionDialog::DataToControls()
             m_commission_ctrl->SetValue(m_share_entry->SHARECOMMISSION, Option::instance().getSharePrecision());
             m_share_lot_ctrl->SetValue(m_share_entry->SHARELOT);
 
-            Model_Checking::Data* checking_entry = Model_Checking::instance().get(m_translink_entry->CHECKINGACCOUNTID);
+            Model_Checking::Data *checking_entry = Model_Checking::instance().get(m_translink_entry->CHECKINGACCOUNTID);
             m_transaction_panel->TransactionDate(Model_Checking::TRANSDATE(checking_entry));
             m_transaction_panel->SetTransactionValue(
                 (std::abs(m_share_entry->SHARENUMBER) * m_share_entry->SHAREPRICE), m_share_entry->SHARECOMMISSION, true);
@@ -148,12 +152,12 @@ void ShareTransactionDialog::DataToControls()
 
 void ShareTransactionDialog::CreateControls()
 {
-    wxBoxSizer* main_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *main_sizer = new wxBoxSizer(wxVERTICAL);
     SetSizer(main_sizer);
 
-    wxBoxSizer* panel_sizer = new wxBoxSizer(wxHORIZONTAL);
-    wxBoxSizer* left_sizer = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer* right_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *panel_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer *left_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *right_sizer = new wxBoxSizer(wxVERTICAL);
 
     main_sizer->Add(panel_sizer, wxSizerFlags(g_flagsV));
     panel_sizer->Add(left_sizer, 0);
@@ -162,14 +166,14 @@ void ShareTransactionDialog::CreateControls()
     /********************************************************************
     Stock Details Panel
     *********************************************************************/
-    wxStaticBox* details_frame = new wxStaticBox(this, wxID_ANY, _("Stock Investment Details"));
-    wxStaticBoxSizer* details_frame_sizer = new wxStaticBoxSizer(details_frame, wxVERTICAL);
+    wxStaticBox *details_frame = new wxStaticBox(this, wxID_ANY, _("Stock Investment Details"));
+    wxStaticBoxSizer *details_frame_sizer = new wxStaticBoxSizer(details_frame, wxVERTICAL);
     left_sizer->Add(details_frame_sizer, g_flagsExpand);
 
-    wxPanel* stock_details_panel = new wxPanel(this, wxID_STATIC);
+    wxPanel *stock_details_panel = new wxPanel(this, wxID_STATIC);
     details_frame_sizer->Add(stock_details_panel, g_flagsV);
 
-    wxFlexGridSizer* itemFlexGridSizer6 = new wxFlexGridSizer(0, 2, 0, 0);
+    wxFlexGridSizer *itemFlexGridSizer6 = new wxFlexGridSizer(0, 2, 0, 0);
     stock_details_panel->SetSizer(itemFlexGridSizer6);
 
     itemFlexGridSizer6->Add(new wxStaticText(stock_details_panel, wxID_STATIC, _("Company Name")), g_flagsH);
@@ -179,53 +183,53 @@ void ShareTransactionDialog::CreateControls()
     m_stock_name_ctrl->SetToolTip(_("Enter the stock company name"));
 
     //Symbol
-    wxStaticText* symbol = new wxStaticText(stock_details_panel, wxID_STATIC, _("Stock Symbol"));
+    wxStaticText *symbol = new wxStaticText(stock_details_panel, wxID_STATIC, _("Stock Symbol"));
     itemFlexGridSizer6->Add(symbol, g_flagsH);
     symbol->SetFont(this->GetFont().Bold());
 
     m_stock_symbol_ctrl = new mmTextCtrl(stock_details_panel, ID_STOCKTRANS_SHARE_SYMBOL
-        , "", wxDefaultPosition, wxSize(150, -1), 0);
+                                         , "", wxDefaultPosition, wxSize(150, -1), 0);
     itemFlexGridSizer6->Add(m_stock_symbol_ctrl, g_flagsH);
     m_stock_symbol_ctrl->SetToolTip(_("Enter the stock symbol. (Optional) Include exchange. eg: IBM.BE"));
 
     //Share Unit Number
-    wxStaticText* number = new wxStaticText(stock_details_panel, wxID_STATIC, _("Share Number"));
+    wxStaticText *number = new wxStaticText(stock_details_panel, wxID_STATIC, _("Share Number"));
     itemFlexGridSizer6->Add(number, g_flagsH);
     number->SetFont(this->GetFont().Bold());
     m_share_num_ctrl = new mmTextCtrl(stock_details_panel, ID_STOCKTRANS_SHARE_NUMBER, ""
-        , wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
+                                      , wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
     itemFlexGridSizer6->Add(m_share_num_ctrl, g_flagsH);
     m_share_num_ctrl->SetToolTip(_("Enter number of shares held"));
     m_share_num_ctrl->Connect(ID_STOCKTRANS_SHARE_NUMBER, wxEVT_COMMAND_TEXT_ENTER
-        , wxCommandEventHandler(ShareTransactionDialog::OnTextEntered), nullptr, this);
+                              , wxCommandEventHandler(ShareTransactionDialog::OnTextEntered), nullptr, this);
 
     //Share Price
-    wxStaticText* pprice = new wxStaticText(stock_details_panel, wxID_STATIC, _("Share Price"));
+    wxStaticText *pprice = new wxStaticText(stock_details_panel, wxID_STATIC, _("Share Price"));
     pprice->SetFont(this->GetFont().Bold());
     m_share_price_ctrl = new mmTextCtrl(stock_details_panel, ID_STOCKTRANS_SHARE_PRICE, ""
-        , wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
+                                        , wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
     itemFlexGridSizer6->Add(pprice, g_flagsH);
     itemFlexGridSizer6->Add(m_share_price_ctrl, g_flagsH);
     m_share_price_ctrl->SetToolTip(_("Enter the current value for a single share unit"));
     m_share_price_ctrl->Connect(ID_STOCKTRANS_SHARE_PRICE, wxEVT_COMMAND_TEXT_ENTER
-        , wxCommandEventHandler(ShareTransactionDialog::OnTextEntered), nullptr, this);
+                                , wxCommandEventHandler(ShareTransactionDialog::OnTextEntered), nullptr, this);
 
     // Commission
     m_commission_ctrl = new mmTextCtrl(stock_details_panel, ID_STOCKTRANS_SHARE_COMMISSION, "0"
-        , wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
+                                       , wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
     itemFlexGridSizer6->Add(new wxStaticText(stock_details_panel, wxID_STATIC, _("Commission")), g_flagsH);
     itemFlexGridSizer6->Add(m_commission_ctrl, g_flagsH);
     m_commission_ctrl->SetToolTip(_("Enter any commission paid"));
     m_commission_ctrl->Connect(ID_STOCKTRANS_SHARE_COMMISSION, wxEVT_COMMAND_TEXT_ENTER
-        , wxCommandEventHandler(ShareTransactionDialog::OnTextEntered), nullptr, this);
+                               , wxCommandEventHandler(ShareTransactionDialog::OnTextEntered), nullptr, this);
 
     //Share Lot
-    wxStaticText* lot_text = new wxStaticText(stock_details_panel, wxID_STATIC, _("Share Lot"));
+    wxStaticText *lot_text = new wxStaticText(stock_details_panel, wxID_STATIC, _("Share Lot"));
     itemFlexGridSizer6->Add(lot_text, g_flagsH);
     lot_text->SetFont(this->GetFont().Bold());
 
     m_share_lot_ctrl = new mmTextCtrl(stock_details_panel, ID_STOCKTRANS_SHARE_LOT
-        , "", wxDefaultPosition, wxSize(150, -1), 0);
+                                      , "", wxDefaultPosition, wxSize(150, -1), 0);
     itemFlexGridSizer6->Add(m_share_lot_ctrl, g_flagsH);
     m_share_lot_ctrl->SetToolTip(_("Enter the LOT that this parcel os shares belong to"));
 
@@ -238,10 +242,10 @@ void ShareTransactionDialog::CreateControls()
     //TODO m_attachments not used here
     m_attachments_btn->Hide();
 
-    wxBitmapButton* web_button = new wxBitmapButton(stock_details_panel, wxID_INDEX, mmBitmap(png::WEB));
+    wxBitmapButton *web_button = new wxBitmapButton(stock_details_panel, wxID_INDEX, mmBitmap(png::WEB));
     web_button->SetToolTip(_("Display the web page for the specified Stock symbol"));
 
-    wxBoxSizer* icon_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer *icon_sizer = new wxBoxSizer(wxHORIZONTAL);
     icon_sizer->Add(m_attachments_btn, g_flagsH);
     icon_sizer->Add(web_button, g_flagsH);
     itemFlexGridSizer6->Add(icon_sizer, wxSizerFlags(g_flagsH).Align(wxALIGN_RIGHT));
@@ -260,8 +264,8 @@ void ShareTransactionDialog::CreateControls()
         trans_frame_heading = _("Edit Transaction Details");
     }
 
-    wxStaticBox* transaction_frame = new wxStaticBox(this, wxID_ANY, trans_frame_heading);
-    wxStaticBoxSizer* transaction_frame_sizer = new wxStaticBoxSizer(transaction_frame, wxVERTICAL);
+    wxStaticBox *transaction_frame = new wxStaticBox(this, wxID_ANY, trans_frame_heading);
+    wxStaticBoxSizer *transaction_frame_sizer = new wxStaticBoxSizer(transaction_frame, wxVERTICAL);
     right_sizer->Add(transaction_frame_sizer, g_flagsV);
 
     m_transaction_panel = new UserTransactionPanel(this, m_checking_entry, wxID_STATIC);
@@ -279,16 +283,16 @@ void ShareTransactionDialog::CreateControls()
     /********************************************************************
     Separation Line
     *********************************************************************/
-    wxStaticLine* separation_line = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
+    wxStaticLine *separation_line = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
     main_sizer->Add(separation_line, 0, wxEXPAND | wxALL, 1);
 
     /********************************************************************
     Button Panel
     *********************************************************************/
-    wxPanel* button_panel = new wxPanel(this, wxID_STATIC);
-    wxBoxSizer* button_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
-    wxButton* ok_button = new wxButton(button_panel, wxID_OK, _("&OK "));
-    wxButton* close_button = new wxButton(button_panel, wxID_CANCEL, g_CancelLabel);
+    wxPanel *button_panel = new wxPanel(this, wxID_STATIC);
+    wxBoxSizer *button_panel_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxButton *ok_button = new wxButton(button_panel, wxID_OK, _("&OK "));
+    wxButton *close_button = new wxButton(button_panel, wxID_CANCEL, g_CancelLabel);
 
     main_sizer->Add(button_panel, wxSizerFlags(g_flagsH).Center());
     button_panel->SetSizer(button_panel_sizer);
@@ -297,36 +301,39 @@ void ShareTransactionDialog::CreateControls()
     //cancel_button->SetFocus();
 }
 
-void ShareTransactionDialog::OnQuit(wxCloseEvent& WXUNUSED(event))
+void ShareTransactionDialog::OnQuit(wxCloseEvent &WXUNUSED(event))
 {
-    const wxString& RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
+    const wxString &RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
     if (!this->m_stock)
+    {
         mmAttachmentManage::DeleteAllAttachments(RefType, 0);
+    }
     EndModal(wxID_CANCEL);
 }
 
-
-void ShareTransactionDialog::OnCancel(wxCommandEvent& WXUNUSED(event))
+void ShareTransactionDialog::OnCancel(wxCommandEvent &WXUNUSED(event))
 {
-    const wxString& RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
+    const wxString &RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
     if (m_stock_id <= 0)
+    {
         mmAttachmentManage::DeleteAllAttachments(RefType, 0);
+    }
     EndModal(wxID_CANCEL);
 }
 
-void ShareTransactionDialog::OnStockPriceButton(wxCommandEvent& WXUNUSED(event))
+void ShareTransactionDialog::OnStockPriceButton(wxCommandEvent &WXUNUSED(event))
 {
     const wxString stockSymbol = m_stock_symbol_ctrl->GetValue().Trim();
 
     if (!stockSymbol.IsEmpty())
     {
-        const wxString& stockURL = Model_Infotable::instance().GetStringInfo("STOCKURL", mmex::weblink::DefStockUrl);
-        const wxString& httpString = wxString::Format(stockURL, stockSymbol);
+        const wxString &stockURL = Model_Infotable::instance().GetStringInfo("STOCKURL", mmex::weblink::DefStockUrl);
+        const wxString &httpString = wxString::Format(stockURL, stockSymbol);
         wxLaunchDefaultBrowser(httpString);
     }
 }
 
-void ShareTransactionDialog::OnOk(wxCommandEvent& WXUNUSED(event))
+void ShareTransactionDialog::OnOk(wxCommandEvent &WXUNUSED(event))
 {
     double num_shares = 0;
     if (!m_share_num_ctrl->checkValue(num_shares))
@@ -384,8 +391,8 @@ void ShareTransactionDialog::OnOk(wxCommandEvent& WXUNUSED(event))
         */
         if (!m_translink_entry)
         {
-             Model_Translink::SetStockTranslink(m_stock->STOCKID
-                , checking_id, m_transaction_panel->CheckingType());
+            Model_Translink::SetStockTranslink(m_stock->STOCKID
+                                               , checking_id, m_transaction_panel->CheckingType());
         }
         Model_Shareinfo::ShareEntry(checking_id, num_shares, share_price, commission, m_share_lot_ctrl->GetValue());
 
@@ -420,7 +427,7 @@ void ShareTransactionDialog::OnOk(wxCommandEvent& WXUNUSED(event))
     EndModal(wxID_OK);
 }
 
-void ShareTransactionDialog::OnTextEntered(wxCommandEvent& WXUNUSED(event))
+void ShareTransactionDialog::OnTextEntered(wxCommandEvent &WXUNUSED(event))
 {
     double share_num = 0;
     if (!m_share_num_ctrl->IsEmpty())

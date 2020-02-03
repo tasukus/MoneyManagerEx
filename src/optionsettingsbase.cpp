@@ -18,7 +18,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 #include "optionsettingsbase.h"
 
-wxControl* OptionSettingsBase::SetBoldFont(wxControl* control)
+wxControl *OptionSettingsBase::SetBoldFont(wxControl *control)
 {
     wxFont control_font = control->GetFont();
     control_font.SetWeight(wxFONTWEIGHT_BOLD);
@@ -27,7 +27,7 @@ wxControl* OptionSettingsBase::SetBoldFont(wxControl* control)
     return control;
 }
 
-bool OptionSettingsBase::GetIniDatabaseCheckboxValue(const wxString& dbField, bool defaultState)
+bool OptionSettingsBase::GetIniDatabaseCheckboxValue(const wxString &dbField, bool defaultState)
 {
     const bool result = Model_Setting::instance().GetBoolSetting(dbField, defaultState);
     return result;

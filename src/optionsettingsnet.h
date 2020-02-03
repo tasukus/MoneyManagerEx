@@ -30,11 +30,11 @@ public:
     OptionSettingsNet();
 
     OptionSettingsNet(wxWindow *parent
-        , wxWindowID id = wxID_ANY
-        , const wxPoint &pos = wxDefaultPosition
-        , const wxSize &size = wxDefaultSize
-        , long style = wxTAB_TRAVERSAL
-        , const wxString &name = "OptionSettingsNet");
+                      , wxWindowID id = wxID_ANY
+                      , const wxPoint &pos = wxDefaultPosition
+                      , const wxSize &size = wxDefaultSize
+                      , long style = wxTAB_TRAVERSAL
+                      , const wxString &name = "OptionSettingsNet");
 
     ~OptionSettingsNet();
 

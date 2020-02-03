@@ -27,48 +27,49 @@
 #include "Model_Report.h"
 
 const char *group_report_template = R"(
-<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title><TMPL_VAR REPORTNAME></title>
-    <script src = "ChartNew.js"></script>
-    <script src = "sorttable.js"></script>
-    <link href = "master.css" rel = "stylesheet" />
-</head>
-<body>
+                                    <!DOCTYPE html>
+                                    <html>
+                                    <head>
+                                    <meta http-equiv="content-type" content="text/html;
+charset=utf-8" />
+        <title><TMPL_VAR REPORTNAME></title>
+        <script src = "ChartNew.js"></script>
+        <script src = "sorttable.js"></script>
+        <link href = "master.css" rel = "stylesheet" />
+        </head>
+        <body>
 
-<div class = "container">
-<h3><TMPL_VAR REPORTNAME></h3>
-<TMPL_VAR TODAY><hr>
-<div class = "row">
-<div class = "col-xs-2"></div>
-<div class = "col-xs-8">
+        <div class = "container">
+        <h3><TMPL_VAR REPORTNAME></h3>
+        <TMPL_VAR TODAY><hr>
+        <div class = "row">
+        <div class = "col-xs-2"></div>
+        <div class = "col-xs-8">
 
-<table class = "table">
-    <thead>
+        <table class = "table">
+        <thead>
         <tr>
-            <th>REPORTID</th>
-            <th>REPORTNAME</th>
+        <th>REPORTID</th>
+        <th>REPORTNAME</th>
         </tr>
-    </thead>
-    <tbody>
+        </thead>
+        <tbody>
         <TMPL_LOOP NAME=CONTENTS>
-            <tr>
-            <td><TMPL_VAR REPORTID></td>
-            <td><TMPL_VAR REPORTNAME></td>
-            </tr>
+        <tr>
+        <td><TMPL_VAR REPORTID></td>
+        <td><TMPL_VAR REPORTNAME></td>
+        </tr>
         </TMPL_LOOP>
-    </tbody>
-</table>
-</div></div></div></body>
-</html>
-)";
+        </tbody>
+        </table>
+        </div></div></div></body>
+        </html>
+        )";
 
 class mmGeneralGroupReport : public mmPrintableBase
 {
 public:
-    explicit mmGeneralGroupReport(const wxString& groupname): mmPrintableBase(_("General Group Report"))
+    explicit mmGeneralGroupReport(const wxString &groupname): mmPrintableBase(_("General Group Report"))
         , m_group_name(groupname)
     {
         m_sub_reports = Model_Report::instance().find(Model_Report::GROUPNAME(groupname));
@@ -77,8 +78,10 @@ public:
     wxString getHTMLText()
     {
         loop_t contents;
-        for (const auto & report : m_sub_reports)
+        for (const auto &report : m_sub_reports)
+        {
             contents += report.to_row_t();
+        }
 
         mm_html_template report(group_report_template);
         report(L"REPORTNAME") = this->m_title + " For " + this->m_group_name;
@@ -89,7 +92,7 @@ public:
         {
             out = report.Process();
         }
-        catch (const syntax_ex& e)
+        catch (const syntax_ex &e)
         {
             return e.what();
         }
@@ -105,12 +108,12 @@ private:
     Model_Report::Data_Set m_sub_reports;
 };
 
-void mmGUIFrame::updateReportNavigation(wxTreeItemId& reports, bool budget)
+void mmGUIFrame::updateReportNavigation(wxTreeItemId &reports, bool budget)
 {
     ///////////////////////////////////////////////////////////////////
 
     const wxTreeItemId transactionList = m_nav_tree_ctrl->AppendItem(reports
-        , _("Transaction Report"), img::FILTER_PNG, img::FILTER_PNG);
+                                         , _("Transaction Report"), img::FILTER_PNG, img::FILTER_PNG);
     m_nav_tree_ctrl->SetItemData(transactionList, new mmTreeItemData("Transaction Report"));
 
     //////////////////////////////////////////////////////////////////
@@ -119,7 +122,7 @@ void mmGUIFrame::updateReportNavigation(wxTreeItemId& reports, bool budget)
     wxString reportGroupName;
     for (int r = 0; r < Option::instance().getReportCount(); r++)
     {
-        const wxString& groupName = Option::instance().getReportGroup(r);
+        const wxString &groupName = Option::instance().getReportGroup(r);
         const bool no_group = groupName.IsEmpty();
         if (reportGroupName != groupName && !no_group)
         {
@@ -130,30 +133,36 @@ void mmGUIFrame::updateReportNavigation(wxTreeItemId& reports, bool budget)
                 {
                     bool a = !Option::instance().getHideReport(s);
                     if (a && Option::instance().getBudgetReport(s))
+                    {
                         a = budget;
+                    }
                     if (a)
+                    {
                         bAdd = true;
+                    }
                 }
             }
             if (bAdd)
             {
                 reportGroup = m_nav_tree_ctrl->AppendItem(reports
-                    , wxGetTranslation(groupName), img::PIECHART_PNG, img::PIECHART_PNG);
+                              , wxGetTranslation(groupName), img::PIECHART_PNG, img::PIECHART_PNG);
                 m_nav_tree_ctrl->SetItemData(reportGroup, new mmTreeItemData(groupName));
                 reportGroupName = groupName;
             }
         }
         bool bShow = !Option::instance().getHideReport(r);
         if (bShow && Option::instance().getBudgetReport(r))
+        {
             bShow = budget;
+        }
 
         if (bShow)
         {
-            const auto& reportName = Option::instance().getReportName(r);
+            const auto &reportName = Option::instance().getReportName(r);
             const wxTreeItemId item = m_nav_tree_ctrl->AppendItem(no_group ? reports : reportGroup
-                , wxGetTranslation(reportName), img::PIECHART_PNG, img::PIECHART_PNG);
+                                      , wxGetTranslation(reportName), img::PIECHART_PNG, img::PIECHART_PNG);
             m_nav_tree_ctrl->SetItemData(item
-                , new mmTreeItemData(reportName, Option::instance().getReportFunction(r)));
+                                         , new mmTreeItemData(reportName, Option::instance().getReportFunction(r)));
         }
     }
 
@@ -167,20 +176,20 @@ void mmGUIFrame::updateReportNavigation(wxTreeItemId& reports, bool budget)
 
     wxTreeItemId group;
     wxString group_name;
-    for (const auto& record : records)
+    for (const auto &record : records)
     {
         const bool no_group = record.GROUPNAME.empty();
         if (group_name != record.GROUPNAME && !no_group)
         {
             group = m_nav_tree_ctrl->AppendItem(reports
-                , wxGetTranslation(record.GROUPNAME), img::CUSTOMSQL_GRP_PNG, img::CUSTOMSQL_GRP_PNG);
+                                                , wxGetTranslation(record.GROUPNAME), img::CUSTOMSQL_GRP_PNG, img::CUSTOMSQL_GRP_PNG);
             m_nav_tree_ctrl->SetItemData(group, new mmTreeItemData(record.GROUPNAME
-                , new mmGeneralGroupReport(record.GROUPNAME)));
+                                         , new mmGeneralGroupReport(record.GROUPNAME)));
             group_name = record.GROUPNAME;
         }
-        Model_Report::Data* r = Model_Report::instance().get(record.REPORTID);
+        Model_Report::Data *r = Model_Report::instance().get(record.REPORTID);
         const wxTreeItemId item = m_nav_tree_ctrl->AppendItem(no_group ? reports : group
-            , wxGetTranslation(record.REPORTNAME), img::CUSTOMSQL_PNG, img::CUSTOMSQL_PNG);
+                                  , wxGetTranslation(record.REPORTNAME), img::CUSTOMSQL_PNG, img::CUSTOMSQL_PNG);
         m_nav_tree_ctrl->SetItemData(item, new mmTreeItemData(r->REPORTNAME, new mmGeneralReport(r)));
     }
 

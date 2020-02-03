@@ -41,7 +41,7 @@ wxSharedPtr<wxSQLite3Database> mmDBWrapper::Open(const wxString &dbpath, const w
         // Ensure that an opened mmex database is decrypted
         db->TableExists("INFOTABLE");
     }
-    catch (const wxSQLite3Exception& e)
+    catch (const wxSQLite3Exception &e)
     {
         err = e.GetErrorCode();
         errStr << e.GetMessage();
@@ -74,7 +74,7 @@ wxSharedPtr<wxSQLite3Database> mmDBWrapper::Open(const wxString &dbpath, const w
             db->Open(dbpath, password.IsEmpty() ? readPasswordFromUser(false) : wxGetEmptyString());
             db->TableExists("INFOTABLE");
         }
-        catch (const wxSQLite3Exception& e)
+        catch (const wxSQLite3Exception &e)
         {
             err = e.GetErrorCode();
             errStr << e.GetMessage();
@@ -100,7 +100,10 @@ wxSharedPtr<wxSQLite3Database> mmDBWrapper::Open(const wxString &dbpath, const w
     wxMessageDialog msgDlg(nullptr, s, _("Opening MMEX Database - Error"), wxOK | wxICON_ERROR);
     msgDlg.ShowModal();
 
-    if (db->IsOpen()) db->Close();
+    if (db->IsOpen())
+    {
+        db->Close();
+    }
     db.reset();
     return db; // return a NULL database pointer
 }

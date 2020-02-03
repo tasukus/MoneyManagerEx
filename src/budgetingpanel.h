@@ -56,17 +56,20 @@ class mmBudgetingPanel : public mmPanelBase
 
 public:
     mmBudgetingPanel(int budgetYearID
-        , wxWindow *parent
-        , wxWindowID winid = wxID_ANY
-        , const wxPoint& pos = wxDefaultPosition
-        , const wxSize& size = wxDefaultSize
-        , long style = wxTAB_TRAVERSAL | wxNO_BORDER
-        , const wxString& name = "mmBudgetingPanel");
+                     , wxWindow *parent
+                     , wxWindowID winid = wxID_ANY
+                     , const wxPoint& pos = wxDefaultPosition
+                     , const wxSize& size = wxDefaultSize
+                     , long style = wxTAB_TRAVERSAL | wxNO_BORDER
+                     , const wxString& name = "mmBudgetingPanel");
     ~mmBudgetingPanel();
 
     /* updates the checking panel data */
     void initVirtualListControl();
-    int col_max() { return COL_MAX; }
+    int col_max()
+    {
+        return COL_MAX;
+    }
 
     /* Getter for Virtual List Control */
     wxString getItem(long item, long column);
@@ -89,7 +92,10 @@ public:
 
     void RefreshList();
 
-    wxString BuildPage() const { return listCtrlBudget_->BuildPage(GetPanelTitle()); }
+    wxString BuildPage() const
+    {
+        return listCtrlBudget_->BuildPage(GetPanelTitle());
+    }
 
 private:
     std::vector<std::pair<int, int> > budget_;
@@ -113,10 +119,10 @@ private:
     wxStaticText* expenses_diff_=nullptr;
 
     bool Create(wxWindow *parent, wxWindowID winid
-        , const wxPoint& pos = wxDefaultPosition
-        , const wxSize& size = wxDefaultSize
-        , long style = wxTAB_TRAVERSAL | wxNO_BORDER
-        , const wxString& name = "mmBudgetingPanel");
+                , const wxPoint& pos = wxDefaultPosition
+                , const wxSize& size = wxDefaultSize
+                , long style = wxTAB_TRAVERSAL | wxNO_BORDER
+                , const wxString& name = "mmBudgetingPanel");
 
     void CreateControls();
     void sortTable();

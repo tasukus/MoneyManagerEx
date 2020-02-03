@@ -35,10 +35,14 @@ void SetInstallPrefix()
     const wxArrayString &dirs = fname.GetDirs();
 
     if (dirs.Last().Lower() == "bin") // something like a /usr/bin or /usr/local/bin
+    {
         fname.RemoveLastDir();
+    }
 
-    if (wxStandardPaths *pp = dynamic_cast<wxStandardPaths*>(&p))
-    pp->SetInstallPrefix(fname.GetFullPath());
+    if (wxStandardPaths *pp = dynamic_cast<wxStandardPaths *>(&p))
+    {
+        pp->SetInstallPrefix(fname.GetFullPath());
+    }
 }
 
 } // namespace
@@ -76,7 +80,9 @@ const wxFileName mmex::GetDocDir()
 
         const wxArrayString &dirs = fname.GetDirs();
         if (dirs.Last().Lower() == GetAppName())
-            fname.RemoveLastDir(); // mmex folder
+        {
+            fname.RemoveLastDir();    // mmex folder
+        }
 
         fname.AppendDir("doc");
         fname.AppendDir(GetAppName());

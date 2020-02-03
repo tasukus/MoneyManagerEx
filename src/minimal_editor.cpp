@@ -18,30 +18,30 @@ wxBEGIN_EVENT_TABLE(MinimalEditor, wxStyledTextCtrl)
     EVT_STC_CHANGE(wxID_ANY, MinimalEditor::OnText)
 wxEND_EVENT_TABLE()
 
-MinimalEditor::MinimalEditor(wxWindow* parent, wxWindowID id)
+MinimalEditor::MinimalEditor(wxWindow *parent, wxWindowID id)
     : wxStyledTextCtrl(parent, id)
-    {
-        int font_size = this->GetFont().GetPointSize();
-        m_font = wxFont(font_size, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
-    }
-bool MinimalEditor::SetFont(const wxFont& font)
-    {
-        StyleSetFont(wxSTC_STYLE_DEFAULT, const_cast<wxFont&>(font));
-        return wxStyledTextCtrl::SetFont(font);
-    }
+{
+    int font_size = this->GetFont().GetPointSize();
+    m_font = wxFont(font_size, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+}
+bool MinimalEditor::SetFont(const wxFont &font)
+{
+    StyleSetFont(wxSTC_STYLE_DEFAULT, const_cast<wxFont &>(font));
+    return wxStyledTextCtrl::SetFont(font);
+}
 
 void MinimalEditor::SetLexerSql()
-    {
-        StyleSetForeground(wxSTC_STYLE_LINENUMBER, wxColour(75, 75, 75));
-        StyleSetBackground(wxSTC_STYLE_LINENUMBER, wxColour(220, 220, 220));
-        SetMarginWidth(margin_id_lineno, 32);
-        StyleClearAll();
-        SetLexer(wxSTC_LEX_SQL);
-        StyleSetForeground(wxSTC_SQL_WORD, wxColour(0, 150, 0));
-        const wxString sqlwords =
-            "asc by delete desc from group having insert into order select set update values where";
-        SetKeyWords(0, sqlwords);
-    }
+{
+    StyleSetForeground(wxSTC_STYLE_LINENUMBER, wxColour(75, 75, 75));
+    StyleSetBackground(wxSTC_STYLE_LINENUMBER, wxColour(220, 220, 220));
+    SetMarginWidth(margin_id_lineno, 32);
+    StyleClearAll();
+    SetLexer(wxSTC_LEX_SQL);
+    StyleSetForeground(wxSTC_SQL_WORD, wxColour(0, 150, 0));
+    const wxString sqlwords =
+        "asc by delete desc from group having insert into order select set update values where";
+    SetKeyWords(0, sqlwords);
+}
 
 void MinimalEditor::SetLexerLua() //https://code.google.com/p/wxamcl/source/browse/trunk/scriptedit.cpp?r=63
 {
@@ -110,8 +110,7 @@ void MinimalEditor::SetLexerLua() //https://code.google.com/p/wxamcl/source/brow
     MarkerDefine(wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_TCORNER, "WHITE", "BLACK");
     MarkerDefine(wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_LCORNER, "WHITE", "BLACK");
     SetFoldFlags(wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED |
-        wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED);
-
+                 wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED);
 
     StyleSetForeground(wxSTC_STYLE_INDENTGUIDE, wxColour("DARK GREY"));
 
@@ -188,7 +187,7 @@ void MinimalEditor::OnMarginClick(wxStyledTextEvent &event)
     }
 }
 
-void MinimalEditor::OnText(wxStyledTextEvent& event)
+void MinimalEditor::OnText(wxStyledTextEvent &event)
 {
     event.Skip();
 }

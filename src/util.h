@@ -156,13 +156,13 @@ public:
 enum yahoo_price_type {FIAT = 0, SHARES};
 bool GetOnlineCurrencyRates(wxString& msg, int curr_id = -1, bool used_only = true);
 bool get_yahoo_prices(std::vector<wxString>& symbols
-    , std::map<wxString, double>& out
-    , const wxString base_currency_symbol
-    , wxString& output
-    , int type);
+                      , std::map<wxString, double>& out
+                      , const wxString base_currency_symbol
+                      , wxString& output
+                      , int type);
 bool get_crypto_currency_prices(std::vector<wxString>& symbols, double& usd_rate
-    , std::map<wxString, double>& out
-    , wxString& output);
+                                , std::map<wxString, double>& out
+                                , wxString& output);
 
 const wxString getProgramDescription(bool simple = false);
 bool getNewsRSS(std::vector<WebsiteNews>& WebsiteNewsList);

@@ -42,12 +42,12 @@ public:
     /// Constructors
     SplitTransactionDialog();
     SplitTransactionDialog(wxWindow* parent
-        , std::vector<Split>& split
-        , int transType
-        , int accountID
-        , double totalAmount = 0.0
-        , const wxString& name = "SplitTransactionDialog"
-        );
+                           , std::vector<Split>& split
+                           , int transType
+                           , int accountID
+                           , double totalAmount = 0.0
+                           , const wxString& name = "SplitTransactionDialog"
+                          );
 
     /// Creation
     bool Create(
@@ -58,9 +58,15 @@ public:
         const wxSize& size,
         long style
         , const wxString& name
-        );
-    std::vector<Split> getResult() { return m_splits; }
-    bool isItemsChanged(){ return items_changed_; }
+    );
+    std::vector<Split> getResult()
+    {
+        return m_splits;
+    }
+    bool isItemsChanged()
+    {
+        return items_changed_;
+    }
     void SetDisplaySplitCategories();
 
 private:

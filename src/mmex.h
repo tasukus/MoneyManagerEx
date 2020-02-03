@@ -37,9 +37,18 @@ public:
     wxLanguage getGUILanguage() const;
     bool setGUILanguage(wxLanguage lang);
     mmGUIFrame* m_frame = nullptr;
-    const wxString getOptParam() const { return m_optParam; }
-    wxSQLite3Database* getSettingDB() const { return m_setting_db; }
-    void setSettingDB(wxSQLite3Database* db) { m_setting_db = db; }
+    const wxString getOptParam() const
+    {
+        return m_optParam;
+    }
+    wxSQLite3Database* getSettingDB() const
+    {
+        return m_setting_db;
+    }
+    void setSettingDB(wxSQLite3Database* db)
+    {
+        m_setting_db = db;
+    }
 
 private:
     virtual void OnInitCmdLine(wxCmdLineParser& parser);

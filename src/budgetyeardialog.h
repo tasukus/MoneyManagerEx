@@ -33,10 +33,10 @@ public:
 
 private:
     bool Create(wxWindow* parent, wxWindowID id,
-        const wxString& caption,
-        const wxPoint& pos,
-        const wxSize& size,
-        long style);
+                const wxString& caption,
+                const wxPoint& pos,
+                const wxSize& size,
+                long style);
 
     void CreateControls();
 

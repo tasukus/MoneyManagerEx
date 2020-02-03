@@ -37,7 +37,7 @@ class TransactionListCtrl : public mmListCtrl
 public:
 
     TransactionListCtrl(mmCheckingPanel* cp, wxWindow* parent
-        , const wxWindowID id = wxID_ANY);
+                        , const wxWindowID id = wxID_ANY);
 
     ~TransactionListCtrl();
 
@@ -78,7 +78,10 @@ public:
     EColumn toEColumn(long col)
     {
         EColumn res = COL_DEF_SORT;
-        if (col >= 0 && col < COL_MAX) res = static_cast<EColumn>(col);
+        if (col >= 0 && col < COL_MAX)
+        {
+            res = static_cast<EColumn>(col);
+        }
 
         return res;
     }
@@ -88,11 +91,23 @@ public:
     EColumn m_prevSortCol = COL_DEF_SORT;
     bool g_asc = true; // asc\desc sorting
 
-    bool getSortOrder() const { return m_asc; }
-    EColumn getSortColumn() const { return m_sortCol; }
+    bool getSortOrder() const
+    {
+        return m_asc;
+    }
+    EColumn getSortColumn() const
+    {
+        return m_sortCol;
+    }
 
-    void setSortOrder(const bool asc) { m_asc = asc; }
-    void setSortColumn(const EColumn col) { m_sortCol = col; }
+    void setSortOrder(const bool asc)
+    {
+        m_asc = asc;
+    }
+    void setSortColumn(const EColumn col)
+    {
+        m_sortCol = col;
+    }
 
     void setColumnImage(EColumn col, int image);
 
@@ -221,10 +236,10 @@ class mmCheckingPanel : public mmPanelBase
 public:
 
     mmCheckingPanel(wxWindow* parent
-        , mmGUIFrame* frame
-        , int accountID
-        , int id = wxID_ANY
-    );
+                    , mmGUIFrame* frame
+                    , int accountID
+                    , int id = wxID_ANY
+                   );
 
     ~mmCheckingPanel();
 
@@ -364,8 +379,23 @@ private:
 #endif // MM_EX_CHECKINGPANEL_H_
 //----------------------------------------------------------------------------
 
-inline static bool SorterByUDFC01(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j) { return (i.UDFC01 < j.UDFC01); }
-inline static bool SorterByUDFC02(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j) { return (i.UDFC02 < j.UDFC02); }
-inline static bool SorterByUDFC03(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j) { return (i.UDFC03 < j.UDFC03); }
-inline static bool SorterByUDFC04(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j) { return (i.UDFC04 < j.UDFC04); }
-inline static bool SorterByUDFC05(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j) { return (i.UDFC05 < j.UDFC05); }
+inline static bool SorterByUDFC01(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j)
+{
+    return (i.UDFC01 < j.UDFC01);
+}
+inline static bool SorterByUDFC02(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j)
+{
+    return (i.UDFC02 < j.UDFC02);
+}
+inline static bool SorterByUDFC03(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j)
+{
+    return (i.UDFC03 < j.UDFC03);
+}
+inline static bool SorterByUDFC04(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j)
+{
+    return (i.UDFC04 < j.UDFC04);
+}
+inline static bool SorterByUDFC05(const Model_Checking::Full_Data& i, const Model_Checking::Full_Data& j)
+{
+    return (i.UDFC05 < j.UDFC05);
+}

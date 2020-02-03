@@ -38,162 +38,170 @@
 #include <wx/wxsqlite3.h>
 
 static const wxString SAMPLE_ASSETS_LUA =
-R"(local total_balance = 0
-function handle_record(record)
+    R"(local total_balance = 0
+    function handle_record(record)
     total_balance = total_balance + record:get('VALUE');
-end
+    end
 
-function complete(result)
+    function complete(result)
     result:set('ASSET_BALANCE', total_balance);
-end
-)";
+    end
+    )";
 
 static const wxString SAMPLE_ASSETS_SQL =
-R"(SELECT STARTDATE, ASSETNAME, ASSETTYPE, VALUE, NOTES, VALUECHANGE, VALUECHANGERATE FROM ASSETS;)";
+    R"(SELECT STARTDATE, ASSETNAME, ASSETTYPE, VALUE, NOTES, VALUECHANGE, VALUECHANGERATE FROM ASSETS;)";
 
 static const wxString SAMPLE_ASSETS_HTT =
-R"(<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title><TMPL_VAR REPORTNAME></title>
-    <script src = "sorttable.js"></script>
-    <link href="master.css" rel="stylesheet">
-</head>
-<body>
-<div class = "container">
-<h3><TMPL_VAR REPORTNAME></h3>
-<TMPL_VAR TODAY><hr>
-<div class = "row">
-<div class = "col-xs-2"></div>
-<div class = "col-xs-8">
-<table class="table sortable">
-<thead>
-    <tr>
+    R"(<!DOCTYPE html>
+    <html>
+    <head>
+    <meta http-equiv="content-type" content="text/html;
+charset=utf-8" />
+        <title><TMPL_VAR REPORTNAME></title>
+        <script src = "sorttable.js"></script>
+        <link href="master.css" rel="stylesheet">
+        </head>
+        <body>
+        <div class = "container">
+        <h3><TMPL_VAR REPORTNAME></h3>
+        <TMPL_VAR TODAY><hr>
+        <div class = "row">
+        <div class = "col-xs-2"></div>
+        <div class = "col-xs-8">
+        <table class="table sortable">
+        <thead>
+        <tr>
         <th>STARTDATE</th>
         <th>ASSETNAME</th>
         <th>ASSETTYPE</th>
         <th>VALUE</th>
         <th>NOTES</th>
-    </tr>
-</thead>
-<tbody>
-    <TMPL_LOOP NAME=CONTENTS>
+        </tr>
+        </thead>
+        <tbody>
+        <TMPL_LOOP NAME=CONTENTS>
         <tr>
         <td><TMPL_VAR STARTDATE></td>
         <td><TMPL_VAR ASSETNAME></td>
         <td><TMPL_VAR ASSETTYPE></td>
         <td class="money" sorttable_customkey="<TMPL_VAR VALUE>"><TMPL_VAR VALUE></td>
         <td><TMPL_VAR NOTES></td>
-    </tr>
-    </TMPL_LOOP>
-</tbody>
-<tfoot>
-    <tr class="total">
+        </tr>
+        </TMPL_LOOP>
+        </tbody>
+        <tfoot>
+        <tr class="total">
         <td colspan=3>Total Assets: </td>
         <td class="money"><TMPL_VAR ASSET_BALANCE></td>
         <td></td>
-    </tr>
-</tfoot>
-</table>
-</div></div></div>
-<TMPL_LOOP ERRORS>
-    <hr>    <TMPL_VAR ERROR>
-</TMPL_LOOP>
+        </tr>
+        </tfoot>
+        </table>
+        </div></div></div>
+        <TMPL_LOOP ERRORS>
+        <hr>    <TMPL_VAR ERROR>
+        </TMPL_LOOP>
 
-<script>
-    <!-- Format double to base currency -->
-    function currency(n) {
+        <script>
+        <!-- Format double to base currency -->
+        function currency(n) {
         n = parseFloat(n);
         n =  isNaN(n) ? 0 : n.toFixed(2);
         var out = n.toString().replace(".", "|");
         out = out.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "<TMPL_VAR GROUP_SEPARATOR>");
         out = out.replace("|", "<TMPL_VAR DECIMAL_POINT>");
         return out;
-    }
-    var elements= document.getElementsByClassName("money");
-    for (var i = 0; i < elements.length; i++) {
+        }
+        var elements= document.getElementsByClassName("money");
+        for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
         element.style.textAlign='right';
         if (element.innerHTML.indexOf("-") > -1) {
-            element.style.color="red";
+        element.style.color="red";
         }
         element.innerHTML = '<TMPL_VAR PFX_SYMBOL>' + currency(element.innerHTML) +'<TMPL_VAR SFX_SYMBOL>';
-    }
-</script>
-</body>
-</html>
-)";
+        }
+        </script>
+        </body>
+        </html>
+        )";
 
 static const char *HTT_CONTEINER =
-R"(<!DOCTYPE html>
-<html>
-<head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-    <title><TMPL_VAR REPORTNAME></title>
-    <script src = "ChartNew.js"></script>
-    <script src = "sorttable.js"></script>
-    <link href = "master.css" rel = "stylesheet">
-</head>
-<body>
-<div class = "container">
-<h3><TMPL_VAR REPORTNAME></h3>
-<TMPL_VAR TODAY><hr>
-<div class = "row">
-<div class = "col-xs-2"></div>
-<div class = "col-xs-8">
-<table class = "table">
-<thead>
-    <tr>
-%s
-    </tr>
-</thead>
-<tbody>
-    <TMPL_LOOP NAME=CONTENTS>
+    R"(<!DOCTYPE html>
+    <html>
+    <head>
+    <meta http-equiv="content-type" content="text/html;
+charset=utf-8" />
+        <title><TMPL_VAR REPORTNAME></title>
+        <script src = "ChartNew.js"></script>
+        <script src = "sorttable.js"></script>
+        <link href = "master.css" rel = "stylesheet">
+        </head>
+        <body>
+        <div class = "container">
+        <h3><TMPL_VAR REPORTNAME></h3>
+        <TMPL_VAR TODAY><hr>
+        <div class = "row">
+        <div class = "col-xs-2"></div>
+        <div class = "col-xs-8">
+        <table class = "table">
+        <thead>
         <tr>
-%s
+        %s
         </tr>
-    </TMPL_LOOP>
-</tbody>
+        </thead>
+        <tbody>
+        <TMPL_LOOP NAME=CONTENTS>
+        <tr>
+        %s
+        </tr>
+        </TMPL_LOOP>
+        </tbody>
 
-</table>
-</div>
-</div>
-<TMPL_LOOP ERRORS>
-    <TMPL_VAR ERROR>
-</TMPL_LOOP>
-</div>
-<script>
-    <!-- Format double to base currency -->
-    function currency(n) {
+        </table>
+        </div>
+        </div>
+        <TMPL_LOOP ERRORS>
+        <TMPL_VAR ERROR>
+        </TMPL_LOOP>
+        </div>
+        <script>
+        <!-- Format double to base currency -->
+        function currency(n) {
         n = parseFloat(n);
         n =  isNaN(n) ? 0 : n.toFixed(2);
         var out = n.toString().replace(".", "|");
         out = out.toString().replace(/\B(?=(\d{3})+(?!\d))/g, "<TMPL_VAR GROUP_SEPARATOR>");
         out = out.replace("|", "<TMPL_VAR DECIMAL_POINT>");
         return out;
-    }
-    var elements= document.getElementsByClassName("money");
-    for (var i = 0; i < elements.length; i++) {
+        }
+        var elements= document.getElementsByClassName("money");
+        for (var i = 0; i < elements.length; i++) {
         var element = elements[i];
         element.style.textAlign='right';
         if (element.innerHTML.indexOf("-") > -1) {
-            element.style.color="red";
+        element.style.color="red";
         }
         element.innerHTML = '<TMPL_VAR PFX_SYMBOL>' + currency(element.innerHTML) +'<TMPL_VAR SFX_SYMBOL>';
-    }
-</script>
-</body>
-</html>
-)";
+        }
+        </script>
+        </body>
+        </html>
+        )";
 
 class MyTreeItemData : public wxTreeItemData
 {
 public:
-    MyTreeItemData(int report_id, const wxString& selectedGroup) : m_report_id(report_id)
+    MyTreeItemData(int report_id, const wxString &selectedGroup) : m_report_id(report_id)
         , m_selectedGroup(selectedGroup) { }
-    int get_report_id() const { return m_report_id; }
-    const wxString get_group_name() const { return m_selectedGroup; }
+    int get_report_id() const
+    {
+        return m_report_id;
+    }
+    const wxString get_group_name() const
+    {
+        return m_selectedGroup;
+    }
 private:
     int m_report_id;
     wxString m_selectedGroup;
@@ -209,19 +217,19 @@ wxBEGIN_EVENT_TABLE(mmGeneralReportManager, wxDialog)
     EVT_BUTTON(wxID_CLOSE, mmGeneralReportManager::OnClose)
     EVT_BUTTON(ID_TEST, mmGeneralReportManager::OnSqlTest)
     EVT_BUTTON(wxID_NEW, mmGeneralReportManager::OnNewTemplate)
-    //EVT_TREE_END_LABEL_EDIT(ID_REPORT_LIST, mmGeneralReportManager::OnLabelChanged)
+//EVT_TREE_END_LABEL_EDIT(ID_REPORT_LIST, mmGeneralReportManager::OnLabelChanged)
     EVT_TREE_SEL_CHANGED(ID_REPORT_LIST, mmGeneralReportManager::OnSelChanged)
     EVT_TREE_ITEM_MENU(ID_REPORT_LIST, mmGeneralReportManager::OnItemRightClick)
     EVT_MENU(wxID_ANY, mmGeneralReportManager::OnMenuSelected)
 wxEND_EVENT_TABLE()
 
-sqlListCtrl::sqlListCtrl(mmGeneralReportManager* grm, wxWindow *parent, wxWindowID winid)
+sqlListCtrl::sqlListCtrl(mmGeneralReportManager *grm, wxWindow *parent, wxWindowID winid)
     : mmListCtrl(parent, winid)
     , m_grm(grm)
 {
 }
 
-mmGeneralReportManager::mmGeneralReportManager(wxWindow* parent, wxSQLite3Database* db)
+mmGeneralReportManager::mmGeneralReportManager(wxWindow *parent, wxSQLite3Database *db)
     : m_db(db)
 {
     constexpr long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
@@ -234,12 +242,12 @@ mmGeneralReportManager::~mmGeneralReportManager()
 {
 }
 
-bool mmGeneralReportManager::Create(wxWindow* parent
-    , wxWindowID id
-    , const wxString& caption
-    , const wxPoint& pos
-    , const wxSize& size
-    , long style)
+bool mmGeneralReportManager::Create(wxWindow *parent
+                                    , wxWindowID id
+                                    , const wxString &caption
+                                    , const wxPoint &pos
+                                    , const wxSize &size
+                                    , long style)
 {
     SetExtraStyle(GetExtraStyle() | wxWS_EX_BLOCK_EVENTS);
     wxDialog::Create(parent, id, caption, pos, size, style);
@@ -275,7 +283,7 @@ void mmGeneralReportManager::fillControls()
     std::stable_sort(records.begin(), records.end(), SorterByGROUPNAME());
     wxTreeItemId group;
     wxString group_name;
-    for (const auto& record : records)
+    for (const auto &record : records)
     {
         const bool no_group = record.GROUPNAME.empty();
         if (group_name != record.GROUPNAME && !no_group)
@@ -305,13 +313,13 @@ void mmGeneralReportManager::fillControls()
 
 void mmGeneralReportManager::CreateControls()
 {
-    wxBoxSizer* mainBoxSizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *mainBoxSizer = new wxBoxSizer(wxVERTICAL);
     this->SetSizer(mainBoxSizer);
 
     /****************************************
      Parameters Area
      ***************************************/
-    wxBoxSizer* topScreenSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer *topScreenSizer = new wxBoxSizer(wxHORIZONTAL);
     mainBoxSizer->Add(topScreenSizer, 1, wxGROW | wxALL);
 
 #if defined (__WXMSW__)
@@ -320,18 +328,18 @@ void mmGeneralReportManager::CreateControls()
     constexpr long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS;
 #endif
     m_treeCtrl = new wxTreeCtrl(this, ID_REPORT_LIST
-        , wxDefaultPosition, wxSize(200, 200), treeCtrlFlags);
+                                , wxDefaultPosition, wxSize(200, 200), treeCtrlFlags);
 
-    wxBoxSizer* reportTreeSizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *reportTreeSizer = new wxBoxSizer(wxVERTICAL);
     reportTreeSizer->Add(m_treeCtrl, g_flagsExpand);
 
     /****************************************
      Script Area
      ***************************************/
     // ListBox for source code
-    wxBoxSizer* notebookSizer = new wxBoxSizer(wxVERTICAL);
-    wxNotebook* editors_notebook = new wxNotebook(this
-        , ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_MULTILINE);
+    wxBoxSizer *notebookSizer = new wxBoxSizer(wxVERTICAL);
+    wxNotebook *editors_notebook = new wxNotebook(this
+            , ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_MULTILINE);
     notebookSizer->Add(editors_notebook, g_flagsExpand);
     createOutputTab(editors_notebook, ID_TAB_OUT);
 
@@ -341,18 +349,18 @@ void mmGeneralReportManager::CreateControls()
     /****************************************
      Separation Line
      ***************************************/
-    wxStaticLine* staticline1 = new wxStaticLine(this, wxID_ANY
-        , wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
+    wxStaticLine *staticline1 = new wxStaticLine(this, wxID_ANY
+            , wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
     mainBoxSizer->Add(staticline1, 0, wxEXPAND | wxALL, 1);
 
     /****************************************
      Bottom Panel
      ***************************************/
-    wxPanel* buttonPanel = new wxPanel(this, wxID_STATIC
-        , wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+    wxPanel *buttonPanel = new wxPanel(this, wxID_STATIC
+                                       , wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     mainBoxSizer->Add(buttonPanel, wxSizerFlags(g_flagsV).Center());
 
-    wxBoxSizer* buttonPanelSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer *buttonPanelSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonPanel->SetSizer(buttonPanelSizer);
 
     //
@@ -373,16 +381,16 @@ void mmGeneralReportManager::CreateControls()
     buttonPanelSizer->Add(m_buttonRun, g_flagsH);
     m_buttonRun->SetToolTip(_("Run selected report."));
 
-    wxButton* button_Close = new wxButton(buttonPanel, wxID_CLOSE, wxGetTranslation(g_CloseLabel));
+    wxButton *button_Close = new wxButton(buttonPanel, wxID_CLOSE, wxGetTranslation(g_CloseLabel));
     buttonPanelSizer->Add(button_Close, g_flagsH);
     //button_Close->SetToolTip(_("Save changes before closing. Changes without Save will be lost."));
 
 }
 
-void mmGeneralReportManager::createOutputTab(wxNotebook* editors_notebook, int type)
+void mmGeneralReportManager::createOutputTab(wxNotebook *editors_notebook, int type)
 {
     //Output
-    wxPanel* out_tab = new wxPanel(editors_notebook, wxID_ANY);
+    wxPanel *out_tab = new wxPanel(editors_notebook, wxID_ANY);
     editors_notebook->InsertPage(type, out_tab, _("Output"));
     wxBoxSizer *out_sizer = new wxBoxSizer(wxVERTICAL);
     out_tab->SetSizer(out_sizer);
@@ -391,20 +399,32 @@ void mmGeneralReportManager::createOutputTab(wxNotebook* editors_notebook, int t
     out_tab->SetSizerAndFit(out_sizer);
 }
 
-void mmGeneralReportManager::createEditorTab(wxNotebook* editors_notebook, int type)
+void mmGeneralReportManager::createEditorTab(wxNotebook *editors_notebook, int type)
 {
     wxString label;
-    switch (type) {
-    case ID_SQL_CONTENT: label = _("SQL"); break;
-    case ID_LUA_CONTENT: label = _("Lua");  break;
-    case ID_TEMPLATE: label = _("Template");  break;
-    case ID_DESCRIPTION: label = _("Description"); break;
-    //default: ;
+    switch (type)
+    {
+        case ID_SQL_CONTENT:
+            label = _("SQL");
+            break;
+        case ID_LUA_CONTENT:
+            label = _("Lua");
+            break;
+        case ID_TEMPLATE:
+            label = _("Template");
+            break;
+        case ID_DESCRIPTION:
+            label = _("Description");
+            break;
+            //default: ;
     }
-    if (FindWindow(type + MAGIC_NUM)) return;
+    if (FindWindow(type + MAGIC_NUM))
+    {
+        return;
+    }
 
     const int tabID = editors_notebook->GetRowCount();
-    wxPanel* panel = new wxPanel(editors_notebook, type + MAGIC_NUM);
+    wxPanel *panel = new wxPanel(editors_notebook, type + MAGIC_NUM);
     editors_notebook->InsertPage(tabID, panel, label);
     wxBoxSizer *sizer = new wxBoxSizer(wxVERTICAL);
 
@@ -416,7 +436,7 @@ void mmGeneralReportManager::createEditorTab(wxNotebook* editors_notebook, int t
         splitter_sql->SetMinimumPaneSize(150); // Smalest size of panels
         box_sizer3->Add(splitter_sql, g_flagsExpand);
 
-        MinimalEditor* templateText = new MinimalEditor(splitter_sql, type);
+        MinimalEditor *templateText = new MinimalEditor(splitter_sql, type);
 
 #if defined (__WXMSW__)
         constexpr long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS | wxTR_ROW_LINES;
@@ -424,7 +444,7 @@ void mmGeneralReportManager::createEditorTab(wxNotebook* editors_notebook, int t
         constexpr long treeCtrlFlags = wxTR_SINGLE | wxTR_HAS_BUTTONS;
 #endif
         m_dbView = new wxTreeCtrl(splitter_sql, wxID_ANY, wxDefaultPosition
-            , wxDefaultSize, treeCtrlFlags);
+                                  , wxDefaultSize, treeCtrlFlags);
 
         splitter_sql->SplitVertically(templateText, m_dbView);
         splitter_sql->SetSashPosition(500);
@@ -432,14 +452,14 @@ void mmGeneralReportManager::createEditorTab(wxNotebook* editors_notebook, int t
 
 #if wxUSE_DRAG_AND_DROP
         m_dbView->Connect(wxID_ANY, wxEVT_TREE_BEGIN_DRAG
-            , wxTreeEventHandler(mmGeneralReportManager::OnBeginDrag)
-            , nullptr, this);
+                          , wxTreeEventHandler(mmGeneralReportManager::OnBeginDrag)
+                          , nullptr, this);
 #endif // wxUSE_DRAG_AND_DROP
 
         wxBoxSizer *box_sizer1 = new wxBoxSizer(wxVERTICAL);
         wxBoxSizer *box_sizer2 = new wxBoxSizer(wxHORIZONTAL);
-        wxButton* buttonPlay = new wxButton(panel, ID_TEST, _("&Test"));
-        wxButton* buttonNewTemplate = new wxButton(panel, wxID_NEW, _("Create Template"));
+        wxButton *buttonPlay = new wxButton(panel, ID_TEST, _("&Test"));
+        wxButton *buttonNewTemplate = new wxButton(panel, wxID_NEW, _("Create Template"));
         wxStaticText *info = new wxStaticText(panel, wxID_INFO, "");
         buttonNewTemplate->Enable(false);
         box_sizer2->Add(buttonPlay);
@@ -458,17 +478,19 @@ void mmGeneralReportManager::createEditorTab(wxNotebook* editors_notebook, int t
         std::vector<std::pair<wxString, wxArrayString>> sqlTableInfo;
         this->getSqlTableInfo(sqlTableInfo);
         const wxTreeItemId root_id = m_dbView->AddRoot("Tables");
-        for (const auto& t : sqlTableInfo)
+        for (const auto &t : sqlTableInfo)
         {
             const wxTreeItemId id = m_dbView->AppendItem(root_id, t.first);
-            for (const auto& c : t.second)
+            for (const auto &c : t.second)
+            {
                 m_dbView->AppendItem(id, c);
+            }
         }
         m_dbView->Expand(root_id);
     }
     else
     {
-        MinimalEditor* editorText = new MinimalEditor(panel, type);
+        MinimalEditor *editorText = new MinimalEditor(panel, type);
         sizer->Add(editorText, g_flagsExpand);
     }
 
@@ -476,11 +498,11 @@ void mmGeneralReportManager::createEditorTab(wxNotebook* editors_notebook, int t
     panel->Layout();
 }
 
-void mmGeneralReportManager::OnSqlTest(wxCommandEvent& WXUNUSED(event))
+void mmGeneralReportManager::OnSqlTest(wxCommandEvent &WXUNUSED(event))
 {
-    MinimalEditor* sqlText = wxDynamicCast(FindWindow(ID_SQL_CONTENT), MinimalEditor);
-    wxStaticText* info = wxDynamicCast(FindWindow(wxID_INFO), wxStaticText);
-    
+    MinimalEditor *sqlText = wxDynamicCast(FindWindow(ID_SQL_CONTENT), MinimalEditor);
+    wxStaticText *info = wxDynamicCast(FindWindow(wxID_INFO), wxStaticText);
+
     wxString sql = sqlText->GetStringSelection().empty() ? sqlText->GetValue() : sqlText->GetStringSelection();
 
     wxString SqlError;
@@ -490,29 +512,31 @@ void mmGeneralReportManager::OnSqlTest(wxCommandEvent& WXUNUSED(event))
         m_sqlListBox->DeleteAllColumns();
         interval = wxGetUTCTimeMillis() - interval;
         info->SetLabelText(wxString::Format(wxPLURAL("%zu row returned, duration: %lld ms",
-                                                     "%zu rows returned, duration: %lld ms",
-                                                     m_sqlQueryData.size())
-            , m_sqlQueryData.size(), interval));
+                                            "%zu rows returned, duration: %lld ms",
+                                            m_sqlQueryData.size())
+                                            , m_sqlQueryData.size(), interval));
 
-        MinimalEditor* templateText = static_cast<MinimalEditor*>(FindWindow(ID_TEMPLATE));
+        MinimalEditor *templateText = static_cast<MinimalEditor *>(FindWindow(ID_TEMPLATE));
         std::vector<std::pair<wxString, int> > colHeaders;
         const bool colsOK = this->getColumns(sql, colHeaders);
-        wxButton* b = static_cast<wxButton*>(FindWindow(wxID_NEW));
+        wxButton *b = static_cast<wxButton *>(FindWindow(wxID_NEW));
         b->Enable(colsOK && templateText->IsEmpty());
         int pos = 0;
-        for (const auto& col : colHeaders)
+        for (const auto &col : colHeaders)
         {
             m_sqlListBox->InsertColumn(pos++, col.first
-                , (col.second == WXSQLITE_INTEGER || col.second == WXSQLITE_FLOAT)
-                ? wxLIST_FORMAT_RIGHT : wxLIST_FORMAT_LEFT
-                , col.first.length() * 10 + 20);
+                                       , (col.second == WXSQLITE_INTEGER || col.second == WXSQLITE_FLOAT)
+                                       ? wxLIST_FORMAT_RIGHT : wxLIST_FORMAT_LEFT
+                                       , col.first.length() * 10 + 20);
         }
 
         m_sqlListBox->SetItemCount(m_sqlQueryData.size());
         m_sqlListBox->Refresh();
         m_sqlListBox->Update();
         if (m_sqlQueryData.size() > 0)
+        {
             m_sqlListBox->EnsureVisible(0);
+        }
     }
     else
     {
@@ -520,25 +544,28 @@ void mmGeneralReportManager::OnSqlTest(wxCommandEvent& WXUNUSED(event))
     }
 }
 
-void mmGeneralReportManager::OnNewTemplate(wxCommandEvent& WXUNUSED(event))
+void mmGeneralReportManager::OnNewTemplate(wxCommandEvent &WXUNUSED(event))
 {
-    MinimalEditor* templateText = static_cast<MinimalEditor*>(FindWindow(ID_TEMPLATE));
-    if (!templateText->IsEmpty()) return;
-    MinimalEditor* sqlText = static_cast<MinimalEditor*>(FindWindow(ID_SQL_CONTENT));
+    MinimalEditor *templateText = static_cast<MinimalEditor *>(FindWindow(ID_TEMPLATE));
+    if (!templateText->IsEmpty())
+    {
+        return;
+    }
+    MinimalEditor *sqlText = static_cast<MinimalEditor *>(FindWindow(ID_SQL_CONTENT));
 
-    wxNotebook* n = static_cast<wxNotebook*>(FindWindow(ID_NOTEBOOK));
+    wxNotebook *n = static_cast<wxNotebook *>(FindWindow(ID_NOTEBOOK));
     n->SetSelection(ID_TAB_HTT);
 
     templateText->ChangeValue(this->getTemplate(sqlText->GetValue()));
 
-    wxButton* b = static_cast<wxButton*>(FindWindow(wxID_NEW));
+    wxButton *b = static_cast<wxButton *>(FindWindow(wxID_NEW));
     b->Enable(false);
 
     wxCommandEvent evt;
     OnUpdateReport(evt);
 }
 
-void mmGeneralReportManager::OnImportReportEvt(wxCommandEvent& WXUNUSED(event))
+void mmGeneralReportManager::OnImportReportEvt(wxCommandEvent &WXUNUSED(event))
 {
     importReport();
 }
@@ -546,11 +573,14 @@ void mmGeneralReportManager::OnImportReportEvt(wxCommandEvent& WXUNUSED(event))
 void mmGeneralReportManager::importReport()
 {
     const wxString reportFileName = wxFileSelector(_("Load report file:")
-        , mmex::getPathUser(mmex::DIRECTORY), wxEmptyString, wxEmptyString
-        , _("General Report Manager files (*.grm)")+"|*.grm|"+_("ZIP files (*.zip)")+"|*.zip"
-        , wxFD_FILE_MUST_EXIST);
+                                    , mmex::getPathUser(mmex::DIRECTORY), wxEmptyString, wxEmptyString
+                                    , _("General Report Manager files (*.grm)")+"|*.grm|"+_("ZIP files (*.zip)")+"|*.zip"
+                                    , wxFD_FILE_MUST_EXIST);
 
-    if (reportFileName.empty()) return;
+    if (reportFileName.empty())
+    {
+        return;
+    }
 
     wxFileName fn(reportFileName);
     wxString sql, lua, htt, txt, reportName;
@@ -559,7 +589,10 @@ void mmGeneralReportManager::importReport()
     reportName = fn.FileName(reportFileName).GetName();
     Model_Report::Data *report = Model_Report::instance().get(reportName);
 
-    if (!report) report = Model_Report::instance().create();
+    if (!report)
+    {
+        report = Model_Report::instance().create();
+    }
     report->GROUPNAME = m_selectedGroup;
     report->REPORTNAME = reportName;
     report->SQLCONTENT = sql;
@@ -572,7 +605,7 @@ void mmGeneralReportManager::importReport()
 }
 
 bool mmGeneralReportManager::openZipFile(const wxString &reportFileName
-    , wxString &htt, wxString &sql, wxString &lua, wxString &txt)
+        , wxString &htt, wxString &sql, wxString &lua, wxString &txt)
 {
     if (!reportFileName.empty())
     {
@@ -599,13 +632,21 @@ bool mmGeneralReportManager::openZipFile(const wxString &reportFileName
                 zip.Read(out_stream);
 
                 if (f.EndsWith(".sql"))
+                {
                     sql = textdata;
+                }
                 else if (f.EndsWith(".lua"))
+                {
                     lua = textdata;
+                }
                 else if (f.EndsWith(".txt") || f.EndsWith(".html"))
+                {
                     txt << textdata;
+                }
                 else if (f.EndsWith(".htt"))
+                {
                     htt << textdata;
+                }
             }
         }
         else
@@ -617,19 +658,22 @@ bool mmGeneralReportManager::openZipFile(const wxString &reportFileName
     }
     return true;
 }
-void mmGeneralReportManager::OnUpdateReport(wxCommandEvent& WXUNUSED(event))
+void mmGeneralReportManager::OnUpdateReport(wxCommandEvent &WXUNUSED(event))
 {
-    MyTreeItemData* iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(m_selectedItemID));
-    if (!iData) return;
+    MyTreeItemData *iData = dynamic_cast<MyTreeItemData *>(m_treeCtrl->GetItemData(m_selectedItemID));
+    if (!iData)
+    {
+        return;
+    }
 
     const int id = iData->get_report_id();
-    Model_Report::Data * report = Model_Report::instance().get(id);
+    Model_Report::Data *report = Model_Report::instance().get(id);
     if (report)
     {
-        MinimalEditor* templateText = static_cast<MinimalEditor*>(FindWindow(ID_TEMPLATE));
-        MinimalEditor* SqlScriptText = static_cast<MinimalEditor*>(FindWindow(ID_SQL_CONTENT));
-        MinimalEditor* LuaScriptText = static_cast<MinimalEditor*>(FindWindow(ID_LUA_CONTENT));
-        MinimalEditor* descriptionText = static_cast<MinimalEditor*>(FindWindow(ID_DESCRIPTION));
+        MinimalEditor *templateText = static_cast<MinimalEditor *>(FindWindow(ID_TEMPLATE));
+        MinimalEditor *SqlScriptText = static_cast<MinimalEditor *>(FindWindow(ID_SQL_CONTENT));
+        MinimalEditor *LuaScriptText = static_cast<MinimalEditor *>(FindWindow(ID_LUA_CONTENT));
+        MinimalEditor *descriptionText = static_cast<MinimalEditor *>(FindWindow(ID_DESCRIPTION));
         report->SQLCONTENT = SqlScriptText->GetValue();
         report->LUACONTENT = LuaScriptText->GetValue();
         report->TEMPLATECONTENT = templateText->GetValue();
@@ -640,38 +684,48 @@ void mmGeneralReportManager::OnUpdateReport(wxCommandEvent& WXUNUSED(event))
     }
 }
 
-void mmGeneralReportManager::OnRun(wxCommandEvent& WXUNUSED(event))
+void mmGeneralReportManager::OnRun(wxCommandEvent &WXUNUSED(event))
 {
-    MyTreeItemData* iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(m_selectedItemID));
-    if (!iData) return;
+    MyTreeItemData *iData = dynamic_cast<MyTreeItemData *>(m_treeCtrl->GetItemData(m_selectedItemID));
+    if (!iData)
+    {
+        return;
+    }
 
     const int id = iData->get_report_id();
     m_selectedGroup = iData->get_group_name();
-    Model_Report::Data * report = Model_Report::instance().get(id);
+    Model_Report::Data *report = Model_Report::instance().get(id);
     if (report)
     {
-        wxNotebook* n = static_cast<wxNotebook*>(FindWindow(ID_NOTEBOOK));
+        wxNotebook *n = static_cast<wxNotebook *>(FindWindow(ID_NOTEBOOK));
         n->SetSelection(ID_TAB_OUT);
         m_outputHTML->ClearBackground();
 
         mmGeneralReport gr(report); //TODO: limit 500 line
         if (Model_Report::outputReportFile(gr.getHTMLText(), "grm"))
+        {
             m_outputHTML->LoadURL(getURL(mmex::getReportFullFileName("grm")));
+        }
         else
+        {
             m_outputHTML->SetPage(_("Error"), "");
+        }
     }
 }
 
-void mmGeneralReportManager::OnItemRightClick(wxTreeEvent& event)
+void mmGeneralReportManager::OnItemRightClick(wxTreeEvent &event)
 {
     const wxTreeItemId id = event.GetItem();
     m_treeCtrl ->SelectItem(id);
     int report_id = -1;
-    MyTreeItemData *iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(id));
-    if (iData) report_id = iData->get_report_id();
+    MyTreeItemData *iData = dynamic_cast<MyTreeItemData *>(m_treeCtrl->GetItemData(id));
+    if (iData)
+    {
+        report_id = iData->get_report_id();
+    }
     Model_Report::Data *report = Model_Report::instance().get(report_id);
 
-    wxMenu* samplesMenu = new wxMenu;
+    wxMenu *samplesMenu = new wxMenu;
     samplesMenu->Append(ID_NEW_SAMPLE_ASSETS, _("Assets"));
 
     wxMenu customReportMenu;
@@ -679,9 +733,13 @@ void mmGeneralReportManager::OnItemRightClick(wxTreeEvent& event)
     customReportMenu.Append(wxID_ANY, _("New Sample Report"), samplesMenu);
     customReportMenu.AppendSeparator();
     if (report)
+    {
         customReportMenu.Append(ID_GROUP, _("Change Group"));
+    }
     else
+    {
         customReportMenu.Append(ID_GROUP, _("Rename Group"));
+    }
     customReportMenu.Append(ID_UNGROUP, _("UnGroup"));
     customReportMenu.Append(ID_RENAME, _("Rename Report"));
     customReportMenu.AppendSeparator();
@@ -694,7 +752,9 @@ void mmGeneralReportManager::OnItemRightClick(wxTreeEvent& event)
     else
     {
         if (m_selectedGroup == "")
+        {
             customReportMenu.Enable(ID_GROUP, false);
+        }
 
         customReportMenu.Enable(ID_UNGROUP, false);
         customReportMenu.Enable(ID_RENAME, false);
@@ -714,25 +774,30 @@ void mmGeneralReportManager::viewControls(bool enable)
     }
 }
 
-void mmGeneralReportManager::OnSelChanged(wxTreeEvent& event)
+void mmGeneralReportManager::OnSelChanged(wxTreeEvent &event)
 {
     viewControls(false);
     m_selectedItemID = event.GetItem();
-    if (!m_selectedItemID) return;
+    if (!m_selectedItemID)
+    {
+        return;
+    }
 
-    wxNotebook* editors_notebook = static_cast<wxNotebook*>(FindWindow(ID_NOTEBOOK));
-    MyTreeItemData* iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(m_selectedItemID));
+    wxNotebook *editors_notebook = static_cast<wxNotebook *>(FindWindow(ID_NOTEBOOK));
+    MyTreeItemData *iData = dynamic_cast<MyTreeItemData *>(m_treeCtrl->GetItemData(m_selectedItemID));
     if (!iData)
     {
         for (size_t n = editors_notebook->GetPageCount() - 1; n >= 1; n--)
+        {
             editors_notebook->DeletePage(n);
+        }
         showHelp();
         return;
     }
 
     const int id = iData->get_report_id();
     m_selectedGroup = iData->get_group_name();
-    Model_Report::Data * report = Model_Report::instance().get(id);
+    Model_Report::Data *report = Model_Report::instance().get(id);
     if (report)
     {
         m_selectedReportID = report->REPORTID;
@@ -741,10 +806,10 @@ void mmGeneralReportManager::OnSelChanged(wxTreeEvent& event)
         createEditorTab(editors_notebook, ID_LUA_CONTENT);
         createEditorTab(editors_notebook, ID_SQL_CONTENT);
 
-        MinimalEditor* SqlScriptText = static_cast<MinimalEditor*>(FindWindow(ID_SQL_CONTENT));
-        MinimalEditor* LuaScriptText = static_cast<MinimalEditor*>(FindWindow(ID_LUA_CONTENT));
-        MinimalEditor* templateText = static_cast<MinimalEditor*>(FindWindow(ID_TEMPLATE));
-        MinimalEditor* descriptionText = static_cast<MinimalEditor*>(FindWindow(ID_DESCRIPTION));
+        MinimalEditor *SqlScriptText = static_cast<MinimalEditor *>(FindWindow(ID_SQL_CONTENT));
+        MinimalEditor *LuaScriptText = static_cast<MinimalEditor *>(FindWindow(ID_LUA_CONTENT));
+        MinimalEditor *templateText = static_cast<MinimalEditor *>(FindWindow(ID_TEMPLATE));
+        MinimalEditor *descriptionText = static_cast<MinimalEditor *>(FindWindow(ID_DESCRIPTION));
 
         templateText->ChangeValue(report->TEMPLATECONTENT);
         templateText->SetLexerHtml();
@@ -755,16 +820,30 @@ void mmGeneralReportManager::OnSelChanged(wxTreeEvent& event)
         wxString description = report->DESCRIPTION;
         descriptionText->ChangeValue(description);
         if (!description.Contains("<!DOCTYPE html"))
+        {
             description.Replace("\n", "<BR>\n");
+        }
 
         m_outputHTML->SetPage(description, "");
 
-        if (m_sqlListBox) m_sqlListBox->DeleteAllItems();
-        if (m_sqlListBox) m_sqlListBox->DeleteAllColumns();
-        wxButton* createTemplate = static_cast<wxButton*>(FindWindow(wxID_NEW));
-        if (createTemplate) createTemplate->Enable(false);
-        wxStaticText *info = static_cast<wxStaticText*>(FindWindow(wxID_INFO));
-        if (info) info->SetLabelText("");
+        if (m_sqlListBox)
+        {
+            m_sqlListBox->DeleteAllItems();
+        }
+        if (m_sqlListBox)
+        {
+            m_sqlListBox->DeleteAllColumns();
+        }
+        wxButton *createTemplate = static_cast<wxButton *>(FindWindow(wxID_NEW));
+        if (createTemplate)
+        {
+            createTemplate->Enable(false);
+        }
+        wxStaticText *info = static_cast<wxStaticText *>(FindWindow(wxID_INFO));
+        if (info)
+        {
+            info->SetLabelText("");
+        }
 
         viewControls(true);
     }
@@ -777,15 +856,15 @@ void mmGeneralReportManager::OnSelChanged(wxTreeEvent& event)
 
 void mmGeneralReportManager::renameReport(int id)
 {
-    Model_Report::Data * report = Model_Report::instance().get(id);
+    Model_Report::Data *report = Model_Report::instance().get(id);
     if (report)
     {
         wxString label = wxGetTextFromUser(_("Enter the name for the report")
-            , _("General Report Manager"), report->REPORTNAME);
+                                           , _("General Report Manager"), report->REPORTNAME);
         label.Trim();
 
         if (Model_Report::instance().find(Model_Report::REPORTNAME(label)).empty()
-            && !label.empty())
+                && !label.empty())
         {
             report->REPORTNAME = label;
             Model_Report::instance().save(report);
@@ -796,12 +875,12 @@ void mmGeneralReportManager::renameReport(int id)
 
 bool mmGeneralReportManager::DeleteReport(int id)
 {
-    Model_Report::Data * report = Model_Report::instance().get(id);
+    Model_Report::Data *report = Model_Report::instance().get(id);
     if (report)
     {
         wxString msg = wxString() << _("Delete the Report Title:")
-            << "\n\n"
-            << report->REPORTNAME;
+                       << "\n\n"
+                       << report->REPORTNAME;
         int iError = wxMessageBox(msg, "General Reports Manager", wxYES_NO | wxICON_ERROR);
         if (iError == wxYES)
         {
@@ -817,7 +896,7 @@ bool mmGeneralReportManager::DeleteReport(int id)
 
 bool mmGeneralReportManager::changeReportGroup(int id, bool ungroup)
 {
-    Model_Report::Data * report = Model_Report::instance().get(id);
+    Model_Report::Data *report = Model_Report::instance().get(id);
     if (report)
     {
         if (ungroup)
@@ -829,7 +908,7 @@ bool mmGeneralReportManager::changeReportGroup(int id, bool ungroup)
         else
         {
             mmDialogComboBoxAutocomplete dlg(this, _("Enter or choose name for the new report group"),
-                _("Change report group"), report->GROUPNAME, Model_Report::instance().allGroupNames());
+                                             _("Change report group"), report->GROUPNAME, Model_Report::instance().allGroupNames());
 
             if (dlg.ShowModal() == wxID_OK)
             {
@@ -843,10 +922,10 @@ bool mmGeneralReportManager::changeReportGroup(int id, bool ungroup)
     return false;
 }
 
-bool mmGeneralReportManager::renameReportGroup(const wxString& GroupName)
+bool mmGeneralReportManager::renameReportGroup(const wxString &GroupName)
 {
     mmDialogComboBoxAutocomplete dlg(this, _("Enter or choose name for the new group"),
-        _("Rename Group"), GroupName, Model_Report::instance().allGroupNames());
+                                     _("Rename Group"), GroupName, Model_Report::instance().allGroupNames());
 
     if (dlg.ShowModal() == wxID_OK)
     {
@@ -862,7 +941,7 @@ bool mmGeneralReportManager::renameReportGroup(const wxString& GroupName)
     return false;
 }
 
-void mmGeneralReportManager::OnMenuSelected(wxCommandEvent& event)
+void mmGeneralReportManager::OnMenuSelected(wxCommandEvent &event)
 {
     const int id = event.GetId();
 
@@ -873,26 +952,27 @@ void mmGeneralReportManager::OnMenuSelected(wxCommandEvent& event)
         return;
     }
 
-    MyTreeItemData* iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(m_selectedItemID));
+    MyTreeItemData *iData = dynamic_cast<MyTreeItemData *>(m_treeCtrl->GetItemData(m_selectedItemID));
     if (iData)
     {
         const int report_id = iData->get_report_id();
 
         if (report_id > -1)
         {
-            switch (id){
-            case ID_RENAME:
-                this->renameReport(report_id);
-                break;
-            case ID_DELETE:
-                this->DeleteReport(report_id);
-                break;
-            case ID_GROUP:
-                this->changeReportGroup(report_id, false);
-                break;
-            case ID_UNGROUP:
-                this->changeReportGroup(report_id, true);
-                break;
+            switch (id)
+            {
+                case ID_RENAME:
+                    this->renameReport(report_id);
+                    break;
+                case ID_DELETE:
+                    this->DeleteReport(report_id);
+                    break;
+                case ID_GROUP:
+                    this->changeReportGroup(report_id, false);
+                    break;
+                case ID_UNGROUP:
+                    this->changeReportGroup(report_id, true);
+                    break;
             }
         }
         else if (id == ID_GROUP)
@@ -910,17 +990,20 @@ void mmGeneralReportManager::newReport(int sample)
     if (m_selectedItemID == m_rootItem)
     {
         mmDialogComboBoxAutocomplete dlg(this, _("Enter or choose name for the new report group")
-            , _("Add Report Group"), "", Model_Report::instance().allGroupNames());
+                                         , _("Add Report Group"), "", Model_Report::instance().allGroupNames());
         if (dlg.ShowModal() == wxID_OK)
+        {
             group_name = dlg.getText();
+        }
         else
+        {
             return;
+        }
     }
     else
     {
         group_name = m_selectedGroup;
     }
-
 
     const wxDateTime now = wxDateTime::Now();
     wxString report_name = wxString::Format(_("New Report %s"), now.Format("%Y%m%d%H%M%S"));
@@ -929,31 +1012,40 @@ void mmGeneralReportManager::newReport(int sample)
     for (int i = 0; i < max_attempts; i++)
     {
         report_name = wxGetTextFromUser(_("Enter the name for the report")
-            , _("General Report Manager"), report_name);
+                                        , _("General Report Manager"), report_name);
 
         if (report_name.empty())
-            return; //Canceled by user
+        {
+            return;    //Canceled by user
+        }
         if (!report_name.empty() && Model_Report::instance().find(Model_Report::REPORTNAME(report_name)).empty())
+        {
             break;
+        }
         if (i == max_attempts - 1)
+        {
             return mmErrorDialogs::MessageError(this, _("Report Name already exists"), _("New Report"));
+        }
     }
 
     wxString sqlContent, luaContent, httContent, description;
-    switch (sample) {
-    case ID_NEW_EMPTY:
-        sqlContent = ""; luaContent = ""; httContent = "";
-        description = _("New Report");
-        break;
-    case ID_NEW_SAMPLE_ASSETS:
-        sqlContent = SAMPLE_ASSETS_SQL;
-        luaContent = SAMPLE_ASSETS_LUA;
-        httContent = SAMPLE_ASSETS_HTT;
-        description = _("Assets");
-        break;
+    switch (sample)
+    {
+        case ID_NEW_EMPTY:
+            sqlContent = "";
+            luaContent = "";
+            httContent = "";
+            description = _("New Report");
+            break;
+        case ID_NEW_SAMPLE_ASSETS:
+            sqlContent = SAMPLE_ASSETS_SQL;
+            luaContent = SAMPLE_ASSETS_LUA;
+            httContent = SAMPLE_ASSETS_HTT;
+            description = _("Assets");
+            break;
     }
 
-    Model_Report::Data* report = Model_Report::instance().create();
+    Model_Report::Data *report = Model_Report::instance().create();
     report->GROUPNAME = group_name;
     report->REPORTNAME = report_name;
     report->SQLCONTENT = sqlContent;
@@ -963,26 +1055,31 @@ void mmGeneralReportManager::newReport(int sample)
     m_selectedReportID = Model_Report::instance().save(report);
 }
 
-void mmGeneralReportManager::OnExportReport(wxCommandEvent& WXUNUSED(event))
+void mmGeneralReportManager::OnExportReport(wxCommandEvent &WXUNUSED(event))
 {
-    MyTreeItemData* iData = dynamic_cast<MyTreeItemData*>(m_treeCtrl->GetItemData(m_selectedItemID));
-    if (!iData) return;
+    MyTreeItemData *iData = dynamic_cast<MyTreeItemData *>(m_treeCtrl->GetItemData(m_selectedItemID));
+    if (!iData)
+    {
+        return;
+    }
 
     const int id = iData->get_report_id();
-    Model_Report::Data * report = Model_Report::instance().get(id);
+    Model_Report::Data *report = Model_Report::instance().get(id);
     if (report)
     {
         wxString file_name = report->REPORTNAME + ".grm";
         wxFileDialog dlg(this
-            , _("Choose file to Save As Report")
-            , wxEmptyString
-            , file_name
-            , _("General Report Manager files (*.grm)")+"|*.grm|"+_("ZIP files (*.zip)")+"|*.zip"
-            , wxFD_SAVE | wxFD_OVERWRITE_PROMPT
-            );
+                         , _("Choose file to Save As Report")
+                         , wxEmptyString
+                         , file_name
+                         , _("General Report Manager files (*.grm)")+"|*.grm|"+_("ZIP files (*.zip)")+"|*.zip"
+                         , wxFD_SAVE | wxFD_OVERWRITE_PROMPT
+                        );
 
         if (dlg.ShowModal() != wxID_OK)
+        {
             return;
+        }
 
         file_name = dlg.GetPath();
 
@@ -1005,7 +1102,9 @@ void mmGeneralReportManager::showHelp()
     wxFileName helpIndexFile(mmex::getPathDoc(mmex::HTML_CUSTOM_SQL));
     const auto lang = Option::instance().getLanguageISO6391();
     if (lang != "en" && !lang.empty())
+    {
         helpIndexFile.AppendDir(lang);
+    }
     wxString url = "file://" + mmex::getPathDoc(mmex::HTML_CUSTOM_SQL);
     if (helpIndexFile.FileExists()) // Load the help file for the given language
     {
@@ -1024,12 +1123,12 @@ wxString sqlListCtrl::OnGetItemText(long item, long column) const
     return m_grm->OnGetItemText(item, column);
 }
 
-void mmGeneralReportManager::OnClose(wxCommandEvent& WXUNUSED(event))
+void mmGeneralReportManager::OnClose(wxCommandEvent &WXUNUSED(event))
 {
     EndModal(wxID_OK);
 }
 
-bool mmGeneralReportManager::getColumns(const wxString& sql, std::vector<std::pair<wxString, int> > &colHeaders)
+bool mmGeneralReportManager::getColumns(const wxString &sql, std::vector<std::pair<wxString, int> > &colHeaders)
 {
     wxSQLite3Statement stmt;
     wxSQLite3ResultSet q;
@@ -1038,11 +1137,13 @@ bool mmGeneralReportManager::getColumns(const wxString& sql, std::vector<std::pa
     {
         stmt = this->m_db->PrepareStatement(sql);
         if (!stmt.IsReadOnly())
+        {
             return false;
+        }
         q = stmt.ExecuteQuery();
         columnCount = q.GetColumnCount();
     }
-    catch (const wxSQLite3Exception& /*e*/)
+    catch (const wxSQLite3Exception & /*e*/)
     {
         return false;
     }
@@ -1073,14 +1174,16 @@ void mmGeneralReportManager::getSqlTableInfo(std::vector<std::pair<wxString, wxA
             const wxString table_name = qTables.GetAsString(1);
 
             // Get a list of the table columns
-            const wxString& sql = wxString::Format("PRAGMA table_info(%s);", table_name);
+            const wxString &sql = wxString::Format("PRAGMA table_info(%s);", table_name);
             wxSQLite3ResultSet qColumns;
             try
             {
                 qColumns = this->m_db->ExecuteQuery(sql);
                 wxArrayString column_names;
                 while (qColumns.NextRow())
+                {
                     column_names.push_back(qColumns.GetAsString(1));
+                }
 
                 sqlTableInfo.push_back(std::make_pair(table_name, column_names));
             }
@@ -1096,9 +1199,9 @@ void mmGeneralReportManager::getSqlTableInfo(std::vector<std::pair<wxString, wxA
     }
 }
 
-bool mmGeneralReportManager::getSqlQuery(/*in*/ wxString& sql
-    , /*out*/ std::vector <std::vector <wxString> > &sqlQueryData
-    , wxString &SqlError)
+bool mmGeneralReportManager::getSqlQuery(/*in*/ wxString &sql
+        , /*out*/ std::vector <std::vector <wxString> > &sqlQueryData
+        , wxString &SqlError)
 {
     wxSQLite3ResultSet q;
     int columnCount = 0;
@@ -1108,11 +1211,13 @@ bool mmGeneralReportManager::getSqlQuery(/*in*/ wxString& sql
         Model_Report::PrepareSQL(sql, rep_params);
         wxSQLite3Statement stmt = this->m_db->PrepareStatement(sql);
         if (!stmt.IsReadOnly())
+        {
             return false;
+        }
         q = stmt.ExecuteQuery();
         columnCount = q.GetColumnCount();
     }
-    catch (const wxSQLite3Exception& e)
+    catch (const wxSQLite3Exception &e)
     {
         SqlError = e.GetMessage();
         SqlError.Replace(" or missing database[1]:", "");
@@ -1124,26 +1229,34 @@ bool mmGeneralReportManager::getSqlQuery(/*in*/ wxString& sql
     {
         std::vector<wxString> row;
         for (int i = 0; i < columnCount; ++i)
+        {
             row.push_back(q.GetAsString(i));
+        }
         sqlQueryData.push_back(row);
     }
     return true;
 }
 
-wxString mmGeneralReportManager::getTemplate(const wxString& sql)
+wxString mmGeneralReportManager::getTemplate(const wxString &sql)
 {
     wxString body, header;
     std::vector<std::pair<wxString, int> > colHeaders;
     this->getColumns(sql, colHeaders);
-    for (const auto& col : colHeaders)
+    for (const auto &col : colHeaders)
     {
         header += wxString::Format("        <th>%s</th>\n", col.first);
         if (col.second == WXSQLITE_FLOAT)
+        {
             body += wxString::Format("        <td class = \"money\"><TMPL_VAR \"%s\"></td>\n", col.first);
+        }
         else if (col.second == WXSQLITE_INTEGER)
+        {
             body += wxString::Format("        <td class = \"text-right\"><TMPL_VAR \"%s\"></td>\n", col.first);
+        }
         else
+        {
             body += wxString::Format("        <td><TMPL_VAR \"%s\"></td>\n", col.first);
+        }
     }
     return wxString::Format(HTT_CONTEINER, header, body);
 }
@@ -1152,11 +1265,14 @@ wxString mmGeneralReportManager::getTemplate(const wxString& sql)
 void mmGeneralReportManager::OnBeginDrag(wxTreeEvent& (event))
 {
     const wxTreeItemId selectedItem = event.GetItem();
-    if (!selectedItem) return;
+    if (!selectedItem)
+    {
+        return;
+    }
 
     wxTextDataObject data;
     data.SetText(m_dbView->GetItemText(selectedItem));
-    MinimalEditor* templateText = static_cast<MinimalEditor*>(FindWindow(ID_TEMPLATE));
+    MinimalEditor *templateText = static_cast<MinimalEditor *>(FindWindow(ID_TEMPLATE));
     wxDropSource dragSource(templateText);
     dragSource.SetData(data);
     dragSource.DoDragDrop();

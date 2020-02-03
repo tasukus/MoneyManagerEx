@@ -30,11 +30,11 @@ public:
     OptionSettingsGeneral();
 
     OptionSettingsGeneral(wxWindow *parent, mmGUIApp* app
-        , wxWindowID id = wxID_ANY
-        , const wxPoint &pos = wxDefaultPosition
-        , const wxSize &size = wxDefaultSize
-        , long style = wxTAB_TRAVERSAL
-        , const wxString &name = "OptionSettingsGeneral");
+                          , wxWindowID id = wxID_ANY
+                          , const wxPoint &pos = wxDefaultPosition
+                          , const wxSize &size = wxDefaultSize
+                          , long style = wxTAB_TRAVERSAL
+                          , const wxString &name = "OptionSettingsGeneral");
 
     ~OptionSettingsGeneral();
 

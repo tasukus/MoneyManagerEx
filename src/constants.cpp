@@ -75,13 +75,13 @@ const wxString mmex::getProgramCopyright()
     return wxString::Format("(c) 2005-%d Madhan Kanagavel", COMPILE_YEAR);
 }
 
-const wxString mmex::getCaption(const wxString& caption)
+const wxString mmex::getCaption(const wxString &caption)
 {
     return mmex::getProgramName() + (caption.IsEmpty() ? wxGetEmptyString() : " - " + caption);
 }
 
 /* Namespace weblink */
-const wxString mmex::weblink::addReferralToURL(const wxString& BaseURL, const wxString& CampSource)
+const wxString mmex::weblink::addReferralToURL(const wxString &BaseURL, const wxString &CampSource)
 {
     /*
     With Google analytics it's possible to send some data in URL
@@ -90,7 +90,7 @@ const wxString mmex::weblink::addReferralToURL(const wxString& BaseURL, const wx
     */
 
     const wxString url = wxString::Format("%s?utm_campaign=Application_Desktop&utm_source=%s&utm_medium=MMEX_v%s"
-        , BaseURL, CampSource, mmex::version::string);
+                                          , BaseURL, CampSource, mmex::version::string);
 
     return url;
 }
@@ -106,7 +106,8 @@ const wxString mmex::weblink::GitHub = "https://github.com/moneymanagerex/moneym
 const wxString mmex::weblink::YouTube = "https://www.youtube.com/user/moneymanagerex";
 const wxString mmex::weblink::Slack = "http://slack.moneymanagerex.org/";
 const wxString mmex::weblink::BugReport = "https://github.com/moneymanagerex/moneymanagerex/issues";
-const wxString mmex::weblink::Donate = "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=moneymanagerex%40gmail%2ecom&lc=US&item_name=MoneyManagerEx&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest";
+const wxString mmex::weblink::Donate =
+    "https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=moneymanagerex%40gmail%2ecom&lc=US&item_name=MoneyManagerEx&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest";
 const wxString mmex::weblink::SquareCashGuan = "https://cash.me/$guanlisheng/1";
 const wxString mmex::weblink::Twitter = "https://twitter.com/MoneyManagerEx";
 const wxString mmex::weblink::Facebook = "https://www.facebook.com/MoneyManagerEx/";

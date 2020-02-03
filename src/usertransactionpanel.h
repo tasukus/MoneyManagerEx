@@ -38,12 +38,12 @@ public:
     UserTransactionPanel();
 
     UserTransactionPanel(wxWindow *parent
-        , Model_Checking::Data* checking_entry
-        , wxWindowID win_id = wxID_ANY
-        , const wxPoint &pos = wxDefaultPosition
-        , const wxSize &size = wxDefaultSize
-        , long style = wxTAB_TRAVERSAL
-        , const wxString &name = "UserTransactionPanel");
+                         , Model_Checking::Data* checking_entry
+                         , wxWindowID win_id = wxID_ANY
+                         , const wxPoint &pos = wxDefaultPosition
+                         , const wxSize &size = wxDefaultSize
+                         , long style = wxTAB_TRAVERSAL
+                         , const wxString &name = "UserTransactionPanel");
 
     ~UserTransactionPanel();
 

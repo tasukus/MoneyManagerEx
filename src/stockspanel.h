@@ -48,9 +48,18 @@ public:
     void OnOrganizeAttachments(wxCommandEvent& event);
     void OnStockWebPage(wxCommandEvent& event);
     void OnOpenAttachment(wxCommandEvent& event);
-    long get_selectedIndex() { return m_selected_row; }
-    int getColumnsNumber() { return COL_MAX; }
-    int col_sort() { return COL_DATE; }
+    long get_selectedIndex()
+    {
+        return m_selected_row;
+    }
+    int getColumnsNumber()
+    {
+        return COL_MAX;
+    }
+    int col_sort()
+    {
+        return COL_DATE;
+    }
     wxString getStockInfo(int selectedIndex) const;
     /* Helper Functions/data */
     Model_Stock::Data_Set m_stocks;

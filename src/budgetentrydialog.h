@@ -32,14 +32,14 @@ class mmBudgetEntryDialog : public wxDialog
 public:
     mmBudgetEntryDialog();
     mmBudgetEntryDialog(wxWindow* parent
-        , Model_Budget::Data* entry
-        , const wxString& categoryEstimate, const wxString& CategoryActual);
+                        , Model_Budget::Data* entry
+                        , const wxString& categoryEstimate, const wxString& CategoryActual);
 
     bool Create(wxWindow* parent, wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style);
 
     void CreateControls();
     void onChoiceChar(wxKeyEvent& event);

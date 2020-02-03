@@ -35,18 +35,18 @@ wxBEGIN_EVENT_TABLE(mmWebAppDialog, wxDialog)
     EVT_MENU_RANGE(MENU_OPEN_ATTACHMENT, MENU_DELETE_WEBTRAN, mmWebAppDialog::OnMenuSelected)
 wxEND_EVENT_TABLE()
 
-mmWebAppDialog::mmWebAppDialog(wxWindow *parent, const wxString& name)
+mmWebAppDialog::mmWebAppDialog(wxWindow *parent, const wxString &name)
 {
     Create(parent, name);
 }
 
-void mmWebAppDialog::Create(wxWindow* parent, const wxString& name)
+void mmWebAppDialog::Create(wxWindow *parent, const wxString &name)
 {
     SetExtraStyle(GetExtraStyle() | wxWS_EX_BLOCK_EVENTS);
 
     constexpr long style = wxCAPTION | wxCLOSE_BOX | wxRESIZE_BORDER;
     if (!wxDialog::Create(parent, wxID_ANY, _("Import WebApp transactions")
-        , wxDefaultPosition, wxDefaultSize, style, name))
+                          , wxDefaultPosition, wxDefaultSize, style, name))
     {
         return;
     }
@@ -65,7 +65,7 @@ void mmWebAppDialog::Create(wxWindow* parent, const wxString& name)
 
 void mmWebAppDialog::CreateControls()
 {
-    wxBoxSizer* mainBoxSizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *mainBoxSizer = new wxBoxSizer(wxVERTICAL);
 
     webtranListBox_ = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxSize(800, 500), wxDV_MULTIPLE | wxDV_ROW_LINES);
 
@@ -81,16 +81,16 @@ void mmWebAppDialog::CreateControls()
     webtranListBox_->AppendTextColumn(_("Attachments"), wxDATAVIEW_CELL_INERT, wxLIST_AUTOSIZE_USEHEADER); //WEBTRAN_ATTACHMENTS,
     mainBoxSizer->Add(webtranListBox_, wxSizerFlags(g_flagsExpand).Border(wxALL, 10));
 
-    wxPanel* buttons_panel = new wxPanel(this, wxID_ANY);
+    wxPanel *buttons_panel = new wxPanel(this, wxID_ANY);
     mainBoxSizer->Add(buttons_panel, wxSizerFlags(g_flagsExpand).Proportion(0));
-    wxBoxSizer*  tools_sizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer  *tools_sizer = new wxBoxSizer(wxVERTICAL);
     buttons_panel->SetSizer(tools_sizer);
 
-    wxStdDialogButtonSizer*  buttons_sizer = new wxStdDialogButtonSizer;
+    wxStdDialogButtonSizer  *buttons_sizer = new wxStdDialogButtonSizer;
     tools_sizer->Add(buttons_sizer, wxSizerFlags(g_flagsV).Center());
-    wxButton* buttonOK = new wxButton(buttons_panel, wxID_OK, _("&Import all "));
-    wxButton* buttonApply = new wxButton(buttons_panel, wxID_APPLY, _("Import and open all "));
-    wxButton* btnCancel = new wxButton(buttons_panel, wxID_CANCEL, wxGetTranslation(g_CancelLabel));
+    wxButton *buttonOK = new wxButton(buttons_panel, wxID_OK, _("&Import all "));
+    wxButton *buttonApply = new wxButton(buttons_panel, wxID_APPLY, _("Import and open all "));
+    wxButton *btnCancel = new wxButton(buttons_panel, wxID_CANCEL, wxGetTranslation(g_CancelLabel));
 
     buttons_sizer->Add(buttonOK, g_flagsH);
     buttons_sizer->Add(buttonApply, g_flagsH);
@@ -106,7 +106,7 @@ void mmWebAppDialog::fillControls()
 
     mmWebApp::WebApp_DownloadNewTransaction(WebAppTransactions_, false);
 
-    for (const auto& WebTran : WebAppTransactions_)
+    for (const auto &WebTran : WebAppTransactions_)
     {
         wxVector<wxVariant> data;
         data.push_back(wxVariant(wxString::Format("%i", WebTran.ID))); //WEBTRAN_ID
@@ -119,7 +119,10 @@ void mmWebAppDialog::fillControls()
         data.push_back(wxVariant(Payee)); //WEBTRAN_PAYEE
 
         wxString Category = WebTran.Category;
-        if (WebTran.SubCategory != wxEmptyString) Category += ":" + WebTran.SubCategory;
+        if (WebTran.SubCategory != wxEmptyString)
+        {
+            Category += ":" + WebTran.SubCategory;
+        }
         data.push_back(wxVariant(Category)); //WEBTRAN_CATEGORY
 
         Model_Currency::Data *currency = Model_Currency::GetBaseCurrency();
@@ -132,7 +135,7 @@ void mmWebAppDialog::fillControls()
     }
 }
 
-void mmWebAppDialog::OnListItemActivated(wxDataViewEvent& event)
+void mmWebAppDialog::OnListItemActivated(wxDataViewEvent &event)
 {
     const wxDataViewItem item = event.GetItem();
     const int selected_index = webtranListBox_->ItemToRow(item);
@@ -197,7 +200,9 @@ void mmWebAppDialog::OpenAttachment()
             AttachmentName = AttachmentName.BeforeFirst(';');
             wxString Path = mmWebApp::WebApp_GetAttachment(AttachmentName);
             if (Path != wxEmptyString)
+            {
                 wxLaunchDefaultApplication(Path);
+            }
         }
     }
 }
@@ -208,7 +213,9 @@ void mmWebAppDialog::ImportWebTrSelected()
     webtranListBox_->GetSelections(Selected);
 
     if (Selected.empty())
+    {
         return;
+    }
 
     for (wxDataViewItem Item : Selected)
     {
@@ -228,7 +235,9 @@ void mmWebAppDialog::DeleteWebTr()
     webtranListBox_->GetSelections(Selected);
 
     if (Selected.empty())
+    {
         return;
+    }
 
     for (wxDataViewItem Item : Selected)
     {
@@ -241,20 +250,27 @@ void mmWebAppDialog::DeleteWebTr()
     fillControls();
 }
 
-void mmWebAppDialog::OnMenuSelected(wxCommandEvent& event)
+void mmWebAppDialog::OnMenuSelected(wxCommandEvent &event)
 {
     wxCommandEvent evt;
 
     switch (event.GetId())
     {
-    case MENU_OPEN_ATTACHMENT: OpenAttachment(); break;
-    case MENU_IMPORT_WEBTRAN: ImportWebTrSelected(); break;
-    case MENU_DELETE_WEBTRAN: DeleteWebTr(); break;
-    default: break;
+        case MENU_OPEN_ATTACHMENT:
+            OpenAttachment();
+            break;
+        case MENU_IMPORT_WEBTRAN:
+            ImportWebTrSelected();
+            break;
+        case MENU_DELETE_WEBTRAN:
+            DeleteWebTr();
+            break;
+        default:
+            break;
     }
 }
 
-void mmWebAppDialog::OnItemRightClick(wxDataViewEvent& event)
+void mmWebAppDialog::OnItemRightClick(wxDataViewEvent &event)
 {
     wxDataViewItemArray Selected;
     webtranListBox_->GetSelections(Selected);
@@ -262,17 +278,19 @@ void mmWebAppDialog::OnItemRightClick(wxDataViewEvent& event)
     wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, wxID_ANY);
     evt.SetEventObject(this);
 
-    wxMenu* mainMenu = new wxMenu;
+    wxMenu *mainMenu = new wxMenu;
     mainMenu->Append(new wxMenuItem(mainMenu, MENU_OPEN_ATTACHMENT, _("Open Attachment")));
     mainMenu->Append(new wxMenuItem(mainMenu, MENU_IMPORT_WEBTRAN, _("Import")));
     mainMenu->Append(new wxMenuItem(mainMenu, MENU_DELETE_WEBTRAN, _("Delete")));
-    if (Selected.size() != 1) mainMenu->Enable(MENU_OPEN_ATTACHMENT, false);
+    if (Selected.size() != 1)
+    {
+        mainMenu->Enable(MENU_OPEN_ATTACHMENT, false);
+    }
 
     PopupMenu(mainMenu);
     delete mainMenu;
     event.Skip();
 }
-
 
 void mmWebAppDialog::ImportAllWebTr(const bool open)
 {
@@ -283,18 +301,18 @@ void mmWebAppDialog::ImportAllWebTr(const bool open)
     }
 }
 
-void mmWebAppDialog::OnCancel(wxCommandEvent& WXUNUSED(event))
+void mmWebAppDialog::OnCancel(wxCommandEvent &WXUNUSED(event))
 {
     EndModal(wxID_CANCEL);
 }
 
-void mmWebAppDialog::OnApply(wxCommandEvent& WXUNUSED(event))
+void mmWebAppDialog::OnApply(wxCommandEvent &WXUNUSED(event))
 {
     mmWebAppDialog::ImportAllWebTr(true);
     EndModal(wxID_APPLY);
 }
 
-void mmWebAppDialog::OnOk(wxCommandEvent& WXUNUSED(event))
+void mmWebAppDialog::OnOk(wxCommandEvent &WXUNUSED(event))
 {
     mmWebAppDialog::ImportAllWebTr(false);
     EndModal(wxID_OK);

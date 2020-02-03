@@ -69,7 +69,8 @@ protected:
     void OnHeaderReset(wxCommandEvent& event);
 
     int m_ColumnHeaderNbr=-1;
-    enum {
+    enum
+    {
         HEADER = 0,
         WIDTH,
         FORMAT,

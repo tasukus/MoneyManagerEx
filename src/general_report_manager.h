@@ -39,7 +39,7 @@ class sqlListCtrl : public mmListCtrl
 public:
 
     sqlListCtrl(mmGeneralReportManager *grm, wxWindow *parent
-        , const wxWindowID id);
+                , const wxWindowID id);
     virtual wxString OnGetItemText(long item, long column) const;
 private:
     mmGeneralReportManager* m_grm;
@@ -60,18 +60,18 @@ public:
 
 private:
     bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+                , wxWindowID id
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style);
     /// Creates the controls and sizers
     void CreateControls();
     void fillControls();
     void OnImportReportEvt(wxCommandEvent& event);
     void importReport();
     bool openZipFile(const wxString &reportFileName
-        , wxString &htt, wxString &sql, wxString &lua, wxString &readme);
+                     , wxString &htt, wxString &sql, wxString &lua, wxString &readme);
     void OnUpdateReport(wxCommandEvent& event);
     void OnExportReport(wxCommandEvent& event);
     void OnRun(wxCommandEvent& event);

@@ -34,32 +34,32 @@
 IMPLEMENT_DYNAMIC_CLASS(mmStockDialog, wxDialog)
 
 wxBEGIN_EVENT_TABLE(mmStockDialog, wxDialog)
-EVT_CLOSE(mmStockDialog::OnQuit)
-EVT_BUTTON(wxID_SAVE, mmStockDialog::OnSave)
-EVT_BUTTON(wxID_CANCEL, mmStockDialog::OnCancel)
-EVT_BUTTON(wxID_INDEX, mmStockDialog::OnStockPriceButton)
-EVT_BUTTON(wxID_FILE, mmStockDialog::OnAttachments)
-EVT_BUTTON(wxID_APPLY, mmStockDialog::OnMagicButton)
-EVT_BUTTON(ID_BUTTON_IMPORT, mmStockDialog::OnHistoryImportButton)
-EVT_BUTTON(ID_BUTTON_DOWNLOAD, mmStockDialog::OnHistoryDownloadButton)
-EVT_CHILD_FOCUS(mmStockDialog::OnFocusChange)
-EVT_DATAVIEW_ITEM_EDITING_DONE(wxID_ANY, mmStockDialog::OnListValueEditingDone)
-EVT_DATAVIEW_ITEM_VALUE_CHANGED(wxID_ANY, mmStockDialog::OnListValueChanged)
-EVT_DATAVIEW_SELECTION_CHANGED(wxID_ANY, mmStockDialog::OnSelectionChanged)
-EVT_BUTTON(wxID_ADD, mmStockDialog::OnHistoryAddUpdateEntry)
-EVT_MENU_RANGE(MENU_NEW_ENTRY, MENU_DELETE_ENTRY, mmStockDialog::OnMenuSelected)
+    EVT_CLOSE(mmStockDialog::OnQuit)
+    EVT_BUTTON(wxID_SAVE, mmStockDialog::OnSave)
+    EVT_BUTTON(wxID_CANCEL, mmStockDialog::OnCancel)
+    EVT_BUTTON(wxID_INDEX, mmStockDialog::OnStockPriceButton)
+    EVT_BUTTON(wxID_FILE, mmStockDialog::OnAttachments)
+    EVT_BUTTON(wxID_APPLY, mmStockDialog::OnMagicButton)
+    EVT_BUTTON(ID_BUTTON_IMPORT, mmStockDialog::OnHistoryImportButton)
+    EVT_BUTTON(ID_BUTTON_DOWNLOAD, mmStockDialog::OnHistoryDownloadButton)
+    EVT_CHILD_FOCUS(mmStockDialog::OnFocusChange)
+    EVT_DATAVIEW_ITEM_EDITING_DONE(wxID_ANY, mmStockDialog::OnListValueEditingDone)
+    EVT_DATAVIEW_ITEM_VALUE_CHANGED(wxID_ANY, mmStockDialog::OnListValueChanged)
+    EVT_DATAVIEW_SELECTION_CHANGED(wxID_ANY, mmStockDialog::OnSelectionChanged)
+    EVT_BUTTON(wxID_ADD, mmStockDialog::OnHistoryAddUpdateEntry)
+    EVT_MENU_RANGE(MENU_NEW_ENTRY, MENU_DELETE_ENTRY, mmStockDialog::OnMenuSelected)
 wxEND_EVENT_TABLE()
 
 mmStockDialog::mmStockDialog()
 {
 }
 
-mmStockDialog::mmStockDialog(wxWindow* parent
-    , mmGUIFrame* gui_frame
-    , Model_Stock::Data* stock
-    , int accountID
-    , const wxString& name
-)
+mmStockDialog::mmStockDialog(wxWindow *parent
+                             , mmGUIFrame *gui_frame
+                             , Model_Stock::Data *stock
+                             , int accountID
+                             , const wxString &name
+                            )
     : m_stock(stock)
     , m_edit(stock ? true : false)
 #ifdef _DEBUG
@@ -71,15 +71,19 @@ mmStockDialog::mmStockDialog(wxWindow* parent
     , m_gui_frame(gui_frame)
 {
     if (m_stock)
+    {
         m_account_id = m_stock->HELDAT;
+    }
 
     constexpr long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
 
     m_account = Model_Account::instance().get(m_account_id);
-    if (m_account) {
+    if (m_account)
+    {
         m_currency = Model_Account::currency(m_account);
     }
-    else {
+    else
+    {
         m_currency = Model_Currency::GetBaseCurrency();
     }
     m_decimal_point = m_currency->DECIMAL_POINT;
@@ -88,8 +92,8 @@ mmStockDialog::mmStockDialog(wxWindow* parent
     Create(parent, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, style, name);
 }
 
-bool mmStockDialog::Create(wxWindow* parent, wxWindowID id, const wxString& caption
-    , const wxPoint& pos, const wxSize& size, long style, const wxString& name)
+bool mmStockDialog::Create(wxWindow *parent, wxWindowID id, const wxString &caption
+                           , const wxPoint &pos, const wxSize &size, long style, const wxString &name)
 {
     SetExtraStyle(GetExtraStyle() | wxWS_EX_BLOCK_EVENTS);
     wxDialog::Create(parent, id, caption, pos, size, style, name);
@@ -100,17 +104,20 @@ bool mmStockDialog::Create(wxWindow* parent, wxWindowID id, const wxString& capt
 
     SetIcon(mmex::getProgramIcon());
 
-    if (m_edit) DataToControls();
+    if (m_edit)
+    {
+        DataToControls();
+    }
     UpdateControls();
 
     m_current_price_ctrl->Connect(ID_TEXTCTRL_STOCK_CP, wxEVT_COMMAND_TEXT_ENTER
-        , wxCommandEventHandler(mmStockDialog::OnTextEntered), nullptr, this);
+                                  , wxCommandEventHandler(mmStockDialog::OnTextEntered), nullptr, this);
     m_commission_ctrl->Connect(ID_TEXTCTRL_STOCK_COMMISSION, wxEVT_COMMAND_TEXT_ENTER
-        , wxCommandEventHandler(mmStockDialog::OnTextEntered), nullptr, this);
+                               , wxCommandEventHandler(mmStockDialog::OnTextEntered), nullptr, this);
     m_share_price_ctrl->Connect(ID_TEXTCTRL_STOCK_PP, wxEVT_COMMAND_TEXT_ENTER
-        , wxCommandEventHandler(mmStockDialog::OnTextEntered), nullptr, this);
+                                , wxCommandEventHandler(mmStockDialog::OnTextEntered), nullptr, this);
     m_exchange_text->Connect(ID_TEXTCTRL_HIST_EXCHRATE, wxEVT_COMMAND_TEXT_ENTER
-        , wxCommandEventHandler(mmStockDialog::OnTextEntered), nullptr, this);
+                             , wxCommandEventHandler(mmStockDialog::OnTextEntered), nullptr, this);
 
     Centre();
     return TRUE;
@@ -118,7 +125,10 @@ bool mmStockDialog::Create(wxWindow* parent, wxWindowID id, const wxString& capt
 
 void mmStockDialog::DataToControls()
 {
-    if (!this->m_stock) return;
+    if (!this->m_stock)
+    {
+        return;
+    }
 
     m_stock_id = m_stock->STOCKID;
 
@@ -131,7 +141,8 @@ void mmStockDialog::DataToControls()
     m_num_shares_ctrl->SetValue(m_stock->NUMSHARES, precision);
 
     int currency_precision = Model_Currency::precision(m_currency);
-    if (currency_precision < m_precision) {
+    if (currency_precision < m_precision)
+    {
         currency_precision = m_precision;
     }
     m_share_price_ctrl->SetValue(m_stock->PURCHASEPRICE, m_account, currency_precision);
@@ -144,7 +155,7 @@ void mmStockDialog::DataToControls()
 void mmStockDialog::UpdateControls()
 {
     this->SetTitle(m_edit ? _("Edit Stock Investment") : _("New Stock Investment"));
-    Model_Account::Data * account = Model_Account::instance().get(m_account_id);
+    Model_Account::Data *account = Model_Account::instance().get(m_account_id);
 
     double numShares = 0, pPrice = 0, commision = 0;
     m_num_shares_ctrl->GetDouble(numShares);
@@ -152,11 +163,11 @@ void mmStockDialog::UpdateControls()
     m_commission_ctrl->GetDouble(commision);
 
     //Disable history buttons on new stocks
-    wxBitmapButton * buttonDownload = static_cast<wxBitmapButton*>(FindWindow(ID_BUTTON_DOWNLOAD));
+    wxBitmapButton *buttonDownload = static_cast<wxBitmapButton *>(FindWindow(ID_BUTTON_DOWNLOAD));
     buttonDownload->Enable(m_edit);
-    wxBitmapButton * buttonImport = static_cast<wxBitmapButton*>(FindWindow(ID_BUTTON_IMPORT));
+    wxBitmapButton *buttonImport = static_cast<wxBitmapButton *>(FindWindow(ID_BUTTON_IMPORT));
     buttonImport->Enable(m_edit);
-    wxBitmapButton* magicButton = static_cast<wxBitmapButton*>(FindWindow(wxID_APPLY));
+    wxBitmapButton *magicButton = static_cast<wxBitmapButton *>(FindWindow(wxID_APPLY));
     magicButton->Enable(m_edit);
 
     const bool initial_shares = !Model_Translink::HasShares(m_stock_id);
@@ -166,9 +177,13 @@ void mmStockDialog::UpdateControls()
     m_commission_ctrl->Enable(!m_edit || initial_shares);
 
     if (m_share_price_ctrl->IsEnabled())
+    {
         m_share_price_txt->SetToolTip(_("Initial share price.\nRecorded in share transaction"));
+    }
     else
+    {
         m_share_price_txt->SetToolTip(_("Invalid in this view.\nView Transactions for values"));
+    }
 
     double currPrice;
     if (!m_edit)
@@ -181,16 +196,18 @@ void mmStockDialog::UpdateControls()
         RefreshStockHistory(symbol);
 
         Model_Stock::Data_Set entries = Model_Stock::instance().find(Model_Stock::SYMBOL(symbol));
-        for (const auto& entry : entries)
+        for (const auto &entry : entries)
         {
             const auto name = entry.STOCKNAME;
-            if (!name.empty()) {
+            if (!name.empty())
+            {
                 m_stock_name_ctrl->ChangeValue(name);
                 break;
             }
         }
 
-        if (m_object_in_focus == m_current_price_ctrl->GetId()) {
+        if (m_object_in_focus == m_current_price_ctrl->GetId())
+        {
             currPrice = currPrice / numShares;
             m_current_price_ctrl->SetValue(currPrice, m_precision);
         }
@@ -214,51 +231,51 @@ void mmStockDialog::CreateControls()
         }
     }
 
-    wxBoxSizer* mainBoxSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer *mainBoxSizer = new wxBoxSizer(wxHORIZONTAL);
     this->SetSizer(mainBoxSizer);
 
-    wxBoxSizer* leftBoxSizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *leftBoxSizer = new wxBoxSizer(wxVERTICAL);
     mainBoxSizer->Add(leftBoxSizer, g_flagsH);
 
-    wxStaticBox* itemStaticBoxSizer4Static = new wxStaticBox(this, wxID_ANY, _("Stock Investment Details"));
-    wxStaticBoxSizer* itemStaticBoxSizer4 = new wxStaticBoxSizer(itemStaticBoxSizer4Static, wxVERTICAL);
+    wxStaticBox *itemStaticBoxSizer4Static = new wxStaticBox(this, wxID_ANY, _("Stock Investment Details"));
+    wxStaticBoxSizer *itemStaticBoxSizer4 = new wxStaticBoxSizer(itemStaticBoxSizer4Static, wxVERTICAL);
     leftBoxSizer->Add(itemStaticBoxSizer4, g_flagsExpand);
 
-    wxPanel* itemPanel5 = new wxPanel(this, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
+    wxPanel *itemPanel5 = new wxPanel(this, wxID_STATIC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
     itemStaticBoxSizer4->Add(itemPanel5, g_flagsV);
 
-    wxFlexGridSizer* itemFlexGridSizer6 = new wxFlexGridSizer(0, 2, 0, 0);
+    wxFlexGridSizer *itemFlexGridSizer6 = new wxFlexGridSizer(0, 2, 0, 0);
     itemPanel5->SetSizer(itemFlexGridSizer6);
 
     //Symbol
-    wxStaticText* symbol = new wxStaticText(itemPanel5, wxID_STATIC, _("Stock Symbol"));
+    wxStaticText *symbol = new wxStaticText(itemPanel5, wxID_STATIC, _("Stock Symbol"));
     itemFlexGridSizer6->Add(symbol, g_flagsH);
     symbol->SetFont(this->GetFont().Bold());
 
     m_stock_symbol_ctrl = new mmTextCtrl(itemPanel5, ID_TEXTCTRL_STOCK_SYMBOL
-        , "", wxDefaultPosition, wxDefaultSize, 0);
+                                         , "", wxDefaultPosition, wxDefaultSize, 0);
     itemFlexGridSizer6->Add(m_stock_symbol_ctrl, g_flagsExpand);
 
     // Name
-    wxStaticText* company_name_txt = new wxStaticText(itemPanel5, wxID_STATIC, _("Company Name"));
+    wxStaticText *company_name_txt = new wxStaticText(itemPanel5, wxID_STATIC, _("Company Name"));
     itemFlexGridSizer6->Add(company_name_txt, g_flagsH);
     m_stock_name_ctrl = new mmTextCtrl(itemPanel5, ID_TEXTCTRL_STOCKNAME, "");
     itemFlexGridSizer6->Add(m_stock_name_ctrl, g_flagsExpand);
 
     //Date
-    wxStaticText * date_txt = new wxStaticText(itemPanel5, wxID_STATIC, _("*Date"));
+    wxStaticText *date_txt = new wxStaticText(itemPanel5, wxID_STATIC, _("*Date"));
     itemFlexGridSizer6->Add(date_txt, g_flagsH);
     m_purchase_date_ctrl = new wxDatePickerCtrl(itemPanel5, ID_DPC_STOCK_PDATE
-        , wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN | wxDP_SHOWCENTURY);
+            , wxDefaultDateTime, wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN | wxDP_SHOWCENTURY);
 
     itemFlexGridSizer6->Add(m_purchase_date_ctrl, g_flagsH);
 
     //Number of Shares
-    wxStaticText * number_txt = new wxStaticText(itemPanel5, wxID_STATIC, _("*Share Number"));
+    wxStaticText *number_txt = new wxStaticText(itemPanel5, wxID_STATIC, _("*Share Number"));
     itemFlexGridSizer6->Add(number_txt, g_flagsH);
     number_txt->SetFont(this->GetFont().Bold());
     m_num_shares_ctrl = new mmTextCtrl(itemPanel5, ID_TEXTCTRL_NUMBER_SHARES, ""
-        , wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
+                                       , wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
     itemFlexGridSizer6->Add(m_num_shares_ctrl, g_flagsExpand);
 
     //Purchase Price
@@ -267,21 +284,21 @@ void mmStockDialog::CreateControls()
     itemFlexGridSizer6->Add(m_share_price_txt, g_flagsH);
     m_share_price_txt->SetFont(this->GetFont().Bold());
     m_share_price_ctrl = new mmTextCtrl(itemPanel5, ID_TEXTCTRL_STOCK_PP, ""
-        , wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
+                                        , wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
     itemFlexGridSizer6->Add(m_share_price_ctrl, g_flagsExpand);
 
     //Commission
-    wxStaticText * commission_txt = new wxStaticText(itemPanel5, wxID_STATIC, _("*Commission"));
+    wxStaticText *commission_txt = new wxStaticText(itemPanel5, wxID_STATIC, _("*Commission"));
     itemFlexGridSizer6->Add(commission_txt, g_flagsH);
     m_commission_ctrl = new mmTextCtrl(itemPanel5, ID_TEXTCTRL_STOCK_COMMISSION, "0", wxDefaultPosition
-        , wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator(), m_currency, "commission_ctrl");
+                                       , wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator(), m_currency, "commission_ctrl");
     itemFlexGridSizer6->Add(m_commission_ctrl, g_flagsExpand);
 
     //Current Price
-    wxStaticText * current_price_txt = new wxStaticText(itemPanel5, wxID_STATIC, _("Current Price"));
+    wxStaticText *current_price_txt = new wxStaticText(itemPanel5, wxID_STATIC, _("Current Price"));
     itemFlexGridSizer6->Add(current_price_txt, g_flagsH);
     m_current_price_ctrl = new mmTextCtrl(itemPanel5, ID_TEXTCTRL_STOCK_CP, ""
-        , wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
+                                          , wxDefaultPosition, wxSize(150, -1), wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
     itemFlexGridSizer6->Add(m_current_price_ctrl, g_flagsExpand);
 
     //Current Value
@@ -291,10 +308,10 @@ void mmStockDialog::CreateControls()
 
     //
     itemFlexGridSizer6->Add(new wxStaticText(itemPanel5, wxID_STATIC, _("Notes")), g_flagsH);
-    wxBoxSizer * iconsSizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer *iconsSizer = new wxBoxSizer(wxHORIZONTAL);
     itemFlexGridSizer6->Add(iconsSizer, wxSizerFlags(g_flagsH).Align(wxALIGN_RIGHT));
     m_bAttachments = new wxBitmapButton(itemPanel5, wxID_FILE, mmBitmap(png::CLIP));
-    wxBitmapButton * itemButton31 = new wxBitmapButton(itemPanel5, wxID_INDEX, mmBitmap(png::WEB));
+    wxBitmapButton *itemButton31 = new wxBitmapButton(itemPanel5, wxID_INDEX, mmBitmap(png::WEB));
     iconsSizer->Add(m_bAttachments, g_flagsH);
     iconsSizer->Add(itemButton31, g_flagsH);
 
@@ -305,32 +322,35 @@ void mmStockDialog::CreateControls()
     leftBoxSizer->AddSpacer(20);
 
     //History Panel
-    wxBoxSizer * rightBoxSizer = new wxBoxSizer(wxVERTICAL);
+    wxBoxSizer *rightBoxSizer = new wxBoxSizer(wxVERTICAL);
     mainBoxSizer->Add(rightBoxSizer, g_flagsExpand);
 
-    wxStaticBox * historyStaticBox = new wxStaticBox(this, wxID_ANY, _("Stock History Options"));
-    wxStaticBoxSizer * historyStaticBoxSizer = new wxStaticBoxSizer(historyStaticBox, wxVERTICAL);
+    wxStaticBox *historyStaticBox = new wxStaticBox(this, wxID_ANY, _("Stock History Options"));
+    wxStaticBoxSizer *historyStaticBoxSizer = new wxStaticBoxSizer(historyStaticBox, wxVERTICAL);
     rightBoxSizer->Add(historyStaticBoxSizer, g_flagsExpand);
 
     m_price_listbox = new wxDataViewListCtrl(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxDV_MULTIPLE);
     m_price_listbox->SetMinSize(wxSize(250, 150));
     historyStaticBoxSizer->Add(m_price_listbox, g_flagsExpand);
 
-    if (debug_) m_price_listbox->AppendTextColumn(_("#"), wxDATAVIEW_CELL_INERT, 30);
+    if (debug_)
+    {
+        m_price_listbox->AppendTextColumn(_("#"), wxDATAVIEW_CELL_INERT, 30);
+    }
     m_price_listbox->AppendTextColumn(_("Date"));
     m_price_listbox->AppendTextColumn(_("Price"), wxDATAVIEW_CELL_EDITABLE);
     m_price_listbox->AppendTextColumn("");
 
     //Popup dialog
-    wxPanel * hist_buttons_panel = new wxPanel(this, ID_HIST_PANEL);
+    wxPanel *hist_buttons_panel = new wxPanel(this, ID_HIST_PANEL);
     historyStaticBoxSizer->Add(hist_buttons_panel, g_flagsV);
 
     m_history_date_ctrl = new wxDatePickerCtrl(hist_buttons_panel, wxID_ANY);
     m_exchange_text = new mmTextCtrl(hist_buttons_panel, ID_TEXTCTRL_HIST_EXCHRATE, ""
-        , wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
-    wxBitmapButton * buttonAdd = new wxBitmapButton(hist_buttons_panel, wxID_ADD, mmBitmap(png::SAVE));
+                                     , wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator());
+    wxBitmapButton *buttonAdd = new wxBitmapButton(hist_buttons_panel, wxID_ADD, mmBitmap(png::SAVE));
 
-    wxBoxSizer * hist_sizer = new wxBoxSizer(wxHORIZONTAL);
+    wxBoxSizer *hist_sizer = new wxBoxSizer(wxHORIZONTAL);
 
     hist_sizer->Add(m_history_date_ctrl, g_flagsH);
     hist_sizer->Add(m_exchange_text, g_flagsExpand);
@@ -340,28 +360,28 @@ void mmStockDialog::CreateControls()
     hist_buttons_panel->Show(false);
 
     //History Buttons
-    wxPanel * buttons_panel = new wxPanel(this, wxID_ANY);
+    wxPanel *buttons_panel = new wxPanel(this, wxID_ANY);
     historyStaticBoxSizer->Add(buttons_panel, wxSizerFlags(g_flagsV).Centre());
-    wxStdDialogButtonSizer * buttons_sizer = new wxStdDialogButtonSizer;
+    wxStdDialogButtonSizer *buttons_sizer = new wxStdDialogButtonSizer;
     buttons_panel->SetSizer(buttons_sizer);
 
-    wxBitmapButton * buttonDownload = new wxBitmapButton(buttons_panel, ID_BUTTON_DOWNLOAD, mmBitmap(png::CURRATES));
-    wxBitmapButton * buttonImport = new wxBitmapButton(buttons_panel, ID_BUTTON_IMPORT, mmBitmap(png::IMPORT));
-    wxBitmapButton * magicButton = new wxBitmapButton(buttons_panel, wxID_APPLY, mmBitmap(png::RUN));
+    wxBitmapButton *buttonDownload = new wxBitmapButton(buttons_panel, ID_BUTTON_DOWNLOAD, mmBitmap(png::CURRATES));
+    wxBitmapButton *buttonImport = new wxBitmapButton(buttons_panel, ID_BUTTON_IMPORT, mmBitmap(png::IMPORT));
+    wxBitmapButton *magicButton = new wxBitmapButton(buttons_panel, wxID_APPLY, mmBitmap(png::RUN));
 
     buttons_sizer->Add(buttonDownload, g_flagsH);
     buttons_sizer->Add(buttonImport, g_flagsH);
     buttons_sizer->Add(magicButton, g_flagsH);
 
-
     //OK & Cancel buttons
-    wxStdDialogButtonSizer * buttonsOK_CANCEL_sizer = new wxStdDialogButtonSizer;
+    wxStdDialogButtonSizer *buttonsOK_CANCEL_sizer = new wxStdDialogButtonSizer;
     leftBoxSizer->Add(buttonsOK_CANCEL_sizer, wxSizerFlags(g_flagsV).Centre());
 
-    wxButton * itemButtonOK = new wxButton(this, wxID_SAVE, _("&Save "));
-    wxButton * itemButton30 = new wxButton(this, wxID_CANCEL, wxGetTranslation(g_CloseLabel));
+    wxButton *itemButtonOK = new wxButton(this, wxID_SAVE, _("&Save "));
+    wxButton *itemButton30 = new wxButton(this, wxID_CANCEL, wxGetTranslation(g_CloseLabel));
 
-    if (m_edit) {
+    if (m_edit)
+    {
         itemButton30->SetFocus();
     }
     buttonsOK_CANCEL_sizer->Add(itemButtonOK, g_flagsH);
@@ -393,56 +413,64 @@ void mmStockDialog::CreateControls()
     magicButton->SetToolTip(_("Other tools"));
 }
 
-void mmStockDialog::OnQuit(wxCloseEvent & WXUNUSED(event))
+void mmStockDialog::OnQuit(wxCloseEvent &WXUNUSED(event))
 {
-    const wxString& RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
+    const wxString &RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
     if (!m_edit)
+    {
         mmAttachmentManage::DeleteAllAttachments(RefType, 0);
+    }
     EndModal(wxID_CANCEL);
 }
 
-void mmStockDialog::OnCancel(wxCommandEvent & WXUNUSED(event))
+void mmStockDialog::OnCancel(wxCommandEvent &WXUNUSED(event))
 {
-    const wxString& RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
+    const wxString &RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
     if (m_stock_id <= 0)
+    {
         mmAttachmentManage::DeleteAllAttachments(RefType, 0);
+    }
     EndModal(wxID_CANCEL);
 }
 
-void mmStockDialog::OnAttachments(wxCommandEvent & WXUNUSED(event))
+void mmStockDialog::OnAttachments(wxCommandEvent &WXUNUSED(event))
 {
     const wxString RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
     int RefId = m_stock_id;
 
     if (RefId < 0)
+    {
         RefId = 0;
+    }
 
     mmAttachmentDialog dlg(this, RefType, RefId);
     dlg.ShowModal();
 }
 
-void mmStockDialog::OnStockPriceButton(wxCommandEvent & WXUNUSED(event))
+void mmStockDialog::OnStockPriceButton(wxCommandEvent &WXUNUSED(event))
 {
     const wxString stockSymbol = m_stock_symbol_ctrl->GetValue().Trim();
 
     if (!stockSymbol.IsEmpty())
     {
-        const wxString& stockURL = Model_Infotable::instance().GetStringInfo("STOCKURL", mmex::weblink::DefStockUrl);
-        const wxString& httpString = wxString::Format(stockURL, stockSymbol);
+        const wxString &stockURL = Model_Infotable::instance().GetStringInfo("STOCKURL", mmex::weblink::DefStockUrl);
+        const wxString &httpString = wxString::Format(stockURL, stockSymbol);
         wxLaunchDefaultBrowser(httpString);
     }
 }
 
-void mmStockDialog::OnSave(wxCommandEvent & WXUNUSED(event))
+void mmStockDialog::OnSave(wxCommandEvent &WXUNUSED(event))
 {
 
-    Model_Account::Data* account = Model_Account::instance().get(m_account_id);
-    if (!account) {
+    Model_Account::Data *account = Model_Account::instance().get(m_account_id);
+    if (!account)
+    {
         return mmErrorDialogs::MessageInvalid(this, _("Held At"));
     }
 
-    const wxString& stockSymbol = m_stock_symbol_ctrl->GetValue();
-    if (stockSymbol.empty()) {
+    const wxString &stockSymbol = m_stock_symbol_ctrl->GetValue();
+    if (stockSymbol.empty())
+    {
         return mmErrorDialogs::MessageInvalid(this, _("Symbol"));
     }
 
@@ -452,11 +480,15 @@ void mmStockDialog::OnSave(wxCommandEvent & WXUNUSED(event))
 
     double numShares = 0;
     if (!m_num_shares_ctrl->checkValue(numShares))
+    {
         return;
+    }
 
     double initPrice;
     if (!m_share_price_ctrl->checkValue(initPrice))
+    {
         return;
+    }
 
     double currentPrice;
     if (!m_current_price_ctrl->GetDouble(currentPrice))
@@ -474,11 +506,14 @@ void mmStockDialog::OnSave(wxCommandEvent & WXUNUSED(event))
 
     double initValue = 0;
     // maintain initial value for records with share accounts
-    m_stock&& initPrice == 0
-        ? initValue = m_stock->VALUE
-        : initValue = initPrice * numShares;
+    m_stock &&initPrice == 0
+    ? initValue = m_stock->VALUE
+                  : initValue = initPrice * numShares;
 
-    if (!m_stock) m_stock = Model_Stock::instance().create();
+    if (!m_stock)
+    {
+        m_stock = Model_Stock::instance().create();
+    }
 
     m_stock->HELDAT = m_account_id;
     m_stock->PURCHASEDATE = pdate;
@@ -495,19 +530,19 @@ void mmStockDialog::OnSave(wxCommandEvent & WXUNUSED(event))
 
     if (!m_edit)
     {
-        const wxString& RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
+        const wxString &RefType = Model_Attachment::reftype_desc(Model_Attachment::STOCK);
         mmAttachmentManage::RelocateAllAttachments(RefType, 0, m_stock->STOCKID);
     }
 
     if (!stockName.empty())
     {
-        Model_Account::Data* share_account = Model_Account::instance().get(stockName);
+        Model_Account::Data *share_account = Model_Account::instance().get(stockName);
         if (!share_account && !m_edit)
         {
             if (wxMessageBox(_(
-                "A Share Account as the Company name has not been found.\n\n"
-                "Do you want to create one?")
-                , _("New Stock Investment"), wxYES_NO | wxICON_INFORMATION) == wxYES)
+                                 "A Share Account as the Company name has not been found.\n\n"
+                                 "Do you want to create one?")
+                             , _("New Stock Investment"), wxYES_NO | wxICON_INFORMATION) == wxYES)
             {
                 CreateShareAccount(account, stockName);
             }
@@ -515,11 +550,11 @@ void mmStockDialog::OnSave(wxCommandEvent & WXUNUSED(event))
         else if (!share_account)
         {
             if (wxMessageBox(_(
-                "The Company name does not have an associated Share Account.\n\n"
-                "You may want to readjust the Company Name to an existing Share Account with the same name. "
-                "If this is an existing Stock without a Share Account, it is recommended that a Share Account is created.\n\n"
-                "Do you want to create a new Share Acccount?\n")
-                , _("Edit Stock Investment"), wxYES_NO | wxICON_WARNING) == wxYES)
+                                 "The Company name does not have an associated Share Account.\n\n"
+                                 "You may want to readjust the Company Name to an existing Share Account with the same name. "
+                                 "If this is an existing Stock without a Share Account, it is recommended that a Share Account is created.\n\n"
+                                 "Do you want to create a new Share Acccount?\n")
+                             , _("Edit Stock Investment"), wxYES_NO | wxICON_WARNING) == wxYES)
             {
                 CreateShareAccount(account, stockName);
             }
@@ -530,10 +565,13 @@ void mmStockDialog::OnSave(wxCommandEvent & WXUNUSED(event))
     UpdateControls();
 }
 
-void mmStockDialog::CreateShareAccount(Model_Account::Data * stock_account, const wxString& name)
+void mmStockDialog::CreateShareAccount(Model_Account::Data *stock_account, const wxString &name)
 {
-    if (name.empty()) return;
-    Model_Account::Data* share_account = Model_Account::instance().create();
+    if (name.empty())
+    {
+        return;
+    }
+    Model_Account::Data *share_account = Model_Account::instance().create();
     share_account->ACCOUNTNAME = name;
     share_account->ACCOUNTTYPE = Model_Account::all_type()[Model_Account::SHARES];
 
@@ -552,31 +590,37 @@ void mmStockDialog::CreateShareAccount(Model_Account::Data * stock_account, cons
     EndModal(wxID_OK);
 }
 
-void mmStockDialog::OnHistoryImportButton(wxCommandEvent & WXUNUSED(event))
+void mmStockDialog::OnHistoryImportButton(wxCommandEvent &WXUNUSED(event))
 {
     if (m_stock->SYMBOL.IsEmpty())
+    {
         return;
+    }
 
     const wxString fileName = wxFileSelector(_("Choose CSV data file to import")
-        , wxEmptyString, wxEmptyString, wxEmptyString, _("CSV Files (*.csv)") + "|*.csv;*.CSV", wxFD_FILE_MUST_EXIST);
+                              , wxEmptyString, wxEmptyString, wxEmptyString, _("CSV Files (*.csv)") + "|*.csv;*.CSV", wxFD_FILE_MUST_EXIST);
 
     if (!fileName.IsEmpty())
     {
         bool canceledbyuser = false;
         wxFileName csv_file(fileName);
         if (fileName.IsEmpty() || !csv_file.FileExists())
+        {
             return;
+        }
         wxTextFile tFile(fileName);
         if (!tFile.Open())
+        {
             return;
-        wxProgressDialog * progressDlg = new wxProgressDialog(_("Stock History CSV Import")
-            , _("Quotes imported from CSV: "), tFile.GetLineCount()
-            , nullptr, wxPD_AUTO_HIDE | wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_CAN_ABORT);
+        }
+        wxProgressDialog *progressDlg = new wxProgressDialog(_("Stock History CSV Import")
+                , _("Quotes imported from CSV: "), tFile.GetLineCount()
+                , nullptr, wxPD_AUTO_HIDE | wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_CAN_ABORT);
         long countNumTotal = 0;
         long countImported = 0;
         double price;
         wxString dateStr, priceStr;
-        Model_StockHistory::Data * data;
+        Model_StockHistory::Data *data;
         Model_StockHistory::Cache stockData;
 
         wxString line;
@@ -592,18 +636,24 @@ void mmStockDialog::OnHistoryImportButton(wxCommandEvent & WXUNUSED(event))
             }
 
             if (!line.IsEmpty())
+            {
                 ++countNumTotal;
+            }
             else
+            {
                 continue;
+            }
 
             dateStr.clear();
             priceStr.clear();
 
-            const wxString& delimiter = Model_Infotable::instance().GetStringInfo("DELIMITER", mmex::DEFDELIMTER);
+            const wxString &delimiter = Model_Infotable::instance().GetStringInfo("DELIMITER", mmex::DEFDELIMTER);
             csv2tab_separated_values(line, delimiter);
             wxStringTokenizer tkz(line, "\t", wxTOKEN_RET_EMPTY_ALL);
             if (tkz.CountTokens() < 2)
+            {
                 continue;
+            }
 
             std::vector<wxString> tokens;
             while (tkz.HasMoreTokens())
@@ -621,7 +671,9 @@ void mmStockDialog::OnHistoryImportButton(wxCommandEvent & WXUNUSED(event))
             priceStr = tokens[1];
             priceStr.Replace(" ", wxEmptyString);
             if (!Model_Currency::fromString(priceStr, price, m_currency) || price <= 0.0)
+            {
                 continue;
+            }
 
             data = Model_StockHistory::instance().create();
             data->SYMBOL = m_stock->SYMBOL;
@@ -647,10 +699,12 @@ void mmStockDialog::OnHistoryImportButton(wxCommandEvent & WXUNUSED(event))
         msg << _("Date") << "              " << _("Price");
         msg << "\n";
         for (std::vector<wxString>::const_iterator d = rows.begin(); d != rows.end(); ++d)
+        {
             msg << *d << "\n";
+        }
         const wxString confirmMsg = msg + _("Please confirm saving...");
         if (!canceledbyuser && wxMessageBox(confirmMsg
-            , _("Importing CSV"), wxOK | wxCANCEL | wxICON_INFORMATION) == wxCANCEL)
+                                            , _("Importing CSV"), wxOK | wxCANCEL | wxICON_INFORMATION) == wxCANCEL)
         {
             canceledbyuser = true;
         }
@@ -659,8 +713,10 @@ void mmStockDialog::OnHistoryImportButton(wxCommandEvent & WXUNUSED(event))
         if (!canceledbyuser)
         {
             // we need to save them to the database.
-            for (auto& d : stockData)
+            for (auto &d : stockData)
+            {
                 Model_StockHistory::instance().save(d);
+            }
             // show the data
             RefreshStockHistory(m_stock->SYMBOL);
         }
@@ -671,11 +727,13 @@ void mmStockDialog::OnHistoryImportButton(wxCommandEvent & WXUNUSED(event))
     }
 }
 
-void mmStockDialog::OnHistoryDownloadButton(wxCommandEvent & WXUNUSED(event))
+void mmStockDialog::OnHistoryDownloadButton(wxCommandEvent &WXUNUSED(event))
 {
 
     if (m_stock->SYMBOL.IsEmpty())
+    {
         return;
+    }
 
     /*"ValidRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]*/
     enum { DAY5, MON, MON3, MON6, YEAR, YEAR2, YEAR5, YEAR10, YTD, MAX };
@@ -695,12 +753,18 @@ void mmStockDialog::OnHistoryDownloadButton(wxCommandEvent & WXUNUSED(event))
     };
 
     wxArrayString items;
-    for (const auto& entry : RANGE_PAIRS) { items.Add(entry.second); }
+    for (const auto &entry : RANGE_PAIRS)
+    {
+        items.Add(entry.second);
+    }
 
     int range_menu_item_no = wxGetSingleChoiceIndex(_("Specify type frequency of stock history")
-        , _("Stock History Update"), items);
+                             , _("Stock History Update"), items);
 
-    if (range_menu_item_no < 0) return;
+    if (range_menu_item_no < 0)
+    {
+        return;
+    }
     const wxString range = ranges[range_menu_item_no];
 
     wxString interval = "1d";
@@ -719,22 +783,31 @@ void mmStockDialog::OnHistoryDownloadButton(wxCommandEvent & WXUNUSED(event))
         };
 
         items.clear();
-        for (const auto& entry : INTERVAL_PAIRS) { items.Add(entry.second); }
+        for (const auto &entry : INTERVAL_PAIRS)
+        {
+            items.Add(entry.second);
+        }
 
         int interval_menu_item_no = wxGetSingleChoiceIndex(_("Specify interval of stock history")
-            , _("Stock History Update"), items);
+                                    , _("Stock History Update"), items);
 
-        if (interval_menu_item_no < 0) return;
+        if (interval_menu_item_no < 0)
+        {
+            return;
+        }
         interval = intervals[interval_menu_item_no];
     }
     const wxString URL = wxString::Format(mmex::weblink::YahooQuotesHistory
-        , m_stock->SYMBOL, range, interval);
+                                          , m_stock->SYMBOL, range, interval);
 
     wxString json_data, sOutput;
     auto err_code = http_get_data(URL, json_data);
     if (err_code != CURLE_OK)
     {
-        if (sOutput == wxEmptyString) sOutput = _("Stock history not found!"); //TODO: ?
+        if (sOutput == wxEmptyString)
+        {
+            sOutput = _("Stock history not found!");    //TODO: ?
+        }
         mmErrorDialogs::MessageError(this, sOutput, _("Stock History Error"));
         return;
     }
@@ -746,77 +819,106 @@ void mmStockDialog::OnHistoryDownloadButton(wxCommandEvent & WXUNUSED(event))
     }
 
     if (!json_doc.HasMember("chart") || !json_doc["chart"].IsObject())
+    {
         return;
+    }
     Value chart = json_doc["chart"].GetObject();
 
     wxASSERT(chart.HasMember("error"));
     if (!chart.HasMember("error") || !chart["error"].IsNull())
+    {
         return;
+    }
 
     if (!chart.HasMember("result") || !chart["result"].IsArray())
+    {
         return;
+    }
     Value result = chart["result"].GetArray();
     if (!result.IsArray() || !result.Begin()->IsObject())
+    {
         return;
+    }
     Value data = result.Begin()->GetObject();
 
     if (!data.HasMember("meta") || !data["meta"].IsObject())
+    {
         return;
+    }
     Value meta = data["meta"].GetObject();
 
     if (!meta.HasMember("currency") || !meta["currency"].IsString())
+    {
         return;
+    }
     const auto currency = wxString::FromUTF8(meta["currency"].GetString());
     const float k = currency == "GBp" ? 100 : 1;
 
     if (!data.HasMember("timestamp") || !data["timestamp"].IsArray())
+    {
         return;
+    }
     Value timestamp = data["timestamp"].GetArray();
 
     if (!data.HasMember("indicators") || !data.IsObject())
+    {
         return;
+    }
     Value indicators = data["indicators"].GetObject();
 
     if (!indicators.HasMember("adjclose") || !indicators["adjclose"].IsArray())
+    {
         return;
+    }
     Value quote_array = indicators["adjclose"].GetArray();
     Value quotes = quote_array.Begin()->GetObject();
     if (!quotes.HasMember("adjclose") || !quotes["adjclose"].IsArray())
+    {
         return;
+    }
     Value quotes_closed = quotes["adjclose"].GetArray();
 
     if (timestamp.Size() != quotes_closed.Size())
+    {
         return;
+    }
 
     std::map<time_t, float> history;
     for (rapidjson::SizeType i = 0; i < timestamp.Size(); i++)
     {
-        if (!timestamp[i].IsInt()) continue;
+        if (!timestamp[i].IsInt())
+        {
+            continue;
+        }
         const time_t time = timestamp[i].GetInt();
-        if (!quotes_closed[i].IsFloat()) continue;
+        if (!quotes_closed[i].IsFloat())
+        {
+            continue;
+        }
         float rate = quotes_closed[i].GetFloat() / k;
         history[time] = rate;
     }
 
     const wxString today = wxDate::Today().FormatISODate();
     Model_StockHistory::instance().Savepoint();
-    for (const auto& entry : history)
+    for (const auto &entry : history)
     {
         const float dPrice = entry.second;
         const wxString date_str = wxDateTime(static_cast<time_t>(entry.first)).FormatISODate();
-        if (date_str == today) {
+        if (date_str == today)
+        {
             continue;
         }
 
         if (Model_StockHistory::instance()
-            .find(
-                Model_StockHistory::SYMBOL(m_stock->SYMBOL)
-                , Model_StockHistory::DB_Table_STOCKHISTORY::DATE(date_str)
-            ).empty()
-            && dPrice > 0
-            )
+                .find(
+                    Model_StockHistory::SYMBOL(m_stock->SYMBOL)
+                    , Model_StockHistory::DB_Table_STOCKHISTORY::DATE(date_str)
+                ).empty()
+                && dPrice > 0
+           )
         {
-            Model_StockHistory::Data* ndata = Model_StockHistory::instance().create();
+            Model_StockHistory::Data *ndata = Model_StockHistory::instance().create();
             ndata->SYMBOL = m_stock->SYMBOL;
             ndata->DATE = date_str;
             ndata->VALUE = dPrice;
@@ -830,31 +932,35 @@ void mmStockDialog::OnHistoryDownloadButton(wxCommandEvent & WXUNUSED(event))
 
 void mmStockDialog::OnMenuAddSelected()
 {
-    wxPanel* hist_buttons_panel = static_cast<wxPanel*>(FindWindow(ID_HIST_PANEL));
+    wxPanel *hist_buttons_panel = static_cast<wxPanel *>(FindWindow(ID_HIST_PANEL));
     hist_buttons_panel->Show();
     this->Layout();
 }
 
-void mmStockDialog::OnHistoryAddUpdateEntry(wxCommandEvent & WXUNUSED(event))
+void mmStockDialog::OnHistoryAddUpdateEntry(wxCommandEvent &WXUNUSED(event))
 {
     if (m_stock->SYMBOL.IsEmpty())
+    {
         return;
+    }
 
     double price;
     if (!m_exchange_text->checkValue(price))
+    {
         return;
+    }
 
     const wxDateTime date = m_history_date_ctrl->GetValue().GetDateOnly();
 
     Model_StockHistory::Data_Set entries = Model_StockHistory::instance().find(Model_StockHistory::DATE(date)
-        , Model_StockHistory::SYMBOL(m_stock->SYMBOL));
+                                           , Model_StockHistory::SYMBOL(m_stock->SYMBOL));
     if (entries.empty())
     {
         Model_StockHistory::instance().addUpdate(m_stock->SYMBOL, date, price, Model_StockHistory::MANUAL);
     }
     else
     {
-        Model_StockHistory::Data* stockHistyEntry = Model_StockHistory::instance().get(entries.begin()->SYMBOL, date);
+        Model_StockHistory::Data *stockHistyEntry = Model_StockHistory::instance().get(entries.begin()->SYMBOL, date);
         stockHistyEntry->DATE = date.FormatISODate();
         stockHistyEntry->VALUE = price;
         stockHistyEntry->UPDTYPE = Model_StockHistory::MANUAL;
@@ -862,7 +968,7 @@ void mmStockDialog::OnHistoryAddUpdateEntry(wxCommandEvent & WXUNUSED(event))
     }
 
     //Hide fields afrer usage
-    wxPanel* hist_buttons_panel = static_cast<wxPanel*>(FindWindow(ID_HIST_PANEL));
+    wxPanel *hist_buttons_panel = static_cast<wxPanel *>(FindWindow(ID_HIST_PANEL));
     hist_buttons_panel->Show(false);
     this->Layout();
 
@@ -892,28 +998,34 @@ void mmStockDialog::OnHistoryDelete()
     }
 }
 
-void mmStockDialog::RefreshStockHistory(const wxString& symbol)
+void mmStockDialog::RefreshStockHistory(const wxString &symbol)
 {
     m_price_listbox->DeleteAllItems();
     if (symbol.empty())
+    {
         return;
+    }
 
     Model_StockHistory::Data_Set histData = Model_StockHistory::instance().find(Model_StockHistory::SYMBOL(symbol));
     std::stable_sort(histData.begin(), histData.end(), SorterByDATE());
     std::reverse(histData.begin(), histData.end());
-    if (histData.size() > 300) {
+    if (histData.size() > 300)
+    {
         histData.resize(300);
     }
 
     if (!histData.empty())
     {
-        for (const auto& d : histData)
+        for (const auto &d : histData)
         {
             const wxDate dtdt = Model_StockHistory::DATE(d);
             const wxString dispAmount = Model_Account::toString(d.VALUE, m_account, m_precision);
             const wxString manual = d.UPDTYPE == Model_StockHistory::MANUAL ? "*" : "";
             wxVector<wxVariant> data;
-            if (debug_) data.push_back(wxVariant(wxString::Format("%i", d.HISTID)));
+            if (debug_)
+            {
+                data.push_back(wxVariant(wxString::Format("%i", d.HISTID)));
+            }
             data.push_back(wxVariant(mmGetDateForDisplay(dtdt.FormatISODate())));
             data.push_back(wxVariant(dispAmount));
             data.push_back(wxVariant(manual));
@@ -931,11 +1043,12 @@ void mmStockDialog::RefreshStockHistory(const wxString& symbol)
 
 }
 
-void mmStockDialog::OnFocusChange(wxChildFocusEvent & event)
+void mmStockDialog::OnFocusChange(wxChildFocusEvent &event)
 {
     m_object_in_focus = -1;
-    wxWindow* w = event.GetWindow();
-    if (w) {
+    wxWindow *w = event.GetWindow();
+    if (w)
+    {
         m_object_in_focus = w->GetId();
     }
 
@@ -943,26 +1056,28 @@ void mmStockDialog::OnFocusChange(wxChildFocusEvent & event)
     event.Skip();
 }
 
-void mmStockDialog::OnSelectionChanged(wxDataViewEvent& event)
+void mmStockDialog::OnSelectionChanged(wxDataViewEvent &event)
 {
     m_history_date_ctrl->SetValue(wxDate::Today());
     m_exchange_text->ChangeValue("");
 
     const wxDataViewItem item = event.GetItem();
     if (!item.IsOk())
+    {
         return;
+    }
 
     const int hist_id = static_cast<int>(m_price_listbox->GetItemData(item));
     if (hist_id > -1)
     {
-        Model_StockHistory::Data* entry = Model_StockHistory::instance().get(hist_id);
+        Model_StockHistory::Data *entry = Model_StockHistory::instance().get(hist_id);
         const wxDate date = mmParseISODate(entry->DATE);
         m_history_date_ctrl->SetValue(date);
         m_exchange_text->SetValue(entry->VALUE, m_precision);
     }
 }
 
-void  mmStockDialog::OnListValueEditingDone(wxDataViewEvent & event)
+void  mmStockDialog::OnListValueEditingDone(wxDataViewEvent &event)
 {
     const wxDataViewItem item = event.GetItem();
 
@@ -981,7 +1096,7 @@ void  mmStockDialog::OnListValueEditingDone(wxDataViewEvent & event)
     }
 }
 
-void  mmStockDialog::OnListValueChanged(wxDataViewEvent & event)
+void  mmStockDialog::OnListValueChanged(wxDataViewEvent &event)
 {
     const int col = event.GetColumn();
     const int row = m_price_listbox->GetSelectedRow();
@@ -1010,7 +1125,7 @@ void  mmStockDialog::OnListValueChanged(wxDataViewEvent & event)
             const int hist_id = static_cast<int>(m_price_listbox->GetItemData(item));
             if (hist_id > -1)
             {
-                Model_StockHistory::Data* entry = Model_StockHistory::instance().get(hist_id);
+                Model_StockHistory::Data *entry = Model_StockHistory::instance().get(hist_id);
                 const wxDate date = mmParseISODate(entry->DATE);
                 Model_StockHistory::instance().addUpdate(m_stock->SYMBOL, date, price, Model_StockHistory::MANUAL);
             }
@@ -1019,7 +1134,7 @@ void  mmStockDialog::OnListValueChanged(wxDataViewEvent & event)
     }
 }
 
-void mmStockDialog::OnTextEntered(wxCommandEvent & WXUNUSED(event))
+void mmStockDialog::OnTextEntered(wxCommandEvent &WXUNUSED(event))
 {
     m_current_price_ctrl->Calculate(m_precision);
     m_commission_ctrl->Calculate(m_precision);
@@ -1027,18 +1142,18 @@ void mmStockDialog::OnTextEntered(wxCommandEvent & WXUNUSED(event))
     m_exchange_text->Calculate(m_precision);
 }
 
-void mmStockDialog::OnMagicButton(wxCommandEvent & WXUNUSED(event))
+void mmStockDialog::OnMagicButton(wxCommandEvent &WXUNUSED(event))
 {
     wxDataViewEvent evt;
     OnItemRightClick(evt);
 }
 
-void mmStockDialog::OnItemRightClick(wxDataViewEvent & event)
+void mmStockDialog::OnItemRightClick(wxDataViewEvent &event)
 {
     wxCommandEvent evt(wxEVT_COMMAND_MENU_SELECTED, wxID_ANY);
     evt.SetEventObject(this);
 
-    wxMenu* mainMenu = new wxMenu;
+    wxMenu *mainMenu = new wxMenu;
     mainMenu->Append(new wxMenuItem(mainMenu, MENU_NEW_ENTRY, _("Add/Update Stock Price history")));
     mainMenu->Append(new wxMenuItem(mainMenu, MENU_DELETE_ENTRY, _("Delete selected Stock Prices")));
 
@@ -1047,12 +1162,17 @@ void mmStockDialog::OnItemRightClick(wxDataViewEvent & event)
     event.Skip();
 }
 
-void mmStockDialog::OnMenuSelected(wxCommandEvent & event)
+void mmStockDialog::OnMenuSelected(wxCommandEvent &event)
 {
     switch (event.GetId())
     {
-    case MENU_NEW_ENTRY: OnMenuAddSelected(); break;
-    case MENU_DELETE_ENTRY: OnHistoryDelete(); break;
-    default: break;
+        case MENU_NEW_ENTRY:
+            OnMenuAddSelected();
+            break;
+        case MENU_DELETE_ENTRY:
+            OnHistoryDelete();
+            break;
+        default:
+            break;
     }
 }

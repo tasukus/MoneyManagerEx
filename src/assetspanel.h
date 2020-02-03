@@ -80,7 +80,8 @@ private:
     void OnEndLabelEdit(wxListEvent& event);
     bool EditAsset(Model_Asset::Data* pEntry);
 
-    enum {
+    enum
+    {
         MENU_TREEPOPUP_NEW = wxID_HIGHEST + 1200,
         MENU_TREEPOPUP_ADDTRANS,
         MENU_TREEPOPUP_VIEWTRANS,
@@ -102,20 +103,44 @@ public:
     void updateExtraAssetData(int selIndex);
     const wxString getItem(long item, long column) const;
 
-    int getColMax() const { return COL_MAX; }
-    int getDefSortColumn() const { return COL_DATE; }
+    int getColMax() const
+    {
+        return COL_MAX;
+    }
+    int getDefSortColumn() const
+    {
+        return COL_DATE;
+    }
 
-    wxString BuildPage() const { return m_listCtrlAssets->BuildPage(_("Assets")); }
+    wxString BuildPage() const
+    {
+        return m_listCtrlAssets->BuildPage(_("Assets"));
+    }
 
     void AddAssetTrans(const int selected_index);
     void ViewAssetTrans(const int selected_index);
     void GotoAssetAccount(const int selected_index);
     void sortTable();
-    wxStaticText* getHeaderText() const { return m_header_text; }
-    mmGUIFrame * getAssetPanelFrame() const { return m_frame; }
-    Model_Asset::Data_Set getAssetDataSet() const { return m_assets; }
-    void setAssetDataSet(const Model_Asset::Data_Set& assets) { m_assets = assets; }
-    Model_Asset::TYPE getFilterType() const { return m_filter_type; }
+    wxStaticText* getHeaderText() const
+    {
+        return m_header_text;
+    }
+    mmGUIFrame * getAssetPanelFrame() const
+    {
+        return m_frame;
+    }
+    Model_Asset::Data_Set getAssetDataSet() const
+    {
+        return m_assets;
+    }
+    void setAssetDataSet(const Model_Asset::Data_Set& assets)
+    {
+        m_assets = assets;
+    }
+    Model_Asset::TYPE getFilterType() const
+    {
+        return m_filter_type;
+    }
 
 private:
     Model_Asset::Data_Set m_assets;
@@ -131,11 +156,11 @@ private:
     wxScopedPtr<wxImageList> m_imageList;
 
     bool Create(wxWindow *parent
-        , wxWindowID winid
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style
-        , const wxString &name);
+                , wxWindowID winid
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style
+                , const wxString &name);
     void CreateControls();
 
     /* Event handlers for Buttons */

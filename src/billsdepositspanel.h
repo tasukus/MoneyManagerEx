@@ -73,12 +73,12 @@ class mmBillsDepositsPanel : public mmPanelBase
 
 public:
     mmBillsDepositsPanel(wxWindow *parent
-        , wxWindowID winid = wxID_ANY
-        , const wxPoint& pos = wxDefaultPosition
-        , const wxSize& size = wxDefaultSize
-        , long style = wxTAB_TRAVERSAL | wxNO_BORDER
-        , const wxString& name = "mmBillsDepositsPanel"
-    );
+                         , wxWindowID winid = wxID_ANY
+                         , const wxPoint& pos = wxDefaultPosition
+                         , const wxSize& size = wxDefaultSize
+                         , long style = wxTAB_TRAVERSAL | wxNO_BORDER
+                         , const wxString& name = "mmBillsDepositsPanel"
+                        );
     ~mmBillsDepositsPanel();
 
     /* Helper Functions/data */
@@ -90,8 +90,14 @@ public:
     /* Getter for Virtual List Control */
     wxString getItem(long item, long column);
     void RefreshList();
-    int getColumnsNumber() { return COL_MAX; }
-    int col_sort() { return COL_PAYMENT_DATE; }
+    int getColumnsNumber()
+    {
+        return COL_MAX;
+    }
+    int col_sort()
+    {
+        return COL_PAYMENT_DATE;
+    }
 
     const wxString GetFrequency(const Model_Billsdeposits::Data* item) const;
     const wxString GetRemainingDays(const Model_Billsdeposits::Data* item) const;
@@ -102,10 +108,10 @@ public:
 private:
     void CreateControls();
     bool Create(wxWindow *parent, wxWindowID winid,
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
-        long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-        const wxString& name = "mmBillsDepositsPanel");
+                const wxPoint& pos = wxDefaultPosition,
+                const wxSize& size = wxDefaultSize,
+                long style = wxTAB_TRAVERSAL | wxNO_BORDER,
+                const wxString& name = "mmBillsDepositsPanel");
 
     /* Event handlers for Buttons */
     void OnNewBDSeries(wxCommandEvent& event);
@@ -154,7 +160,10 @@ private:
     };
 };
 
-inline wxDate mmBillsDepositsPanel::getToday() const { return m_today; }
+inline wxDate mmBillsDepositsPanel::getToday() const
+{
+    return m_today;
+}
 
 #endif
 

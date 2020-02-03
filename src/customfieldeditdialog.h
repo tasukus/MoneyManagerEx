@@ -37,11 +37,11 @@ public:
     Model_CustomField::Data* m_field = nullptr;
 private:
     bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style);
+                , wxWindowID id
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style);
     void CreateControls();
     void dataToControls();
     void OnOk(wxCommandEvent& event);

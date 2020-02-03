@@ -58,40 +58,40 @@ const wxString getCaption(const wxString& caption);
  *************************************************************************/
 namespace version
 {
-    constexpr int Major = MMEX_VERSION_MAJOR;
-    constexpr int Minor = MMEX_VERSION_MINOR;
-    constexpr int Patch = MMEX_VERSION_PATCH;
-    const wxString string = MMEX_VERSION_FULL;
-    int getDbLatestVersion();
+constexpr int Major = MMEX_VERSION_MAJOR;
+constexpr int Minor = MMEX_VERSION_MINOR;
+constexpr int Patch = MMEX_VERSION_PATCH;
+const wxString string = MMEX_VERSION_FULL;
+int getDbLatestVersion();
 }
 
 namespace weblink
 {
-    const wxString addReferralToURL(const wxString& BaseURL, const wxString& CampSource);
-    extern const wxString GA;
-    extern const wxString WebSite;
-    extern const wxString Releases;
-    extern const wxString News;
-    extern const wxString NewsRSS;
-    extern const wxString Forum;
-    extern const wxString Wiki;
-    extern const wxString GitHub;
-    extern const wxString YouTube;
-    extern const wxString Slack;
-    extern const wxString BugReport;
-    extern const wxString Donate;
-    extern const wxString Crowdin;
-    extern const wxString Chiark;
-    extern const wxString SquareCashGuan;
-    extern const wxString Twitter;
-    extern const wxString Facebook;
-    extern const wxString YahooQuotes;
-    extern const wxString YahooQuotesHistory;
-    extern const wxString CoinCapHistory;
-    extern const wxString CoinCap;
-    extern const wxString DefStockUrl;
-    extern const wxString GooglePlay;
-    extern const wxString WebApp;
+const wxString addReferralToURL(const wxString& BaseURL, const wxString& CampSource);
+extern const wxString GA;
+extern const wxString WebSite;
+extern const wxString Releases;
+extern const wxString News;
+extern const wxString NewsRSS;
+extern const wxString Forum;
+extern const wxString Wiki;
+extern const wxString GitHub;
+extern const wxString YouTube;
+extern const wxString Slack;
+extern const wxString BugReport;
+extern const wxString Donate;
+extern const wxString Crowdin;
+extern const wxString Chiark;
+extern const wxString SquareCashGuan;
+extern const wxString Twitter;
+extern const wxString Facebook;
+extern const wxString YahooQuotes;
+extern const wxString YahooQuotesHistory;
+extern const wxString CoinCapHistory;
+extern const wxString CoinCap;
+extern const wxString DefStockUrl;
+extern const wxString GooglePlay;
+extern const wxString WebApp;
 } // namespace weblink
 } // namespace mmex
 

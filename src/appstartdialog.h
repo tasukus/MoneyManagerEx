@@ -34,18 +34,21 @@ public:
     void SetCloseButtonToExit();
 
 private:
-    mmAppStartDialog(){};
+    mmAppStartDialog( ) noexcept
+    {
+        return;
+    };
     wxCheckBox* itemCheckBox = nullptr;
     wxButton* m_buttonClose = nullptr;
     wxButton* m_buttonExit = nullptr;
 
     bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style
-        , const wxString& name = "mmAppStartDialog");
+                , wxWindowID id
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style
+                , const wxString& name = "mmAppStartDialog");
     void CreateControls();
     void OnButtonAppstartOpenDatabaseClick( wxCommandEvent& event );
     void OnButtonAppstartNewDatabaseClick( wxCommandEvent& event );
@@ -54,7 +57,5 @@ private:
     void OnButtonAppstartLastDatabaseClick( wxCommandEvent& event );
     void OnQuit(wxCommandEvent& event);
     void OnClose(wxCloseEvent& event);
-
 };
 #endif // MM_EX_APPSTARTDIALOG_H_
-

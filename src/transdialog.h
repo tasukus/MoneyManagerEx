@@ -56,18 +56,27 @@ public:
     );
 
     bool Create(wxWindow* parent
-        , wxWindowID id
-        , const wxString& caption
-        , const wxPoint& pos
-        , const wxSize& size
-        , long style
-        , const wxString& name = "mmTransDialog"
-    );
+                , wxWindowID id
+                , const wxString& caption
+                , const wxPoint& pos
+                , const wxSize& size
+                , long style
+                , const wxString& name = "mmTransDialog"
+               );
 
     void SetDialogTitle(const wxString& title);
-    int GetAccountID() { return m_trx_data.ACCOUNTID; }
-    int GetToAccountID() { return m_trx_data.TOACCOUNTID; }
-    int GetTransactionID() { return m_trx_data.TRANSID; }
+    int GetAccountID()
+    {
+        return m_trx_data.ACCOUNTID;
+    }
+    int GetToAccountID()
+    {
+        return m_trx_data.TOACCOUNTID;
+    }
+    int GetTransactionID()
+    {
+        return m_trx_data.TRANSID;
+    }
 
 private:
     mmCustomData* m_custom_fields = nullptr;
@@ -168,7 +177,6 @@ private:
         ID_DIALOG_TRANS_CUSTOMFIELDS,
         ID_CUSTOMFIELD,
     };
-
 
 };
 
