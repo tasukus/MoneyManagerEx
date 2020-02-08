@@ -28,12 +28,12 @@ class OptionSettingsView : public OptionSettingsBase
 public:
     OptionSettingsView();
 
-    OptionSettingsView(wxWindow *parent
-                       , wxWindowID id = wxID_ANY
-                       , const wxPoint &pos = wxDefaultPosition
-                       , const wxSize &size = wxDefaultSize
-                       , long style = wxTAB_TRAVERSAL
-                       , const wxString &name = "OptionSettingsView");
+    OptionSettingsView ( wxWindow *parent
+                         , wxWindowID id = wxID_ANY
+                         , const wxPoint &pos = wxDefaultPosition
+                         , const wxSize &size = wxDefaultSize
+                         , long style = wxTAB_TRAVERSAL
+                         , const wxString &name = "OptionSettingsView" );
 
     ~OptionSettingsView();
 
@@ -42,7 +42,7 @@ public:
 
 private:
     void Create();
-    void OnNavTreeColorChanged(wxCommandEvent &event);
+    void OnNavTreeColorChanged ( wxCommandEvent &event );
 
 private:
     /// Colour Buttons.

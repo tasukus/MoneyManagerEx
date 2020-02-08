@@ -42,9 +42,9 @@
 #define STOCK_SORT_BY_VALUE         9
 
 mmReportSummaryStocks::mmReportSummaryStocks()
-    : mmPrintableBase(_("Summary of Stocks"))
-    , m_gain_loss_sum_total(0.0)
-    , m_stock_balance(0.0)
+    : mmPrintableBase ( _( "Summary of Stocks" ) )
+    , m_gain_loss_sum_total ( 0.0 )
+    , m_stock_balance ( 0.0 )
 {
 }
 
@@ -58,13 +58,13 @@ void  mmReportSummaryStocks::RefreshData()
     account_holder account;
     const wxDate today = wxDate::Today();
 
-    for (const auto &a : Model_Account::instance().all(Model_Account::COL_ACCOUNTNAME))
+    for ( const auto &a : Model_Account::instance().all ( Model_Account::COL_ACCOUNTNAME ) )
     {
-        if (Model_Account::type(a) != Model_Account::INVESTMENT)
+        if ( Model_Account::type ( a ) != Model_Account::INVESTMENT )
         {
             continue;
         }
-        if (Model_Account::status(a) != Model_Account::OPEN)
+        if ( Model_Account::status ( a ) != Model_Account::OPEN )
         {
             continue;
         }
@@ -72,30 +72,30 @@ void  mmReportSummaryStocks::RefreshData()
         account.id = a.id();
         account.name = a.ACCOUNTNAME;
         account.gainloss = 0.0;
-        account.total = Model_Account::investment_balance(a).first;
+        account.total = Model_Account::investment_balance ( a ).first;
         account.data.clear();
 
-        for (const auto &stock : Model_Stock::instance().find(Model_Stock::HELDAT(a.ACCOUNTID)))
+        for ( const auto &stock : Model_Stock::instance().find ( Model_Stock::HELDAT ( a.ACCOUNTID ) ) )
         {
-            const Model_Currency::Data *currency = Model_Account::currency(a);
-            const double today_rate = Model_CurrencyHistory::getDayRate(currency->CURRENCYID, today);
-            m_stock_balance += today_rate * Model_Stock::CurrentValue(stock);
-            account.gainloss += Model_Stock::CurrentValue(stock) - Model_Stock::InvestmentValue(stock);
-            const double purchase_rate = Model_CurrencyHistory::getDayRate(currency->CURRENCYID, stock.PURCHASEDATE);
-            m_gain_loss_sum_total += (Model_Stock::CurrentValue(stock) * today_rate - Model_Stock::InvestmentValue(stock) * purchase_rate);
+            const Model_Currency::Data *currency = Model_Account::currency ( a );
+            const double today_rate = Model_CurrencyHistory::getDayRate ( currency->CURRENCYID, today );
+            m_stock_balance += today_rate * Model_Stock::CurrentValue ( stock );
+            account.gainloss += Model_Stock::CurrentValue ( stock ) - Model_Stock::InvestmentValue ( stock );
+            const double purchase_rate = Model_CurrencyHistory::getDayRate ( currency->CURRENCYID, stock.PURCHASEDATE );
+            m_gain_loss_sum_total += ( Model_Stock::CurrentValue ( stock ) * today_rate - Model_Stock::InvestmentValue ( stock ) * purchase_rate );
 
             line.name = stock.STOCKNAME;
             line.symbol = stock.SYMBOL;
             line.date = stock.PURCHASEDATE;
             line.qty = stock.NUMSHARES;
-            line.purchase = Model_Stock::InvestmentValue(stock);
+            line.purchase = Model_Stock::InvestmentValue ( stock );
             line.current = stock.CURRENTPRICE;
             line.commission = stock.COMMISSION;
-            line.gainloss = Model_Stock::CurrentValue(stock) - Model_Stock::InvestmentValue(stock);
-            line.value = Model_Stock::CurrentValue(stock);
-            account.data.push_back(line);
+            line.gainloss = Model_Stock::CurrentValue ( stock ) - Model_Stock::InvestmentValue ( stock );
+            line.value = Model_Stock::CurrentValue ( stock );
+            account.data.push_back ( line );
         }
-        m_stocks.push_back(account);
+        m_stocks.push_back ( account );
     }
 }
 
@@ -105,65 +105,65 @@ wxString mmReportSummaryStocks::getHTMLText()
     mmHTMLBuilder hb;
     hb.init();
     hb.addDivContainer();
-    hb.addHeader(2, m_title);
+    hb.addHeader ( 2, m_title );
     hb.addDateNow();
     hb.addLineBreak();
 
     hb.addDivRow();
     hb.addDivCol17_67();
 
-    for (const auto &acct : m_stocks)
+    for ( const auto &acct : m_stocks )
     {
-        const Model_Account::Data *account = Model_Account::instance().get(acct.id);
-        const Model_Currency::Data *currency = Model_Account::currency(account);
-        hb.addHeader(3, acct.name);
+        const Model_Account::Data *account = Model_Account::instance().get ( acct.id );
+        const Model_Currency::Data *currency = Model_Account::currency ( account );
+        hb.addHeader ( 3, acct.name );
 
         hb.startTable();
-        display_header(hb);
+        display_header ( hb );
 
         hb.startTbody();
-        for (const auto &entry : acct.data)
+        for ( const auto &entry : acct.data )
         {
             hb.startTableRow();
-            hb.addTableCell(entry.name);
-            hb.addTableCell(entry.symbol);
-            hb.addTableCellDate(entry.date);
-            hb.addTableCell(Model_Account::toString(entry.qty, account, floor(entry.qty) ? 0 : 4), true);
-            hb.addCurrencyCell(entry.purchase, currency, 4);
-            hb.addCurrencyCell(entry.current, currency, 4);
-            hb.addCurrencyCell(entry.commission, currency, 4);
-            hb.addCurrencyCell(entry.gainloss, currency);
-            hb.addCurrencyCell(entry.value, currency);
+            hb.addTableCell ( entry.name );
+            hb.addTableCell ( entry.symbol );
+            hb.addTableCellDate ( entry.date );
+            hb.addTableCell ( Model_Account::toString ( entry.qty, account, floor ( entry.qty ) ? 0 : 4 ), true );
+            hb.addCurrencyCell ( entry.purchase, currency, 4 );
+            hb.addCurrencyCell ( entry.current, currency, 4 );
+            hb.addCurrencyCell ( entry.commission, currency, 4 );
+            hb.addCurrencyCell ( entry.gainloss, currency );
+            hb.addCurrencyCell ( entry.value, currency );
             hb.endTableRow();
         }
         hb.endTbody();
 
         hb.startTfoot();
         hb.startTotalTableRow();
-        hb.addTableCell(_("Total:"));
-        hb.addEmptyTableCell(6);
-        hb.addCurrencyCell(acct.gainloss, currency);
-        hb.addCurrencyCell(acct.total, currency);
+        hb.addTableCell ( _( "Total:" ) );
+        hb.addEmptyTableCell ( 6 );
+        hb.addCurrencyCell ( acct.gainloss, currency );
+        hb.addCurrencyCell ( acct.total, currency );
         hb.endTableRow();
         hb.endTfoot();
         hb.endTable();
     }
 
     hb.addDivCol17_67();
-    hb.addHeader(3, _("Grand Total:"));
+    hb.addHeader ( 3, _( "Grand Total:" ) );
     hb.startTable();
 
     hb.startThead();
     hb.startTableRow();
-    hb.addTableHeaderCell(_("Gain/Loss"), true);
-    hb.addTableHeaderCell(_("Current Value"), true);
+    hb.addTableHeaderCell ( _( "Gain/Loss" ), true );
+    hb.addTableHeaderCell ( _( "Current Value" ), true );
     hb.endTableRow();
     hb.endThead();
 
     hb.startTfoot();
     hb.startTotalTableRow();
-    hb.addCurrencyCell(m_gain_loss_sum_total);
-    hb.addCurrencyCell(m_stock_balance);
+    hb.addCurrencyCell ( m_gain_loss_sum_total );
+    hb.addCurrencyCell ( m_stock_balance );
     hb.endTableRow();
     hb.endTfoot();
     hb.endTable();
@@ -178,25 +178,25 @@ wxString mmReportSummaryStocks::getHTMLText()
     return hb.getHTMLText();
 }
 
-void mmReportSummaryStocks::display_header(mmHTMLBuilder &hb)
+void mmReportSummaryStocks::display_header ( mmHTMLBuilder &hb )
 {
     hb.startThead();
     hb.startTableRow();
-    hb.addTableHeaderCell(_("Name"));
-    hb.addTableHeaderCell(_("Symbol"));
-    hb.addTableHeaderCell(_("*Purchase Date"));
-    hb.addTableHeaderCell(_("Quantity"), true);
-    hb.addTableHeaderCell(_("Initial Value"), true);
-    hb.addTableHeaderCell(_("Current Price"), true);
-    hb.addTableHeaderCell(_("Commission"), true);
-    hb.addTableHeaderCell(_("Gain/Loss"), true);
-    hb.addTableHeaderCell(_("Current Value"), true);
+    hb.addTableHeaderCell ( _( "Name" ) );
+    hb.addTableHeaderCell ( _( "Symbol" ) );
+    hb.addTableHeaderCell ( _( "*Purchase Date" ) );
+    hb.addTableHeaderCell ( _( "Quantity" ), true );
+    hb.addTableHeaderCell ( _( "Initial Value" ), true );
+    hb.addTableHeaderCell ( _( "Current Price" ), true );
+    hb.addTableHeaderCell ( _( "Commission" ), true );
+    hb.addTableHeaderCell ( _( "Gain/Loss" ), true );
+    hb.addTableHeaderCell ( _( "Current Value" ), true );
     hb.endTableRow();
     hb.endThead();
 }
 
 mmReportChartStocks::mmReportChartStocks()
-    : mmPrintableBase(_("Stocks Performance Charts"))
+    : mmPrintableBase ( _( "Stocks Performance Charts" ) )
 {
 }
 
@@ -214,31 +214,31 @@ wxString mmReportChartStocks::getHTMLText()
     mmHTMLBuilder hb;
     hb.init();
     hb.addDivContainer();
-    hb.addHeader(2, getReportTitle());
+    hb.addHeader ( 2, getReportTitle() );
     hb.addDateNow();
 
     wxTimeSpan dtDiff = m_date_range->end_date() - m_date_range->start_date();
-    if (m_date_range->is_with_date() && dtDiff.GetDays() <= 366)
+    if ( m_date_range->is_with_date() && dtDiff.GetDays() <= 366 )
     {
-        hb.DisplayDateHeading(m_date_range->start_date(), m_date_range->end_date(), true);
+        hb.DisplayDateHeading ( m_date_range->start_date(), m_date_range->end_date(), true );
     }
     hb.addHorizontalLine();
 
     bool pointDot = false, showGridLines = false;
     wxTimeSpan dist;
     wxDate precDateDt = wxInvalidDateTime;
-    for (const auto &stock : Model_Stock::instance().all(Model_Stock::COL_HELDAT))
+    for ( const auto &stock : Model_Stock::instance().all ( Model_Stock::COL_HELDAT ) )
     {
         int dataCount = 0, freq = 1;
-        Model_StockHistory::Data_Set histData = Model_StockHistory::instance().find(Model_StockHistory::SYMBOL(stock.SYMBOL),
-                                                Model_StockHistory::DATE(m_date_range->start_date(), GREATER_OR_EQUAL),
-                                                Model_StockHistory::DATE(m_date_range->end_date(), LESS_OR_EQUAL));
-        std::stable_sort(histData.begin(), histData.end(), SorterByDATE());
-        if (histData.size() <= 30)
+        Model_StockHistory::Data_Set histData = Model_StockHistory::instance().find ( Model_StockHistory::SYMBOL ( stock.SYMBOL ),
+                                                Model_StockHistory::DATE ( m_date_range->start_date(), GREATER_OR_EQUAL ),
+                                                Model_StockHistory::DATE ( m_date_range->end_date(), LESS_OR_EQUAL ) );
+        std::stable_sort ( histData.begin(), histData.end(), SorterByDATE() );
+        if ( histData.size() <= 30 )
         {
             showGridLines = pointDot = true;
         }
-        else if (histData.size() <= 366)
+        else if ( histData.size() <= 366 )
         {
             showGridLines = true;
         }
@@ -247,38 +247,38 @@ wxString mmReportChartStocks::getHTMLText()
             freq = histData.size() / 366;
         }
         std::vector<LineGraphData> aData;
-        for (const auto &hist : histData)
+        for ( const auto &hist : histData )
         {
-            if (dataCount % freq == 0)
+            if ( dataCount % freq == 0 )
             {
                 LineGraphData val;
-                val.xPos = mmGetDateForDisplay(hist.DATE);
-                const wxDate dateDt = Model_StockHistory::DATE(hist);
-                if (histData.size() <= 30)
+                val.xPos = mmGetDateForDisplay ( hist.DATE );
+                const wxDate dateDt = Model_StockHistory::DATE ( hist );
+                if ( histData.size() <= 30 )
                 {
                     val.label = val.xPos;
                 }
-                else if (precDateDt.IsValid() && dateDt.GetMonth() != precDateDt.GetMonth())
+                else if ( precDateDt.IsValid() && dateDt.GetMonth() != precDateDt.GetMonth() )
                 {
-                    val.label = wxGetTranslation(dateDt.GetEnglishMonthName(dateDt.GetMonth()));
+                    val.label = wxGetTranslation ( dateDt.GetEnglishMonthName ( dateDt.GetMonth() ) );
                 }
                 else
                 {
                     val.label = "";
                 }
                 val.amount = hist.VALUE;
-                aData.push_back(val);
+                aData.push_back ( val );
                 precDateDt = dateDt;
             }
             dataCount++;
         }
-        if (!aData.empty())
+        if ( !aData.empty() )
         {
             hb.addDivRow();
-            Model_Account::Data *account = Model_Account::instance().get(stock.HELDAT);
-            hb.addHeader(1, wxString::Format("%s - (%s)", stock.STOCKNAME, account->ACCOUNTNAME));
+            Model_Account::Data *account = Model_Account::instance().get ( stock.HELDAT );
+            hb.addHeader ( 1, wxString::Format ( "%s - (%s)", stock.STOCKNAME, account->ACCOUNTNAME ) );
             hb.addDivCol17_67();
-            hb.addLineChart(aData, stock.STOCKNAME, 0, 1000, 400, pointDot, showGridLines);
+            hb.addLineChart ( aData, stock.STOCKNAME, 0, 1000, 400, pointDot, showGridLines );
             hb.endDiv();
             hb.endDiv();
         }

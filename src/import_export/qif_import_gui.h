@@ -33,47 +33,47 @@ class wxComboBox;
 
 class mmQIFImportDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmQIFImportDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmQIFImportDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmQIFImportDialog() {}
-    mmQIFImportDialog(wxWindow *parent, int account_id);
+    mmQIFImportDialog ( wxWindow *parent, int account_id );
 
-    bool Create(wxWindow *parent, wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent, wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
 
-    wxString OnGetItemText(long item, long column) const;
+    wxString OnGetItemText ( long item, long column ) const;
     int get_last_imported_acc();
 
 private:
     mmQIFImport *qif_api = nullptr;
     void CreateControls();
     void fillControls();
-    void OnFileSearch(wxCommandEvent &event);
-    void OnCheckboxClick(wxCommandEvent &WXUNUSED(event));
-    void OnAccountChanged(wxCommandEvent &WXUNUSED(event));
-    void OnDateMaskChange(wxCommandEvent &event);
-    void OnQuit(wxCloseEvent &event);
-    void OnCancel(wxCommandEvent &event);
-    void OnOk(wxCommandEvent &WXUNUSED(event));
-    void OnDecimalChange(wxCommandEvent &event);
+    void OnFileSearch ( wxCommandEvent &event );
+    void OnCheckboxClick ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnAccountChanged ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnDateMaskChange ( wxCommandEvent &event );
+    void OnQuit ( wxCloseEvent &event );
+    void OnCancel ( wxCommandEvent &event );
+    void OnOk ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnDecimalChange ( wxCommandEvent &event );
     bool mmReadQIFFile();
     void clear_transaction_data();
     int getOrCreateAccounts();
     void getOrCreatePayees();
     void getOrCreateCategories();
-    bool completeTransaction(std::unordered_map <int, wxString> &trx, const wxString &accName);
-    bool completeTransaction(/*in*/ const std::unordered_map <int, wxString> &i
-                                    , /*out*/ Model_Checking::Data *trx, wxString &msg);
-    bool mergeTransferPair(Model_Checking::Cache &to, Model_Checking::Cache &from);
-    void appendTransfers(Model_Checking::Cache &destination, Model_Checking::Cache &target);
-    void joinSplit(Model_Checking::Cache &destination, std::vector <Model_Splittransaction::Cache> &target);
+    bool completeTransaction ( std::unordered_map <int, wxString> &trx, const wxString &accName );
+    bool completeTransaction ( /*in*/ const std::unordered_map <int, wxString> &i
+                                      , /*out*/ Model_Checking::Data *trx, wxString &msg );
+    bool mergeTransferPair ( Model_Checking::Cache &to, Model_Checking::Cache &from );
+    void appendTransfers ( Model_Checking::Cache &destination, Model_Checking::Cache &target );
+    void joinSplit ( Model_Checking::Cache &destination, std::vector <Model_Splittransaction::Cache> &target );
     void saveSplit();
-    void refreshTabs(int tabs);
+    void refreshTabs ( int tabs );
 
     //QIF paragraphs represented like maps type = data
     std::vector <std::unordered_map <int, wxString> > vQIF_trxs_;

@@ -23,7 +23,7 @@
 
 class mm_html_template;
 
-mmReportForecast::mmReportForecast(): mmPrintableBase(_("Forecast"))
+mmReportForecast::mmReportForecast() : mmPrintableBase ( _( "Forecast" ) )
 {
 }
 
@@ -41,54 +41,54 @@ wxString mmReportForecast::getHTMLText()
     std::map<wxString, std::pair<double, double> > amount_by_day;
     Model_Checking::Data_Set all_trans;
 
-    if (m_date_range && m_date_range->is_with_date())
-        all_trans = Model_Checking::instance().find(DB_Table_CHECKINGACCOUNT::TRANSDATE(m_date_range->start_date().FormatISODate(), GREATER_OR_EQUAL)
-                    , DB_Table_CHECKINGACCOUNT::TRANSDATE(m_date_range->end_date().FormatISODate(), LESS_OR_EQUAL));
+    if ( m_date_range && m_date_range->is_with_date() )
+        all_trans = Model_Checking::instance().find ( DB_Table_CHECKINGACCOUNT::TRANSDATE ( m_date_range->start_date().FormatISODate(), GREATER_OR_EQUAL )
+                    , DB_Table_CHECKINGACCOUNT::TRANSDATE ( m_date_range->end_date().FormatISODate(), LESS_OR_EQUAL ) );
     else
     {
         all_trans = Model_Checking::instance().all();
     }
 
-    for (const auto &trx : all_trans)
+    for ( const auto &trx : all_trans )
     {
-        if (Model_Checking::type(trx) == Model_Checking::TRANSFER)
+        if ( Model_Checking::type ( trx ) == Model_Checking::TRANSFER )
         {
             continue;
         }
 
-        amount_by_day[trx.TRANSDATE].first += Model_Checking::withdrawal(trx, -1);
-        amount_by_day[trx.TRANSDATE].second += Model_Checking::deposit(trx, -1);
+        amount_by_day[trx.TRANSDATE].first += Model_Checking::withdrawal ( trx, -1 );
+        amount_by_day[trx.TRANSDATE].second += Model_Checking::deposit ( trx, -1 );
     }
 
     loop_t contents;
-    for (const auto &kv : amount_by_day)
+    for ( const auto &kv : amount_by_day )
     {
         row_t r;
-        r(L"DATE") = kv.first;
-        r(L"WITHDRAWAL") = wxString::FromCDouble(kv.second.first, 6);
-        r(L"DEPOSIT") = wxString::FromCDouble(kv.second.second, 6);
+        r ( L"DATE" ) = kv.first;
+        r ( L"WITHDRAWAL" ) = wxString::FromCDouble ( kv.second.first, 6 );
+        r ( L"DEPOSIT" ) = wxString::FromCDouble ( kv.second.second, 6 );
 
         contents += r;
     }
 
-    mm_html_template report(this->m_template);
-    report(L"REPORTNAME") = this->getReportTitle();
-    report(L"CONTENTS") = contents;
-    report(L"GRAND") = wxString::Format("%zu", amount_by_day.size());
-    report(L"HTMLSCALE") = wxString::Format("%d", Option::instance().getHtmlFontSize());
+    mm_html_template report ( this->m_template );
+    report ( L"REPORTNAME" ) = this->getReportTitle();
+    report ( L"CONTENTS" ) = contents;
+    report ( L"GRAND" ) = wxString::Format ( "%zu", amount_by_day.size() );
+    report ( L"HTMLSCALE" ) = wxString::Format ( "%d", Option::instance().getHtmlFontSize() );
 
     wxString out = wxEmptyString;
     try
     {
         out = report.Process();
     }
-    catch (const syntax_ex &e)
+    catch ( const syntax_ex &e )
     {
         return e.what();
     }
-    catch (...)
+    catch ( ... )
     {
-        return _("Caught exception");
+        return _( "Caught exception" );
     }
 
     return out;

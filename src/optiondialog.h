@@ -29,12 +29,12 @@ class OptionSettingsBase;
 
 class mmOptionsDialog: public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmOptionsDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmOptionsDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmOptionsDialog( );
-    mmOptionsDialog(wxWindow *parent, mmGUIApp *app);
+    mmOptionsDialog ( wxWindow *parent, mmGUIApp *app );
     ~mmOptionsDialog( );
 
 public:
@@ -44,15 +44,15 @@ public:
 
 private:
     /// Dialog Creation - Used by constructor
-    bool Create(wxWindow *parent, wxWindowID id,
-                const wxString &caption,
-                const wxPoint &pos,
-                const wxSize &size,
-                long style);
+    bool Create ( wxWindow *parent, wxWindowID id,
+                  const wxString &caption,
+                  const wxPoint &pos,
+                  const wxSize &size,
+                  long style );
 
     void CreateControls();
-    void OnOk(wxCommandEvent &WXUNUSED(event));
-    void OnApply(wxCommandEvent &WXUNUSED(event));
+    void OnOk ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnApply ( wxCommandEvent &WXUNUSED ( event ) );
 
 private:
     wxImageList *m_imageList = nullptr;

@@ -25,11 +25,11 @@ class wxCheckBox;
 
 class mmAppStartDialog: public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmAppStartDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmAppStartDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmAppStartDialog(wxWindow *parent, const wxString &name = "mmAppStartDialog");
+    mmAppStartDialog ( wxWindow *parent, const wxString &name = "mmAppStartDialog" );
     ~mmAppStartDialog();
     void SetCloseButtonToExit();
 
@@ -42,20 +42,20 @@ private:
     wxButton *m_buttonClose = nullptr;
     wxButton *m_buttonExit = nullptr;
 
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style
-                , const wxString &name = "mmAppStartDialog");
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style
+                  , const wxString &name = "mmAppStartDialog" );
     void CreateControls();
-    void OnButtonAppstartOpenDatabaseClick( wxCommandEvent &event );
-    void OnButtonAppstartNewDatabaseClick( wxCommandEvent &event );
-    void OnButtonAppstartHelpClick( wxCommandEvent &event );
-    void OnButtonAppstartWebsiteClick( wxCommandEvent &event );
-    void OnButtonAppstartLastDatabaseClick( wxCommandEvent &event );
-    void OnQuit(wxCommandEvent &event);
-    void OnClose(wxCloseEvent &event);
+    void OnButtonAppstartOpenDatabaseClick ( wxCommandEvent &event );
+    void OnButtonAppstartNewDatabaseClick ( wxCommandEvent &event );
+    void OnButtonAppstartHelpClick ( wxCommandEvent &event );
+    void OnButtonAppstartWebsiteClick ( wxCommandEvent &event );
+    void OnButtonAppstartLastDatabaseClick ( wxCommandEvent &event );
+    void OnQuit ( wxCommandEvent &event );
+    void OnClose ( wxCloseEvent &event );
 };
 #endif // MM_EX_APPSTARTDIALOG_H_

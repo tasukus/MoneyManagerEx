@@ -53,7 +53,7 @@ private:
 class mmReportSummaryByDate : public mmPrintableBase
 {
 public:
-    mmReportSummaryByDate(int mode);
+    mmReportSummaryByDate ( int mode );
     wxString getHTMLText();
 
 private:

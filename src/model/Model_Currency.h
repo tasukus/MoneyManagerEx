@@ -42,7 +42,7 @@ public:
     * Return the static instance address for Model_Currency table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Currency &instance(wxSQLite3Database *db);
+    static Model_Currency &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Currency table
@@ -57,35 +57,35 @@ public:
 
     /** Return the Data record of the base currency.*/
     static Data *GetBaseCurrency();
-    static bool GetBaseCurrencySymbol(wxString &base_currency_symbol);
+    static bool GetBaseCurrencySymbol ( wxString &base_currency_symbol );
 
     /** Return the currency Data record for the given symbol */
-    Model_Currency::Data *GetCurrencyRecord(const wxString &currency_symbol);
+    Model_Currency::Data *GetCurrencyRecord ( const wxString &currency_symbol );
 
     /**
     * Remove the Data record from memory and the database.
     * Delete also all currency history
     */
-    bool remove(int id);
+    bool remove ( int id );
 
-    static std::map<wxDateTime,int> DateUsed(int CurrencyID);
+    static std::map<wxDateTime,int> DateUsed ( int CurrencyID );
 
     /** Return the description of the choice type */
-    static wxString currtype_desc(const int CurrTypeEnum);
+    static wxString currtype_desc ( const int CurrTypeEnum );
 
     /** Add prefix and suffix characters to string value */
-    static wxString toCurrency(double value, const Data *currency = GetBaseCurrency(), int precision = -1);
+    static wxString toCurrency ( double value, const Data *currency = GetBaseCurrency(), int precision = -1 );
 
     /** convert value to a string with required precision. Currency is used only for precision */
-    static wxString toStringNoFormatting(double value, const Data *currency = GetBaseCurrency(), int precision = -1);
+    static wxString toStringNoFormatting ( double value, const Data *currency = GetBaseCurrency(), int precision = -1 );
     /** convert value to a currency formatted string with required precision */
-    static wxString toString(double value, const Data *currency = GetBaseCurrency(), int precision = -1);
+    static wxString toString ( double value, const Data *currency = GetBaseCurrency(), int precision = -1 );
     /** Reset currency string like 1.234,56 to standard C locale number format like 1234.56 */
-    static const wxString fromString2Default(const wxString &s, const Data *currency = Model_Currency::GetBaseCurrency());
-    static bool fromString(wxString s, double &val, const Data *currency = GetBaseCurrency());
-    static int precision(const Data *r);
-    static int precision(const Data &r);
-    static int precision(int account_id);
-    static bool BoolOf(int value);
+    static const wxString fromString2Default ( const wxString &s, const Data *currency = Model_Currency::GetBaseCurrency() );
+    static bool fromString ( wxString s, double &val, const Data *currency = GetBaseCurrency() );
+    static int precision ( const Data *r );
+    static int precision ( const Data &r );
+    static int precision ( int account_id );
+    static bool BoolOf ( int value );
 };
 #endif

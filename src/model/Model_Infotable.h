@@ -36,7 +36,7 @@ public:
     * Return the static instance address for Model_Infotable table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Infotable &instance(wxSQLite3Database *db);
+    static Model_Infotable &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Infotable table
@@ -46,34 +46,34 @@ public:
 
 public:
     // Setter
-    void Set(const wxString &key, int value);
-    void Set(const wxString &key, const wxDateTime &date);
-    void Set(const wxString &key, const wxString &value);
-    void Set(const wxString &key, const wxColour &value);
+    void Set ( const wxString &key, int value );
+    void Set ( const wxString &key, const wxDateTime &date );
+    void Set ( const wxString &key, const wxString &value );
+    void Set ( const wxString &key, const wxColour &value );
 
 public:
     //Deleter
-    void Delete(const wxString &key);
+    void Delete ( const wxString &key );
 
 public:
     // Getter
-    bool GetBoolInfo(const wxString &key, bool default_value);
-    int GetIntInfo(const wxString &key, int default_value);
-    wxString GetStringInfo(const wxString &key, const wxString &default_value);
-    const wxColour GetColourSetting(const wxString &key, const wxColour &default_value = wxColour(255, 255, 255));
+    bool GetBoolInfo ( const wxString &key, bool default_value );
+    int GetIntInfo ( const wxString &key, int default_value );
+    wxString GetStringInfo ( const wxString &key, const wxString &default_value );
+    const wxColour GetColourSetting ( const wxString &key, const wxColour &default_value = wxColour ( 255, 255, 255 ) );
 
     /* Returns true if key setting found */
-    bool KeyExists(const wxString &key);
+    bool KeyExists ( const wxString &key );
     /* Check database at minimum revision*/
     bool checkDBVersion();
 
     static loop_t to_loop_t();
 
 public:
-    bool OpenCustomDialog(const wxString &RefType);
-    void SetOpenCustomDialog(const wxString &RefType, const bool Status);
-    wxSize CustomDialogSize(const wxString &RefType);
-    void SetCustomDialogSize(const wxString &RefType, const wxSize &Size);
+    bool OpenCustomDialog ( const wxString &RefType );
+    void SetOpenCustomDialog ( const wxString &RefType, const bool Status );
+    wxSize CustomDialogSize ( const wxString &RefType );
+    void SetCustomDialogSize ( const wxString &RefType, const wxSize &Size );
 };
 
 #endif

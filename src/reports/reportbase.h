@@ -32,7 +32,7 @@ class mmDateRange;
 class mmPrintableBase
 {
 public:
-    mmPrintableBase(const wxString &title);
+    mmPrintableBase ( const wxString &title );
     virtual ~mmPrintableBase();
     virtual wxString getHTMLText() = 0;
     virtual void RefreshData() {}
@@ -42,18 +42,18 @@ public:
     {
         return RepParams::NONE;
     }
-    virtual void date_range(const mmDateRange *date_range, int selection);
-    void setAccounts(int selection, const wxString &name);
-    void chart(int selection);
+    virtual void date_range ( const mmDateRange *date_range, int selection );
+    void setAccounts ( int selection, const wxString &name );
+    void chart ( int selection );
     int getDateSelection() const;
     int getAccountSelection() const;
     int getChartSelection() const;
-    void initial_report(bool initial)
+    void initial_report ( bool initial )
     {
         m_initial = initial;
     }
-    void setSettings(const wxString &settings);
-    void getDates(wxDateTime &begin, wxDateTime &end);
+    void setSettings ( const wxString &settings );
+    void getDates ( wxDateTime &begin, wxDateTime &end );
     const wxString getAccountNames() const;
 
 protected:
@@ -99,7 +99,7 @@ inline int mmPrintableBase::getChartSelection() const
 class mmGeneralReport : public mmPrintableBase
 {
 public:
-    explicit mmGeneralReport(const Model_Report::Data *report);
+    explicit mmGeneralReport ( const Model_Report::Data *report );
 
 public:
     wxString getHTMLText();
@@ -112,7 +112,7 @@ private:
 class mm_html_template: public html_template
 {
 public:
-    explicit mm_html_template(const wxString &arg_template);
+    explicit mm_html_template ( const wxString &arg_template );
 
 private:
     void load_context();

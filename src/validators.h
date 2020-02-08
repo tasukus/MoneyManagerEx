@@ -28,14 +28,14 @@ public:
 
     virtual wxObject *Clone() const
     {
-        return new mmCalcValidator(*this);
+        return new mmCalcValidator ( *this );
     }
 
     // Filter keystrokes
-    void OnChar(wxKeyEvent &event);
+    void OnChar ( wxKeyEvent &event );
 
 private:
-    wxDECLARE_NO_ASSIGN_CLASS(mmCalcValidator);
-    DECLARE_DYNAMIC_CLASS(mmCalcValidator)
+    wxDECLARE_NO_ASSIGN_CLASS ( mmCalcValidator );
+    DECLARE_DYNAMIC_CLASS ( mmCalcValidator )
     DECLARE_EVENT_TABLE()
 };

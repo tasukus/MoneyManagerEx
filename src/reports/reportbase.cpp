@@ -26,100 +26,100 @@
 #include "mmSimpleDialogs.h"
 #include "util.h"
 
-mmPrintableBase::mmPrintableBase(const wxString &title)
-    : m_title(title)
-    , m_date_range(nullptr)
-    , m_initial(true)
-    , m_date_selection(0)
-    , m_account_selection(0)
-    , m_chart_selection(0)
-    , accountArray_(nullptr)
-    , m_only_active(false)
-    , m_settings("")
-    , m_begin_date(wxDateTime::Today())
-    , m_end_date(wxDateTime::Today())
+mmPrintableBase::mmPrintableBase ( const wxString &title )
+    : m_title ( title )
+    , m_date_range ( nullptr )
+    , m_initial ( true )
+    , m_date_selection ( 0 )
+    , m_account_selection ( 0 )
+    , m_chart_selection ( 0 )
+    , accountArray_ ( nullptr )
+    , m_only_active ( false )
+    , m_settings ( "" )
+    , m_begin_date ( wxDateTime::Today() )
+    , m_end_date ( wxDateTime::Today() )
 {
 }
 
 mmPrintableBase::~mmPrintableBase()
 {
     Document j_doc;
-    if (!j_doc.Parse(m_settings.c_str()).HasParseError())
+    if ( !j_doc.Parse ( m_settings.c_str() ).HasParseError() )
     {
 
-        if (j_doc.HasMember("ID") && j_doc["ID"].IsInt())
+        if ( j_doc.HasMember ( "ID" ) && j_doc["ID"].IsInt() )
         {
             int id = j_doc["ID"].GetInt();
 
             StringBuffer json_buffer;
-            PrettyWriter<StringBuffer> json_writer(json_buffer);
+            PrettyWriter<StringBuffer> json_writer ( json_buffer );
 
             json_writer.StartObject();
-            json_writer.Key("ID");
-            json_writer.Int(id);
+            json_writer.Key ( "ID" );
+            json_writer.Int ( id );
 
-            if (m_date_selection)
+            if ( m_date_selection )
             {
-                json_writer.Key("REPORTPERIOD");
-                json_writer.Int(m_date_selection);
+                json_writer.Key ( "REPORTPERIOD" );
+                json_writer.Int ( m_date_selection );
             }
 
-            json_writer.Key("DATE1");
-            json_writer.String(m_begin_date.FormatISODate().c_str());
+            json_writer.Key ( "DATE1" );
+            json_writer.String ( m_begin_date.FormatISODate().c_str() );
 
-            json_writer.Key("DATE2");
-            json_writer.String(m_end_date.FormatISODate().c_str());
+            json_writer.Key ( "DATE2" );
+            json_writer.String ( m_end_date.FormatISODate().c_str() );
 
-            if (m_account_selection)
+            if ( m_account_selection )
             {
-                json_writer.Key("ACCOUNTSELECTION");
-                json_writer.Int(m_account_selection);
+                json_writer.Key ( "ACCOUNTSELECTION" );
+                json_writer.Int ( m_account_selection );
 
-                if (accountArray_ && !accountArray_->empty())
+                if ( accountArray_ && !accountArray_->empty() )
                 {
-                    json_writer.Key("ACCOUNTS");
+                    json_writer.Key ( "ACCOUNTS" );
 
                     json_writer.StartArray();
-                    for (const auto &entry : *accountArray_)
+                    for ( const auto &entry : *accountArray_ )
                     {
-                        json_writer.String(entry.c_str());
+                        json_writer.String ( entry.c_str() );
                     }
                     json_writer.EndArray();
                 }
             }
 
-            if (m_chart_selection)
+            if ( m_chart_selection )
             {
-                json_writer.Key("CHART");
-                json_writer.Int(m_chart_selection);
+                json_writer.Key ( "CHART" );
+                json_writer.Int ( m_chart_selection );
             }
 
             json_writer.EndObject();
 
-            const wxString &rj_key = wxString::Format("REPORT_%d", id);
+            const wxString &rj_key = wxString::Format ( "REPORT_%d", id );
             const wxString &rj_value = json_buffer.GetString();
-            Model_Infotable::instance().Set(rj_key, rj_value);
+            Model_Infotable::instance().Set ( rj_key, rj_value );
         }
     }
 
-    if (accountArray_)
+    if ( accountArray_ )
     {
         delete accountArray_;
     }
 }
 
-void mmPrintableBase::setAccounts(int selection, const wxString &name)
+void mmPrintableBase::setAccounts ( int selection, const wxString &name )
 {
-    if ((selection == 1) || (m_account_selection != selection))
+    if ( ( selection == 1 ) || ( m_account_selection != selection ) )
     {
         m_account_selection = selection;
-        if (accountArray_)
+        if ( accountArray_ )
         {
             delete accountArray_;
             accountArray_ = nullptr;
         }
 
-        switch (selection)
+        switch ( selection )
         {
             case 0: // All Accounts
                 break;
@@ -127,18 +127,18 @@ void mmPrintableBase::setAccounts(int selection, const wxString &name)
             {
                 wxArrayString *accountSelections = new wxArrayString();
                 Model_Account::Data_Set accounts =
-                    (m_only_active ? Model_Account::instance().find(Model_Account::ACCOUNTTYPE(Model_Account::all_type()[Model_Account::INVESTMENT], NOT_EQUAL)
-                            , Model_Account::STATUS(Model_Account::OPEN))
-                     : Model_Account::instance().find(Model_Account::ACCOUNTTYPE(Model_Account::all_type()[Model_Account::INVESTMENT], NOT_EQUAL)));
-                std::stable_sort(accounts.begin(), accounts.end(), SorterByACCOUNTNAME());
+                    ( m_only_active ? Model_Account::instance().find ( Model_Account::ACCOUNTTYPE ( Model_Account::all_type() [Model_Account::INVESTMENT], NOT_EQUAL )
+                            , Model_Account::STATUS ( Model_Account::OPEN ) )
+                      : Model_Account::instance().find ( Model_Account::ACCOUNTTYPE ( Model_Account::all_type() [Model_Account::INVESTMENT], NOT_EQUAL ) ) );
+                std::stable_sort ( accounts.begin(), accounts.end(), SorterByACCOUNTNAME() );
 
-                mmMultiChoiceDialog mcd(0, _("Choose Accounts"), m_title, accounts);
+                mmMultiChoiceDialog mcd ( 0, _( "Choose Accounts" ), m_title, accounts );
 
-                if (mcd.ShowModal() == wxID_OK)
+                if ( mcd.ShowModal() == wxID_OK )
                 {
-                    for (const auto &i : mcd.GetSelections())
+                    for ( const auto &i : mcd.GetSelections() )
                     {
-                        accountSelections->Add(accounts.at(i).ACCOUNTNAME);
+                        accountSelections->Add ( accounts.at ( i ).ACCOUNTNAME );
                     }
                 }
 
@@ -148,11 +148,11 @@ void mmPrintableBase::setAccounts(int selection, const wxString &name)
             default: // All of Account type
             {
                 wxArrayString *accountSelections = new wxArrayString();
-                auto accounts = Model_Account::instance().find(Model_Account::ACCOUNTTYPE(name)
-                                , Model_Account::STATUS(Model_Account::CLOSED, NOT_EQUAL));
-                for (const auto &i : accounts)
+                auto accounts = Model_Account::instance().find ( Model_Account::ACCOUNTTYPE ( name )
+                                , Model_Account::STATUS ( Model_Account::CLOSED, NOT_EQUAL ) );
+                for ( const auto &i : accounts )
                 {
-                    accountSelections->Add(i.ACCOUNTNAME);
+                    accountSelections->Add ( i.ACCOUNTNAME );
                 }
                 accountArray_ = accountSelections;
             }
@@ -160,7 +160,7 @@ void mmPrintableBase::setAccounts(int selection, const wxString &name)
     }
 }
 
-void mmPrintableBase::chart(int selection)
+void mmPrintableBase::chart ( int selection )
 {
     m_chart_selection = selection;
 }
@@ -168,15 +168,15 @@ void mmPrintableBase::chart(int selection)
 const wxString mmPrintableBase::getReportTitle() const
 {
     wxString title = m_title;
-    if (m_date_range)
+    if ( m_date_range )
     {
-        if (m_date_range->title().IsEmpty())
+        if ( m_date_range->title().IsEmpty() )
         {
-            title += " - " + _("Custom");
+            title += " - " + _( "Custom" );
         }
         else
         {
-            title += " - " + wxGetTranslation(m_date_range->title());
+            title += " - " + wxGetTranslation ( m_date_range->title() );
         }
     }
     return title;
@@ -185,68 +185,68 @@ const wxString mmPrintableBase::getReportTitle() const
 const wxString mmPrintableBase::getFileName() const
 {
     wxString file_name = getReportTitle();
-    file_name.Replace(" - ", "-");
-    file_name.Replace(" ", "_");
-    file_name.Replace("/", "-");
+    file_name.Replace ( " - ", "-" );
+    file_name.Replace ( " ", "_" );
+    file_name.Replace ( "/", "-" );
     return file_name;
 }
 
-void mmPrintableBase::setSettings(const wxString &settings)
+void mmPrintableBase::setSettings ( const wxString &settings )
 {
     m_settings = settings;
 
     Document j_doc;
-    if (j_doc.Parse(settings.c_str()).HasParseError())
+    if ( j_doc.Parse ( settings.c_str() ).HasParseError() )
     {
         return;
     }
 
-    if (j_doc.HasMember("REPORTPERIOD") && j_doc["REPORTPERIOD"].IsInt())
+    if ( j_doc.HasMember ( "REPORTPERIOD" ) && j_doc["REPORTPERIOD"].IsInt() )
     {
         m_date_selection = j_doc["REPORTPERIOD"].GetInt();
     }
 
-    if (j_doc.HasMember("DATE1") && j_doc["DATE1"].IsString())
+    if ( j_doc.HasMember ( "DATE1" ) && j_doc["DATE1"].IsString() )
     {
-        m_begin_date = mmParseISODate(j_doc["DATE1"].GetString());
+        m_begin_date = mmParseISODate ( j_doc["DATE1"].GetString() );
     }
 
-    if (j_doc.HasMember("DATE2") && j_doc["DATE2"].IsString())
+    if ( j_doc.HasMember ( "DATE2" ) && j_doc["DATE2"].IsString() )
     {
-        m_end_date = mmParseISODate(j_doc["DATE2"].GetString());
+        m_end_date = mmParseISODate ( j_doc["DATE2"].GetString() );
     }
 
-    if (j_doc.HasMember("ACCOUNTSELECTION") && j_doc["ACCOUNTSELECTION"].IsInt())
+    if ( j_doc.HasMember ( "ACCOUNTSELECTION" ) && j_doc["ACCOUNTSELECTION"].IsInt() )
     {
         m_account_selection = j_doc["ACCOUNTSELECTION"].GetInt();
     }
 
-    if (accountArray_)
+    if ( accountArray_ )
     {
         delete accountArray_;
     }
 
-    if (j_doc.HasMember("ACCOUNTS") && j_doc["ACCOUNTS"].IsArray())
+    if ( j_doc.HasMember ( "ACCOUNTS" ) && j_doc["ACCOUNTS"].IsArray() )
     {
         wxArrayString *accountSelections = new wxArrayString();
         const Value &a = j_doc["ACCOUNTS"].GetArray();
-        for (const auto &v : a.GetArray())
+        for ( const auto &v : a.GetArray() )
         {
-            accountSelections->Add(v.GetString());
+            accountSelections->Add ( v.GetString() );
         }
         accountArray_ = accountSelections;
     }
 
-    if (j_doc.HasMember("CHART") && j_doc["CHART"].IsInt())
+    if ( j_doc.HasMember ( "CHART" ) && j_doc["CHART"].IsInt() )
     {
         m_chart_selection = j_doc["CHART"].GetInt();
     }
 }
 
-void mmPrintableBase::date_range(const mmDateRange *date_range, int selection)
+void mmPrintableBase::date_range ( const mmDateRange *date_range, int selection )
 {
     m_date_range = date_range;
-    if (date_range)
+    if ( date_range )
     {
         m_begin_date = date_range->start_date();
         m_end_date = date_range->end_date();
@@ -260,7 +260,7 @@ void mmPrintableBase::date_range(const mmDateRange *date_range, int selection)
     m_date_selection = selection;
 }
 
-void mmPrintableBase::getDates(wxDateTime &begin, wxDateTime &end)
+void mmPrintableBase::getDates ( wxDateTime &begin, wxDateTime &end )
 {
     begin = m_begin_date;
     end = m_end_date;
@@ -269,51 +269,51 @@ void mmPrintableBase::getDates(wxDateTime &begin, wxDateTime &end)
 const wxString mmPrintableBase::getAccountNames() const
 {
     wxString accountsMsg;
-    if (accountArray_)
+    if ( accountArray_ )
     {
-        for (const auto &entry : *accountArray_)
+        for ( const auto &entry : *accountArray_ )
         {
-            accountsMsg.Append((accountsMsg.empty() ? "" : ", ") + entry);
+            accountsMsg.Append ( ( accountsMsg.empty() ? "" : ", " ) + entry );
         }
     }
     else
     {
-        accountsMsg << _("All Accounts");
+        accountsMsg << _( "All Accounts" );
     }
 
-    if (accountsMsg.empty())
+    if ( accountsMsg.empty() )
     {
-        accountsMsg = _("None");
+        accountsMsg = _( "None" );
     }
-    accountsMsg.Prepend(_("Accounts: "));
+    accountsMsg.Prepend ( _( "Accounts: " ) );
     return accountsMsg;
 }
 
-mmGeneralReport::mmGeneralReport(const Model_Report::Data *report)
-    : mmPrintableBase(report->REPORTNAME)
-    , m_report(report)
+mmGeneralReport::mmGeneralReport ( const Model_Report::Data *report )
+    : mmPrintableBase ( report->REPORTNAME )
+    , m_report ( report )
 {
 }
 
 wxString mmGeneralReport::getHTMLText()
 {
-    return Model_Report::instance().get_html(m_report);
+    return Model_Report::instance().get_html ( m_report );
 }
 
 int mmGeneralReport::report_parameters()
 {
     int params = 0;
     const auto content = m_report->SQLCONTENT.Lower();
-    if (content.Contains("&begin_date")
-            || content.Contains("&end_date"))
+    if ( content.Contains ( "&begin_date" )
+            || content.Contains ( "&end_date" ) )
     {
         params |= RepParams::DATE_RANGE;
     }
-    else if (content.Contains("&single_date"))
+    else if ( content.Contains ( "&single_date" ) )
     {
         params |= RepParams::SINGLE_DATE;
     }
-    else if (content.Contains("&budget_years"))
+    else if ( content.Contains ( "&budget_years" ) )
     {
         params |= RepParams::ONLY_YEARS;
     }
@@ -321,24 +321,24 @@ int mmGeneralReport::report_parameters()
     return params;
 }
 
-mm_html_template::mm_html_template(const wxString &arg_template): html_template(arg_template.ToStdWstring())
+mm_html_template::mm_html_template ( const wxString &arg_template ) : html_template ( arg_template.ToStdWstring() )
 {
     load_context();
 }
 
 void mm_html_template::load_context()
 {
-    (*this)(L"TODAY") = mmGetDateForDisplay(wxDate::Today().FormatISODate())
-                        + " " + wxDate::Now().FormatISOTime();
-    for (const auto &r: Model_Infotable::instance().all())
+    ( *this ) ( L"TODAY" ) = mmGetDateForDisplay ( wxDate::Today().FormatISODate() )
+                             + " " + wxDate::Now().FormatISOTime();
+    for ( const auto &r: Model_Infotable::instance().all() )
     {
-        (*this)(r.INFONAME.ToStdWstring()) = r.INFOVALUE;
+        ( *this ) ( r.INFONAME.ToStdWstring() ) = r.INFOVALUE;
     }
-    (*this)(L"INFOTABLE") = Model_Infotable::to_loop_t();
+    ( *this ) ( L"INFOTABLE" ) = Model_Infotable::to_loop_t();
 
     const Model_Currency::Data *currency = Model_Currency::GetBaseCurrency();
-    if (currency)
+    if ( currency )
     {
-        currency->to_template(*this);
+        currency->to_template ( *this );
     }
 }

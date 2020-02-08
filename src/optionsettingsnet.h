@@ -29,12 +29,12 @@ class OptionSettingsNet : public OptionSettingsBase
 public:
     OptionSettingsNet();
 
-    OptionSettingsNet(wxWindow *parent
-                      , wxWindowID id = wxID_ANY
-                      , const wxPoint &pos = wxDefaultPosition
-                      , const wxSize &size = wxDefaultSize
-                      , long style = wxTAB_TRAVERSAL
-                      , const wxString &name = "OptionSettingsNet");
+    OptionSettingsNet ( wxWindow *parent
+                        , wxWindowID id = wxID_ANY
+                        , const wxPoint &pos = wxDefaultPosition
+                        , const wxSize &size = wxDefaultSize
+                        , long style = wxTAB_TRAVERSAL
+                        , const wxString &name = "OptionSettingsNet" );
 
     ~OptionSettingsNet();
 
@@ -44,8 +44,8 @@ public:
 private:
     void Create();
 
-    void OnProxyChanged(wxCommandEvent &event);
-    void OnWebAppTest(wxCommandEvent &event);
+    void OnProxyChanged ( wxCommandEvent &event );
+    void OnWebAppTest ( wxCommandEvent &event );
 
 private:
     wxSpinCtrl *m_network_timeout = nullptr;

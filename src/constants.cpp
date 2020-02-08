@@ -25,25 +25,25 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "DB_Upgrade.h" /* for dbLatestVersion */
 #include <curl/curl.h>
 
-const wxSizerFlags g_flagsV = wxSizerFlags().Border(wxALL, 5);
-const wxSizerFlags g_flagsH      = wxSizerFlags(g_flagsV).Align(wxALIGN_CENTER_VERTICAL);
-const wxSizerFlags g_flagsCenter = wxSizerFlags(g_flagsV).Align(wxALIGN_CENTER);
-const wxSizerFlags g_flagsExpand = wxSizerFlags(g_flagsV).Align(wxEXPAND).Proportion(1);
-const wxSizerFlags g_flagsBorder1H      = wxSizerFlags(g_flagsH).Border(wxALL, 1);
-const wxSizerFlags g_flagsBorder1V      = wxSizerFlags(g_flagsV).Border(wxALL, 1);
-const wxSizerFlags g_flagsExpandBorder1 = wxSizerFlags(g_flagsExpand).Border(wxALL, 1);
+const wxSizerFlags g_flagsV = wxSizerFlags().Border ( wxALL, 5 );
+const wxSizerFlags g_flagsH      = wxSizerFlags ( g_flagsV ).Align ( wxALIGN_CENTER_VERTICAL );
+const wxSizerFlags g_flagsCenter = wxSizerFlags ( g_flagsV ).Align ( wxALIGN_CENTER );
+const wxSizerFlags g_flagsExpand = wxSizerFlags ( g_flagsV ).Align ( wxEXPAND ).Proportion ( 1 );
+const wxSizerFlags g_flagsBorder1H      = wxSizerFlags ( g_flagsH ).Border ( wxALL, 1 );
+const wxSizerFlags g_flagsBorder1V      = wxSizerFlags ( g_flagsV ).Border ( wxALL, 1 );
+const wxSizerFlags g_flagsExpandBorder1 = wxSizerFlags ( g_flagsExpand ).Border ( wxALL, 1 );
 
 const wxString g_CancelLabel =
 #if defined(__APPLE__)
-    wxTRANSLATE("Cancel");
+    wxTRANSLATE ( "Cancel" );
 #else
-    wxTRANSLATE("&Cancel ");
+    wxTRANSLATE ( "&Cancel " );
 #endif
 const wxString g_CloseLabel =
 #if defined(__APPLE__)
-    wxTRANSLATE("Close");
+    wxTRANSLATE ( "Close" );
 #else
-    wxTRANSLATE("&Close ");
+    wxTRANSLATE ( "&Close " );
 #endif
 //---------------------------------------------------------------------------
 const int mmex::MIN_DATAVERSION = 2;
@@ -53,7 +53,7 @@ const wxString mmex::DEFDELIMTER = ",";
 
 const wxString mmex::getProgramName()
 {
-    return wxString("Money Manager Ex");
+    return wxString ( "Money Manager Ex" );
 }
 
 const wxString mmex::getTitleProgramVersion()
@@ -69,38 +69,36 @@ int mmex::version::getDbLatestVersion()
 const wxString mmex::getProgramCopyright()
 {
 #define COMPILE_YEAR ( (__DATE__[ 7] - '0') * 1000 + \
-                       (__DATE__[ 8] - '0') *  100 + \
-                       (__DATE__[ 9] - '0') *   10 + \
-                       (__DATE__[10] - '0') )
-    return wxString::Format("(c) 2005-%d Madhan Kanagavel", COMPILE_YEAR);
+    (__DATE__[ 8] - '0') *  100 + \
+    (__DATE__[ 9] - '0') *   10 + \
+    (__DATE__[10] - '0') )
+    return wxString::Format ( "(c) 2005-%d Madhan Kanagavel", COMPILE_YEAR );
 }
 
-const wxString mmex::getCaption(const wxString &caption)
+const wxString mmex::getCaption ( const wxString &caption )
 {
-    return mmex::getProgramName() + (caption.IsEmpty() ? wxGetEmptyString() : " - " + caption);
+    return mmex::getProgramName() + ( caption.IsEmpty() ? wxGetEmptyString() : " - " + caption );
 }
 
 /* Namespace weblink */
-const wxString mmex::weblink::addReferralToURL(const wxString &BaseURL, const wxString &CampSource)
+const wxString mmex::weblink::addReferralToURL ( const wxString &BaseURL, const wxString &CampSource )
 {
     /*
     With Google analytics it's possible to send some data in URL
     to divide direct access from access through desktop app links
     https://support.google.com/analytics/answer/1033867?hl=en
     */
-
-    const wxString url = wxString::Format("%s?utm_campaign=Application_Desktop&utm_source=%s&utm_medium=MMEX_v%s"
-                                          , BaseURL, CampSource, mmex::version::string);
-
+    const wxString url = wxString::Format ( "%s?utm_campaign=Application_Desktop&utm_source=%s&utm_medium=MMEX_v%s"
+            , BaseURL, CampSource, mmex::version::string );
     return url;
 }
 
 const wxString mmex::weblink::GA = "https://www.google-analytics.com/collect?";
-const wxString mmex::weblink::WebSite = mmex::weblink::addReferralToURL("https://www.moneymanagerex.org", "Website");
+const wxString mmex::weblink::WebSite = mmex::weblink::addReferralToURL ( "https://www.moneymanagerex.org", "Website" );
 const wxString mmex::weblink::Releases = "https://api.github.com/repos/moneymanagerex/moneymanagerex/releases";
-const wxString mmex::weblink::News = mmex::weblink::addReferralToURL("https://www.moneymanagerex.org/news", "News");
+const wxString mmex::weblink::News = mmex::weblink::addReferralToURL ( "https://www.moneymanagerex.org/news", "News" );
 const wxString mmex::weblink::NewsRSS = "http://www.moneymanagerex.org/news?format=feed";
-const wxString mmex::weblink::Forum = mmex::weblink::addReferralToURL("https://forum.moneymanagerex.org", "Forum");
+const wxString mmex::weblink::Forum = mmex::weblink::addReferralToURL ( "https://forum.moneymanagerex.org", "Forum" );
 const wxString mmex::weblink::Wiki = "http://wiki.moneymanagerex.org";
 const wxString mmex::weblink::GitHub = "https://github.com/moneymanagerex/moneymanagerex";
 const wxString mmex::weblink::YouTube = "https://www.youtube.com/user/moneymanagerex";
@@ -138,25 +136,25 @@ const wxString INIDB_USE_TRANSACTION_SOUND = "USETRANSSOUND";
 const wxString INIDB_USE_ORG_DATE_COPYPASTE = "USEORIGDATEONCOPYPASTE";
 const wxString INIDB_SEND_USAGE_STATS = "SENDUSAGESTATS";
 
-const wxString VIEW_TRANS_FILTER_DIALOG_STR   = wxTRANSLATE("Advanced Filter");
-const wxString VIEW_TRANS_ALL_STR             = wxTRANSLATE("View All Transactions");
-const wxString VIEW_TRANS_TODAY_STR           = wxTRANSLATE("View Today");
-const wxString VIEW_TRANS_CURRENT_MONTH_STR   = wxTRANSLATE("View Current Month");
-const wxString VIEW_TRANS_LAST_30_DAYS_STR    = wxTRANSLATE("View Last 30 days");
-const wxString VIEW_TRANS_LAST_90_DAYS_STR    = wxTRANSLATE("View Last 90 days");
-const wxString VIEW_TRANS_LAST_MONTH_STR      = wxTRANSLATE("View Last Month");
-const wxString VIEW_TRANS_LAST_3MONTHS_STR    = wxTRANSLATE("View Last 3 Months");
-const wxString VIEW_TRANS_LAST_12MONTHS_STR   = wxTRANSLATE("View Last 12 Months");
-const wxString VIEW_TRANS_CURRENT_YEAR_STR    = wxTRANSLATE("View Current Year");
-const wxString VIEW_TRANS_CRRNT_FIN_YEAR_STR  = wxTRANSLATE("View Current Financial Year");
-const wxString VIEW_TRANS_LAST_YEAR_STR       = wxTRANSLATE("View Last Year");
-const wxString VIEW_TRANS_LAST_FIN_YEAR_STR   = wxTRANSLATE("View Last Financial Year");
-const wxString VIEW_TRANS_SINCE_STATEMENT_STR = wxTRANSLATE("View Since Statement Date");
+const wxString VIEW_TRANS_FILTER_DIALOG_STR   = wxTRANSLATE ( "Advanced Filter" );
+const wxString VIEW_TRANS_ALL_STR             = wxTRANSLATE ( "View All Transactions" );
+const wxString VIEW_TRANS_TODAY_STR           = wxTRANSLATE ( "View Today" );
+const wxString VIEW_TRANS_CURRENT_MONTH_STR   = wxTRANSLATE ( "View Current Month" );
+const wxString VIEW_TRANS_LAST_30_DAYS_STR    = wxTRANSLATE ( "View Last 30 days" );
+const wxString VIEW_TRANS_LAST_90_DAYS_STR    = wxTRANSLATE ( "View Last 90 days" );
+const wxString VIEW_TRANS_LAST_MONTH_STR      = wxTRANSLATE ( "View Last Month" );
+const wxString VIEW_TRANS_LAST_3MONTHS_STR    = wxTRANSLATE ( "View Last 3 Months" );
+const wxString VIEW_TRANS_LAST_12MONTHS_STR   = wxTRANSLATE ( "View Last 12 Months" );
+const wxString VIEW_TRANS_CURRENT_YEAR_STR    = wxTRANSLATE ( "View Current Year" );
+const wxString VIEW_TRANS_CRRNT_FIN_YEAR_STR  = wxTRANSLATE ( "View Current Financial Year" );
+const wxString VIEW_TRANS_LAST_YEAR_STR       = wxTRANSLATE ( "View Last Year" );
+const wxString VIEW_TRANS_LAST_FIN_YEAR_STR   = wxTRANSLATE ( "View Last Financial Year" );
+const wxString VIEW_TRANS_SINCE_STATEMENT_STR = wxTRANSLATE ( "View Since Statement Date" );
 
-const wxString VIEW_ACCOUNTS_ALL_STR = wxTRANSLATE("All");
-const wxString VIEW_ACCOUNTS_OPEN_STR = wxTRANSLATE("Open");
-const wxString VIEW_ACCOUNTS_CLOSED_STR = wxTRANSLATE("Closed");
-const wxString VIEW_ACCOUNTS_FAVORITES_STR = wxTRANSLATE("Favorites");
+const wxString VIEW_ACCOUNTS_ALL_STR = wxTRANSLATE ( "All" );
+const wxString VIEW_ACCOUNTS_OPEN_STR = wxTRANSLATE ( "Open" );
+const wxString VIEW_ACCOUNTS_CLOSED_STR = wxTRANSLATE ( "Closed" );
+const wxString VIEW_ACCOUNTS_FAVORITES_STR = wxTRANSLATE ( "Favorites" );
 
 const wxString INIDB_BUDGET_FINANCIAL_YEARS       = "BUDGET_FINANCIAL_YEARS";
 const wxString INIDB_BUDGET_INCLUDE_TRANSFERS     = "BUDGET_INCLUDE_TRANSFERS";

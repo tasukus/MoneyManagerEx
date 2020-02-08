@@ -28,7 +28,7 @@ class mmReportCategoryExpenses : public mmPrintableBase
 {
 public:
     enum TYPE { CATEGORY = 0, GOES, COME };
-    explicit mmReportCategoryExpenses(const wxString &title, enum TYPE type);
+    explicit mmReportCategoryExpenses ( const wxString &title, enum TYPE type );
     virtual ~mmReportCategoryExpenses();
 
     virtual void RefreshData();

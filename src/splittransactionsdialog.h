@@ -35,22 +35,22 @@ class wxStaticText;
 
 class SplitTransactionDialog: public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(SplitTransactionDialog);
+    wxDECLARE_DYNAMIC_CLASS ( SplitTransactionDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     /// Constructors
     SplitTransactionDialog();
-    SplitTransactionDialog(wxWindow *parent
-                           , std::vector<Split> &split
-                           , int transType
-                           , int accountID
-                           , double totalAmount = 0.0
-                           , const wxString &name = "SplitTransactionDialog"
-                          );
+    SplitTransactionDialog ( wxWindow *parent
+                             , std::vector<Split> &split
+                             , int transType
+                             , int accountID
+                             , double totalAmount = 0.0
+                             , const wxString &name = "SplitTransactionDialog"
+                           );
 
     /// Creation
-    bool Create(
+    bool Create (
         wxWindow *parent,
         wxWindowID id,
         const wxString &caption,
@@ -76,14 +76,14 @@ private:
     void DataToControls();
 
     /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_NEW
-    void OnButtonAddClick( wxCommandEvent &event );
+    void OnButtonAddClick ( wxCommandEvent &event );
 
     /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_DELETE
-    void OnButtonRemoveClick( wxCommandEvent &event );
+    void OnButtonRemoveClick ( wxCommandEvent &event );
 
     /// wxEVT_COMMAND_BUTTON_CLICKED event handler for wxID_EDIT
-    void OnButtonEditClick( wxCommandEvent &event );
-    void OnOk( wxCommandEvent &event );
+    void OnButtonEditClick ( wxCommandEvent &event );
+    void OnOk ( wxCommandEvent &event );
 
     void UpdateSplitTotal();
 
@@ -103,9 +103,9 @@ private:
     wxButton *itemButtonOK_ = nullptr;
 
     void SetDisplayEditDeleteButtons();
-    void OnListDblClick(wxDataViewEvent &event);
-    void OnListItemSelected(wxDataViewEvent &event);
-    void EditEntry(int id);
+    void OnListDblClick ( wxDataViewEvent &event );
+    void OnListItemSelected ( wxDataViewEvent &event );
+    void EditEntry ( int id );
     int selectedIndex_ = -1;
 };
 

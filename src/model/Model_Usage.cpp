@@ -40,12 +40,12 @@ Model_Usage::~Model_Usage()
 * Initialize the global Model_Usage table.
 * Reset the Model_Usage table or create the table if it does not exist.
 */
-Model_Usage &Model_Usage::instance(wxSQLite3Database *db)
+Model_Usage &Model_Usage::instance ( wxSQLite3Database *db )
 {
     Model_Usage &ins = Singleton<Model_Usage>::instance();
     ins.db_ = db;
     ins.destroy_cache();
-    ins.ensure(db);
+    ins.ensure ( db );
     ins.m_start = wxDateTime::Now();
 
     return ins;
@@ -57,51 +57,51 @@ Model_Usage &Model_Usage::instance()
     return Singleton<Model_Usage>::instance();
 }
 
-void Model_Usage::AppendToUsage(const wxString &json_string)
+void Model_Usage::AppendToUsage ( const wxString &json_string )
 {
-    wxLogDebug("===== Model_Usage::AppendToUsage =================");
-    wxLogDebug("%s", json_string);
-    wxLogDebug("\n");
-    m_json_usage.Add(json_string);
+    wxLogDebug ( "===== Model_Usage::AppendToUsage =================" );
+    wxLogDebug ( "%s", json_string );
+    wxLogDebug ( "\n" );
+    m_json_usage.Add ( json_string );
 }
 
-void Model_Usage::AppendToCache(const wxString &json_string)
+void Model_Usage::AppendToCache ( const wxString &json_string )
 {
-    wxLogDebug("===== Model_Usage::AppendToCache =================");
-    wxLogDebug("%s", json_string);
-    wxLogDebug("\n");
-    m_json_cache.Add(json_string);
+    wxLogDebug ( "===== Model_Usage::AppendToCache =================" );
+    wxLogDebug ( "%s", json_string );
+    wxLogDebug ( "\n" );
+    m_json_cache.Add ( json_string );
 }
 
 wxString Model_Usage::To_JSON_String() const
 {
     StringBuffer json_buffer;
-    PrettyWriter<StringBuffer> json_writer(json_buffer);
+    PrettyWriter<StringBuffer> json_writer ( json_buffer );
 
     json_writer.StartObject();
-    json_writer.Key("start");
-    json_writer.String(m_start.FormatISOCombined(' ').c_str());
+    json_writer.Key ( "start" );
+    json_writer.String ( m_start.FormatISOCombined ( ' ' ).c_str() );
 
-    json_writer.Key("end");
-    json_writer.String(wxDateTime::Now().FormatISOCombined(' ').c_str());
+    json_writer.Key ( "end" );
+    json_writer.String ( wxDateTime::Now().FormatISOCombined ( ' ' ).c_str() );
 
-    json_writer.Key("usage");
+    json_writer.Key ( "usage" );
     {
         json_writer.StartArray();
-        for (size_t i = 0; i < m_json_usage.GetCount(); i++)
+        for ( size_t i = 0; i < m_json_usage.GetCount(); i++ )
         {
-            const char *item = m_json_usage.Item(i).c_str();
-            json_writer.RawValue(item, strlen(item), kObjectType);
+            const char *item = m_json_usage.Item ( i ).c_str();
+            json_writer.RawValue ( item, strlen ( item ), kObjectType );
         }
         json_writer.EndArray();
     }
-    json_writer.Key("cache");
+    json_writer.Key ( "cache" );
     {
         json_writer.StartArray();
-        for (size_t i = 0; i < m_json_cache.GetCount(); i++)
+        for ( size_t i = 0; i < m_json_cache.GetCount(); i++ )
         {
-            const char *item = m_json_cache.Item(i).c_str();
-            json_writer.RawValue(item, strlen(item), kObjectType);
+            const char *item = m_json_cache.Item ( i ).c_str();
+            json_writer.RawValue ( item, strlen ( item ), kObjectType );
         }
         json_writer.EndArray();
     }
@@ -111,12 +111,12 @@ wxString Model_Usage::To_JSON_String() const
 
 wxString uuid()
 {
-    wxString UUID = Model_Setting::instance().GetStringSetting("UUID", wxEmptyString);
-    if (UUID.IsEmpty() || UUID.Length() < wxString("mac_20140428075834123").Length())
+    wxString UUID = Model_Setting::instance().GetStringSetting ( "UUID", wxEmptyString );
+    if ( UUID.IsEmpty() || UUID.Length() < wxString ( "mac_20140428075834123" ).Length() )
     {
         wxDateTime now = wxDateTime::UNow();
-        UUID = wxString::Format("%s_%s", wxPlatformInfo::Get().GetPortIdShortName(), now.Format("%Y%m%d%H%M%S%l"));
-        Model_Setting::instance().Set("UUID", UUID);
+        UUID = wxString::Format ( "%s_%s", wxPlatformInfo::Get().GetPortIdShortName(), now.Format ( "%Y%m%d%H%M%S%l" ) );
+        Model_Setting::instance().Set ( "UUID", UUID );
     }
     return UUID;
 }
@@ -124,8 +124,8 @@ wxString uuid()
 class SendStatsThread : public wxThread
 {
 public:
-    explicit SendStatsThread(const wxString &url) : wxThread()
-        , m_url(url) {};
+    explicit SendStatsThread ( const wxString &url ) : wxThread()
+        , m_url ( url ) {};
     ~SendStatsThread() {};
 
 protected:
@@ -133,13 +133,13 @@ protected:
     virtual ExitCode Entry();
 };
 
-void Model_Usage::pageview(const wxWindow *window, long plt /* = 0 msec*/)
+void Model_Usage::pageview ( const wxWindow *window, long plt /* = 0 msec*/ )
 {
-    if (!window)
+    if ( !window )
     {
         return;
     }
-    if (window->GetName().IsEmpty())
+    if ( window->GetName().IsEmpty() )
     {
         return;
     }
@@ -147,15 +147,15 @@ void Model_Usage::pageview(const wxWindow *window, long plt /* = 0 msec*/)
     const wxWindow *current = window;
 
     wxString documentTitle = window->GetLabel();
-    if (documentTitle.IsEmpty())
+    if ( documentTitle.IsEmpty() )
     {
         documentTitle = window->GetName();
     }
 
     wxString documentPath;
-    while (current)
+    while ( current )
     {
-        if (current->GetName().IsEmpty())
+        if ( current->GetName().IsEmpty() )
         {
             current = current->GetParent();
             continue;
@@ -164,16 +164,16 @@ void Model_Usage::pageview(const wxWindow *window, long plt /* = 0 msec*/)
         current = current->GetParent();
     }
 
-    if (plt)
+    if ( plt )
     {
-        timing(wxURI(documentPath).BuildURI(), wxURI(documentTitle).BuildURI(), plt);
+        timing ( wxURI ( documentPath ).BuildURI(), wxURI ( documentTitle ).BuildURI(), plt );
     }
-    return pageview(wxURI(documentPath).BuildURI(), wxURI(documentTitle).BuildURI(), plt);
+    return pageview ( wxURI ( documentPath ).BuildURI(), wxURI ( documentTitle ).BuildURI(), plt );
 }
 
-void Model_Usage::timing(const wxString &documentPath, const wxString &documentTitle, long plt /* = 0 msec*/)
+void Model_Usage::timing ( const wxString &documentPath, const wxString &documentTitle, long plt /* = 0 msec*/ )
 {
-    if (!Option::instance().getSendUsageStatistics())
+    if ( !Option::instance().getSendUsageStatistics() )
     {
         return;
     }
@@ -190,34 +190,34 @@ void Model_Usage::timing(const wxString &documentPath, const wxString &documentT
         { "dt", documentTitle },
         //        {"geoid", },
         { "ul", Option::instance().getLanguageISO6391() },
-        { "sr", wxString::Format("%ix%i", wxGetDisplaySize().GetX(), wxGetDisplaySize().GetY()) },
+        { "sr", wxString::Format ( "%ix%i", wxGetDisplaySize().GetX(), wxGetDisplaySize().GetY() ) },
         { "vp", "" },
-        { "sd", wxString::Format("%i-bits", wxDisplayDepth()) },
+        { "sd", wxString::Format ( "%i-bits", wxDisplayDepth() ) },
         // application
         { "an", "MoneyManagerEx" },
         { "av", mmex::version::string }, // application version
         // custom dimensions
         { "cd1", wxPlatformInfo::Get().GetPortIdShortName() },
-        { "plt", wxString::Format("%ld", plt)}
+        { "plt", wxString::Format ( "%ld", plt ) }
     };
 
-    for (const auto &kv : parameters)
+    for ( const auto &kv : parameters )
     {
-        if (kv.second.empty())
+        if ( kv.second.empty() )
         {
             continue;
         }
-        url += wxString::Format("%s=%s&", kv.first, kv.second);
+        url += wxString::Format ( "%s=%s&", kv.first, kv.second );
     }
 
     // Spawn thread to send statistics
-    SendStatsThread *thread = new SendStatsThread(url.RemoveLast()); // override the last &
+    SendStatsThread *thread = new SendStatsThread ( url.RemoveLast() ); // override the last &
     thread->Run();
 }
 
-void Model_Usage::pageview(const wxString &documentPath, const wxString &documentTitle, long plt /* = 0 msec*/)
+void Model_Usage::pageview ( const wxString &documentPath, const wxString &documentTitle, long plt /* = 0 msec*/ )
 {
-    if (!Option::instance().getSendUsageStatistics())
+    if ( !Option::instance().getSendUsageStatistics() )
     {
         return;
     }
@@ -234,37 +234,37 @@ void Model_Usage::pageview(const wxString &documentPath, const wxString &documen
         { "dt", documentTitle },
         //        {"geoid", },
         { "ul", Option::instance().getLanguageISO6391() },
-        { "sr", wxString::Format("%ix%i", wxGetDisplaySize().GetX(), wxGetDisplaySize().GetY()) },
+        { "sr", wxString::Format ( "%ix%i", wxGetDisplaySize().GetX(), wxGetDisplaySize().GetY() ) },
         { "vp", "" },
-        { "sd", wxString::Format("%i-bits", wxDisplayDepth()) },
+        { "sd", wxString::Format ( "%i-bits", wxDisplayDepth() ) },
         // application
         { "an", "MoneyManagerEx" },
         { "av", mmex::version::string }, // application version
         // custom dimensions
         { "cd1", wxPlatformInfo::Get().GetPortIdShortName() },
-        { "plt", wxString::Format("%ld", plt)}
+        { "plt", wxString::Format ( "%ld", plt ) }
     };
 
-    for (const auto &kv : parameters)
+    for ( const auto &kv : parameters )
     {
-        if (kv.second.empty())
+        if ( kv.second.empty() )
         {
             continue;
         }
-        url += wxString::Format("%s=%s&", kv.first, kv.second);
+        url += wxString::Format ( "%s=%s&", kv.first, kv.second );
     }
 
     // Spawn thread to send statistics
-    SendStatsThread *thread = new SendStatsThread(url.RemoveLast()); // override the last &
+    SendStatsThread *thread = new SendStatsThread ( url.RemoveLast() ); // override the last &
     thread->Run();
 }
 
 wxThread::ExitCode SendStatsThread::Entry()
 {
-    wxLogDebug("Sending stats (thread %lu, priority %u, %s, %i cores): %s",
-               GetId(), GetPriority(), wxGetOsDescription(), GetCPUCount(), m_url);
+    wxLogDebug ( "Sending stats (thread %lu, priority %u, %s, %i cores): %s",
+                 GetId(), GetPriority(), wxGetOsDescription(), GetCPUCount(), m_url );
     wxString result = wxEmptyString;
-    http_get_data(m_url, result, "User-Agent: " + wxGetOsDescription() + "\r\n");
-    wxLogDebug("Response: %s", result);
+    http_get_data ( m_url, result, "User-Agent: " + wxGetOsDescription() + "\r\n" );
+    wxLogDebug ( "Response: %s", result );
     return nullptr;
 }

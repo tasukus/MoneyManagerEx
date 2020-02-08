@@ -33,12 +33,12 @@ Model_Subcategory::~Model_Subcategory()
 * Initialize the global Model_Subcategory table.
 * Reset the Model_Subcategory table or create the table if it does not exist.
 */
-Model_Subcategory &Model_Subcategory::instance(wxSQLite3Database *db)
+Model_Subcategory &Model_Subcategory::instance ( wxSQLite3Database *db )
 {
     Model_Subcategory &ins = Singleton<Model_Subcategory>::instance();
     ins.db_ = db;
     ins.destroy_cache();
-    ins.ensure(db);
+    ins.ensure ( db );
     ins.preload();
 
     return ins;
@@ -51,28 +51,28 @@ Model_Subcategory &Model_Subcategory::instance()
 }
 
 /** Return the Data record instance for the given subcategory name and category ID */
-Model_Subcategory::Data *Model_Subcategory::get(const wxString &name, int category_id)
+Model_Subcategory::Data *Model_Subcategory::get ( const wxString &name, int category_id )
 {
     //FIXME: return wrong value
-    Data *category = this->get_one(SUBCATEGNAME(name), CATEGID(category_id));
-    if (category)
+    Data *category = this->get_one ( SUBCATEGNAME ( name ), CATEGID ( category_id ) );
+    if ( category )
     {
         return category;
     }
 
-    Data_Set items = this->find(SUBCATEGNAME(name), CATEGID(category_id));
-    if (!items.empty())
+    Data_Set items = this->find ( SUBCATEGNAME ( name ), CATEGID ( category_id ) );
+    if ( !items.empty() )
     {
-        category = this->get(items[0].SUBCATEGID, this->db_);
+        category = this->get ( items[0].SUBCATEGID, this->db_ );
     }
     return category;
 }
 
-bool Model_Subcategory::is_used(int id)
+bool Model_Subcategory::is_used ( int id )
 {
-    int cat_id = instance().get(id)->CATEGID;
-    const auto &deposits = Model_Billsdeposits::instance().find(Model_Billsdeposits::CATEGID(cat_id), Model_Billsdeposits::SUBCATEGID(id));
-    const auto &trans = Model_Checking::instance().find(Model_Checking::CATEGID(cat_id), Model_Checking::SUBCATEGID(id));
+    int cat_id = instance().get ( id )->CATEGID;
+    const auto &deposits = Model_Billsdeposits::instance().find ( Model_Billsdeposits::CATEGID ( cat_id ), Model_Billsdeposits::SUBCATEGID ( id ) );
+    const auto &trans = Model_Checking::instance().find ( Model_Checking::CATEGID ( cat_id ), Model_Checking::SUBCATEGID ( id ) );
     return !deposits.empty() || !trans.empty();
 }
 

@@ -33,13 +33,13 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 class SplitDetailDialog: public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(SplitDetailDialog);
+    wxDECLARE_DYNAMIC_CLASS ( SplitDetailDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     /// Constructors
     SplitDetailDialog();
-    SplitDetailDialog(
+    SplitDetailDialog (
         wxWindow *parent
         , Split &split
         , int transType
@@ -51,15 +51,15 @@ public:
     }
 
 private:
-    bool Create(wxWindow *parent);
+    bool Create ( wxWindow *parent );
     void CreateControls();
     void DataToControls();
 
-    void OnButtonCategoryClick( wxCommandEvent &event );
+    void OnButtonCategoryClick ( wxCommandEvent &event );
 
-    void OnButtonOKClick( wxCommandEvent &event );
-    void onTextEntered(wxCommandEvent &event);
-    void OnCancel(wxCommandEvent &WXUNUSED(event));
+    void OnButtonOKClick ( wxCommandEvent &event );
+    void onTextEntered ( wxCommandEvent &event );
+    void OnCancel ( wxCommandEvent &WXUNUSED ( event ) );
 
     Split split_;
     Model_Currency::Data *m_currency = nullptr;

@@ -41,7 +41,7 @@ public:
     * Return the static instance address for Model_Translink table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Translink &instance(wxSQLite3Database *db);
+    static Model_Translink &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Translink table
@@ -50,18 +50,18 @@ public:
     static Model_Translink &instance();
 
 public:
-    static CHECKING_TYPE type_checking(const int tt);
+    static CHECKING_TYPE type_checking ( const int tt );
 
 public:
     /* Create the translink record as Asset */
-    static Model_Translink::Data *SetAssetTranslink(const int asset_id
+    static Model_Translink::Data *SetAssetTranslink ( const int asset_id
             , const int checking_id
-            , const CHECKING_TYPE checking_type = AS_INCOME_EXPENSE);
+            , const CHECKING_TYPE checking_type = AS_INCOME_EXPENSE );
 
     /* Create a translink record as Stock */
-    static Model_Translink::Data *SetStockTranslink(const int stock_id
+    static Model_Translink::Data *SetStockTranslink ( const int stock_id
             , const int checking_id
-            , const CHECKING_TYPE checking_type = AS_INCOME_EXPENSE);
+            , const CHECKING_TYPE checking_type = AS_INCOME_EXPENSE );
 
     /*
     Return a list of translink records for the associated foreign table type.
@@ -69,23 +69,23 @@ public:
     select * from TRANSLINK where LINKTYPE = "Asset" AND LINKRECORDID = link_id;
     select * from TRANSLINK where LINKTYPE = "Stock" AND LINKRECORDID = link_id;
     */
-    static Model_Translink::Data_Set TranslinkList(Model_Attachment::REFTYPE link_table
-            , const int link_id);
+    static Model_Translink::Data_Set TranslinkList ( Model_Attachment::REFTYPE link_table
+            , const int link_id );
 
-    static bool HasShares(const int stock_id);
+    static bool HasShares ( const int stock_id );
 
     /*
     Return the link record for the checking account
     Equivalent SQL statements:
     select * from TRANSLINK where CHECKINGACCOUNTID = checking_id;
     */
-    static Model_Translink::Data TranslinkRecord(const int checking_id);
+    static Model_Translink::Data TranslinkRecord ( const int checking_id );
 
     /* Remove all records associated with the Translink list */
-    static void RemoveTransLinkRecords(Model_Attachment::REFTYPE table_type, const int entry_id);
+    static void RemoveTransLinkRecords ( Model_Attachment::REFTYPE table_type, const int entry_id );
 
     /* Remove the checking account entry and its associated transfer transaction. */
-    static void RemoveTranslinkEntry(const int checking_account_id);
+    static void RemoveTranslinkEntry ( const int checking_account_id );
 
     /*
     stock_entry.PURCHASEPRICE ... obsolete. This is now on a per entry basis.
@@ -93,14 +93,14 @@ public:
     stock_entry.VALUE     = value of shares based on:
     ... share_entry.SHARENUMBER * share_entry.SHAREPRICE
     */
-    static void UpdateStockValue(Model_Stock::Data *stock_entry);
-    static void UpdateAssetValue(Model_Asset::Data *asset_entry);
+    static void UpdateStockValue ( Model_Stock::Data *stock_entry );
+    static void UpdateAssetValue ( Model_Asset::Data *asset_entry );
 
     /* Return true with the account id of the first share entry in the stock translink list */
-    static bool ShareAccountId(int &stock_entry_id);
+    static bool ShareAccountId ( int &stock_entry_id );
 
 private:
 
-    static Model_Translink::Data *SetTranslink(const int checking_id, const CHECKING_TYPE checking_type
-            , const wxString &link_type, const int link_record_id);
+    static Model_Translink::Data *SetTranslink ( const int checking_id, const CHECKING_TYPE checking_type
+            , const wxString &link_type, const int link_record_id );
 };

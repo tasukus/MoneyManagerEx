@@ -27,28 +27,28 @@ class wxSpinCtrl;
 
 class mmCustomFieldEditDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmCustomFieldEditDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmCustomFieldEditDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmCustomFieldEditDialog() {};
-    mmCustomFieldEditDialog(wxWindow *parent, Model_CustomField::Data *field, const wxString &fieldRefType);
+    mmCustomFieldEditDialog ( wxWindow *parent, Model_CustomField::Data *field, const wxString &fieldRefType );
 
     Model_CustomField::Data *m_field = nullptr;
 private:
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
     void CreateControls();
     void dataToControls();
-    void OnOk(wxCommandEvent &event);
-    void OnCancel(wxCommandEvent &event);
-    void OnQuit(wxCloseEvent &event);
-    void OnChangeType(wxCommandEvent &event);
-    void OnChangeType(wxCommandEvent &event, bool OnDataToControls);
+    void OnOk ( wxCommandEvent &event );
+    void OnCancel ( wxCommandEvent &event );
+    void OnQuit ( wxCloseEvent &event );
+    void OnChangeType ( wxCommandEvent &event );
+    void OnChangeType ( wxCommandEvent &event, bool OnDataToControls );
 
     wxString m_fieldRefType;
     wxTextCtrl *m_itemDescription = nullptr;

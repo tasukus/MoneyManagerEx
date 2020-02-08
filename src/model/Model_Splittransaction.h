@@ -43,7 +43,7 @@ public:
     * Return the static instance address for Model_Splittransaction table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Splittransaction &instance(wxSQLite3Database *db);
+    static Model_Splittransaction &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Splittransaction table
@@ -52,11 +52,11 @@ public:
     static Model_Splittransaction &instance();
 
 public:
-    static double get_total(const Data_Set &rows);
-    static double get_total(const std::vector<Split> &local_splits);
-    static const wxString get_tooltip(const std::vector<Split> &local_splits, const Model_Currency::Data *currency);
+    static double get_total ( const Data_Set &rows );
+    static double get_total ( const std::vector<Split> &local_splits );
+    static const wxString get_tooltip ( const std::vector<Split> &local_splits, const Model_Currency::Data *currency );
     std::map<int, Model_Splittransaction::Data_Set> get_all();
-    int update(const Data_Set &rows, int transactionID);
+    int update ( const Data_Set &rows, int transactionID );
 };
 
 #endif

@@ -30,7 +30,7 @@ class mmCustomData : public wxDialog
 {
 
 protected:
-    mmCustomData(wxDialog *dialog, const wxString &ref_type, int ref_id);
+    mmCustomData ( wxDialog *dialog, const wxString &ref_type, int ref_id );
 private:
     wxDialog *m_dialog = nullptr;
     wxStaticBox *m_static_box=nullptr;
@@ -38,34 +38,34 @@ private:
     int m_ref_id = -1;
     Model_CustomField::Data_Set m_fields;
     std::map<wxWindowID, wxString> m_data_changed;
-    void OnStringChanged(wxCommandEvent &event);
-    void OnDateChanged(wxDateEvent &event);
-    void OnTimeChanged(wxDateEvent &event);
-    void OnMultiChoice(wxCommandEvent &event);
-    void OnSingleChoice(wxCommandEvent &event);
-    void OnCheckBoxChanged(wxCommandEvent &event);
-    void OnCheckBoxActivated(wxCommandEvent &event);
-    void OnDoubleChanged(wxCommandEvent &event);
-    void OnIntegerChanged(wxCommandEvent &event);
-    bool IsWidgetChanged(wxWindowID id);
-    void SetWidgetChanged(wxWindowID id, const wxString &data);
-    void ResetWidgetChanged(wxWindowID id);
+    void OnStringChanged ( wxCommandEvent &event );
+    void OnDateChanged ( wxDateEvent &event );
+    void OnTimeChanged ( wxDateEvent &event );
+    void OnMultiChoice ( wxCommandEvent &event );
+    void OnSingleChoice ( wxCommandEvent &event );
+    void OnCheckBoxChanged ( wxCommandEvent &event );
+    void OnCheckBoxActivated ( wxCommandEvent &event );
+    void OnDoubleChanged ( wxCommandEvent &event );
+    void OnIntegerChanged ( wxCommandEvent &event );
+    bool IsWidgetChanged ( wxWindowID id );
+    void SetWidgetChanged ( wxWindowID id, const wxString &data );
+    void ResetWidgetChanged ( wxWindowID id );
     wxWindowID m_init_control_id = wxID_ANY;
     wxWindowID m_init_label_id = wxID_ANY;
 
 public:
     mmCustomData();
-    bool FillCustomFields(wxBoxSizer *box_sizer);
-    bool SaveCustomValues(int ref_id);
-    const wxString GetWidgetData(wxWindowID controlID) const;
-    int GetWidgetType(wxWindowID controlID) const;
+    bool FillCustomFields ( wxBoxSizer *box_sizer );
+    bool SaveCustomValues ( int ref_id );
+    const wxString GetWidgetData ( wxWindowID controlID ) const;
+    int GetWidgetType ( wxWindowID controlID ) const;
     size_t GetCustomFieldsCount() const
     {
         return m_fields.size();
     }
     size_t GetActiveCustomFieldsCount() const;
     std::map<wxString, wxString> GetActiveCustomFields() const;
-    void SetBaseID(const wxWindowID id)
+    void SetBaseID ( const wxWindowID id )
     {
         m_init_control_id = id;
     }
@@ -73,7 +73,7 @@ public:
     {
         return m_init_control_id;
     }
-    void SetLabelID(const wxWindowID id)
+    void SetLabelID ( const wxWindowID id )
     {
         m_init_label_id = id;
     }
@@ -87,7 +87,7 @@ public:
     }
     // TODO: void SetRefID(int ref_id) { m_ref_id = ref_id; }
     bool IsSomeWidgetChanged() const;
-    bool IsDataFound(const Model_Checking::Full_Data &tran);
+    bool IsDataFound ( const Model_Checking::Full_Data &tran );
     void ResetWidgetsChanged();
     void ClearSettings() const;
     bool IsCustomPanelShown() const;
@@ -97,5 +97,5 @@ public:
 class mmCustomDataTransaction : public mmCustomData
 {
 public:
-    mmCustomDataTransaction(wxDialog *dialog, int ref_id, wxWindowID base_id);
+    mmCustomDataTransaction ( wxDialog *dialog, int ref_id, wxWindowID base_id );
 };

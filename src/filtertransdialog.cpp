@@ -46,24 +46,24 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 static const wxString TRANSACTION_STATUSES[] =
 {
-    wxTRANSLATE("None"),
-    wxTRANSLATE("Reconciled"),
-    wxTRANSLATE("Void"),
-    wxTRANSLATE("Follow up"),
-    wxTRANSLATE("Duplicate"),
-    wxTRANSLATE("Un-Reconciled"),
-    wxTRANSLATE("All Except Reconciled")
+    wxTRANSLATE ( "None" ),
+    wxTRANSLATE ( "Reconciled" ),
+    wxTRANSLATE ( "Void" ),
+    wxTRANSLATE ( "Follow up" ),
+    wxTRANSLATE ( "Duplicate" ),
+    wxTRANSLATE ( "Un-Reconciled" ),
+    wxTRANSLATE ( "All Except Reconciled" )
 };
 
-wxIMPLEMENT_DYNAMIC_CLASS(mmFilterTransactionsDialog, wxDialog);
+wxIMPLEMENT_DYNAMIC_CLASS ( mmFilterTransactionsDialog, wxDialog );
 
-wxBEGIN_EVENT_TABLE(mmFilterTransactionsDialog, wxDialog)
-    EVT_CHECKBOX(wxID_ANY, mmFilterTransactionsDialog::OnCheckboxClick)
-    EVT_CHOICE(ID_CHOICE_DATE_RANGE, mmFilterTransactionsDialog::OnDateRangeChanged)
-    EVT_BUTTON(wxID_OK, mmFilterTransactionsDialog::OnButtonokClick)
-    EVT_BUTTON(wxID_CANCEL, mmFilterTransactionsDialog::OnButtoncancelClick)
-    EVT_BUTTON(wxID_CLEAR, mmFilterTransactionsDialog::OnButtonClearClick)
-    EVT_BUTTON(wxID_MORE, mmFilterTransactionsDialog::OnMoreFields)
+wxBEGIN_EVENT_TABLE ( mmFilterTransactionsDialog, wxDialog )
+    EVT_CHECKBOX ( wxID_ANY, mmFilterTransactionsDialog::OnCheckboxClick )
+    EVT_CHOICE ( ID_CHOICE_DATE_RANGE, mmFilterTransactionsDialog::OnDateRangeChanged )
+    EVT_BUTTON ( wxID_OK, mmFilterTransactionsDialog::OnButtonokClick )
+    EVT_BUTTON ( wxID_CANCEL, mmFilterTransactionsDialog::OnButtoncancelClick )
+    EVT_BUTTON ( wxID_CLEAR, mmFilterTransactionsDialog::OnButtonClearClick )
+    EVT_BUTTON ( wxID_MORE, mmFilterTransactionsDialog::OnMoreFields )
 wxEND_EVENT_TABLE()
 
 mmFilterTransactionsDialog::mmFilterTransactionsDialog()
@@ -72,76 +72,70 @@ mmFilterTransactionsDialog::mmFilterTransactionsDialog()
 
 mmFilterTransactionsDialog::~mmFilterTransactionsDialog()
 {
-    if (m_custom_fields)
+    if ( m_custom_fields )
     {
         delete m_custom_fields;
     }
 
-    std::for_each(m_all_date_ranges.begin(), m_all_date_ranges.end(), std::mem_fun(&mmDateRange::destroy));
+    std::for_each ( m_all_date_ranges.begin(), m_all_date_ranges.end(), std::mem_fun ( &mmDateRange::destroy ) );
     m_all_date_ranges.clear();
 }
 
-mmFilterTransactionsDialog::mmFilterTransactionsDialog(wxWindow *parent, int account_id)
-    : refAccountID_(account_id)
-    , refAccountStr_("")
-    , m_filterStatus("")
+mmFilterTransactionsDialog::mmFilterTransactionsDialog ( wxWindow *parent, int account_id )
+    : refAccountID_ ( account_id )
+    , refAccountStr_ ( "" )
+    , m_filterStatus ( "" )
 {
-    int day = Model_Infotable::instance().GetIntInfo("FINANCIAL_YEAR_START_DAY", 1);
-    int month = Model_Infotable::instance().GetIntInfo("FINANCIAL_YEAR_START_MONTH", 7);
-
-    m_all_date_ranges.push_back(new mmCurrentMonth());
-    m_all_date_ranges.push_back(new mmCurrentMonthToDate());
-    m_all_date_ranges.push_back(new mmLastMonth());
-    m_all_date_ranges.push_back(new mmLast30Days());
-    m_all_date_ranges.push_back(new mmLast90Days());
-    m_all_date_ranges.push_back(new mmLast3Months());
-    m_all_date_ranges.push_back(new mmLast12Months());
-    m_all_date_ranges.push_back(new mmCurrentYear());
-    m_all_date_ranges.push_back(new mmCurrentYearToDate());
-    m_all_date_ranges.push_back(new mmLastYear());
-    m_all_date_ranges.push_back(new mmCurrentFinancialYear(day, month));
-    m_all_date_ranges.push_back(new mmCurrentFinancialYearToDate(day, month));
-    m_all_date_ranges.push_back(new mmLastFinancialYear(day, month));
-    m_all_date_ranges.push_back(new mmAllTime());
-    m_all_date_ranges.push_back(new mmLast365Days());
-    m_all_date_ranges.push_back(new mmSpecifiedRange(wxDate::Today(), wxDate::Today()));
-
-    m_custom_fields = new mmCustomDataTransaction(this, 0, wxID_HIGHEST + 11600);
+    int day = Model_Infotable::instance().GetIntInfo ( "FINANCIAL_YEAR_START_DAY", 1 );
+    int month = Model_Infotable::instance().GetIntInfo ( "FINANCIAL_YEAR_START_MONTH", 7 );
+    m_all_date_ranges.push_back ( new mmCurrentMonth() );
+    m_all_date_ranges.push_back ( new mmCurrentMonthToDate() );
+    m_all_date_ranges.push_back ( new mmLastMonth() );
+    m_all_date_ranges.push_back ( new mmLast30Days() );
+    m_all_date_ranges.push_back ( new mmLast90Days() );
+    m_all_date_ranges.push_back ( new mmLast3Months() );
+    m_all_date_ranges.push_back ( new mmLast12Months() );
+    m_all_date_ranges.push_back ( new mmCurrentYear() );
+    m_all_date_ranges.push_back ( new mmCurrentYearToDate() );
+    m_all_date_ranges.push_back ( new mmLastYear() );
+    m_all_date_ranges.push_back ( new mmCurrentFinancialYear ( day, month ) );
+    m_all_date_ranges.push_back ( new mmCurrentFinancialYearToDate ( day, month ) );
+    m_all_date_ranges.push_back ( new mmLastFinancialYear ( day, month ) );
+    m_all_date_ranges.push_back ( new mmAllTime() );
+    m_all_date_ranges.push_back ( new mmLast365Days() );
+    m_all_date_ranges.push_back ( new mmSpecifiedRange ( wxDate::Today(), wxDate::Today() ) );
+    m_custom_fields = new mmCustomDataTransaction ( this, 0, wxID_HIGHEST + 11600 );
     constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
-    Create(parent, wxID_ANY, _("Transaction Filter"), wxDefaultPosition, wxSize(400, 300), style);
+    Create ( parent, wxID_ANY, _( "Transaction Filter" ), wxDefaultPosition, wxSize ( 400, 300 ), style );
 }
 
-bool mmFilterTransactionsDialog::Create(wxWindow *parent
-                                        , wxWindowID id
-                                        , const wxString &caption
-                                        , const wxPoint &pos
-                                        , const wxSize &size
-                                        , long style)
+bool mmFilterTransactionsDialog::Create ( wxWindow *parent
+    , wxWindowID id
+    , const wxString &caption
+    , const wxPoint &pos
+    , const wxSize &size
+    , long style )
 {
-    SetExtraStyle(GetExtraStyle() | wxWS_EX_BLOCK_EVENTS);
-    wxDialog::Create(parent, id, caption, pos, size, style);
-
+    SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
+    wxDialog::Create ( parent, id, caption, pos, size, style );
     CreateControls();
-    GetStoredSettings(-1);
+    GetStoredSettings ( -1 );
     dataToControls();
-
-    GetSizer()->Fit(this);
-    GetSizer()->SetSizeHints(this);
+    GetSizer()->Fit ( this );
+    GetSizer()->SetSizeHints ( this );
     this->SetInitialSize();
-    SetMinSize(wxSize(400, 580));
-    SetIcon(mmex::getProgramIcon());
-
+    SetMinSize ( wxSize ( 400, 580 ) );
+    SetIcon ( mmex::getProgramIcon() );
     Centre();
     return true;
 }
 
 int mmFilterTransactionsDialog::ShowModal()
 {
-    GetStoredSettings(-1);
+    GetStoredSettings ( -1 );
     dataToControls();
     // rebuild the payee list as it may have changed
     BuildPayeeList();
-
     return wxDialog::ShowModal();
 }
 
@@ -149,329 +143,289 @@ void mmFilterTransactionsDialog::BuildPayeeList()
 {
     wxArrayString all_payees = Model_Payee::instance().all_payee_names();
     wxString selected = cbPayee_->GetValue();
-    cbPayee_->SetEvtHandlerEnabled(false);
+    cbPayee_->SetEvtHandlerEnabled ( false );
     cbPayee_->Clear();
-    if (!all_payees.empty())
+
+    if ( !all_payees.empty() )
     {
-        cbPayee_->Insert(all_payees, 0);
-        cbPayee_->AutoComplete(all_payees);
-        cbPayee_->SetValue(selected);
+        cbPayee_->Insert ( all_payees, 0 );
+        cbPayee_->AutoComplete ( all_payees );
+        cbPayee_->SetValue ( selected );
     }
-    cbPayee_->SetEvtHandlerEnabled(true);
+
+    cbPayee_->SetEvtHandlerEnabled ( true );
 }
 
 void mmFilterTransactionsDialog::dataToControls()
 {
     BuildPayeeList();
-    from_json(settings_string_);
+    from_json ( settings_string_ );
 }
 
 void mmFilterTransactionsDialog::CreateControls()
 {
-
-    wxBoxSizer *box_sizer = new wxBoxSizer(wxVERTICAL);
-    this->SetSizer(box_sizer);
-
-    wxBoxSizer *box_sizer1 = new wxBoxSizer(wxHORIZONTAL);
-    wxBoxSizer *box_sizer2 = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer *box_sizer3 = new wxBoxSizer(wxVERTICAL);
-    box_sizer->Add(box_sizer1, g_flagsExpand);
-    box_sizer1->Add(box_sizer2, g_flagsExpand);
-    box_sizer1->Add(box_sizer3, g_flagsExpand);
-
-    wxStaticBox *static_box_sizer = new wxStaticBox(this, wxID_ANY, _("Specify"));
-    wxStaticBoxSizer *itemStaticBoxSizer4 = new wxStaticBoxSizer(static_box_sizer, wxVERTICAL);
-    box_sizer2->Add(itemStaticBoxSizer4, 1, wxGROW | wxALL, 10);
-
+    wxBoxSizer *box_sizer = new wxBoxSizer ( wxVERTICAL );
+    this->SetSizer ( box_sizer );
+    wxBoxSizer *box_sizer1 = new wxBoxSizer ( wxHORIZONTAL );
+    wxBoxSizer *box_sizer2 = new wxBoxSizer ( wxVERTICAL );
+    wxBoxSizer *box_sizer3 = new wxBoxSizer ( wxVERTICAL );
+    box_sizer->Add ( box_sizer1, g_flagsExpand );
+    box_sizer1->Add ( box_sizer2, g_flagsExpand );
+    box_sizer1->Add ( box_sizer3, g_flagsExpand );
+    wxStaticBox *static_box_sizer = new wxStaticBox ( this, wxID_ANY, _( "Specify" ) );
+    wxStaticBoxSizer *itemStaticBoxSizer4 = new wxStaticBoxSizer ( static_box_sizer, wxVERTICAL );
+    box_sizer2->Add ( itemStaticBoxSizer4, 1, wxGROW | wxALL, 10 );
     /******************************************************************************
      Items Panel
     *******************************************************************************/
-    wxPanel *itemPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-    itemStaticBoxSizer4->Add(itemPanel, g_flagsExpand);
-
-    wxBoxSizer *itemBoxSizer4 = new wxBoxSizer(wxVERTICAL);
-    wxFlexGridSizer *itemPanelSizer = new wxFlexGridSizer(0, 2, 0, 0);
-    itemPanelSizer->AddGrowableCol(1, 1);
-
-    itemPanel->SetSizer(itemBoxSizer4);
-    itemBoxSizer4->Add(itemPanelSizer, g_flagsExpand);
-
+    wxPanel *itemPanel = new wxPanel ( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+    itemStaticBoxSizer4->Add ( itemPanel, g_flagsExpand );
+    wxBoxSizer *itemBoxSizer4 = new wxBoxSizer ( wxVERTICAL );
+    wxFlexGridSizer *itemPanelSizer = new wxFlexGridSizer ( 0, 2, 0, 0 );
+    itemPanelSizer->AddGrowableCol ( 1, 1 );
+    itemPanel->SetSizer ( itemBoxSizer4 );
+    itemBoxSizer4->Add ( itemPanelSizer, g_flagsExpand );
     //--Start of Row --------------------------------------------------------
-    accountCheckBox_ = new wxCheckBox(itemPanel, wxID_ANY, _("Account")
-                                      , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    itemPanelSizer->Add(accountCheckBox_, g_flagsH);
-
-    accountDropDown_ = new wxChoice(itemPanel
-                                    , wxID_ANY, wxDefaultPosition, wxSize(220, -1)
-                                    , Model_Account::instance().all_checking_account_names(), 0);
-    itemPanelSizer->Add(accountDropDown_, g_flagsExpand);
-
+    accountCheckBox_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Account" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    itemPanelSizer->Add ( accountCheckBox_, g_flagsH );
+    accountDropDown_ = new wxChoice ( itemPanel
+        , wxID_ANY, wxDefaultPosition, wxSize ( 220, -1 )
+        , Model_Account::instance().all_checking_account_names(), 0 );
+    itemPanelSizer->Add ( accountDropDown_, g_flagsExpand );
     //--End of Row --------------------------------------------------------
+    m_dateRangeCheckBox = new wxCheckBox ( itemPanel, wxID_ANY, _( "Date Range" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    itemPanelSizer->Add ( m_dateRangeCheckBox, g_flagsH );
+    m_date_ranges = new wxChoice ( itemPanel, ID_CHOICE_DATE_RANGE );
 
-    m_dateRangeCheckBox = new wxCheckBox(itemPanel, wxID_ANY, _("Date Range")
-                                         , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    itemPanelSizer->Add(m_dateRangeCheckBox, g_flagsH);
-
-    m_date_ranges = new wxChoice(itemPanel, ID_CHOICE_DATE_RANGE);
-    for (const auto &date_range : m_all_date_ranges)
+    for ( const auto &date_range : m_all_date_ranges )
     {
-        m_date_ranges->Append(date_range->local_title(), date_range);
-    }
-    itemPanelSizer->Add(m_date_ranges, g_flagsH);
-    itemPanelSizer->AddSpacer(1);
-
-    m_fromDateCtrl = new wxDatePickerCtrl(itemPanel, wxID_FIRST, wxDefaultDateTime
-                                          , wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
-    m_toDateCtrl = new wxDatePickerCtrl(itemPanel, wxID_LAST, wxDefaultDateTime
-                                        , wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN);
-
-    wxBoxSizer *dateSizer = new wxBoxSizer(wxHORIZONTAL);
-    dateSizer->Add(m_fromDateCtrl, g_flagsExpand);
-    dateSizer->AddSpacer(5);
-    dateSizer->Add(m_toDateCtrl, g_flagsExpand);
-    itemPanelSizer->Add(dateSizer, wxSizerFlags(g_flagsExpand).Border(0));
-    //--End of Row --------------------------------------------------------
-
-    payeeCheckBox_ = new wxCheckBox(itemPanel, wxID_ANY, _("Payee")
-                                    , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    itemPanelSizer->Add(payeeCheckBox_, g_flagsH);
-
-    cbPayee_ = new wxComboBox(itemPanel, wxID_ANY, "", wxDefaultPosition, wxSize(220, -1));
-    cbPayee_->Connect(wxID_ANY, wxEVT_COMMAND_TEXT_UPDATED
-                      , wxCommandEventHandler(mmFilterTransactionsDialog::OnPayeeUpdated), nullptr, this);
-
-    itemPanelSizer->Add(cbPayee_, g_flagsExpand);
-    //--End of Row --------------------------------------------------------
-
-    categoryCheckBox_ = new wxCheckBox(itemPanel, wxID_ANY, _("Category")
-                                       , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-
-    wxFlexGridSizer *categSizer = new wxFlexGridSizer(0, 1, 0, 0);
-    categSizer->AddGrowableCol(0, 1);
-
-    itemPanelSizer->Add(categoryCheckBox_, g_flagsH);
-    itemPanelSizer->Add(categSizer, wxSizerFlags(g_flagsExpand).Border(0));
-
-    btnCategory_ = new wxButton(itemPanel, wxID_ANY, ""
-                                , wxDefaultPosition, wxDefaultSize);
-    btnCategory_->Connect(wxID_ANY, wxEVT_COMMAND_BUTTON_CLICKED,
-                          wxCommandEventHandler(mmFilterTransactionsDialog::OnCategs), nullptr, this);
-    similarCategCheckBox_ = new wxCheckBox(itemPanel, wxID_ANY, _("Include Similar"),
-                                           wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    similarCategCheckBox_->SetToolTip(_("Include all subcategories for the selected category."));
-
-    categSizer->Add(btnCategory_, g_flagsExpand);
-    categSizer->Add(similarCategCheckBox_, wxSizerFlags(g_flagsH).Center().Border(0));
-    categSizer->AddSpacer(5);
-    //--End of Row --------------------------------------------------------
-
-    statusCheckBox_ = new wxCheckBox(itemPanel, wxID_ANY, _("Status")
-                                     , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    itemPanelSizer->Add(statusCheckBox_, g_flagsH);
-
-    choiceStatus_ = new wxChoice(itemPanel, wxID_ANY);
-
-    for (const auto &i : TRANSACTION_STATUSES)
-    {
-        choiceStatus_->Append(wxGetTranslation(i), new wxStringClientData(i));
+        m_date_ranges->Append ( date_range->local_title(), date_range );
     }
 
-    itemPanelSizer->Add(choiceStatus_, g_flagsExpand);
-    choiceStatus_->SetToolTip(_("Specify the status for the transaction"));
+    itemPanelSizer->Add ( m_date_ranges, g_flagsH );
+    itemPanelSizer->AddSpacer ( 1 );
+    m_fromDateCtrl = new wxDatePickerCtrl ( itemPanel, wxID_FIRST, wxDefaultDateTime
+        , wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN );
+    m_toDateCtrl = new wxDatePickerCtrl ( itemPanel, wxID_LAST, wxDefaultDateTime
+        , wxDefaultPosition, wxDefaultSize, wxDP_DROPDOWN );
+    wxBoxSizer *dateSizer = new wxBoxSizer ( wxHORIZONTAL );
+    dateSizer->Add ( m_fromDateCtrl, g_flagsExpand );
+    dateSizer->AddSpacer ( 5 );
+    dateSizer->Add ( m_toDateCtrl, g_flagsExpand );
+    itemPanelSizer->Add ( dateSizer, wxSizerFlags ( g_flagsExpand ).Border ( 0 ) );
     //--End of Row --------------------------------------------------------
-
-    typeCheckBox_ = new wxCheckBox(itemPanel, wxID_ANY, _("Type")
-                                   , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-
-    wxFlexGridSizer *typeSizer = new wxFlexGridSizer(0, 2, 0, 0);
-    typeSizer->AddGrowableCol(0, 1);
-    typeSizer->AddGrowableCol(1, 1);
-    cbTypeWithdrawal_ = new wxCheckBox(itemPanel, wxID_ANY, _("Withdrawal")
-                                       , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    cbTypeDeposit_ = new wxCheckBox(itemPanel, wxID_ANY, _("Deposit")
-                                    , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    cbTypeTransferTo_ = new wxCheckBox(itemPanel, wxID_ANY, _("Transfer To")
-                                       , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    cbTypeTransferFrom_ = new wxCheckBox(itemPanel, wxID_ANY, _("Transfer From")
-                                         , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-
-    itemPanelSizer->Add(typeCheckBox_, g_flagsH);
-    itemPanelSizer->Add(typeSizer, g_flagsExpand);
-    typeSizer->Add(cbTypeWithdrawal_, 1, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-    typeSizer->Add(cbTypeDeposit_, 1, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-    typeSizer->Add(cbTypeTransferTo_, 1, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-    typeSizer->Add(cbTypeTransferFrom_, 1, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2);
-    typeSizer->AddSpacer(2);
-
+    payeeCheckBox_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Payee" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    itemPanelSizer->Add ( payeeCheckBox_, g_flagsH );
+    cbPayee_ = new wxComboBox ( itemPanel, wxID_ANY, "", wxDefaultPosition, wxSize ( 220, -1 ) );
+    cbPayee_->Connect ( wxID_ANY, wxEVT_COMMAND_TEXT_UPDATED
+        , wxCommandEventHandler ( mmFilterTransactionsDialog::OnPayeeUpdated ), nullptr, this );
+    itemPanelSizer->Add ( cbPayee_, g_flagsExpand );
     //--End of Row --------------------------------------------------------
-
-    amountRangeCheckBox_ = new wxCheckBox(itemPanel, wxID_ANY, _("Amount Range")
-                                          , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    itemPanelSizer->Add(amountRangeCheckBox_, g_flagsH);
-
-    amountMinEdit_ = new mmTextCtrl(itemPanel, wxID_ANY, ""
-                                    , wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER
-                                    , mmCalcValidator());
-    amountMinEdit_->Connect(wxID_ANY, wxEVT_COMMAND_TEXT_ENTER,
-                            wxCommandEventHandler(mmFilterTransactionsDialog::OnTextEntered), nullptr, this);
-    amountMaxEdit_ = new mmTextCtrl(itemPanel, wxID_ANY, ""
-                                    , wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER
-                                    , mmCalcValidator());
-    amountMaxEdit_->Connect(wxID_ANY, wxEVT_COMMAND_TEXT_ENTER,
-                            wxCommandEventHandler(mmFilterTransactionsDialog::OnTextEntered), nullptr, this);
-
-    wxBoxSizer *amountSizer = new wxBoxSizer(wxHORIZONTAL);
-    amountSizer->Add(amountMinEdit_, g_flagsExpand);
-    amountSizer->AddSpacer(5);
-    amountSizer->Add(amountMaxEdit_, g_flagsExpand);
-    itemPanelSizer->Add(amountSizer, wxSizerFlags(g_flagsExpand).Border(0));
+    categoryCheckBox_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Category" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    wxFlexGridSizer *categSizer = new wxFlexGridSizer ( 0, 1, 0, 0 );
+    categSizer->AddGrowableCol ( 0, 1 );
+    itemPanelSizer->Add ( categoryCheckBox_, g_flagsH );
+    itemPanelSizer->Add ( categSizer, wxSizerFlags ( g_flagsExpand ).Border ( 0 ) );
+    btnCategory_ = new wxButton ( itemPanel, wxID_ANY, ""
+        , wxDefaultPosition, wxDefaultSize );
+    btnCategory_->Connect ( wxID_ANY, wxEVT_COMMAND_BUTTON_CLICKED,
+        wxCommandEventHandler ( mmFilterTransactionsDialog::OnCategs ), nullptr, this );
+    similarCategCheckBox_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Include Similar" ),
+        wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    similarCategCheckBox_->SetToolTip ( _( "Include all subcategories for the selected category." ) );
+    categSizer->Add ( btnCategory_, g_flagsExpand );
+    categSizer->Add ( similarCategCheckBox_, wxSizerFlags ( g_flagsH ).Center().Border ( 0 ) );
+    categSizer->AddSpacer ( 5 );
     //--End of Row --------------------------------------------------------
+    statusCheckBox_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Status" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    itemPanelSizer->Add ( statusCheckBox_, g_flagsH );
+    choiceStatus_ = new wxChoice ( itemPanel, wxID_ANY );
 
-    transNumberCheckBox_ = new wxCheckBox(itemPanel, wxID_ANY, _("Number")
-                                          , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    itemPanelSizer->Add(transNumberCheckBox_, g_flagsH);
-
-    transNumberEdit_ = new wxTextCtrl(itemPanel, wxID_ANY);
-    itemPanelSizer->Add(transNumberEdit_, g_flagsExpand);
-    //--End of Row --------------------------------------------------------
-
-    notesCheckBox_ = new wxCheckBox(itemPanel, wxID_ANY, _("Notes")
-                                    , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE);
-    itemPanelSizer->Add(notesCheckBox_, g_flagsH);
-
-    notesEdit_ = new wxTextCtrl(itemPanel, wxID_ANY);
-    itemPanelSizer->Add(notesEdit_, g_flagsExpand);
-    //--End of Row --------------------------------------------------------
-
-    wxBoxSizer *settings_sizer = new wxBoxSizer(wxVERTICAL);
-    wxBoxSizer *settings_box_sizer = new wxBoxSizer(wxHORIZONTAL);
-    settings_sizer->Add(settings_box_sizer, wxSizerFlags(g_flagsExpand).Border(wxALL, 0));
-
-    wxStaticText *settings = new wxStaticText(this, wxID_ANY, _("Settings"));
-    settings_box_sizer->Add(settings, g_flagsH);
-    settings_box_sizer->AddSpacer(5);
-
-    m_setting_name = new wxChoice(this, wxID_APPLY);
-    settings_box_sizer->Add(m_setting_name, g_flagsExpand);
-
-    for (int i = 0 ; i < 10 ; i++)
+    for ( const auto &i : TRANSACTION_STATUSES )
     {
-        const wxString &data = Model_Infotable::instance().GetStringInfo(
-                                   wxString::Format("TRANSACTIONS_FILTER_%d", i)
-                                   , "");
+        choiceStatus_->Append ( wxGetTranslation ( i ), new wxStringClientData ( i ) );
+    }
+
+    itemPanelSizer->Add ( choiceStatus_, g_flagsExpand );
+    choiceStatus_->SetToolTip ( _( "Specify the status for the transaction" ) );
+    //--End of Row --------------------------------------------------------
+    typeCheckBox_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Type" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    wxFlexGridSizer *typeSizer = new wxFlexGridSizer ( 0, 2, 0, 0 );
+    typeSizer->AddGrowableCol ( 0, 1 );
+    typeSizer->AddGrowableCol ( 1, 1 );
+    cbTypeWithdrawal_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Withdrawal" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    cbTypeDeposit_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Deposit" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    cbTypeTransferTo_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Transfer To" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    cbTypeTransferFrom_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Transfer From" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    itemPanelSizer->Add ( typeCheckBox_, g_flagsH );
+    itemPanelSizer->Add ( typeSizer, g_flagsExpand );
+    typeSizer->Add ( cbTypeWithdrawal_, 1, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2 );
+    typeSizer->Add ( cbTypeDeposit_, 1, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2 );
+    typeSizer->Add ( cbTypeTransferTo_, 1, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2 );
+    typeSizer->Add ( cbTypeTransferFrom_, 1, wxALIGN_LEFT | wxALIGN_CENTER_VERTICAL | wxALL, 2 );
+    typeSizer->AddSpacer ( 2 );
+    //--End of Row --------------------------------------------------------
+    amountRangeCheckBox_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Amount Range" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    itemPanelSizer->Add ( amountRangeCheckBox_, g_flagsH );
+    amountMinEdit_ = new mmTextCtrl ( itemPanel, wxID_ANY, ""
+        , wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER
+        , mmCalcValidator() );
+    amountMinEdit_->Connect ( wxID_ANY, wxEVT_COMMAND_TEXT_ENTER,
+        wxCommandEventHandler ( mmFilterTransactionsDialog::OnTextEntered ), nullptr, this );
+    amountMaxEdit_ = new mmTextCtrl ( itemPanel, wxID_ANY, ""
+        , wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER
+        , mmCalcValidator() );
+    amountMaxEdit_->Connect ( wxID_ANY, wxEVT_COMMAND_TEXT_ENTER,
+        wxCommandEventHandler ( mmFilterTransactionsDialog::OnTextEntered ), nullptr, this );
+    wxBoxSizer *amountSizer = new wxBoxSizer ( wxHORIZONTAL );
+    amountSizer->Add ( amountMinEdit_, g_flagsExpand );
+    amountSizer->AddSpacer ( 5 );
+    amountSizer->Add ( amountMaxEdit_, g_flagsExpand );
+    itemPanelSizer->Add ( amountSizer, wxSizerFlags ( g_flagsExpand ).Border ( 0 ) );
+    //--End of Row --------------------------------------------------------
+    transNumberCheckBox_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Number" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    itemPanelSizer->Add ( transNumberCheckBox_, g_flagsH );
+    transNumberEdit_ = new wxTextCtrl ( itemPanel, wxID_ANY );
+    itemPanelSizer->Add ( transNumberEdit_, g_flagsExpand );
+    //--End of Row --------------------------------------------------------
+    notesCheckBox_ = new wxCheckBox ( itemPanel, wxID_ANY, _( "Notes" )
+        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    itemPanelSizer->Add ( notesCheckBox_, g_flagsH );
+    notesEdit_ = new wxTextCtrl ( itemPanel, wxID_ANY );
+    itemPanelSizer->Add ( notesEdit_, g_flagsExpand );
+    //--End of Row --------------------------------------------------------
+    wxBoxSizer *settings_sizer = new wxBoxSizer ( wxVERTICAL );
+    wxBoxSizer *settings_box_sizer = new wxBoxSizer ( wxHORIZONTAL );
+    settings_sizer->Add ( settings_box_sizer, wxSizerFlags ( g_flagsExpand ).Border ( wxALL, 0 ) );
+    wxStaticText *settings = new wxStaticText ( this, wxID_ANY, _( "Settings" ) );
+    settings_box_sizer->Add ( settings, g_flagsH );
+    settings_box_sizer->AddSpacer ( 5 );
+    m_setting_name = new wxChoice ( this, wxID_APPLY );
+    settings_box_sizer->Add ( m_setting_name, g_flagsExpand );
+
+    for ( int i = 0 ; i < 10 ; i++ )
+    {
+        const wxString &data = Model_Infotable::instance().GetStringInfo (
+                wxString::Format ( "TRANSACTIONS_FILTER_%d", i )
+                , "" );
         Document j_doc;
-        if (j_doc.Parse(data.c_str()).HasParseError())
+
+        if ( j_doc.Parse ( data.c_str() ).HasParseError() )
         {
-            j_doc.Parse("{}");
+            j_doc.Parse ( "{}" );
         }
 
         //Label
-        const Value &j_label = GetValueByPointerWithDefault(j_doc, "/LABEL", "");
+        const Value &j_label = GetValueByPointerWithDefault ( j_doc, "/LABEL", "" );
         const wxString &s_label = j_label.IsString() ? j_label.GetString() : "";
-
-        m_setting_name->AppendString(s_label.empty() ? wxString::Format(_("%i: Empty"), i + 1) : s_label);
+        m_setting_name->AppendString ( s_label.empty() ? wxString::Format ( _( "%i: Empty" ), i + 1 ) : s_label );
     }
 
-    m_setting_name->Connect(wxID_APPLY, wxEVT_COMMAND_CHOICE_SELECTED
-                            , wxCommandEventHandler(mmFilterTransactionsDialog::OnSettingsSelected), nullptr, this);
-
-    settings_box_sizer->AddSpacer(5);
-    m_btnSaveAs = new wxBitmapButton(this, wxID_SAVEAS, mmBitmap(png::SAVE));
-    settings_box_sizer->Add(m_btnSaveAs, g_flagsH);
-    m_btnSaveAs->SetToolTip(_("Save active values into current Preset selection"));
-    m_btnSaveAs->Connect(wxID_SAVEAS, wxEVT_COMMAND_BUTTON_CLICKED
-                         , wxCommandEventHandler(mmFilterTransactionsDialog::OnSaveSettings), nullptr, this);
-
-    wxBitmapButton *itemButtonClear = new wxBitmapButton(this, wxID_CLEAR, mmBitmap(png::CLEAR));
-    itemButtonClear->SetToolTip(_("Clear all fields for current Preset selection"));
-    settings_box_sizer->Add(itemButtonClear, g_flagsH);
-
-    box_sizer2->Add(settings_sizer, wxSizerFlags(g_flagsExpand).Border(wxALL, 0).Proportion(0));
-
+    m_setting_name->Connect ( wxID_APPLY, wxEVT_COMMAND_CHOICE_SELECTED
+        , wxCommandEventHandler ( mmFilterTransactionsDialog::OnSettingsSelected ), nullptr, this );
+    settings_box_sizer->AddSpacer ( 5 );
+    m_btnSaveAs = new wxBitmapButton ( this, wxID_SAVEAS, mmBitmap ( png::SAVE ) );
+    settings_box_sizer->Add ( m_btnSaveAs, g_flagsH );
+    m_btnSaveAs->SetToolTip ( _( "Save active values into current Preset selection" ) );
+    m_btnSaveAs->Connect ( wxID_SAVEAS, wxEVT_COMMAND_BUTTON_CLICKED
+        , wxCommandEventHandler ( mmFilterTransactionsDialog::OnSaveSettings ), nullptr, this );
+    wxBitmapButton *itemButtonClear = new wxBitmapButton ( this, wxID_CLEAR, mmBitmap ( png::CLEAR ) );
+    itemButtonClear->SetToolTip ( _( "Clear all fields for current Preset selection" ) );
+    settings_box_sizer->Add ( itemButtonClear, g_flagsH );
+    box_sizer2->Add ( settings_sizer, wxSizerFlags ( g_flagsExpand ).Border ( wxALL, 0 ).Proportion ( 0 ) );
     /******************************************************************************
      Button Panel with OK/Cancel buttons
     *******************************************************************************/
-    wxPanel *buttonPanel = new wxPanel(this, wxID_ANY);
-    box_sizer2->Add(buttonPanel, wxSizerFlags(g_flagsV).Center());
-
-    wxBoxSizer *buttonPanelSizer = new wxBoxSizer(wxHORIZONTAL);
-    buttonPanel->SetSizer(buttonPanelSizer);
-
-    wxButton *itemButtonOK = new wxButton(buttonPanel, wxID_OK, _("&Activate "));
-    itemButtonOK->SetToolTip(_("Activate the filter with these settings"));
-
-    wxButton *itemButtonCancel = new wxButton(buttonPanel, wxID_CANCEL, _("&Deactivate "));
-    itemButtonCancel->SetToolTip(_("Deactivate the filter"));
+    wxPanel *buttonPanel = new wxPanel ( this, wxID_ANY );
+    box_sizer2->Add ( buttonPanel, wxSizerFlags ( g_flagsV ).Center() );
+    wxBoxSizer *buttonPanelSizer = new wxBoxSizer ( wxHORIZONTAL );
+    buttonPanel->SetSizer ( buttonPanelSizer );
+    wxButton *itemButtonOK = new wxButton ( buttonPanel, wxID_OK, _( "&Activate " ) );
+    itemButtonOK->SetToolTip ( _( "Activate the filter with these settings" ) );
+    wxButton *itemButtonCancel = new wxButton ( buttonPanel, wxID_CANCEL, _( "&Deactivate " ) );
+    itemButtonCancel->SetToolTip ( _( "Deactivate the filter" ) );
     itemButtonCancel->SetFocus();
+    wxBitmapButton *itemButtonHide = new wxBitmapButton ( buttonPanel
+        , wxID_MORE, mmBitmap ( png::RIGHTARROWSIMPLE ) );
+    itemButtonHide->SetToolTip ( _( "Show/Hide custom fields window" ) );
 
-    wxBitmapButton *itemButtonHide = new wxBitmapButton(buttonPanel
-            , wxID_MORE, mmBitmap(png::RIGHTARROWSIMPLE));
-    itemButtonHide->SetToolTip(_("Show/Hide custom fields window"));
-    if (m_custom_fields->GetCustomFieldsCount() == 0)
+    if ( m_custom_fields->GetCustomFieldsCount() == 0 )
     {
         itemButtonHide->Hide();
     }
 
-    buttonPanelSizer->Add(itemButtonOK, g_flagsH);
-    buttonPanelSizer->Add(itemButtonCancel, g_flagsH);
-    buttonPanelSizer->Add(itemButtonHide, g_flagsH);
-
+    buttonPanelSizer->Add ( itemButtonOK, g_flagsH );
+    buttonPanelSizer->Add ( itemButtonCancel, g_flagsH );
+    buttonPanelSizer->Add ( itemButtonHide, g_flagsH );
     // Custom fields -----------------------------------
+    m_custom_fields->FillCustomFields ( box_sizer3 );
 
-    m_custom_fields->FillCustomFields(box_sizer3);
-    if (m_custom_fields->GetActiveCustomFieldsCount() > 0)
+    if ( m_custom_fields->GetActiveCustomFieldsCount() > 0 )
     {
-        wxCommandEvent evt(wxEVT_BUTTON, wxID_MORE);
-        this->GetEventHandler()->AddPendingEvent(evt);
+        wxCommandEvent evt ( wxEVT_BUTTON, wxID_MORE );
+        this->GetEventHandler()->AddPendingEvent ( evt );
     }
 
     Center();
 }
 
-void mmFilterTransactionsDialog::OnCheckboxClick(wxCommandEvent &event)
+void mmFilterTransactionsDialog::OnCheckboxClick ( wxCommandEvent &event )
 {
-    if (event.GetId() == similarCategCheckBox_->GetId())
+    if ( event.GetId() == similarCategCheckBox_->GetId() )
     {
         bSimilarCategoryStatus_ = similarCategCheckBox_->IsChecked();
     }
-    else if (event.GetId() != cbTypeWithdrawal_->GetId() &&
-             event.GetId() != cbTypeDeposit_->GetId() &&
-             event.GetId() != cbTypeTransferTo_->GetId() &&
-             event.GetId() != cbTypeTransferFrom_->GetId())
+    else if ( event.GetId() != cbTypeWithdrawal_->GetId() &&
+        event.GetId() != cbTypeDeposit_->GetId() &&
+        event.GetId() != cbTypeTransferTo_->GetId() &&
+        event.GetId() != cbTypeTransferFrom_->GetId() )
     {
-        accountDropDown_->Enable(accountCheckBox_->IsChecked());
-        cbPayee_->Enable(payeeCheckBox_->IsChecked());
-        btnCategory_->Enable(categoryCheckBox_->IsChecked());
-        similarCategCheckBox_->Enable(categoryCheckBox_->IsChecked());
-        choiceStatus_->Enable(statusCheckBox_->IsChecked());
-        cbTypeWithdrawal_->Enable(typeCheckBox_->IsChecked());
-        cbTypeDeposit_->Enable(typeCheckBox_->IsChecked());
-        cbTypeTransferTo_->Enable(typeCheckBox_->IsChecked());
-        cbTypeTransferFrom_->Enable(typeCheckBox_->IsChecked());
-        amountMinEdit_->Enable(amountRangeCheckBox_->IsChecked());
-        amountMaxEdit_->Enable(amountRangeCheckBox_->IsChecked());
-        notesEdit_->Enable(notesCheckBox_->IsChecked());
-        transNumberEdit_->Enable(transNumberCheckBox_->IsChecked());
-        m_date_ranges->Enable(m_dateRangeCheckBox->IsChecked());
-        m_fromDateCtrl->Enable(m_dateRangeCheckBox->IsChecked());
-        m_toDateCtrl->Enable(m_dateRangeCheckBox->IsChecked());
+        accountDropDown_->Enable ( accountCheckBox_->IsChecked() );
+        cbPayee_->Enable ( payeeCheckBox_->IsChecked() );
+        btnCategory_->Enable ( categoryCheckBox_->IsChecked() );
+        similarCategCheckBox_->Enable ( categoryCheckBox_->IsChecked() );
+        choiceStatus_->Enable ( statusCheckBox_->IsChecked() );
+        cbTypeWithdrawal_->Enable ( typeCheckBox_->IsChecked() );
+        cbTypeDeposit_->Enable ( typeCheckBox_->IsChecked() );
+        cbTypeTransferTo_->Enable ( typeCheckBox_->IsChecked() );
+        cbTypeTransferFrom_->Enable ( typeCheckBox_->IsChecked() );
+        amountMinEdit_->Enable ( amountRangeCheckBox_->IsChecked() );
+        amountMaxEdit_->Enable ( amountRangeCheckBox_->IsChecked() );
+        notesEdit_->Enable ( notesCheckBox_->IsChecked() );
+        transNumberEdit_->Enable ( transNumberCheckBox_->IsChecked() );
+        m_date_ranges->Enable ( m_dateRangeCheckBox->IsChecked() );
+        m_fromDateCtrl->Enable ( m_dateRangeCheckBox->IsChecked() );
+        m_toDateCtrl->Enable ( m_dateRangeCheckBox->IsChecked() );
     }
 
-    if (accountCheckBox_->IsChecked() && accountDropDown_->GetSelection() < 0)
+    if ( accountCheckBox_->IsChecked() && accountDropDown_->GetSelection() < 0 )
     {
-        accountDropDown_->SetSelection(0);
+        accountDropDown_->SetSelection ( 0 );
     }
 
     event.Skip();
 }
 
-void mmFilterTransactionsDialog::OnButtonokClick(wxCommandEvent &WXUNUSED(event))
+void mmFilterTransactionsDialog::OnButtonokClick ( wxCommandEvent &WXUNUSED ( event ) )
 {
-    if (accountCheckBox_->IsChecked())
+    if ( accountCheckBox_->IsChecked() )
     {
         refAccountStr_ = accountDropDown_->GetStringSelection();
-        const Model_Account::Data *account = Model_Account::instance().get(refAccountStr_);
-        if (account)
+        const Model_Account::Data *account = Model_Account::instance().get ( refAccountStr_ );
+
+        if ( account )
         {
             refAccountID_ = account->ACCOUNTID;
         }
@@ -481,94 +435,96 @@ void mmFilterTransactionsDialog::OnButtonokClick(wxCommandEvent &WXUNUSED(event)
         refAccountID_ = -1;
     }
 
-    if (payeeCheckBox_->IsChecked())
+    if ( payeeCheckBox_->IsChecked() )
     {
-        Model_Payee::Data *payee = Model_Payee::instance().get(cbPayee_->GetValue());
-        if (payee)
+        Model_Payee::Data *payee = Model_Payee::instance().get ( cbPayee_->GetValue() );
+
+        if ( payee )
         {
             payeeID_ = payee->PAYEEID;
             payeeStr_ = payee->PAYEENAME;
         }
     }
 
-    if (amountRangeCheckBox_->IsChecked())
+    if ( amountRangeCheckBox_->IsChecked() )
     {
         m_min_amount = m_max_amount = 0;
 
-        if (!amountMinEdit_->GetValue().Trim().IsEmpty()
-                && !amountMinEdit_->checkValue(m_min_amount, true))
+        if ( !amountMinEdit_->GetValue().Trim().IsEmpty()
+            && !amountMinEdit_->checkValue ( m_min_amount, true ) )
         {
-            return mmErrorDialogs::ToolTip4Object(amountMinEdit_
-                                                  , _("Invalid value"), _("Amount"));
+            return mmErrorDialogs::ToolTip4Object ( amountMinEdit_
+                    , _( "Invalid value" ), _( "Amount" ) );
         }
 
-        if (!amountMaxEdit_->GetValue().Trim().IsEmpty()
-                && !amountMaxEdit_->checkValue(m_max_amount, true))
-
+        if ( !amountMaxEdit_->GetValue().Trim().IsEmpty()
+            && !amountMaxEdit_->checkValue ( m_max_amount, true ) )
         {
-            return mmErrorDialogs::ToolTip4Object(amountMaxEdit_
-                                                  , _("Invalid value"), _("Amount"));
+            return mmErrorDialogs::ToolTip4Object ( amountMaxEdit_
+                    , _( "Invalid value" ), _( "Amount" ) );
         }
     }
 
-    if (m_dateRangeCheckBox->IsChecked())
+    if ( m_dateRangeCheckBox->IsChecked() )
     {
         m_begin_date = m_fromDateCtrl->GetValue().FormatISODate();
         m_end_date = m_toDateCtrl->GetValue().FormatISODate();
-        if (m_begin_date > m_end_date)
+
+        if ( m_begin_date > m_end_date )
         {
             const auto today = wxDate::Today().FormatISODate();
             const int id = m_begin_date >= today
-                           ? m_fromDateCtrl->GetId() : m_toDateCtrl->GetId();
-            return mmErrorDialogs::ToolTip4Object(FindWindow(id)
-                                                  , _("Invalid value"), _("Date"));
+                ? m_fromDateCtrl->GetId() : m_toDateCtrl->GetId();
+            return mmErrorDialogs::ToolTip4Object ( FindWindow ( id )
+                    , _( "Invalid value" ), _( "Date" ) );
         }
     }
 
-    if (statusCheckBox_->IsChecked())
+    if ( statusCheckBox_->IsChecked() )
     {
-        if (choiceStatus_->GetSelection() < 0)
+        if ( choiceStatus_->GetSelection() < 0 )
         {
             const int id = choiceStatus_->GetId();
-            return mmErrorDialogs::ToolTip4Object(FindWindow(id)
-                                                  , _("Invalid value"), _("Status"));
+            return mmErrorDialogs::ToolTip4Object ( FindWindow ( id )
+                    , _( "Invalid value" ), _( "Status" ) );
         }
+
         getFilterStatus();
-        wxLogDebug(m_filterStatus);
+        wxLogDebug ( m_filterStatus );
     }
-    SaveSettings(-1);
-    EndModal(wxID_OK);
+
+    SaveSettings ( -1 );
+    EndModal ( wxID_OK );
 }
 
-void mmFilterTransactionsDialog::OnButtoncancelClick(wxCommandEvent &WXUNUSED(event))
+void mmFilterTransactionsDialog::OnButtoncancelClick ( wxCommandEvent &WXUNUSED ( event ) )
 {
-    EndModal(wxID_CANCEL);
+    EndModal ( wxID_CANCEL );
 }
 
-void mmFilterTransactionsDialog::OnCategs(wxCommandEvent &WXUNUSED(event))
+void mmFilterTransactionsDialog::OnCategs ( wxCommandEvent &WXUNUSED ( event ) )
 {
-    Model_Category::Data *category = Model_Category::instance().get(categID_);
-    Model_Subcategory::Data *sub_category = Model_Subcategory::instance().get(subcategID_);
+    Model_Category::Data *category = Model_Category::instance().get ( categID_ );
+    Model_Subcategory::Data *sub_category = Model_Subcategory::instance().get ( subcategID_ );
     const int categID = category ? category->CATEGID : -1;
     const int subcategID = sub_category ? sub_category->SUBCATEGID : -1;
-    mmCategDialog dlg(this, categID, subcategID);
+    mmCategDialog dlg ( this, categID, subcategID );
 
-    if (dlg.ShowModal() == wxID_APPLY)
+    if ( dlg.ShowModal() == wxID_APPLY )
     {
         categID_ = dlg.getCategId();
         subcategID_ = dlg.getSubCategId();
-        category = Model_Category::instance().get(categID_);
-        sub_category = Model_Subcategory::instance().get(subcategID_);
-
-        btnCategory_->SetLabelText(Model_Category::full_name(category, sub_category));
+        category = Model_Category::instance().get ( categID_ );
+        sub_category = Model_Subcategory::instance().get ( subcategID_ );
+        btnCategory_->SetLabelText ( Model_Category::full_name ( category, sub_category ) );
     }
 }
 
 void mmFilterTransactionsDialog::ResetFilterStatus()
 {
     m_custom_fields->ResetWidgetsChanged();
-    wxCommandEvent evt(wxEVT_BUTTON, wxID_MORE);
-    this->GetEventHandler()->AddPendingEvent(evt);
+    wxCommandEvent evt ( wxEVT_BUTTON, wxID_MORE );
+    this->GetEventHandler()->AddPendingEvent ( evt );
 }
 
 bool mmFilterTransactionsDialog::SomethingSelected()
@@ -590,54 +546,58 @@ void mmFilterTransactionsDialog::getFilterStatus()
 {
     m_filterStatus.clear();
     const int item = choiceStatus_->GetSelection();
-    if (!getStatusCheckBox() || item < 0)
+
+    if ( !getStatusCheckBox() || item < 0 )
     {
         return;
     }
+
     const wxStringClientData *status_obj =
-        static_cast<wxStringClientData *>(choiceStatus_->GetClientObject(item));
-    if (status_obj)
+        static_cast<wxStringClientData *> ( choiceStatus_->GetClientObject ( item ) );
+
+    if ( status_obj )
     {
-        m_filterStatus = status_obj->GetData().Left(1);
+        m_filterStatus = status_obj->GetData().Left ( 1 );
     }
 }
 
-bool mmFilterTransactionsDialog::compareStatus(const wxString &itemStatus, const wxString &filterStatus) const
+bool mmFilterTransactionsDialog::compareStatus ( const wxString &itemStatus, const wxString &filterStatus ) const
 {
+    if ( ( itemStatus.empty() || itemStatus.Contains ( "N" ) ) && filterStatus == "N" )
+    {
+        return true;
+    }
+    else if ( ( itemStatus.empty() || "N" == itemStatus || "F" == itemStatus ) && filterStatus == "U" ) // Un-Reconciled
+    {
+        return true;
+    }
+    else if ( ( itemStatus != "R" && itemStatus != "RR" ) && filterStatus == "A" ) // All Except Reconciled
+    {
+        return true;
+    }
 
-    if ((itemStatus.empty() || itemStatus.Contains("N")) && filterStatus == "N")
-    {
-        return true;
-    }
-    else if ((itemStatus.empty() || "N" == itemStatus || "F" == itemStatus) && filterStatus == "U") // Un-Reconciled
-    {
-        return true;
-    }
-    else if ((itemStatus != "R" && itemStatus != "RR" ) && filterStatus == "A") // All Except Reconciled
-    {
-        return true;
-    }
-    return itemStatus.Contains(filterStatus);
+    return itemStatus.Contains ( filterStatus );
 }
 
-bool mmFilterTransactionsDialog::allowType(const wxString &typeState, bool sameAccount) const
+bool mmFilterTransactionsDialog::allowType ( const wxString &typeState, bool sameAccount ) const
 {
     bool result = false;
-    if (typeState == Model_Checking::all_type()[Model_Checking::TRANSFER]
-            && cbTypeTransferTo_->GetValue() && sameAccount)
+
+    if ( typeState == Model_Checking::all_type() [Model_Checking::TRANSFER]
+        && cbTypeTransferTo_->GetValue() && sameAccount )
     {
         result = true;
     }
-    else if (typeState == Model_Checking::all_type()[Model_Checking::TRANSFER]
-             && cbTypeTransferFrom_->GetValue() && !sameAccount)
+    else if ( typeState == Model_Checking::all_type() [Model_Checking::TRANSFER]
+        && cbTypeTransferFrom_->GetValue() && !sameAccount )
     {
         result = true;
     }
-    else if (typeState == Model_Checking::all_type()[Model_Checking::WITHDRAWAL] && cbTypeWithdrawal_->GetValue())
+    else if ( typeState == Model_Checking::all_type() [Model_Checking::WITHDRAWAL] && cbTypeWithdrawal_->GetValue() )
     {
         result = true;
     }
-    else if (typeState == Model_Checking::all_type()[Model_Checking::DEPOSIT] && cbTypeDeposit_->GetValue())
+    else if ( typeState == Model_Checking::all_type() [Model_Checking::DEPOSIT] && cbTypeDeposit_->GetValue() )
     {
         result = true;
     }
@@ -646,24 +606,25 @@ bool mmFilterTransactionsDialog::allowType(const wxString &typeState, bool sameA
 }
 
 template<class MODEL, class FULL_DATA>
-bool mmFilterTransactionsDialog::checkAmount(const FULL_DATA &tran)
+bool mmFilterTransactionsDialog::checkAmount ( const FULL_DATA &tran )
 {
     bool ok = true, split_ok = false;
-    if (!amountMinEdit_->IsEmpty() && m_min_amount > tran.TRANSAMOUNT)
+
+    if ( !amountMinEdit_->IsEmpty() && m_min_amount > tran.TRANSAMOUNT )
     {
         ok = false;
     }
-    else if (!amountMaxEdit_->IsEmpty() && m_max_amount < tran.TRANSAMOUNT)
+    else if ( !amountMaxEdit_->IsEmpty() && m_max_amount < tran.TRANSAMOUNT )
     {
         ok = false;
     }
 
-    if (tran.has_split())
+    if ( tran.has_split() )
     {
-        for (const auto s : tran.m_splits)
+        for ( const auto s : tran.m_splits )
         {
-            if ((amountMinEdit_->IsEmpty() || m_min_amount <= s.SPLITTRANSAMOUNT)
-                    && (amountMaxEdit_->IsEmpty() || m_max_amount >= s.SPLITTRANSAMOUNT))
+            if ( ( amountMinEdit_->IsEmpty() || m_min_amount <= s.SPLITTRANSAMOUNT )
+                && ( amountMaxEdit_->IsEmpty() || m_max_amount >= s.SPLITTRANSAMOUNT ) )
             {
                 split_ok = true;
                 break;
@@ -674,78 +635,82 @@ bool mmFilterTransactionsDialog::checkAmount(const FULL_DATA &tran)
     return ok || split_ok;
 }
 
-void mmFilterTransactionsDialog::OnButtonClearClick(wxCommandEvent &WXUNUSED(event))
+void mmFilterTransactionsDialog::OnButtonClearClick ( wxCommandEvent &WXUNUSED ( event ) )
 {
     clearSettings();
-    wxCommandEvent evt(/*wxEVT_CHECKBOX*/ wxID_ANY, wxID_ANY);
-    OnCheckboxClick(evt);
+    wxCommandEvent evt ( /*wxEVT_CHECKBOX*/ wxID_ANY, wxID_ANY );
+    OnCheckboxClick ( evt );
 }
 
-const wxString mmFilterTransactionsDialog::GetStoredSettings(int id)
+const wxString mmFilterTransactionsDialog::GetStoredSettings ( int id )
 {
-    if (id < 0)
+    if ( id < 0 )
     {
         id = -1;
     }
-    settings_string_ = Model_Infotable::instance().GetStringInfo(
-                           wxString::Format("TRANSACTIONS_FILTER_%d", id)
-                           , "");
+
+    settings_string_ = Model_Infotable::instance().GetStringInfo (
+            wxString::Format ( "TRANSACTIONS_FILTER_%d", id )
+            , "" );
     return settings_string_;
 }
 
-void mmFilterTransactionsDialog::setAccountToolTip(const wxString &tip) const
+void mmFilterTransactionsDialog::setAccountToolTip ( const wxString &tip ) const
 {
-    accountDropDown_->SetToolTip(tip);
+    accountDropDown_->SetToolTip ( tip );
 }
 
 void mmFilterTransactionsDialog::clearSettings()
 {
     const int i = m_setting_name->GetSelection();
-    const wxString &default_label = wxString::Format(_("%i: Empty"), i + 1);
-    m_setting_name->SetString(i, default_label);
-
+    const wxString &default_label = wxString::Format ( _( "%i: Empty" ), i + 1 );
+    m_setting_name->SetString ( i, default_label );
     settings_string_ = R"({"LABEL": "Clear"})";
     m_custom_fields->ClearSettings();
     dataToControls();
-
     // Clear the settings for the allocated position
-    SaveSettings(i);
+    SaveSettings ( i );
 }
 
-void mmFilterTransactionsDialog::OnPayeeUpdated(wxCommandEvent &event)
+void mmFilterTransactionsDialog::OnPayeeUpdated ( wxCommandEvent &event )
 {
-    cbPayee_->SetEvtHandlerEnabled(false);
-    Model_Payee::Data *payee = Model_Payee::instance().get(cbPayee_->GetValue());
-    if (payee)
+    cbPayee_->SetEvtHandlerEnabled ( false );
+    Model_Payee::Data *payee = Model_Payee::instance().get ( cbPayee_->GetValue() );
+
+    if ( payee )
     {
         payeeID_ = payee->PAYEEID;
-        cbPayee_->SetValue(payee->PAYEENAME);
+        cbPayee_->SetValue ( payee->PAYEENAME );
     }
-    cbPayee_->SetEvtHandlerEnabled(true);
+
+    cbPayee_->SetEvtHandlerEnabled ( true );
     event.Skip();
 }
 
 template<class MODEL, class FULL_DATA>
-bool mmFilterTransactionsDialog::checkPayee(const FULL_DATA &tran)
+bool mmFilterTransactionsDialog::checkPayee ( const FULL_DATA &tran )
 {
-    const Model_Payee::Data *payee = Model_Payee::instance().get(tran.PAYEEID);
-    if (payee)
+    const Model_Payee::Data *payee = Model_Payee::instance().get ( tran.PAYEEID );
+
+    if ( payee )
     {
-        return cbPayee_->GetValue().Lower() == (payee->PAYEENAME).Lower();
+        return cbPayee_->GetValue().Lower() == ( payee->PAYEENAME ).Lower();
     }
+
     return false;
 }
 
 template<class MODEL, class FULL_DATA>
-bool mmFilterTransactionsDialog::checkCategory(const FULL_DATA &tran)
+bool mmFilterTransactionsDialog::checkCategory ( const FULL_DATA &tran )
 {
-    if (!tran.has_split())
+    if ( !tran.has_split() )
     {
-        if (categID_ != tran.CATEGID)
+        if ( categID_ != tran.CATEGID )
         {
             return false;
         }
-        if (subcategID_ != tran.SUBCATEGID && !bSimilarCategoryStatus_)
+
+        if ( subcategID_ != tran.SUBCATEGID && !bSimilarCategoryStatus_ )
         {
             return false;
         }
@@ -753,13 +718,15 @@ bool mmFilterTransactionsDialog::checkCategory(const FULL_DATA &tran)
     else
     {
         bool bMatching = false;
-        for (const auto &split : tran.m_splits)
+
+        for ( const auto &split : tran.m_splits )
         {
-            if (split.CATEGID != categID_)
+            if ( split.CATEGID != categID_ )
             {
                 continue;
             }
-            if (split.SUBCATEGID != subcategID_ && !bSimilarCategoryStatus_)
+
+            if ( split.SUBCATEGID != subcategID_ && !bSimilarCategoryStatus_ )
             {
                 continue;
             }
@@ -767,442 +734,462 @@ bool mmFilterTransactionsDialog::checkCategory(const FULL_DATA &tran)
             bMatching = true;
             break;
         }
-        if (!bMatching)
+
+        if ( !bMatching )
         {
             return false;
         }
     }
+
     return true;
 }
 
-bool mmFilterTransactionsDialog::checkAll(const Model_Checking::Full_Data &tran, int accountID)
+bool mmFilterTransactionsDialog::checkAll ( const Model_Checking::Full_Data &tran, int accountID )
 {
     bool ok = true;
+
     //wxLogDebug("Check date? %i trx date:%s %s %s", getDateRangeCheckBox(), tran.TRANSDATE, getFromDateCtrl().GetDateOnly().FormatISODate(), getToDateControl().GetDateOnly().FormatISODate());
-    if (getAccountCheckBox() && (getAccountID() != tran.ACCOUNTID && getAccountID() != tran.TOACCOUNTID))
+    if ( getAccountCheckBox() && ( getAccountID() != tran.ACCOUNTID && getAccountID() != tran.TOACCOUNTID ) )
     {
         ok = false;
     }
-    else if (getDateRangeCheckBox() && !(tran.TRANSDATE >= m_begin_date && tran.TRANSDATE <= m_end_date))
+    else if ( getDateRangeCheckBox() && ! ( tran.TRANSDATE >= m_begin_date && tran.TRANSDATE <= m_end_date ) )
     {
         ok = false;
     }
-    else if (getPayeeCheckBox() && !checkPayee<Model_Checking>(tran))
+    else if ( getPayeeCheckBox() && !checkPayee<Model_Checking> ( tran ) )
     {
         ok = false;
     }
-    else if (getCategoryCheckBox() && !checkCategory<Model_Checking>(tran))
+    else if ( getCategoryCheckBox() && !checkCategory<Model_Checking> ( tran ) )
     {
         ok = false;
     }
-    else if (getStatusCheckBox() && !compareStatus(tran.STATUSFD, m_filterStatus))
+    else if ( getStatusCheckBox() && !compareStatus ( tran.STATUSFD, m_filterStatus ) )
     {
         ok = false;
     }
-    else if (getTypeCheckBox() && !allowType(tran.TRANSCODE, accountID == tran.ACCOUNTID))
+    else if ( getTypeCheckBox() && !allowType ( tran.TRANSCODE, accountID == tran.ACCOUNTID ) )
     {
         ok = false;
     }
-    else if (getAmountRangeCheckBox() && !checkAmount<Model_Checking>(tran))
+    else if ( getAmountRangeCheckBox() && !checkAmount<Model_Checking> ( tran ) )
     {
         ok = false;
     }
-    else if (getNumberCheckBox() && (getNumber().empty()
-                                     ? !tran.TRANSACTIONNUMBER.empty()
-                                     : tran.TRANSACTIONNUMBER.empty() || !tran.TRANSACTIONNUMBER.Lower().Matches(getNumber().Lower())))
+    else if ( getNumberCheckBox() && ( getNumber().empty()
+            ? !tran.TRANSACTIONNUMBER.empty()
+            : tran.TRANSACTIONNUMBER.empty() || !tran.TRANSACTIONNUMBER.Lower().Matches ( getNumber().Lower() ) ) )
     {
         ok = false;
     }
-    else if (getNotesCheckBox() && (getNotes().empty()
-                                    ? !tran.NOTES.empty()
-                                    : tran.NOTES.empty() || !tran.NOTES.Lower().Matches(getNotes().Lower())))
+    else if ( getNotesCheckBox() && ( getNotes().empty()
+            ? !tran.NOTES.empty()
+            : tran.NOTES.empty() || !tran.NOTES.Lower().Matches ( getNotes().Lower() ) ) )
     {
         ok = false;
     }
-    else if (m_custom_fields->IsSomeWidgetChanged() && !m_custom_fields->IsDataFound(tran))
+    else if ( m_custom_fields->IsSomeWidgetChanged() && !m_custom_fields->IsDataFound ( tran ) )
     {
         ok = false;
     }
+
     return ok;
 }
-bool mmFilterTransactionsDialog::checkAll(const Model_Billsdeposits::Full_Data &tran)
+bool mmFilterTransactionsDialog::checkAll ( const Model_Billsdeposits::Full_Data &tran )
 {
     bool ok = true;
-    if (getAccountCheckBox() && (getAccountID() != tran.ACCOUNTID && getAccountID() != tran.TOACCOUNTID))
+
+    if ( getAccountCheckBox() && ( getAccountID() != tran.ACCOUNTID && getAccountID() != tran.TOACCOUNTID ) )
     {
         ok = false;
     }
-    else if (getDateRangeCheckBox() && (tran.TRANSDATE < m_begin_date && tran.TRANSDATE > m_end_date))
+    else if ( getDateRangeCheckBox() && ( tran.TRANSDATE < m_begin_date && tran.TRANSDATE > m_end_date ) )
     {
         ok = false;
     }
-    else if (getPayeeCheckBox() && !checkPayee<Model_Billsdeposits>(tran))
+    else if ( getPayeeCheckBox() && !checkPayee<Model_Billsdeposits> ( tran ) )
     {
         ok = false;
     }
-    else if (getCategoryCheckBox() && !checkCategory<Model_Billsdeposits>(tran))
+    else if ( getCategoryCheckBox() && !checkCategory<Model_Billsdeposits> ( tran ) )
     {
         ok = false;
     }
-    else if (getStatusCheckBox() && !compareStatus(tran.STATUS, m_filterStatus))
+    else if ( getStatusCheckBox() && !compareStatus ( tran.STATUS, m_filterStatus ) )
     {
         ok = false;
     }
-    else if (getTypeCheckBox() && !allowType(tran.TRANSCODE, true))
+    else if ( getTypeCheckBox() && !allowType ( tran.TRANSCODE, true ) )
     {
         ok = false;
     }
-    else if (getAmountRangeCheckBox() && !checkAmount<Model_Billsdeposits>(tran))
+    else if ( getAmountRangeCheckBox() && !checkAmount<Model_Billsdeposits> ( tran ) )
     {
         ok = false;
     }
-    else if (getNumberCheckBox() && (getNumber().empty()
-                                     ? !tran.TRANSACTIONNUMBER.empty()
-                                     : tran.TRANSACTIONNUMBER.empty() || !tran.TRANSACTIONNUMBER.Lower().Matches(getNumber().Lower())))
+    else if ( getNumberCheckBox() && ( getNumber().empty()
+            ? !tran.TRANSACTIONNUMBER.empty()
+            : tran.TRANSACTIONNUMBER.empty() || !tran.TRANSACTIONNUMBER.Lower().Matches ( getNumber().Lower() ) ) )
     {
         ok = false;
     }
-    else if (getNotesCheckBox() && (getNotes().empty()
-                                    ? !tran.NOTES.empty()
-                                    : tran.NOTES.empty() || !tran.NOTES.Lower().Matches(getNotes().Lower())))
+    else if ( getNotesCheckBox() && ( getNotes().empty()
+            ? !tran.NOTES.empty()
+            : tran.NOTES.empty() || !tran.NOTES.Lower().Matches ( getNotes().Lower() ) ) )
     {
         ok = false;
     }
+
     return ok;
 }
 
-void mmFilterTransactionsDialog::OnTextEntered(wxCommandEvent &event)
+void mmFilterTransactionsDialog::OnTextEntered ( wxCommandEvent &event )
 {
-    if (event.GetId() == amountMinEdit_->GetId())
+    if ( event.GetId() == amountMinEdit_->GetId() )
     {
         amountMinEdit_->Calculate();
     }
-    else if (event.GetId() == amountMaxEdit_->GetId())
+    else if ( event.GetId() == amountMaxEdit_->GetId() )
     {
         amountMaxEdit_->Calculate();
     }
 }
 
-void mmFilterTransactionsDialog::getDescription(mmHTMLBuilder &hb, bool html)
+void mmFilterTransactionsDialog::getDescription ( mmHTMLBuilder &hb, bool html )
 {
-    if (html)
+    if ( html )
     {
         hb.addHorizontalLine();
-        hb.addHeader(3, _("Filtering Details: "));
+        hb.addHeader ( 3, _( "Filtering Details: " ) );
     }
+
     // Extract the parameters from the transaction dialog and add them to the report.
-    wxString filterDetails = to_json(true);
-    if (html)
+    wxString filterDetails = to_json ( true );
+
+    if ( html )
     {
-        filterDetails.Replace("\n", "<br>");
+        filterDetails.Replace ( "\n", "<br>" );
     }
-    filterDetails.Replace("\"\"", _("Empty value"));
-    filterDetails.Replace("\"", "");
-    filterDetails.replace(0, 1, ' ');
-    filterDetails.RemoveLast(1);
-    hb.addText(filterDetails);
+
+    filterDetails.Replace ( "\"\"", _( "Empty value" ) );
+    filterDetails.Replace ( "\"", "" );
+    filterDetails.replace ( 0, 1, ' ' );
+    filterDetails.RemoveLast ( 1 );
+    hb.addText ( filterDetails );
 }
 
-wxString mmFilterTransactionsDialog::to_json(bool i18n)
+wxString mmFilterTransactionsDialog::to_json ( bool i18n )
 {
     StringBuffer json_buffer;
-    PrettyWriter<StringBuffer> json_writer(json_buffer);
+    PrettyWriter<StringBuffer> json_writer ( json_buffer );
     json_writer.StartObject();
 
-    if (accountCheckBox_->IsChecked())
+    if ( accountCheckBox_->IsChecked() )
     {
         const wxString acc = accountDropDown_->GetStringSelection();
-        if (!acc.empty())
+
+        if ( !acc.empty() )
         {
-            json_writer.Key((i18n ? _("Account") : "ACCOUNT").c_str());
-            json_writer.String(acc.c_str());
+            json_writer.Key ( ( i18n ? _( "Account" ) : "ACCOUNT" ).c_str() );
+            json_writer.String ( acc.c_str() );
         }
     }
 
-    if (m_dateRangeCheckBox->IsChecked())
+    if ( m_dateRangeCheckBox->IsChecked() )
     {
         const int i = m_date_ranges->GetSelection();
         const auto &title = m_all_date_ranges[i]->title();
-        if (!title.empty())
+
+        if ( !title.empty() )
         {
-            json_writer.Key((i18n ? _("Date") : "DATE").c_str());
-            json_writer.String((i18n ? wxGetTranslation(title) : title).c_str());
+            json_writer.Key ( ( i18n ? _( "Date" ) : "DATE" ).c_str() );
+            json_writer.String ( ( i18n ? wxGetTranslation ( title ) : title ).c_str() );
         }
 
-        json_writer.Key((i18n ? _("Since") : "DATE1").c_str());
-        json_writer.String(m_fromDateCtrl->GetValue().FormatISODate().c_str());
-        json_writer.Key((i18n ? _("Before") : "DATE2").c_str());
-        json_writer.String(m_toDateCtrl->GetValue().FormatISODate().c_str());
+        json_writer.Key ( ( i18n ? _( "Since" ) : "DATE1" ).c_str() );
+        json_writer.String ( m_fromDateCtrl->GetValue().FormatISODate().c_str() );
+        json_writer.Key ( ( i18n ? _( "Before" ) : "DATE2" ).c_str() );
+        json_writer.String ( m_toDateCtrl->GetValue().FormatISODate().c_str() );
     }
 
-    if (payeeCheckBox_->IsChecked())
+    if ( payeeCheckBox_->IsChecked() )
     {
-        json_writer.Key((i18n ? _("Payee") : "PAYEE").c_str());
-        json_writer.String(cbPayee_->GetValue().c_str());
+        json_writer.Key ( ( i18n ? _( "Payee" ) : "PAYEE" ).c_str() );
+        json_writer.String ( cbPayee_->GetValue().c_str() );
     }
 
-    if (categoryCheckBox_->IsChecked())
+    if ( categoryCheckBox_->IsChecked() )
     {
-        json_writer.Key((i18n ? _("Include Similar") : "SIMILAR_YN").c_str());
-        json_writer.Bool(bSimilarCategoryStatus_);
-        json_writer.Key((i18n ? _("Category") : "CATEGORY").c_str());
-        json_writer.String(btnCategory_->GetLabel().c_str());
+        json_writer.Key ( ( i18n ? _( "Include Similar" ) : "SIMILAR_YN" ).c_str() );
+        json_writer.Bool ( bSimilarCategoryStatus_ );
+        json_writer.Key ( ( i18n ? _( "Category" ) : "CATEGORY" ).c_str() );
+        json_writer.String ( btnCategory_->GetLabel().c_str() );
     }
 
-    if (statusCheckBox_->IsChecked())
+    if ( statusCheckBox_->IsChecked() )
     {
         wxArrayString s = Model_Checking::all_status();
-        s.Add(wxTRANSLATE("Un-Reconciled"));
-        s.Add(wxTRANSLATE("All Except Reconciled"));
+        s.Add ( wxTRANSLATE ( "Un-Reconciled" ) );
+        s.Add ( wxTRANSLATE ( "All Except Reconciled" ) );
         const int item = choiceStatus_->GetSelection();
         wxString status;
-        if (0 <= item && static_cast<size_t>(item) < s.size())
+
+        if ( 0 <= item && static_cast<size_t> ( item ) < s.size() )
         {
             status = s[item];
         }
-        if (!status.empty())
+
+        if ( !status.empty() )
         {
-            json_writer.Key((i18n ? _("Status") : "STATUS").c_str());
-            json_writer.String((i18n ? wxGetTranslation(status) : status).c_str());
+            json_writer.Key ( ( i18n ? _( "Status" ) : "STATUS" ).c_str() );
+            json_writer.String ( ( i18n ? wxGetTranslation ( status ) : status ).c_str() );
         }
     }
 
-    if (typeCheckBox_->IsChecked())
+    if ( typeCheckBox_->IsChecked() )
     {
         wxString type = wxString()
-                        << (cbTypeWithdrawal_->GetValue() && typeCheckBox_->GetValue() ? "W" : "")
-                        << (cbTypeDeposit_->GetValue() && typeCheckBox_->GetValue() ? "D" : "")
-                        << (cbTypeTransferTo_->GetValue() && typeCheckBox_->GetValue() ? "T" : "")
-                        << (cbTypeTransferFrom_->GetValue() && typeCheckBox_->GetValue() ? "F" : "");
-        if (!type.empty())
+            << ( cbTypeWithdrawal_->GetValue() && typeCheckBox_->GetValue() ? "W" : "" )
+            << ( cbTypeDeposit_->GetValue() && typeCheckBox_->GetValue() ? "D" : "" )
+            << ( cbTypeTransferTo_->GetValue() && typeCheckBox_->GetValue() ? "T" : "" )
+            << ( cbTypeTransferFrom_->GetValue() && typeCheckBox_->GetValue() ? "F" : "" );
+
+        if ( !type.empty() )
         {
-            json_writer.Key((i18n ? _("Type") : "TYPE").c_str());
-            json_writer.String(type.c_str());
+            json_writer.Key ( ( i18n ? _( "Type" ) : "TYPE" ).c_str() );
+            json_writer.String ( type.c_str() );
         }
     }
 
-    if (amountRangeCheckBox_->IsChecked())
+    if ( amountRangeCheckBox_->IsChecked() )
     {
-        if (!amountMinEdit_->IsEmpty())
+        if ( !amountMinEdit_->IsEmpty() )
         {
             double amount_min;
-            amountMinEdit_->GetDouble(amount_min);
-            json_writer.Key((i18n ? _("Amount Min.") : "AMOUNT_MIN").c_str());
-            json_writer.Double(amount_min);
+            amountMinEdit_->GetDouble ( amount_min );
+            json_writer.Key ( ( i18n ? _( "Amount Min." ) : "AMOUNT_MIN" ).c_str() );
+            json_writer.Double ( amount_min );
         }
 
-        if (!amountMaxEdit_->IsEmpty())
+        if ( !amountMaxEdit_->IsEmpty() )
         {
             double amount_max;
-            amountMaxEdit_->GetDouble(amount_max);
-            json_writer.Key((i18n ? _("Amount Max.") : "AMOUNT_MAX").c_str());
-            json_writer.Double(amount_max);
+            amountMaxEdit_->GetDouble ( amount_max );
+            json_writer.Key ( ( i18n ? _( "Amount Max." ) : "AMOUNT_MAX" ).c_str() );
+            json_writer.Double ( amount_max );
         }
     }
 
-    if (transNumberCheckBox_->IsChecked())
+    if ( transNumberCheckBox_->IsChecked() )
     {
         const wxString num = transNumberEdit_->GetValue();
-        json_writer.Key((i18n ? _("Number") : "NUMBER").c_str());
-        json_writer.String(num.c_str());
+        json_writer.Key ( ( i18n ? _( "Number" ) : "NUMBER" ).c_str() );
+        json_writer.String ( num.c_str() );
     }
 
-    if (notesCheckBox_->IsChecked())
+    if ( notesCheckBox_->IsChecked() )
     {
         wxString notes = notesEdit_->GetValue();
-        json_writer.Key((i18n ? _("Notes") : "NOTES").c_str());
-        json_writer.String(notes.c_str());
+        json_writer.Key ( ( i18n ? _( "Notes" ) : "NOTES" ).c_str() );
+        json_writer.String ( notes.c_str() );
     }
 
-    for (const auto &entry : m_custom_fields->GetActiveCustomFields())
+    for ( const auto &entry : m_custom_fields->GetActiveCustomFields() )
     {
-        json_writer.Key(entry.first.c_str());
-        json_writer.Key(entry.second.c_str());
+        json_writer.Key ( entry.first.c_str() );
+        json_writer.Key ( entry.second.c_str() );
     }
 
     wxString label = m_setting_name->GetStringSelection();
-    if (m_setting_name->GetSelection() < 0)
+
+    if ( m_setting_name->GetSelection() < 0 )
     {
-        label = i18n ? _("Default") : "Default";
+        label = i18n ? _( "Default" ) : "Default";
     }
 
-    const wxString default_label = wxString::Format(_("%i: Empty"), m_setting_name->GetSelection() + 1);
-    if (!label.empty() && label != default_label)
+    const wxString default_label = wxString::Format ( _( "%i: Empty" ), m_setting_name->GetSelection() + 1 );
+
+    if ( !label.empty() && label != default_label )
     {
-        json_writer.Key((i18n ? _("Label") : "LABEL").c_str());
-        json_writer.String(label.c_str());
+        json_writer.Key ( ( i18n ? _( "Label" ) : "LABEL" ).c_str() );
+        json_writer.String ( label.c_str() );
     }
 
     json_writer.EndObject();
-
     return json_buffer.GetString();
 }
 
-void mmFilterTransactionsDialog::from_json(const wxString &data)
+void mmFilterTransactionsDialog::from_json ( const wxString &data )
 {
     Document j_doc;
-    if (j_doc.Parse(data.c_str()).HasParseError())
+
+    if ( j_doc.Parse ( data.c_str() ).HasParseError() )
     {
-        j_doc.Parse("{}");
+        j_doc.Parse ( "{}" );
     }
 
     //Label
-    const Value &j_label = GetValueByPointerWithDefault(j_doc, "/LABEL", "");
+    const Value &j_label = GetValueByPointerWithDefault ( j_doc, "/LABEL", "" );
     const wxString &s_label = j_label.IsString() ? j_label.GetString() : "";
-    m_setting_name->SetStringSelection(s_label);
+    m_setting_name->SetStringSelection ( s_label );
 
-    if (s_label.empty())
+    if ( s_label.empty() )
     {
         return;
     }
 
     //Account
-    const Value &j_account = GetValueByPointerWithDefault(j_doc, "/ACCOUNT", "");
+    const Value &j_account = GetValueByPointerWithDefault ( j_doc, "/ACCOUNT", "" );
     const wxString &s_account = j_account.IsString() ? j_account.GetString() : "";
-    accountCheckBox_->SetValue(!s_account.empty());
-    accountDropDown_->Enable(accountCheckBox_->IsChecked());
-    accountDropDown_->SetStringSelection(s_account);
-
+    accountCheckBox_->SetValue ( !s_account.empty() );
+    accountDropDown_->Enable ( accountCheckBox_->IsChecked() );
+    accountDropDown_->SetStringSelection ( s_account );
     //Dates
-    const Value &j_date = GetValueByPointerWithDefault(j_doc, "/DATE", "");
+    const Value &j_date = GetValueByPointerWithDefault ( j_doc, "/DATE", "" );
     const wxString &s_date = j_date.IsString() ? j_date.GetString() : "";
-    m_date_ranges->SetStringSelection(wxGetTranslation(s_date));
-    if (!s_date.empty())
+    m_date_ranges->SetStringSelection ( wxGetTranslation ( s_date ) );
+
+    if ( !s_date.empty() )
     {
         wxCommandEvent evt;
-        OnDateRangeChanged(evt);
+        OnDateRangeChanged ( evt );
     }
 
-    const bool custom = (s_date == "Custom");
-    if (custom)
+    const bool custom = ( s_date == "Custom" );
+
+    if ( custom )
     {
-        const Value &j_date1 = GetValueByPointerWithDefault(j_doc, "/DATE1", "");
+        const Value &j_date1 = GetValueByPointerWithDefault ( j_doc, "/DATE1", "" );
         m_begin_date = j_date1.IsString() ? j_date1.GetString() : "";
-        const Value &j_date2 = GetValueByPointerWithDefault(j_doc, "/DATE2", "");
+        const Value &j_date2 = GetValueByPointerWithDefault ( j_doc, "/DATE2", "" );
         m_end_date = j_date2.IsString() ? j_date2.GetString() : "";
-        m_fromDateCtrl->SetValue(mmParseISODate(m_begin_date));
-        m_toDateCtrl->SetValue(mmParseISODate(m_end_date));
+        m_fromDateCtrl->SetValue ( mmParseISODate ( m_begin_date ) );
+        m_toDateCtrl->SetValue ( mmParseISODate ( m_end_date ) );
     }
-    m_dateRangeCheckBox->SetValue(!s_date.empty());
-    m_fromDateCtrl->Enable(m_dateRangeCheckBox->IsChecked() && custom);
-    m_toDateCtrl->Enable(m_dateRangeCheckBox->IsChecked() && custom);
-    m_date_ranges->Enable(m_dateRangeCheckBox->IsChecked());
 
+    m_dateRangeCheckBox->SetValue ( !s_date.empty() );
+    m_fromDateCtrl->Enable ( m_dateRangeCheckBox->IsChecked() && custom );
+    m_toDateCtrl->Enable ( m_dateRangeCheckBox->IsChecked() && custom );
+    m_date_ranges->Enable ( m_dateRangeCheckBox->IsChecked() );
     //Payee
-    const Value &j_payee = GetValueByPointerWithDefault(j_doc, "/PAYEE", "");
+    const Value &j_payee = GetValueByPointerWithDefault ( j_doc, "/PAYEE", "" );
     const wxString &s_payee = j_payee.IsString() ? j_payee.GetString() : "";
-    payeeCheckBox_->SetValue(!s_payee.empty());
-    cbPayee_->Enable(payeeCheckBox_->IsChecked());
-    cbPayee_->SetValue(s_payee);
-
+    payeeCheckBox_->SetValue ( !s_payee.empty() );
+    cbPayee_->Enable ( payeeCheckBox_->IsChecked() );
+    cbPayee_->SetValue ( s_payee );
     //Category
-    const Value &j_category = GetValueByPointerWithDefault(j_doc, "/CATEGORY", "");
+    const Value &j_category = GetValueByPointerWithDefault ( j_doc, "/CATEGORY", "" );
     const wxString &s_category = j_category.IsString() ? j_category.GetString() : "";
-    categoryCheckBox_->SetValue(!s_category.empty());
-    btnCategory_->Enable(categoryCheckBox_->IsChecked());
-
+    categoryCheckBox_->SetValue ( !s_category.empty() );
+    btnCategory_->Enable ( categoryCheckBox_->IsChecked() );
     bSimilarCategoryStatus_ = false;
-    if (j_doc.HasMember("SIMILAR_YN") && j_doc["SIMILAR_YN"].IsBool())
+
+    if ( j_doc.HasMember ( "SIMILAR_YN" ) && j_doc["SIMILAR_YN"].IsBool() )
     {
         bSimilarCategoryStatus_ = j_doc["SIMILAR_YN"].GetBool();
     }
-    similarCategCheckBox_->SetValue(bSimilarCategoryStatus_);
-    similarCategCheckBox_->Enable(categoryCheckBox_->IsChecked());
 
-    wxStringTokenizer categ_token(s_category, ":", wxTOKEN_RET_EMPTY_ALL);
+    similarCategCheckBox_->SetValue ( bSimilarCategoryStatus_ );
+    similarCategCheckBox_->Enable ( categoryCheckBox_->IsChecked() );
+    wxStringTokenizer categ_token ( s_category, ":", wxTOKEN_RET_EMPTY_ALL );
     const auto categ_name = categ_token.GetNextToken().Trim();
-    Model_Category::Data *category = Model_Category::instance().get(categ_name);
-    if (category)
+    Model_Category::Data *category = Model_Category::instance().get ( categ_name );
+
+    if ( category )
     {
         categID_ = category->CATEGID;
     }
+
     Model_Subcategory::Data *sub_category = nullptr;
-    const auto subcateg_name = categ_token.GetNextToken().Trim(false);
-    if (!subcateg_name.IsEmpty())
+    const auto subcateg_name = categ_token.GetNextToken().Trim ( false );
+
+    if ( !subcateg_name.IsEmpty() )
     {
-        sub_category = Model_Subcategory::instance().get(subcateg_name, categID_);
-        if (sub_category)
+        sub_category = Model_Subcategory::instance().get ( subcateg_name, categID_ );
+
+        if ( sub_category )
         {
             subcategID_ = sub_category->SUBCATEGID;
         }
     }
-    btnCategory_->SetLabelText(Model_Category::full_name(categID_, subcategID_));
 
+    btnCategory_->SetLabelText ( Model_Category::full_name ( categID_, subcategID_ ) );
     //Status
-    const Value &j_status = GetValueByPointerWithDefault(j_doc, "/STATUS", "");
+    const Value &j_status = GetValueByPointerWithDefault ( j_doc, "/STATUS", "" );
     const wxString &s_status = j_status.IsString() ? j_status.GetString() : "";
-    statusCheckBox_->SetValue(!s_status.empty());
-    choiceStatus_->Enable(statusCheckBox_->IsChecked());
-    choiceStatus_->SetStringSelection(wxGetTranslation(s_status));
-
+    statusCheckBox_->SetValue ( !s_status.empty() );
+    choiceStatus_->Enable ( statusCheckBox_->IsChecked() );
+    choiceStatus_->SetStringSelection ( wxGetTranslation ( s_status ) );
     //Type
-    const Value &j_type = GetValueByPointerWithDefault(j_doc, "/TYPE", "");
+    const Value &j_type = GetValueByPointerWithDefault ( j_doc, "/TYPE", "" );
     const wxString &s_type = j_type.IsString() ? j_type.GetString() : "";
-    typeCheckBox_->SetValue(!s_type.empty());
-    cbTypeWithdrawal_->SetValue(s_type.Contains("W"));
-    cbTypeWithdrawal_->Enable(typeCheckBox_->IsChecked());
-    cbTypeDeposit_->SetValue(s_type.Contains("D"));
-    cbTypeDeposit_->Enable(typeCheckBox_->IsChecked());
-    cbTypeTransferTo_->SetValue(s_type.Contains("T"));
-    cbTypeTransferTo_->Enable(typeCheckBox_->IsChecked());
-    cbTypeTransferFrom_->SetValue(s_type.Contains("F"));
-    cbTypeTransferFrom_->Enable(typeCheckBox_->IsChecked());
-
+    typeCheckBox_->SetValue ( !s_type.empty() );
+    cbTypeWithdrawal_->SetValue ( s_type.Contains ( "W" ) );
+    cbTypeWithdrawal_->Enable ( typeCheckBox_->IsChecked() );
+    cbTypeDeposit_->SetValue ( s_type.Contains ( "D" ) );
+    cbTypeDeposit_->Enable ( typeCheckBox_->IsChecked() );
+    cbTypeTransferTo_->SetValue ( s_type.Contains ( "T" ) );
+    cbTypeTransferTo_->Enable ( typeCheckBox_->IsChecked() );
+    cbTypeTransferFrom_->SetValue ( s_type.Contains ( "F" ) );
+    cbTypeTransferFrom_->Enable ( typeCheckBox_->IsChecked() );
     //Amounts
-    const bool amt1 = (j_doc.HasMember("AMOUNT_MIN") && j_doc["AMOUNT_MIN"].IsDouble());
-    const bool amt2 = (j_doc.HasMember("AMOUNT_MAX") && j_doc["AMOUNT_MAX"].IsDouble());
+    const bool amt1 = ( j_doc.HasMember ( "AMOUNT_MIN" ) && j_doc["AMOUNT_MIN"].IsDouble() );
+    const bool amt2 = ( j_doc.HasMember ( "AMOUNT_MAX" ) && j_doc["AMOUNT_MAX"].IsDouble() );
+    amountRangeCheckBox_->SetValue ( amt1 || amt2 );
+    amountMinEdit_->Enable ( amt1 );
+    amountMaxEdit_->Enable ( amt2 );
 
-    amountRangeCheckBox_->SetValue(amt1 || amt2);
-    amountMinEdit_->Enable(amt1);
-    amountMaxEdit_->Enable(amt2);
-
-    if (amt1)
+    if ( amt1 )
     {
-        amountMinEdit_->SetValue(j_doc["AMOUNT_MIN"].GetDouble());
+        amountMinEdit_->SetValue ( j_doc["AMOUNT_MIN"].GetDouble() );
     }
     else
     {
-        amountMinEdit_->ChangeValue("");
+        amountMinEdit_->ChangeValue ( "" );
     }
 
-    if (amt2)
+    if ( amt2 )
     {
-        amountMaxEdit_->SetValue(j_doc["AMOUNT_MAX"].GetDouble());
+        amountMaxEdit_->SetValue ( j_doc["AMOUNT_MAX"].GetDouble() );
     }
     else
     {
-        amountMaxEdit_->ChangeValue("");
+        amountMaxEdit_->ChangeValue ( "" );
     }
 
     //Number
     wxString s_number;
-    if (j_doc.HasMember("NUMBER") && j_doc["NUMBER"].IsString())
+
+    if ( j_doc.HasMember ( "NUMBER" ) && j_doc["NUMBER"].IsString() )
     {
-        transNumberCheckBox_->SetValue(true);
+        transNumberCheckBox_->SetValue ( true );
         const Value &s = j_doc["NUMBER"];
         s_number = s.GetString();
     }
     else
     {
-        transNumberCheckBox_->SetValue(false);
+        transNumberCheckBox_->SetValue ( false );
     }
-    transNumberEdit_->Enable(transNumberCheckBox_->IsChecked());
-    transNumberEdit_->ChangeValue(s_number);
 
+    transNumberEdit_->Enable ( transNumberCheckBox_->IsChecked() );
+    transNumberEdit_->ChangeValue ( s_number );
     //Notes
     wxString s_notes;
-    if (j_doc.HasMember("NOTES") && j_doc["NOTES"].IsString())
+
+    if ( j_doc.HasMember ( "NOTES" ) && j_doc["NOTES"].IsString() )
     {
-        notesCheckBox_->SetValue(true);
+        notesCheckBox_->SetValue ( true );
         const Value &s = j_doc["NOTES"];
         s_notes = s.GetString();
     }
     else
     {
-        notesCheckBox_->SetValue(false);
+        notesCheckBox_->SetValue ( false );
     }
-    notesEdit_->Enable(notesCheckBox_->IsChecked());
-    notesEdit_->ChangeValue(s_notes);
+
+    notesEdit_->Enable ( notesCheckBox_->IsChecked() );
+    notesEdit_->ChangeValue ( s_notes );
 }
 
 int mmFilterTransactionsDialog::getAccountID()
@@ -1281,76 +1268,74 @@ bool mmFilterTransactionsDialog::getNotesCheckBox()
     return notesCheckBox_->IsChecked();
 }
 
-void mmFilterTransactionsDialog::OnMoreFields(wxCommandEvent &WXUNUSED(event))
+void mmFilterTransactionsDialog::OnMoreFields ( wxCommandEvent &WXUNUSED ( event ) )
 {
-    wxBitmapButton *button = static_cast<wxBitmapButton *>(FindWindow(wxID_MORE));
+    wxBitmapButton *button = static_cast<wxBitmapButton *> ( FindWindow ( wxID_MORE ) );
 
-    if (button)
+    if ( button )
     {
-        button->SetBitmap(mmBitmap(m_custom_fields->IsCustomPanelShown() ? png::RIGHTARROWSIMPLE : png::LEFTARROWSIMPLE));
+        button->SetBitmap ( mmBitmap ( m_custom_fields->IsCustomPanelShown() ? png::RIGHTARROWSIMPLE : png::LEFTARROWSIMPLE ) );
     }
 
     m_custom_fields->ShowHideCustomPanel();
-
-    this->SetMinSize(wxSize(0, 0));
+    this->SetMinSize ( wxSize ( 0, 0 ) );
     this->Fit();
 }
 
-void mmFilterTransactionsDialog::OnDateRangeChanged(wxCommandEvent &WXUNUSED(event))
+void mmFilterTransactionsDialog::OnDateRangeChanged ( wxCommandEvent &WXUNUSED ( event ) )
 {
     bool user_date = false;
     const int i = this->m_date_ranges->GetSelection();
-    if (i >= 0 && static_cast<unsigned>(i) < m_date_ranges->GetCount())
+
+    if ( i >= 0 && static_cast<unsigned> ( i ) < m_date_ranges->GetCount() )
     {
         const mmDateRange *date_range = static_cast<mmDateRange *>
-                                        (m_date_ranges->GetClientData(i));
+            ( m_date_ranges->GetClientData ( i ) );
 
-        if (date_range)
+        if ( date_range )
         {
             m_begin_date = date_range->start_date().FormatISODate();
             m_end_date = date_range->end_date().FormatISODate();
-            m_fromDateCtrl->SetValue(date_range->start_date());
-            m_toDateCtrl->SetValue(date_range->end_date());
-
-            user_date = date_range->title().IsSameAs("Custom");
+            m_fromDateCtrl->SetValue ( date_range->start_date() );
+            m_toDateCtrl->SetValue ( date_range->end_date() );
+            user_date = date_range->title().IsSameAs ( "Custom" );
         }
     }
-    m_fromDateCtrl->Enable(user_date);
-    m_toDateCtrl->Enable(user_date);
+
+    m_fromDateCtrl->Enable ( user_date );
+    m_toDateCtrl->Enable ( user_date );
 }
 
-void mmFilterTransactionsDialog::OnSaveSettings(wxCommandEvent &WXUNUSED(event))
+void mmFilterTransactionsDialog::OnSaveSettings ( wxCommandEvent &WXUNUSED ( event ) )
 {
     const int i = m_setting_name->GetSelection();
     //m_custom_fields->SaveCustomValues(i);
-    const wxString &default_label = wxString::Format(_("%i: Empty"), i + 1);
+    const wxString &default_label = wxString::Format ( _( "%i: Empty" ), i + 1 );
     wxString label = m_setting_name->GetStringSelection();
-    label = wxGetTextFromUser(_("Please Enter"), _("Setting Name"), label);
+    label = wxGetTextFromUser ( _( "Please Enter" ), _( "Setting Name" ), label );
 
-    if (label.empty() || label == default_label)
+    if ( label.empty() || label == default_label )
     {
-        return mmErrorDialogs::ToolTip4Object(m_setting_name
-                                              , _("Could not save settings"), _("Empty value"));
+        return mmErrorDialogs::ToolTip4Object ( m_setting_name
+                , _( "Could not save settings" ), _( "Empty value" ) );
     }
 
-    m_setting_name->SetString(i, label);
-
-    SaveSettings(i);
+    m_setting_name->SetString ( i, label );
+    SaveSettings ( i );
 }
 
-void mmFilterTransactionsDialog::SaveSettings(int menu_item)
+void mmFilterTransactionsDialog::SaveSettings ( int menu_item )
 {
     settings_string_ = to_json();
-    Model_Infotable::instance().Set(wxString::Format("TRANSACTIONS_FILTER_%d", menu_item), settings_string_);
-    wxLogDebug("========== Settings Saved to registry %i ==========\n %s", menu_item, settings_string_);
-
-    m_custom_fields->SaveCustomValues(0); //TODO: how to save it?
+    Model_Infotable::instance().Set ( wxString::Format ( "TRANSACTIONS_FILTER_%d", menu_item ), settings_string_ );
+    wxLogDebug ( "========== Settings Saved to registry %i ==========\n %s", menu_item, settings_string_ );
+    m_custom_fields->SaveCustomValues ( 0 ); //TODO: how to save it?
 }
 
-void mmFilterTransactionsDialog::OnSettingsSelected(wxCommandEvent &event)
+void mmFilterTransactionsDialog::OnSettingsSelected ( wxCommandEvent &event )
 {
     const int i = event.GetSelection();
-    GetStoredSettings(i);
+    GetStoredSettings ( i );
     m_custom_fields->ResetRefID(); // TODO: m_custom_fields->SetRefID(0);
     dataToControls();
 }

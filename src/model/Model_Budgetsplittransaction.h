@@ -35,7 +35,7 @@ public:
     * Return the static instance address for Model_Budgetsplittransaction table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Budgetsplittransaction &instance(wxSQLite3Database *db);
+    static Model_Budgetsplittransaction &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Budgetsplittransaction table
@@ -44,9 +44,9 @@ public:
     static Model_Budgetsplittransaction &instance();
 
 public:
-    double get_total(const Data_Set &rows);
+    double get_total ( const Data_Set &rows );
     std::map<int, Data_Set> get_all();
-    int update(const Data_Set &rows, int transactionID);
+    int update ( const Data_Set &rows, int transactionID );
 };
 
 #endif

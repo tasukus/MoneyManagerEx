@@ -71,10 +71,10 @@ public:
         int BDID = 0;
         // This relates the 'Date Due' field.
         wxString TRANSDATE = wxDateTime::Now().FormatISODate();
-        wxString STATUS = Model_Billsdeposits::all_status()[Model_Billsdeposits::NONE];;
+        wxString STATUS = Model_Billsdeposits::all_status() [Model_Billsdeposits::NONE];;
         int ACCOUNTID = -1;
         int TOACCOUNTID = -1;
-        wxString TRANSCODE = Model_Billsdeposits::all_type()[Model_Billsdeposits::WITHDRAWAL];;
+        wxString TRANSCODE = Model_Billsdeposits::all_type() [Model_Billsdeposits::WITHDRAWAL];;
         int CATEGID = -1;
         int SUBCATEGID = -1;
         double TRANSAMOUNT = 0;
@@ -93,7 +93,7 @@ public:
     struct Full_Data : public Data
     {
         Full_Data();
-        explicit Full_Data(const Data &r);
+        explicit Full_Data ( const Data &r );
         wxString ACCOUNTNAME;
         wxString PAYEENAME;
         wxString CATEGNAME;
@@ -113,7 +113,7 @@ public:
     * Return the static instance address for Model_Billsdeposits table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Billsdeposits &instance(wxSQLite3Database *db);
+    static Model_Billsdeposits &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Billsdeposits table
@@ -123,32 +123,32 @@ public:
 
 public:
     // This relates the 'Date Due' field
-    static wxDate TRANSDATE(const Data *r);
+    static wxDate TRANSDATE ( const Data *r );
     // This relates the 'Date Due' field
-    static wxDate TRANSDATE(const Data &r);
+    static wxDate TRANSDATE ( const Data &r );
     // This relates the 'Date Paid' field
-    static wxDate NEXTOCCURRENCEDATE(const Data *r);
+    static wxDate NEXTOCCURRENCEDATE ( const Data *r );
     // This relates the 'Date Paid' field
-    static wxDate NEXTOCCURRENCEDATE(const Data &r);
-    static TYPE type(const wxString &r);
-    static TYPE type(const Data *r);
-    static TYPE type(const Data &r);
-    static STATUS_ENUM status(const wxString &r);
-    static STATUS_ENUM status(const Data *r);
-    static STATUS_ENUM status(const Data &r);
-    static wxString toShortStatus(const wxString &fullStatus);
+    static wxDate NEXTOCCURRENCEDATE ( const Data &r );
+    static TYPE type ( const wxString &r );
+    static TYPE type ( const Data *r );
+    static TYPE type ( const Data &r );
+    static STATUS_ENUM status ( const wxString &r );
+    static STATUS_ENUM status ( const Data *r );
+    static STATUS_ENUM status ( const Data &r );
+    static wxString toShortStatus ( const wxString &fullStatus );
 
     /**
     * Decodes the internal fields and sets the condition of the following parameters:
     * autoExecuteManual(), autoExecuteSilent(), requireExecution(), allowExecution();
     */
-    void decode_fields(const Data &r);
+    void decode_fields ( const Data &r );
     bool autoExecuteManual();
     bool autoExecuteSilent();
     bool requireExecution();
     bool allowExecution();
     typedef std::map<int, double> AccountBalance;
-    bool AllowTransaction(const Data &r, AccountBalance &bal);
+    bool AllowTransaction ( const Data &r, AccountBalance &bal );
 
 private:
     bool m_autoExecuteManual;
@@ -161,16 +161,16 @@ public:
     * Remove the Data record instance from memory and the database
     * including any splits associated with the Data Record.
     */
-    bool remove(int id);
+    bool remove ( int id );
 
-    static DB_Table_BILLSDEPOSITS::STATUS STATUS(STATUS_ENUM status, OP op = EQUAL);
-    static DB_Table_BILLSDEPOSITS::TRANSCODE TRANSCODE(TYPE type, OP op = EQUAL);
+    static DB_Table_BILLSDEPOSITS::STATUS STATUS ( STATUS_ENUM status, OP op = EQUAL );
+    static DB_Table_BILLSDEPOSITS::TRANSCODE TRANSCODE ( TYPE type, OP op = EQUAL );
 
-    static const Model_Budgetsplittransaction::Data_Set splittransaction(const Data *r);
-    static const Model_Budgetsplittransaction::Data_Set splittransaction(const Data &r);
+    static const Model_Budgetsplittransaction::Data_Set splittransaction ( const Data *r );
+    static const Model_Budgetsplittransaction::Data_Set splittransaction ( const Data &r );
 
-    void completeBDInSeries(int bdID);
-    static const wxDateTime nextOccurDate(int type, int numRepeats, const wxDateTime &nextOccurDate);
+    void completeBDInSeries ( int bdID );
+    static const wxDateTime nextOccurDate ( int type, int numRepeats, const wxDateTime &nextOccurDate );
 };
 
 #endif

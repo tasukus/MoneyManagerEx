@@ -37,27 +37,27 @@ class UserTransactionPanel : public wxPanel
 public:
     UserTransactionPanel();
 
-    UserTransactionPanel(wxWindow *parent
-                         , Model_Checking::Data *checking_entry
-                         , wxWindowID win_id = wxID_ANY
-                         , const wxPoint &pos = wxDefaultPosition
-                         , const wxSize &size = wxDefaultSize
-                         , long style = wxTAB_TRAVERSAL
-                         , const wxString &name = "UserTransactionPanel");
+    UserTransactionPanel ( wxWindow *parent
+                           , Model_Checking::Data *checking_entry
+                           , wxWindowID win_id = wxID_ANY
+                           , const wxPoint &pos = wxDefaultPosition
+                           , const wxSize &size = wxDefaultSize
+                           , long style = wxTAB_TRAVERSAL
+                           , const wxString &name = "UserTransactionPanel" );
 
     ~UserTransactionPanel();
 
     int SaveChecking();
     wxDateTime TransactionDate();
-    void TransactionDate(const wxDateTime &trans_date);
+    void TransactionDate ( const wxDateTime &trans_date );
 
-    void SetTransactionValue(const double &trans_value, const double &commission, bool fixed_value = false);
-    void SetTransactionNumber(const wxString &trans_number);
-    void SetTransactionAccount(const wxString &trans_account);
+    void SetTransactionValue ( const double &trans_value, const double &commission, bool fixed_value = false );
+    void SetTransactionNumber ( const wxString &trans_number );
+    void SetTransactionAccount ( const wxString &trans_account );
 
     int TransactionType();
     Model_Translink::CHECKING_TYPE CheckingType();
-    void CheckingType(Model_Translink::CHECKING_TYPE ct);
+    void CheckingType ( Model_Translink::CHECKING_TYPE ct );
 
 private:
     Model_Checking::Data *m_checking_entry = nullptr;
@@ -73,21 +73,21 @@ private:
 private:
     void Create();
     void DataToControls();
-    void SetLastPayeeAndCategory(const int account_id);
+    void SetLastPayeeAndCategory ( const int account_id );
 
-    void OnTransAccountButton(wxCommandEvent &WXUNUSED(event));
-    void OnTransPayeeButton(wxCommandEvent &WXUNUSED(event));
-    void OnTransCategoryButton(wxCommandEvent &WXUNUSED(event));
+    void OnTransAccountButton ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnTransPayeeButton ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnTransCategoryButton ( wxCommandEvent &WXUNUSED ( event ) );
 
-    void OnDateSelectorForward(wxSpinEvent &WXUNUSED(event));
-    void OnDateSelectorBackward(wxSpinEvent &WXUNUSED(event));
-    void SetNewDate(wxDatePickerCtrl *dpc, bool forward = true);
+    void OnDateSelectorForward ( wxSpinEvent &WXUNUSED ( event ) );
+    void OnDateSelectorBackward ( wxSpinEvent &WXUNUSED ( event ) );
+    void SetNewDate ( wxDatePickerCtrl *dpc, bool forward = true );
 
-    void OnEnteredText(wxCommandEvent &event);
-    void OnTypeChoice(wxCommandEvent &WXUNUSED(event));
-    void OnFrequentNotes(wxCommandEvent &event);
-    void onSelectedNote(wxCommandEvent &event);
-    void OnAttachments(wxCommandEvent &WXUNUSED(event));
+    void OnEnteredText ( wxCommandEvent &event );
+    void OnTypeChoice ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnFrequentNotes ( wxCommandEvent &event );
+    void onSelectedNote ( wxCommandEvent &event );
+    void OnAttachments ( wxCommandEvent &WXUNUSED ( event ) );
 
 public:
     enum GUI_ERROR
@@ -104,7 +104,7 @@ public:
     wxButton *m_payee = nullptr;
     wxButton *m_category = nullptr;
 
-    bool ValidCheckingAccountEntry(GUI_ERROR &g_err);
+    bool ValidCheckingAccountEntry ( GUI_ERROR &g_err );
 
 private:
     wxDatePickerCtrl *m_date_selector = nullptr;

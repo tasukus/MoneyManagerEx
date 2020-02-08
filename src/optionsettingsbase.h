@@ -29,6 +29,6 @@ class OptionSettingsBase : public wxPanel
 public:
     virtual void SaveSettings() = 0;
 
-    wxControl *SetBoldFont(wxControl *control);
-    bool GetIniDatabaseCheckboxValue(const wxString &dbField, bool defaultState);
+    wxControl *SetBoldFont ( wxControl *control );
+    bool GetIniDatabaseCheckboxValue ( const wxString &dbField,const bool defaultState );
 };

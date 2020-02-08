@@ -27,11 +27,11 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 class mmWebAppDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmWebAppDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmWebAppDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmWebAppDialog(wxWindow *parent, const wxString &name = "mmWebAppDialog");
+    mmWebAppDialog ( wxWindow *parent, const wxString &name = "mmWebAppDialog" );
 
     bool getRefreshRequested() const
     {
@@ -65,25 +65,25 @@ private:
     mmWebApp::WebTranVector WebAppTransactions_;
     bool refreshRequested_=false;
 
-    mmWebAppDialog( ) : refreshRequested_( false )
+    mmWebAppDialog( ) : refreshRequested_ ( false )
     {
         webtranListBox_ = nullptr;
     }
 
-    void Create(wxWindow *parent, const wxString &name = "mmWebAppDialog");
+    void Create ( wxWindow *parent, const wxString &name = "mmWebAppDialog" );
     void CreateControls();
     void fillControls();
 
-    void OnCancel(wxCommandEvent &WXUNUSED(event));
-    void OnApply(wxCommandEvent &WXUNUSED(event));
-    void OnOk(wxCommandEvent &WXUNUSED(event));
+    void OnCancel ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnApply ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnOk ( wxCommandEvent &WXUNUSED ( event ) );
 
-    bool ImportWebTr(int WebTrID, bool open);
-    void ImportAllWebTr(const bool open);
+    bool ImportWebTr ( int WebTrID, bool open );
+    void ImportAllWebTr ( const bool open );
 
-    void OnListItemActivated(wxDataViewEvent &event);
-    void OnMenuSelected(wxCommandEvent &event);
-    void OnItemRightClick(wxDataViewEvent &event);
+    void OnListItemActivated ( wxDataViewEvent &event );
+    void OnMenuSelected ( wxCommandEvent &event );
+    void OnItemRightClick ( wxDataViewEvent &event );
 
     void ImportWebTrSelected();
     void DeleteWebTr();

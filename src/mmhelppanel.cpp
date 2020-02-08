@@ -25,56 +25,48 @@
 #include "Model_Usage.h"
 #include <wx/webview.h>
 
-BEGIN_EVENT_TABLE(mmHelpPanel, wxPanel)
-    EVT_BUTTON(wxID_BACKWARD, mmHelpPanel::OnHelpPageBack)
-    EVT_BUTTON(wxID_FORWARD, mmHelpPanel::OnHelpPageForward)
+BEGIN_EVENT_TABLE ( mmHelpPanel, wxPanel )
+    EVT_BUTTON ( wxID_BACKWARD, mmHelpPanel::OnHelpPageBack )
+    EVT_BUTTON ( wxID_FORWARD, mmHelpPanel::OnHelpPageForward )
 END_EVENT_TABLE()
 
-mmHelpPanel::mmHelpPanel(wxWindow *parent, mmGUIFrame *frame, wxWindowID winid
-                         , const wxPoint &pos, const wxSize &size, long style, const wxString &name)
-    : m_frame(frame)
+mmHelpPanel::mmHelpPanel ( wxWindow *parent, mmGUIFrame *frame, wxWindowID winid
+    , const wxPoint &pos, const wxSize &size, long style, const wxString &name )
+    : m_frame ( frame )
 {
-    Create(parent, winid, pos, size, style, name);
+    Create ( parent, winid, pos, size, style, name );
 }
 
-bool mmHelpPanel::Create( wxWindow *parent, wxWindowID winid,
-                          const wxPoint &pos, const wxSize &size, long style, const wxString &name)
+bool mmHelpPanel::Create ( wxWindow *parent, wxWindowID winid,
+    const wxPoint &pos, const wxSize &size, long style, const wxString &name )
 {
-    SetExtraStyle(GetExtraStyle()|wxWS_EX_BLOCK_EVENTS);
-    wxPanel::Create(parent, winid, pos, size, style, name);
+    SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
+    wxPanel::Create ( parent, winid, pos, size, style, name );
     const wxDateTime start = wxDateTime::UNow();
-
     CreateControls();
-    GetSizer()->Fit(this);
-    GetSizer()->SetSizeHints(this);
-    Model_Usage::instance().pageview(this, (wxDateTime::UNow() - start).GetMilliseconds().ToLong());
-
+    GetSizer()->Fit ( this );
+    GetSizer()->SetSizeHints ( this );
+    Model_Usage::instance().pageview ( this, ( wxDateTime::UNow() - start ).GetMilliseconds().ToLong() );
     return TRUE;
 }
 
 void mmHelpPanel::CreateControls()
 {
-    wxBoxSizer *itemBoxSizer2 = new wxBoxSizer(wxVERTICAL);
-    this->SetSizer(itemBoxSizer2);
-
-    wxPanel *itemPanel3 = new wxPanel(this, wxID_ANY
-                                      , wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL);
-    itemBoxSizer2->Add(itemPanel3, 0, wxGROW | wxALL, 5);
-
-    wxBoxSizer *itemBoxSizerHeader = new wxBoxSizer(wxHORIZONTAL);
-    itemPanel3->SetSizer(itemBoxSizerHeader);
-
-    wxButton *buttonBack     = new wxButton(itemPanel3, wxID_BACKWARD, _("&Back"));
-    wxButton *buttonFordward = new wxButton(itemPanel3, wxID_FORWARD, _("&Forward") );
-
-    wxStaticText *itemStaticText9 = new wxStaticText(itemPanel3, wxID_ANY
-            , mmex::getCaption(_("Help")));
-    itemStaticText9->SetFont(this->GetFont().Larger().Bold());
-
-    itemBoxSizerHeader->Add(buttonBack, 0, wxLEFT, 5);
-    itemBoxSizerHeader->Add(buttonFordward, 0, wxLEFT | wxRIGHT, 5);
-    itemBoxSizerHeader->Add(itemStaticText9, 0, wxLEFT | wxTOP, 5);
-
+    wxBoxSizer *itemBoxSizer2 = new wxBoxSizer ( wxVERTICAL );
+    this->SetSizer ( itemBoxSizer2 );
+    wxPanel *itemPanel3 = new wxPanel ( this, wxID_ANY
+        , wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+    itemBoxSizer2->Add ( itemPanel3, 0, wxGROW | wxALL, 5 );
+    wxBoxSizer *itemBoxSizerHeader = new wxBoxSizer ( wxHORIZONTAL );
+    itemPanel3->SetSizer ( itemBoxSizerHeader );
+    wxButton *buttonBack     = new wxButton ( itemPanel3, wxID_BACKWARD, _( "&Back" ) );
+    wxButton *buttonFordward = new wxButton ( itemPanel3, wxID_FORWARD, _( "&Forward" ) );
+    wxStaticText *itemStaticText9 = new wxStaticText ( itemPanel3, wxID_ANY
+        , mmex::getCaption ( _( "Help" ) ) );
+    itemStaticText9->SetFont ( this->GetFont().Larger().Bold() );
+    itemBoxSizerHeader->Add ( buttonBack, 0, wxLEFT, 5 );
+    itemBoxSizerHeader->Add ( buttonFordward, 0, wxLEFT | wxRIGHT, 5 );
+    itemBoxSizerHeader->Add ( itemStaticText9, 0, wxLEFT | wxTOP, 5 );
     /**************************************************************************
     Allows help files for a specific language.
 
@@ -83,33 +75,31 @@ void mmHelpPanel::CreateControls()
 
     Default help files will be used when the language help file are not found.
     **************************************************************************/
-
     const int helpFileIndex = m_frame->getHelpFileIndex();
-    const wxString help_file = wxString::Format("file://%s?lang=%s"
-                               , mmex::getPathDoc(static_cast<mmex::EDocFile>(helpFileIndex))
-                               , Option::instance().getLanguageISO6391());
-
+    const wxString help_file = wxString::Format ( "file://%s?lang=%s"
+            , mmex::getPathDoc ( static_cast<mmex::EDocFile> ( helpFileIndex ) )
+            , Option::instance().getLanguageISO6391() );
     //wxLogDebug("%s", help_file);
-    browser_ = wxWebView::New(this, wxID_ANY, help_file);
-    itemBoxSizer2->Add(browser_, 1, wxGROW | wxALL, 1);
+    browser_ = wxWebView::New ( this, wxID_ANY, help_file );
+    itemBoxSizer2->Add ( browser_, 1, wxGROW | wxALL, 1 );
 }
 
 void mmHelpPanel::sortTable()
 {
 }
 
-void mmHelpPanel::OnHelpPageBack(wxCommandEvent &WXUNUSED(event))
+void mmHelpPanel::OnHelpPageBack ( wxCommandEvent &WXUNUSED ( event ) )
 {
-    if (browser_->CanGoBack())
+    if ( browser_->CanGoBack() )
     {
         browser_->GoBack();
         browser_->SetFocus();
     }
 }
 
-void mmHelpPanel::OnHelpPageForward(wxCommandEvent &WXUNUSED(event))
+void mmHelpPanel::OnHelpPageForward ( wxCommandEvent &WXUNUSED ( event ) )
 {
-    if (browser_->CanGoForward() )
+    if ( browser_->CanGoForward() )
     {
         browser_->GoForward();
         browser_->SetFocus();

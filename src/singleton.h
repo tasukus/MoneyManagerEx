@@ -34,10 +34,10 @@ public:
     }
 
 private:
-    Singleton(void);
-    ~Singleton(void);
-    Singleton(const Singleton<T> &);
-    Singleton<T> &operator= (const Singleton<T> &);
+    Singleton ( void );
+    ~Singleton ( void );
+    Singleton ( const Singleton<T> & );
+    Singleton<T> &operator= ( const Singleton<T> & );
 };
 
 #endif // MM_EX_SINGLETON_H_

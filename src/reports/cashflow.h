@@ -28,7 +28,7 @@ class mmReportCashFlow : public mmPrintableBase
 {
 public:
     enum TYPE { MONTHLY = 0, DAILY };
-    explicit mmReportCashFlow(TYPE cashflowreporttype);
+    explicit mmReportCashFlow ( TYPE cashflowreporttype );
     virtual ~mmReportCashFlow();
 
     virtual wxString getHTMLText();
@@ -36,7 +36,7 @@ public:
 
 protected:
     wxString getHTMLText_i();
-    void getStats(double &tInitialBalance, std::vector<ValueTrio> &forecastVector);
+    void getStats ( double &tInitialBalance, std::vector<ValueTrio> &forecastVector );
 
 protected:
     struct mmRepeatForecast

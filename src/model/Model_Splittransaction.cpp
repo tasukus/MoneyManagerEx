@@ -33,12 +33,12 @@ Model_Splittransaction::~Model_Splittransaction()
 * Initialize the global Model_Splittransaction table.
 * Reset the Model_Splittransaction table or create the table if it does not exist.
 */
-Model_Splittransaction &Model_Splittransaction::instance(wxSQLite3Database *db)
+Model_Splittransaction &Model_Splittransaction::instance ( wxSQLite3Database *db )
 {
     Model_Splittransaction &ins = Singleton<Model_Splittransaction>::instance();
     ins.db_ = db;
     ins.destroy_cache();
-    ins.ensure(db);
+    ins.ensure ( db );
 
     return ins;
 }
@@ -49,19 +49,19 @@ Model_Splittransaction &Model_Splittransaction::instance()
     return Singleton<Model_Splittransaction>::instance();
 }
 
-double Model_Splittransaction::get_total(const Data_Set &rows)
+double Model_Splittransaction::get_total ( const Data_Set &rows )
 {
     double total = 0.0;
-    for (auto &r : rows)
+    for ( auto &r : rows )
     {
         total += r.SPLITTRANSAMOUNT;
     }
     return total;
 }
-double Model_Splittransaction::get_total(const std::vector<Split> &rows)
+double Model_Splittransaction::get_total ( const std::vector<Split> &rows )
 {
     double total = 0.0;
-    for (auto &r : rows)
+    for ( auto &r : rows )
     {
         total += r.SPLITTRANSAMOUNT;
     }
@@ -71,45 +71,45 @@ double Model_Splittransaction::get_total(const std::vector<Split> &rows)
 std::map<int, Model_Splittransaction::Data_Set> Model_Splittransaction::get_all()
 {
     std::map<int, Model_Splittransaction::Data_Set> data;
-    for (const auto &split : instance().all())
+    for ( const auto &split : instance().all() )
     {
-        data[split.TRANSID].push_back(split);
+        data[split.TRANSID].push_back ( split );
     }
     return data;
 }
 
-int Model_Splittransaction::update(const Data_Set &rows, int transactionID)
+int Model_Splittransaction::update ( const Data_Set &rows, int transactionID )
 {
 
-    Data_Set split = instance().find(TRANSID(transactionID));
-    for (const auto &split_item : split)
+    Data_Set split = instance().find ( TRANSID ( transactionID ) );
+    for ( const auto &split_item : split )
     {
-        instance().remove(split_item.SPLITTRANSID);
+        instance().remove ( split_item.SPLITTRANSID );
     }
 
-    if (!rows.empty())
+    if ( !rows.empty() )
     {
         Data_Set split_items;
-        for (const auto &item : rows)
+        for ( const auto &item : rows )
         {
             Data *split_item = instance().create();
             split_item->TRANSID = transactionID;
             split_item->SPLITTRANSAMOUNT = item.SPLITTRANSAMOUNT;
             split_item->CATEGID = item.CATEGID;
             split_item->SUBCATEGID = item.SUBCATEGID;
-            split_items.push_back(*split_item);
+            split_items.push_back ( *split_item );
         }
-        instance().save(split_items);
+        instance().save ( split_items );
     }
     return rows.size();
 }
 
-const wxString Model_Splittransaction::get_tooltip(const std::vector<Split> &rows, const Model_Currency::Data *currency)
+const wxString Model_Splittransaction::get_tooltip ( const std::vector<Split> &rows, const Model_Currency::Data *currency )
 {
     wxString split_tooltip = "";
-    for (const auto &entry : rows)
-        split_tooltip += wxString::Format("%s = %s\n"
-                                          , Model_Category::full_name(entry.CATEGID, entry.SUBCATEGID)
-                                          , Model_Currency::toCurrency(entry.SPLITTRANSAMOUNT, currency));
+    for ( const auto &entry : rows )
+        split_tooltip += wxString::Format ( "%s = %s\n"
+                                            , Model_Category::full_name ( entry.CATEGID, entry.SUBCATEGID )
+                                            , Model_Currency::toCurrency ( entry.SPLITTRANSAMOUNT, currency ) );
     return split_tooltip;
 }

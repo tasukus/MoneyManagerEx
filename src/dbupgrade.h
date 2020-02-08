@@ -23,16 +23,16 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 class dbUpgrade
 {
-    static int FixVersionStatus(wxSQLite3Database *db, int version);
-    static int GetCurrentVersion(wxSQLite3Database *db);
-    static std::vector<wxString> SplitQueries(const wxString &statement);
-    static bool UpgradeToVersion(wxSQLite3Database *db, int version);
-    static void UpgradeFailedMessage(const wxString &error, const wxString &step, int version);
+    static int FixVersionStatus ( wxSQLite3Database *db, int version );
+    static int GetCurrentVersion ( wxSQLite3Database *db );
+    static std::vector<wxString> SplitQueries ( const wxString &statement );
+    static bool UpgradeToVersion ( wxSQLite3Database *db, int version );
+    static void UpgradeFailedMessage ( const wxString &error, const wxString &step, int version );
 public:
-    static bool InitializeVersion(wxSQLite3Database *db, int version = dbLatestVersion);
-    static bool CheckUpgradeDB(wxSQLite3Database *db);
-    static bool UpgradeDB(wxSQLite3Database *db, const wxString &DbFileName);
+    static bool InitializeVersion ( wxSQLite3Database *db, int version = dbLatestVersion );
+    static bool CheckUpgradeDB ( wxSQLite3Database *db );
+    static bool UpgradeDB ( wxSQLite3Database *db, const wxString &DbFileName );
     enum BACKUPTYPE { START = 0, CLOSE, VERSION_UPGRADE };
-    static void BackupDB(const wxString &Filename, enum BACKUPTYPE BackupType, unsigned FilesToKeep, int UpgradeVersion = 0);
-    static void SqlFileDebug(wxSQLite3Database *db);
+    static void BackupDB ( const wxString &Filename, enum BACKUPTYPE BackupType, unsigned FilesToKeep, int UpgradeVersion = 0 );
+    static void SqlFileDebug ( wxSQLite3Database *db );
 };

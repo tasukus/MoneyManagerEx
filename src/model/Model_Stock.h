@@ -37,7 +37,7 @@ public:
     * Return the static instance address for Model_Stock table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Stock &instance(wxSQLite3Database *db);
+    static Model_Stock &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Stock table
@@ -46,33 +46,33 @@ public:
     static Model_Stock &instance();
 
 public:
-    static wxDate PURCHASEDATE(const Data *stock);
-    static wxDate PURCHASEDATE(const Data &stock);
+    static wxDate PURCHASEDATE ( const Data *stock );
+    static wxDate PURCHASEDATE ( const Data &stock );
 
     /** Original value of Stocks */
-    static double InvestmentValue(const Data *r);
+    static double InvestmentValue ( const Data *r );
     /** Original value of Stocks */
-    static double InvestmentValue(const Data &r);
+    static double InvestmentValue ( const Data &r );
 
-    static double CurrentValue(const Data *r);
-    static double CurrentValue(const Data &r);
+    static double CurrentValue ( const Data *r );
+    static double CurrentValue ( const Data &r );
 
 public:
     /**
     * Remove the Data record from memory and the database.
     * Delete also all stock history
     */
-    bool remove(int id);
+    bool remove ( int id );
 
     /**
     Returns the last price date of a given stock
     */
-    wxString lastPriceDate(const Self::Data *entity);
+    wxString lastPriceDate ( const Self::Data *entity );
 
     /**
     Returns the total stock balance at a given date
     */
-    double getDailyBalanceAt(const Model_Account::Data *account, const wxDate &date);
+    double getDailyBalanceAt ( const Model_Account::Data *account, const wxDate &date );
 };
 
 #endif

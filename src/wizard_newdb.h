@@ -30,12 +30,12 @@
 class mmNewDatabaseWizard : public wxWizard
 {
 public:
-    mmNewDatabaseWizard(wxFrame *frame);
-    void RunIt(bool modal);
+    mmNewDatabaseWizard ( wxFrame *frame );
+    void RunIt ( bool modal );
 
 private:
     wxWizardPageSimple *page1;
-    void OnWizardCancel(wxWizardEvent &event);
+    void OnWizardCancel ( wxWizardEvent &event );
 
     wxDECLARE_EVENT_TABLE();
 };
@@ -44,9 +44,9 @@ private:
 class mmNewDatabaseWizardPage : public wxWizardPageSimple
 {
 public:
-    mmNewDatabaseWizardPage(mmNewDatabaseWizard *parent);
+    mmNewDatabaseWizardPage ( mmNewDatabaseWizard *parent );
 
-    void OnCurrency(wxCommandEvent &WXUNUSED(event));
+    void OnCurrency ( wxCommandEvent &WXUNUSED ( event ) );
     virtual bool TransferDataFromWindow();
 
 private:

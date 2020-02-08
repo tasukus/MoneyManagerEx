@@ -28,27 +28,27 @@ public:
     using wxTextCtrl::SetValue;
 
     mmTextCtrl()  {}
-    mmTextCtrl(wxWindow *parent, wxWindowID id
-               , const wxString &value = wxEmptyString
-               , const wxPoint &pos = wxDefaultPosition
-               , const wxSize &size = wxDefaultSize
-               , long style = 0
-               , const wxValidator &validator = wxDefaultValidator
-               , const Model_Currency::Data *currency = Model_Currency::GetBaseCurrency()
-               , const wxString &name = "mmTextCtrl")
-        : wxTextCtrl(parent, id, value, pos, size, style, validator, name)
-        , m_currency(currency)
+    mmTextCtrl ( wxWindow *parent, wxWindowID id
+                 , const wxString &value = wxEmptyString
+                 , const wxPoint &pos = wxDefaultPosition
+                 , const wxSize &size = wxDefaultSize
+                 , long style = 0
+                 , const wxValidator &validator = wxDefaultValidator
+                 , const Model_Currency::Data *currency = Model_Currency::GetBaseCurrency()
+                 , const wxString &name = "mmTextCtrl" )
+        : wxTextCtrl ( parent, id, value, pos, size, style, validator, name )
+        , m_currency ( currency )
     {}
 
-    void SetValue(double value);
-    void SetValue(double value, int precision);
+    void SetValue ( double value );
+    void SetValue ( double value, int precision );
     //SetValue without generating an event
-    void SetValueNoEvent(double value, int precision);
-    void SetValue(double value, const Model_Account::Data *account, int precision = -1);
-    void SetValue(double value, const Model_Currency::Data *currency, int precision = -1);
-    bool Calculate(int alt_precision = -1);
-    bool GetDouble(double &amount) const;
-    bool checkValue(double &amount, bool positive_value = true);
+    void SetValueNoEvent ( double value, int precision );
+    void SetValue ( double value, const Model_Account::Data *account, int precision = -1 );
+    void SetValue ( double value, const Model_Currency::Data *currency, int precision = -1 );
+    bool Calculate ( const int alt_precision = -1 );
+    bool GetDouble ( double &amount ) const;
+    bool checkValue ( double &amount, bool positive_value = true );
     wxChar GetDecimalPoint();
 
 private:

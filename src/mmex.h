@@ -35,7 +35,7 @@ public:
     mmGUIApp();
 
     wxLanguage getGUILanguage() const;
-    bool setGUILanguage(wxLanguage lang);
+    bool setGUILanguage ( wxLanguage lang );
     mmGUIFrame *m_frame = nullptr;
     const wxString getOptParam() const
     {
@@ -45,19 +45,19 @@ public:
     {
         return m_setting_db;
     }
-    void setSettingDB(wxSQLite3Database *db)
+    void setSettingDB ( wxSQLite3Database *db )
     {
         m_setting_db = db;
     }
 
 private:
-    virtual void OnInitCmdLine(wxCmdLineParser &parser);
-    virtual bool OnCmdLineParsed(wxCmdLineParser &parser);
-    void reportFatalException(wxDebugReport::Context);
+    virtual void OnInitCmdLine ( wxCmdLineParser &parser );
+    virtual bool OnCmdLineParsed ( wxCmdLineParser &parser );
+    void reportFatalException ( wxDebugReport::Context );
     bool OnInit();
     int OnExit();
     void OnFatalException(); // called when a crash occurs in this application
-    void HandleEvent(wxEvtHandler *handler, wxEventFunction func, wxEvent &event) const;
+    void HandleEvent ( wxEvtHandler *handler, wxEventFunction func, wxEvent &event ) const;
     wxSingleInstanceChecker *m_checker = nullptr;
 
     wxSQLite3Database *m_setting_db = nullptr;
@@ -65,12 +65,12 @@ private:
     wxLanguage m_lang=wxLANGUAGE_UNKNOWN; // GUI translation language displayed
     wxLocale m_locale;
 public:
-    virtual int FilterEvent(wxEvent &event);
+    virtual int FilterEvent ( wxEvent &event );
 
 };
 
 //----------------------------------------------------------------------------
-wxDECLARE_APP(mmGUIApp);
+wxDECLARE_APP ( mmGUIApp );
 //----------------------------------------------------------------------------
 
 //----------------------------------------------------------------------------

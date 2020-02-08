@@ -27,30 +27,30 @@ class wxHtmlWindow;
 
 class mmAboutDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmAboutDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmAboutDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmAboutDialog()
     {
     }
-    mmAboutDialog(wxWindow *parent, int TabToOpen, const wxString &name = "mmAboutDialog");
+    mmAboutDialog ( wxWindow *parent, int TabToOpen, const wxString &name = "mmAboutDialog" );
 
 private:
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style
-                , int TabToOpen
-                , const wxString &name
-               );
-    void CreateControls(int TabToOpen);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style
+                  , int TabToOpen
+                  , const wxString &name
+                );
+    void CreateControls ( int TabToOpen );
     void InitControls();
-    void OnVersionHistory(wxCommandEvent &event);
-    void OnContributerList(wxCommandEvent &event);
-    void OnLinkClicked(wxHtmlLinkEvent &event);
+    void OnVersionHistory ( wxCommandEvent &event );
+    void OnContributerList ( wxCommandEvent &event );
+    void OnLinkClicked ( wxHtmlLinkEvent &event );
 
     wxHtmlWindow *about_text_ = nullptr;
     wxHtmlWindow *authors_text_ = nullptr;

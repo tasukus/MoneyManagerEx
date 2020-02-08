@@ -24,29 +24,29 @@
 
 class relocatePayeeDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(relocatePayeeDialog);
+    wxDECLARE_DYNAMIC_CLASS ( relocatePayeeDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     relocatePayeeDialog();
-    relocatePayeeDialog(wxWindow *parent, int source_payee_id = -1);
+    relocatePayeeDialog ( wxWindow *parent, int source_payee_id = -1 );
 
     int updatedPayeesCount();
 
 private:
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
 
     void CreateControls();
     void IsOkOk();
-    void OnOk(wxCommandEvent &event);
-    void OnCancel(wxCommandEvent &event);
+    void OnOk ( wxCommandEvent &event );
+    void OnCancel ( wxCommandEvent &event );
 
-    void OnPayeeChanged(wxCommandEvent &event);
+    void OnPayeeChanged ( wxCommandEvent &event );
 
     int sourcePayeeID_ = -1;
     int destPayeeID_=-1;

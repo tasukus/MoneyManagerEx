@@ -20,8 +20,8 @@
 #include "recentfiles.h"
 #include "Model_Setting.h"
 
-mmFileHistory::mmFileHistory(size_t maxFiles, wxWindowID idBase)
-    : wxFileHistory(maxFiles, idBase)
+mmFileHistory::mmFileHistory ( size_t maxFiles, wxWindowID idBase )
+    : wxFileHistory ( maxFiles, idBase )
 {
 }
 
@@ -33,9 +33,10 @@ mmFileHistory::~mmFileHistory()
 void mmFileHistory::Clear()
 {
     const int count = GetCount();
-    for (int i = 0; i < count; i++)
+
+    for ( int i = 0; i < count; i++ )
     {
-        RemoveFileFromHistory(0);
+        RemoveFileFromHistory ( 0 );
     }
 }
 
@@ -43,17 +44,19 @@ void mmFileHistory::Load()
 {
     int fileCount = 1;
     wxString buf;
-    buf.Printf("RECENT_DB_%d", fileCount);
-
+    buf.Printf ( "RECENT_DB_%d", fileCount );
     wxString historyFile;
-    while (fileCount <= GetMaxFiles())
+
+    while ( fileCount <= GetMaxFiles() )
     {
-        historyFile = Model_Setting::instance().GetStringSetting(buf, wxEmptyString);
-        if (!historyFile.empty())
+        historyFile = Model_Setting::instance().GetStringSetting ( buf, wxEmptyString );
+
+        if ( !historyFile.empty() )
         {
-            AddFileToHistory(historyFile);
+            AddFileToHistory ( historyFile );
         }
-        buf.Printf("RECENT_DB_%d", GetMaxFiles() - fileCount);
+
+        buf.Printf ( "RECENT_DB_%d", GetMaxFiles() - fileCount );
         fileCount++;
     }
 }
@@ -61,18 +64,21 @@ void mmFileHistory::Load()
 void mmFileHistory::Save()
 {
     Model_Setting::instance().Savepoint();
-    for (int i = 1; i < GetMaxFiles(); i++)
+
+    for ( int i = 1; i < GetMaxFiles(); i++ )
     {
         wxString buf;
-        buf.Printf("RECENT_DB_%d", i);
-        if (static_cast<size_t>(i) < GetCount())
+        buf.Printf ( "RECENT_DB_%d", i );
+
+        if ( static_cast<size_t> ( i ) < GetCount() )
         {
-            Model_Setting::instance().Set(buf, GetHistoryFile(i));
+            Model_Setting::instance().Set ( buf, GetHistoryFile ( i ) );
         }
         else
         {
-            Model_Setting::instance().Set(buf, wxString(""));
+            Model_Setting::instance().Set ( buf, wxString ( "" ) );
         }
     }
+
     Model_Setting::instance().ReleaseSavepoint();
 }

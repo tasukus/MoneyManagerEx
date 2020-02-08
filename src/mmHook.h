@@ -23,7 +23,7 @@ class CommitCallbackHook : public wxSQLite3Hook
 public:
     virtual bool CommitCallback()
     {
-        Option::instance().setDatabaseUpdated(true);
+        Option::instance().setDatabaseUpdated ( true );
         return false;
     }
 };
@@ -31,24 +31,24 @@ public:
 class UpdateCallbackHook : public wxSQLite3Hook
 {
 public:
-    virtual void UpdateCallback (wxUpdateType type, const wxString &database, const wxString &table, wxLongLong rowid)
+    virtual void UpdateCallback ( wxUpdateType type, const wxString &database, const wxString &table, wxLongLong rowid )
     {
-        switch (type)
+        switch ( type )
         {
             case SQLITE_DELETE:
-                wxLogDebug("SQLITE_DELETE");
+                wxLogDebug ( "SQLITE_DELETE" );
                 break;
             case SQLITE_INSERT:
-                wxLogDebug("SQLITE_INSERT");
+                wxLogDebug ( "SQLITE_INSERT" );
                 break;
             case SQLITE_UPDATE:
-                wxLogDebug("SQLITE_UPDATE");
+                wxLogDebug ( "SQLITE_UPDATE" );
                 break;
             default:
-                wxLogDebug("UNKNOWN type");
+                wxLogDebug ( "UNKNOWN type" );
                 break;
         }
-        wxLogDebug("database: %s, table: %s, rowid: %lld", database, table, rowid);
+        wxLogDebug ( "database: %s, table: %s, rowid: %lld", database, table, rowid );
 
         // TODO sync search index from full text search
     }

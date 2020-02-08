@@ -132,34 +132,34 @@ static const wxString COLORS [] =
 mmHTMLBuilder::mmHTMLBuilder()
 {
     today_.date = wxDateTime::Now();
-    today_.todays_date = wxString::Format(_("Report Generated %s %s")
-                                          , mmGetDateForDisplay(today_.date.FormatISODate())
-                                          , today_.date.FormatISOTime());
+    today_.todays_date = wxString::Format ( _( "Report Generated %s %s" )
+                                            , mmGetDateForDisplay ( today_.date.FormatISODate() )
+                                            , today_.date.FormatISOTime() );
 }
 
 void mmHTMLBuilder::init()
 {
-    html_ = wxString::Format(wxString::FromUTF8(tags::HTML)
-                             , mmex::getProgramName()
-                             , Option::instance().getHtmlFontSize()
-                            );
+    html_ = wxString::Format ( wxString::FromUTF8 ( tags::HTML )
+                               , mmex::getProgramName()
+                               , Option::instance().getHtmlFontSize()
+                             );
 
     //Show user name if provided
-    if (!Option::instance().getUserName().IsEmpty())
+    if ( !Option::instance().getUserName().IsEmpty() )
     {
-        addHeader(2, Option::instance().getUserName());
-        addHorizontalLine(2);
+        addHeader ( 2, Option::instance().getUserName() );
+        addHorizontalLine ( 2 );
     }
 }
 
-void mmHTMLBuilder::addHeader(int level, const wxString &header)
+void mmHTMLBuilder::addHeader ( int level, const wxString &header )
 {
-    html_ += wxString::Format(tags::HEADER, level, header, level);
+    html_ += wxString::Format ( tags::HEADER, level, header, level );
 }
 
 void mmHTMLBuilder::addDateNow()
 {
-    addHeader(4, today_.todays_date);
+    addHeader ( 4, today_.todays_date );
     addLineBreak();
 }
 
@@ -184,26 +184,26 @@ void mmHTMLBuilder::startTfoot()
     html_ += tags::TFOOT_START;
 }
 
-void mmHTMLBuilder::addTotalRow(const wxString &caption, int cols
-                                , double value)
+void mmHTMLBuilder::addTotalRow ( const wxString &caption, int cols
+                                  , double value )
 {
     startTotalTableRow();
-    html_ += wxString::Format(tags::TABLE_CELL_SPAN, cols - static_cast<size_t>(1));
+    html_ += wxString::Format ( tags::TABLE_CELL_SPAN, cols - static_cast<size_t> ( 1 ) );
     html_ += caption;
     endTableCell();
-    addMoneyCell(value);
+    addMoneyCell ( value );
     endTableRow();
 }
 
-void mmHTMLBuilder::addTotalRow(const wxString &caption, int cols
-                                , const std::vector<wxString> &data)
+void mmHTMLBuilder::addTotalRow ( const wxString &caption, int cols
+                                  , const std::vector<wxString> &data )
 {
     startTotalTableRow();
-    html_ += wxString::Format(tags::TABLE_CELL_SPAN, cols - data.size());
+    html_ += wxString::Format ( tags::TABLE_CELL_SPAN, cols - data.size() );
     html_ += caption;
     endTableCell();
 
-    for (const auto &value: data)
+    for ( const auto &value: data )
     {
         html_ << tags::TABLE_CELL_RIGHT << value;
         endTableCell();
@@ -211,92 +211,92 @@ void mmHTMLBuilder::addTotalRow(const wxString &caption, int cols
     endTableRow();
 }
 
-void mmHTMLBuilder::addTotalRow(const wxString &caption, int cols
-                                , const std::vector<double> &data)
+void mmHTMLBuilder::addTotalRow ( const wxString &caption, int cols
+                                  , const std::vector<double> &data )
 {
     std::vector<wxString> data_str;
-    for (const auto &value: data)
+    for ( const auto &value: data )
     {
-        data_str.push_back(Model_Currency::toCurrency(value));
+        data_str.push_back ( Model_Currency::toCurrency ( value ) );
     }
-    addTotalRow(caption, cols, data_str);
+    addTotalRow ( caption, cols, data_str );
 }
 
-void mmHTMLBuilder::addTableHeaderCell(const wxString &value, const bool numeric, const bool sortable, const int cols, const bool center)
+void mmHTMLBuilder::addTableHeaderCell ( const wxString &value, const bool numeric, const bool sortable, const int cols, const bool center )
 {
-    const wxString sort = (sortable ? "" : " class='sorttable_nosort'");
-    const wxString align = (center ? " class='text-center'" : (numeric ? " class='text-right'" : " class='text-left'"));
-    const wxString cspan = (cols > 1 ? wxString::Format(" colspan='%i'", cols) : "");
+    const wxString sort = ( sortable ? "" : " class='sorttable_nosort'" );
+    const wxString align = ( center ? " class='text-center'" : ( numeric ? " class='text-right'" : " class='text-left'" ) );
+    const wxString cspan = ( cols > 1 ? wxString::Format ( " colspan='%i'", cols ) : "" );
 
-    html_ += wxString::Format(tags::TABLE_HEADER, sort + align + cspan);
+    html_ += wxString::Format ( tags::TABLE_HEADER, sort + align + cspan );
     html_ += value;
     html_ += tags::TABLE_HEADER_END;
 }
 
-void mmHTMLBuilder::addCurrencyCell(double amount, const Model_Currency::Data *currency, int precision)
+void mmHTMLBuilder::addCurrencyCell ( double amount, const Model_Currency::Data *currency, int precision )
 {
-    if (precision == -1)
+    if ( precision == -1 )
     {
-        precision = Model_Currency::precision(currency);
+        precision = Model_Currency::precision ( currency );
     }
-    const wxString f = wxString::Format(" class='money' sorttable_customkey = '%f' nowrap", amount);
-    html_ += wxString::Format(tags::TABLE_CELL, f);
-    html_ += Model_Currency::toCurrency(amount, currency, precision);
+    const wxString f = wxString::Format ( " class='money' sorttable_customkey = '%f' nowrap", amount );
+    html_ += wxString::Format ( tags::TABLE_CELL, f );
+    html_ += Model_Currency::toCurrency ( amount, currency, precision );
     endTableCell();
 }
 
-void mmHTMLBuilder::addMoneyCell(double amount, int precision)
+void mmHTMLBuilder::addMoneyCell ( double amount, int precision )
 {
     // We should always present currency for monetary values
-    addCurrencyCell(amount, Model_Currency::GetBaseCurrency(), precision);
+    addCurrencyCell ( amount, Model_Currency::GetBaseCurrency(), precision );
 
     // TODO: verify if all values are in base currency at addMoneyCell call
 }
 
-void mmHTMLBuilder::addTableCellDate(const wxString &iso_date)
+void mmHTMLBuilder::addTableCellDate ( const wxString &iso_date )
 {
-    html_ += wxString::Format(tags::TABLE_CELL
-                              , wxString::Format(" class='text-left' sorttable_customkey = '%s' nowrap", iso_date));
-    html_ += mmGetDateForDisplay(iso_date);
+    html_ += wxString::Format ( tags::TABLE_CELL
+                                , wxString::Format ( " class='text-left' sorttable_customkey = '%s' nowrap", iso_date ) );
+    html_ += mmGetDateForDisplay ( iso_date );
     endTableCell();
 }
 
-void mmHTMLBuilder::addTableCell(const wxString &value, const bool numeric, const bool center)
+void mmHTMLBuilder::addTableCell ( const wxString &value, const bool numeric, const bool center )
 {
-    const wxString align = (center ? " class='text-center'" : (numeric ? " class='text-right' nowrap" : " class='text-left'"));
-    html_ += wxString::Format(tags::TABLE_CELL, align);
+    const wxString align = ( center ? " class='text-center'" : ( numeric ? " class='text-right' nowrap" : " class='text-left'" ) );
+    html_ += wxString::Format ( tags::TABLE_CELL, align );
     html_ += value;
     endTableCell();
 }
 
-void mmHTMLBuilder::addEmptyTableCell(const int number)
+void mmHTMLBuilder::addEmptyTableCell ( const int number )
 {
-    for (int i = 0; i < number; i++)
+    for ( int i = 0; i < number; i++ )
     {
-        html_ += wxString::Format(tags::TABLE_CELL + tags::TABLE_CELL_END, "");
+        html_ += wxString::Format ( tags::TABLE_CELL + tags::TABLE_CELL_END, "" );
     }
 }
 
-void mmHTMLBuilder::addColorMarker(const wxString &color)
+void mmHTMLBuilder::addColorMarker ( const wxString &color )
 {
-    html_ += wxString::Format(tags::TABLE_CELL, "");
-    html_ += wxString::Format("<span style='font-family: serif; color: %s'>%s</span>", color, L"\u2588");
+    html_ += wxString::Format ( tags::TABLE_CELL, "" );
+    html_ += wxString::Format ( "<span style='font-family: serif; color: %s'>%s</span>", color, L"\u2588" );
     endTableCell();
 }
 
-const wxString mmHTMLBuilder::getColor(int i) const
+const wxString mmHTMLBuilder::getColor ( int i ) const
 {
-    int c = i % (sizeof(tags::COLORS) / sizeof(wxString));
+    int c = i % ( sizeof ( tags::COLORS ) / sizeof ( wxString ) );
     return tags::COLORS[c];
 }
 
-void mmHTMLBuilder::addTableCellMonth(const wxDateTime::Month month)
+void mmHTMLBuilder::addTableCellMonth ( const wxDateTime::Month month )
 {
-    if (month >= 0 && month < 12)
+    if ( month >= 0 && month < 12 )
     {
-        wxString f = wxString::Format(" sorttable_customkey = '%i'", month);
-        html_ += wxString::Format(tags::TABLE_CELL, f);
-        html_ += wxGetTranslation(wxDateTime::GetEnglishMonthName(month));
+        wxString f = wxString::Format ( " sorttable_customkey = '%i'", month );
+        html_ += wxString::Format ( tags::TABLE_CELL, f );
+        html_ += wxGetTranslation ( wxDateTime::GetEnglishMonthName ( month ) );
         endTableCell();
     }
     else
@@ -305,27 +305,27 @@ void mmHTMLBuilder::addTableCellMonth(const wxDateTime::Month month)
     }
 }
 
-void mmHTMLBuilder::addTableCellLink(const wxString &href
-                                     , const wxString &value)
+void mmHTMLBuilder::addTableCellLink ( const wxString &href
+                                       , const wxString &value )
 {
-    addTableCell(wxString::Format(tags::TABLE_CELL_LINK, href, value ));
+    addTableCell ( wxString::Format ( tags::TABLE_CELL_LINK, href, value ) );
 }
 
-void mmHTMLBuilder::DisplayDateHeading(const wxDateTime &startDate, const wxDateTime &endDate, bool withDateRange)
+void mmHTMLBuilder::DisplayDateHeading ( const wxDateTime &startDate, const wxDateTime &endDate, bool withDateRange )
 {
     wxString text = withDateRange
-                    ? wxString::Format(_("From %s till %s")
-                                       , mmGetDateForDisplay(startDate.FormatISODate())
-                                       , mmGetDateForDisplay(endDate.FormatISODate()))
-                    : _("Over Time");
-    addHeader(3, text);
+                    ? wxString::Format ( _( "From %s till %s" )
+                                         , mmGetDateForDisplay ( startDate.FormatISODate() )
+                                         , mmGetDateForDisplay ( endDate.FormatISODate() ) )
+                    : _( "Over Time" );
+    addHeader ( 3, text );
 }
 
-void mmHTMLBuilder::addTableRow(const wxString &label, double data)
+void mmHTMLBuilder::addTableRow ( const wxString &label, double data )
 {
     startTableRow();
-    addTableCell(label);
-    addMoneyCell(data);
+    addTableCell ( label );
+    addMoneyCell ( data );
     endTableRow();
 }
 
@@ -379,9 +379,9 @@ void mmHTMLBuilder::startTableRow()
     html_ += tags::TABLE_ROW;
 }
 
-void mmHTMLBuilder::startTableRow(const wxString &color)
+void mmHTMLBuilder::startTableRow ( const wxString &color )
 {
-    html_ += wxString::Format(tags::TABLE_ROW_BG, color);
+    html_ += wxString::Format ( tags::TABLE_ROW_BG, color );
 }
 
 void mmHTMLBuilder::startTotalTableRow()
@@ -394,7 +394,7 @@ void mmHTMLBuilder::endTableRow()
     html_ += tags::TABLE_ROW_END;
 }
 
-void mmHTMLBuilder::addText(const wxString &text)
+void mmHTMLBuilder::addText ( const wxString &text )
 {
     html_ += text;
 }
@@ -404,21 +404,21 @@ void mmHTMLBuilder::addLineBreak()
     html_ += tags::BR;
 }
 
-void mmHTMLBuilder::addHorizontalLine(int size)
+void mmHTMLBuilder::addHorizontalLine ( int size )
 {
-    html_ += wxString::Format(tags::HOR_LINE, size);
+    html_ += wxString::Format ( tags::HOR_LINE, size );
 }
 
-void mmHTMLBuilder::startTableCell(const wxString &format)
+void mmHTMLBuilder::startTableCell ( const wxString &format )
 {
-    html_ += wxString::Format(tags::TABLE_CELL, format);
+    html_ += wxString::Format ( tags::TABLE_CELL, format );
 }
 void mmHTMLBuilder::endTableCell()
 {
     html_ += tags::TABLE_CELL_END;
 }
 
-void mmHTMLBuilder::addRadarChart(std::vector<ValueTrio> &actData, std::vector<ValueTrio> &estData, const wxString &id, int x, int y)
+void mmHTMLBuilder::addRadarChart ( std::vector<ValueTrio> &actData, std::vector<ValueTrio> &estData, const wxString &id, int x, int y )
 {
     static const wxString html_parts = R"(
                                        <canvas id='%s' width ='%i' height='%i'></canvas>
@@ -458,24 +458,24 @@ void mmHTMLBuilder::addRadarChart(std::vector<ValueTrio> &actData, std::vector<V
     wxString actValues = "";
     wxString estValues = "";
 
-    for (const auto &entry : actData)
+    for ( const auto &entry : actData )
     {
-        labels += wxString::Format("'%s',", entry.label);
-        actValues += wxString::FromCDouble(fabs(entry.amount), 2) + ",";
+        labels += wxString::Format ( "'%s',", entry.label );
+        actValues += wxString::FromCDouble ( fabs ( entry.amount ), 2 ) + ",";
     }
-    for (const auto &entry : estData)
+    for ( const auto &entry : estData )
     {
-        estValues += wxString::FromCDouble(fabs(entry.amount), 2) + ",";
+        estValues += wxString::FromCDouble ( fabs ( entry.amount ), 2 ) + ",";
     }
 
-    const auto ac = getColor(8);
-    const auto ec = getColor(6);
-    wxString datasets = wxString::Format(data_item, _("Actual"), ac, ac, ac, actValues);
-    datasets += wxString::Format(data_item, _("Estimated"), ec, ec, ec, estValues);
-    addText(wxString::Format(html_parts, id, x, y, labels, datasets, id, opt));
+    const auto ac = getColor ( 8 );
+    const auto ec = getColor ( 6 );
+    wxString datasets = wxString::Format ( data_item, _( "Actual" ), ac, ac, ac, actValues );
+    datasets += wxString::Format ( data_item, _( "Estimated" ), ec, ec, ec, estValues );
+    addText ( wxString::Format ( html_parts, id, x, y, labels, datasets, id, opt ) );
 }
 
-void mmHTMLBuilder::addPieChart(std::vector<ValueTrio> &valueList, const wxString &id, int x, int y)
+void mmHTMLBuilder::addPieChart ( std::vector<ValueTrio> &valueList, const wxString &id, int x, int y )
 {
     static const wxString html_parts = R"(
                                        <canvas id='%s' width ='%i' height='%i' style='min-width: %dpx; min-height: %dpx'></canvas>
@@ -486,57 +486,57 @@ void mmHTMLBuilder::addPieChart(std::vector<ValueTrio> &valueList, const wxStrin
                                        </script>
                                        )";
 
-    int precision = Model_Currency::precision(Model_Currency::GetBaseCurrency());
-    int round = pow(10, precision);
+    int precision = Model_Currency::precision ( Model_Currency::GetBaseCurrency() );
+    int round = pow ( 10, precision );
 
     Document jsonDoc;
     jsonDoc.SetObject();
-    Value data_array(kArrayType);
+    Value data_array ( kArrayType );
     Document::AllocatorType &allocator = jsonDoc.GetAllocator();
 
-    for (const auto &entry : valueList)
+    for ( const auto &entry : valueList )
     {
         // Replace problem causing character
         auto label = entry.label;
-        label.Replace("'", "`");
+        label.Replace ( "'", "`" );
 
         Value objValue;
         objValue.SetObject();
 
         Value title, color;
-        title.SetString(label.c_str(), allocator);
-        objValue.AddMember("title", title, allocator);
+        title.SetString ( label.c_str(), allocator );
+        objValue.AddMember ( "title", title, allocator );
 
-        color.SetString(entry.color.c_str(), allocator);
-        objValue.AddMember("color", color, allocator);
+        color.SetString ( entry.color.c_str(), allocator );
+        objValue.AddMember ( "color", color, allocator );
 
-        double v = (floor(fabs(entry.amount) * round) / round);
-        objValue.AddMember("value", v, allocator);
+        double v = ( floor ( fabs ( entry.amount ) * round ) / round );
+        objValue.AddMember ( "value", v, allocator );
 
-        data_array.PushBack(objValue, allocator);
+        data_array.PushBack ( objValue, allocator );
     }
 
-    jsonDoc.AddMember("data", data_array, allocator);
+    jsonDoc.AddMember ( "data", data_array, allocator );
 
     Value optionsValue;
     optionsValue.SetObject();
-    optionsValue.AddMember("annotateDisplay", true, allocator);
-    optionsValue.AddMember("segmentShowStroke", false, allocator);
-    optionsValue.AddMember("responsive", true, allocator);
-    jsonDoc.AddMember("options", optionsValue, allocator);
+    optionsValue.AddMember ( "annotateDisplay", true, allocator );
+    optionsValue.AddMember ( "segmentShowStroke", false, allocator );
+    optionsValue.AddMember ( "responsive", true, allocator );
+    jsonDoc.AddMember ( "options", optionsValue, allocator );
 
     StringBuffer strbuf;
-    Writer<StringBuffer> writer(strbuf);
-    jsonDoc.Accept(writer);
+    Writer<StringBuffer> writer ( strbuf );
+    jsonDoc.Accept ( writer );
 
     const wxString data = strbuf.GetString();
 
-    addText(wxString::Format(html_parts, id, x, y, x/2, y/2, data, id));
+    addText ( wxString::Format ( html_parts, id, x, y, x/2, y/2, data, id ) );
 }
 
-void mmHTMLBuilder::addBarChart(const wxArrayString &labels
-                                , const std::vector<BarGraphData> &data, const wxString &id
-                                , int x, int y)
+void mmHTMLBuilder::addBarChart ( const wxArrayString &labels
+                                  , const std::vector<BarGraphData> &data, const wxString &id
+                                  , int x, int y )
 {
     static const wxString html_parts = R"(
                                        <canvas id='%s' width ='%i' height='%i' style='min-width: %dpx; min-height: %dpx'></canvas>
@@ -547,7 +547,7 @@ void mmHTMLBuilder::addBarChart(const wxArrayString &labels
                                        </script>
                                        )";
 
-    int precision = Model_Currency::precision(Model_Currency::GetBaseCurrency());
+    int precision = Model_Currency::precision ( Model_Currency::GetBaseCurrency() );
 
     Document jsonDoc;
     jsonDoc.SetObject();
@@ -556,88 +556,88 @@ void mmHTMLBuilder::addBarChart(const wxArrayString &labels
     Value dataObjValue;
     dataObjValue.SetObject();
 
-    Value labelsArray(kArrayType);
-    for (const auto &entry : labels)
+    Value labelsArray ( kArrayType );
+    for ( const auto &entry : labels )
     {
         Value label_str;
-        label_str.SetString(entry.c_str(), allocator);
-        labelsArray.PushBack(label_str, allocator);
+        label_str.SetString ( entry.c_str(), allocator );
+        labelsArray.PushBack ( label_str, allocator );
     }
-    dataObjValue.AddMember("labels", labelsArray, allocator);
+    dataObjValue.AddMember ( "labels", labelsArray, allocator );
 
     double max_value = 0;
-    int round = pow(10, precision);
-    Value datasets_array(kArrayType);
-    for (const auto &entry : data)
+    int round = pow ( 10, precision );
+    Value datasets_array ( kArrayType );
+    for ( const auto &entry : data )
     {
         Value objValue;
         objValue.SetObject();
 
         Value title, color;
-        title.SetString(entry.title.c_str(), allocator);
-        objValue.AddMember("title", title, allocator);
+        title.SetString ( entry.title.c_str(), allocator );
+        objValue.AddMember ( "title", title, allocator );
 
-        color.SetString(entry.fillColor.c_str(), allocator);
-        objValue.AddMember("fillColor", color, allocator);
+        color.SetString ( entry.fillColor.c_str(), allocator );
+        objValue.AddMember ( "fillColor", color, allocator );
 
-        color.SetString(entry.strokeColor.c_str(), allocator);
-        objValue.AddMember("strokeColor", color, allocator);
+        color.SetString ( entry.strokeColor.c_str(), allocator );
+        objValue.AddMember ( "strokeColor", color, allocator );
 
-        Value data_array(kArrayType);
-        for (const auto &item : entry.data)
+        Value data_array ( kArrayType );
+        for ( const auto &item : entry.data )
         {
-            double v = (floor(fabs(item) * round) / round);
-            data_array.PushBack(v, allocator);
-            max_value = std::max(v, max_value);
+            double v = ( floor ( fabs ( item ) * round ) / round );
+            data_array.PushBack ( v, allocator );
+            max_value = std::max ( v, max_value );
         }
-        objValue.AddMember("data", data_array, allocator);
+        objValue.AddMember ( "data", data_array, allocator );
 
-        datasets_array.PushBack(objValue, allocator);
+        datasets_array.PushBack ( objValue, allocator );
     }
-    dataObjValue.AddMember("datasets", datasets_array, allocator);
+    dataObjValue.AddMember ( "datasets", datasets_array, allocator );
 
-    jsonDoc.AddMember("data", dataObjValue, allocator);
+    jsonDoc.AddMember ( "data", dataObjValue, allocator );
 
     double vertical_steps = 10.0;
     // Compute chart spacing and interval (chart forced to start at zero)
-    double scaleStepWidth = ceil(max_value / vertical_steps);
+    double scaleStepWidth = ceil ( max_value / vertical_steps );
     // Compute chart spacing and interval (chart forced to start at zero)
-    if (scaleStepWidth < 1.0)
+    if ( scaleStepWidth < 1.0 )
     {
         scaleStepWidth = 1.0;
     }
     else
     {
-        double s = (pow(10, ceil(log10(scaleStepWidth)) - 1.0));
-        if (s > 0)
+        double s = ( pow ( 10, ceil ( log10 ( scaleStepWidth ) ) - 1.0 ) );
+        if ( s > 0 )
         {
-            scaleStepWidth = ceil(scaleStepWidth / s) * s;
+            scaleStepWidth = ceil ( scaleStepWidth / s ) * s;
         }
     }
 
     Value optionsValue;
     optionsValue.SetObject();
-    optionsValue.AddMember("scaleOverride", true, allocator);
-    optionsValue.AddMember("annotateDisplay", true, allocator);
-    optionsValue.AddMember("scaleStartValue", 0, allocator);
-    optionsValue.AddMember("scaleSteps", 0, allocator);
-    Value scale(kArrayType);
-    scale.PushBack(static_cast<int>(scaleStepWidth), allocator);
-    optionsValue.AddMember("scaleStepWidth", scale, allocator);
-    Value steps(kArrayType);
-    steps.PushBack(vertical_steps, allocator);
-    optionsValue.AddMember("scaleSteps", steps, allocator);
-    jsonDoc.AddMember("options", optionsValue, allocator);
+    optionsValue.AddMember ( "scaleOverride", true, allocator );
+    optionsValue.AddMember ( "annotateDisplay", true, allocator );
+    optionsValue.AddMember ( "scaleStartValue", 0, allocator );
+    optionsValue.AddMember ( "scaleSteps", 0, allocator );
+    Value scale ( kArrayType );
+    scale.PushBack ( static_cast<int> ( scaleStepWidth ), allocator );
+    optionsValue.AddMember ( "scaleStepWidth", scale, allocator );
+    Value steps ( kArrayType );
+    steps.PushBack ( vertical_steps, allocator );
+    optionsValue.AddMember ( "scaleSteps", steps, allocator );
+    jsonDoc.AddMember ( "options", optionsValue, allocator );
 
     StringBuffer strbuf;
-    Writer<StringBuffer> writer(strbuf);
-    jsonDoc.Accept(writer);
+    Writer<StringBuffer> writer ( strbuf );
+    jsonDoc.Accept ( writer );
 
     const wxString d = strbuf.GetString();
-    addText(wxString::Format(html_parts, id, x, y, x, y, d, id));
+    addText ( wxString::Format ( html_parts, id, x, y, x, y, d, id ) );
 }
 
-void mmHTMLBuilder::addLineChart(const std::vector<LineGraphData> &data, const wxString &id, int colorNum, int x, int y, bool pointDot, bool showGridLines, bool datasetFill)
+void mmHTMLBuilder::addLineChart ( const std::vector<LineGraphData> &data, const wxString &id, int colorNum, int x, int y, bool pointDot, bool showGridLines, bool datasetFill )
 {
     static const wxString html_parts = R"(
                                        <canvas id='%s' width ='%i' height='%i'></canvas>
@@ -648,8 +648,8 @@ void mmHTMLBuilder::addLineChart(const std::vector<LineGraphData> &data, const w
                                        </script>
                                        )";
 
-    int precision = Model_Currency::precision(Model_Currency::GetBaseCurrency());
-    int round = pow(10, precision);
+    int precision = Model_Currency::precision ( Model_Currency::GetBaseCurrency() );
+    int round = pow ( 10, precision );
 
     Document jsonDoc;
     jsonDoc.SetObject();
@@ -658,67 +658,67 @@ void mmHTMLBuilder::addLineChart(const std::vector<LineGraphData> &data, const w
     Value dObjValue;
     dObjValue.SetObject();
 
-    Value labelsArray(kArrayType);
-    Value valuesArray(kArrayType);
-    Value xPosArray(kArrayType);
-    for (const auto &entry : data)
+    Value labelsArray ( kArrayType );
+    Value valuesArray ( kArrayType );
+    Value xPosArray ( kArrayType );
+    for ( const auto &entry : data )
     {
         Value label_str, xPos;
-        label_str.SetString(entry.label.c_str(), allocator);
-        labelsArray.PushBack(label_str, allocator);
+        label_str.SetString ( entry.label.c_str(), allocator );
+        labelsArray.PushBack ( label_str, allocator );
 
-        xPos.SetString(entry.xPos.c_str(), allocator);
-        xPosArray.PushBack(xPos, allocator);
+        xPos.SetString ( entry.xPos.c_str(), allocator );
+        xPosArray.PushBack ( xPos, allocator );
 
-        double v = (floor((entry.amount) * round) / round);
-        valuesArray.PushBack(v, allocator);
+        double v = ( floor ( ( entry.amount ) * round ) / round );
+        valuesArray.PushBack ( v, allocator );
     }
 
     Value datasetsValue;
     datasetsValue.SetObject();
-    datasetsValue.AddMember("data", valuesArray, allocator);
-    datasetsValue.AddMember("xPos", xPosArray, allocator);
+    datasetsValue.AddMember ( "data", valuesArray, allocator );
+    datasetsValue.AddMember ( "xPos", xPosArray, allocator );
 
-    const auto c = getColor(colorNum);
+    const auto c = getColor ( colorNum );
     Value fillColor, strokeColor, pointColor, pointStrokeColor;
-    fillColor.SetString(c.c_str(), allocator);
-    strokeColor.SetString(c.c_str(), allocator);
-    pointColor.SetString(c.c_str(), allocator);
-    fillColor.SetString(c.c_str(), allocator);
-    datasetsValue.AddMember("fillColor", fillColor, allocator);
-    datasetsValue.AddMember("strokeColor", strokeColor, allocator);
-    datasetsValue.AddMember("pointColor", pointColor, allocator);
-    pointStrokeColor.SetString("#fff", allocator);
-    datasetsValue.AddMember("pointStrokeColor", pointStrokeColor, allocator);
+    fillColor.SetString ( c.c_str(), allocator );
+    strokeColor.SetString ( c.c_str(), allocator );
+    pointColor.SetString ( c.c_str(), allocator );
+    fillColor.SetString ( c.c_str(), allocator );
+    datasetsValue.AddMember ( "fillColor", fillColor, allocator );
+    datasetsValue.AddMember ( "strokeColor", strokeColor, allocator );
+    datasetsValue.AddMember ( "pointColor", pointColor, allocator );
+    pointStrokeColor.SetString ( "#fff", allocator );
+    datasetsValue.AddMember ( "pointStrokeColor", pointStrokeColor, allocator );
 
-    Value datasetsArray(kArrayType);
-    datasetsArray.PushBack(datasetsValue, allocator);
+    Value datasetsArray ( kArrayType );
+    datasetsArray.PushBack ( datasetsValue, allocator );
 
-    dObjValue.AddMember("labels", labelsArray, allocator);
-    dObjValue.AddMember("datasets", datasetsArray, allocator);
+    dObjValue.AddMember ( "labels", labelsArray, allocator );
+    dObjValue.AddMember ( "datasets", datasetsArray, allocator );
 
     //Options
     Value optionsValue;
     optionsValue.SetObject();
-    optionsValue.AddMember("datasetFill", datasetFill, allocator);
-    optionsValue.AddMember("inGraphDataShow", false, allocator);
-    optionsValue.AddMember("annotateDisplay", true, allocator);
-    optionsValue.AddMember("responsive", true, allocator);
-    optionsValue.AddMember("pointDot", pointDot, allocator);
-    optionsValue.AddMember("showGridLines", showGridLines, allocator);
+    optionsValue.AddMember ( "datasetFill", datasetFill, allocator );
+    optionsValue.AddMember ( "inGraphDataShow", false, allocator );
+    optionsValue.AddMember ( "annotateDisplay", true, allocator );
+    optionsValue.AddMember ( "responsive", true, allocator );
+    optionsValue.AddMember ( "pointDot", pointDot, allocator );
+    optionsValue.AddMember ( "showGridLines", showGridLines, allocator );
 
     //
-    jsonDoc.AddMember("options", optionsValue, allocator);
-    jsonDoc.AddMember("data", dObjValue, allocator);
+    jsonDoc.AddMember ( "options", optionsValue, allocator );
+    jsonDoc.AddMember ( "data", dObjValue, allocator );
 
     StringBuffer strbuf;
-    Writer<StringBuffer> writer(strbuf);
-    jsonDoc.Accept(writer);
+    Writer<StringBuffer> writer ( strbuf );
+    jsonDoc.Accept ( writer );
 
     const wxString d = strbuf.GetString();
 
-    const auto text = (wxString::Format(html_parts, id, x, y, d, id));
-    addText(text);
+    const auto text = ( wxString::Format ( html_parts, id, x, y, d, id ) );
+    addText ( text );
 }
 
 const wxString mmHTMLBuilder::getHTMLText() const
@@ -726,7 +726,7 @@ const wxString mmHTMLBuilder::getHTMLText() const
     return html_;
 }
 
-std::ostream &operator << (std::ostream &os, const wxDateTime &date)
+std::ostream &operator << ( std::ostream &os, const wxDateTime &date )
 {
     os << date.FormatISODate();
     return os;

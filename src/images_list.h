@@ -180,4 +180,4 @@ enum png
 };
 
 wxImageList *navtree_images_list();
-const wxBitmap mmBitmap(int ref);
+const wxBitmap mmBitmap ( int ref );

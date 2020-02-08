@@ -38,14 +38,14 @@ class mmCustomData;
 
 class mmTransDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmTransDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmTransDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmTransDialog() {}
     virtual ~mmTransDialog();
 
-    mmTransDialog(
+    mmTransDialog (
         wxWindow *parent
         , int account_id
         , int transaction_id
@@ -55,16 +55,16 @@ public:
         , const wxString &name = "mmTransDialog"
     );
 
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style
-                , const wxString &name = "mmTransDialog"
-               );
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style
+                  , const wxString &name = "mmTransDialog"
+                );
 
-    void SetDialogTitle(const wxString &title);
+    void SetDialogTitle ( const wxString &title );
     int GetAccountID()
     {
         return m_trx_data.ACCOUNTID;
@@ -85,27 +85,27 @@ private:
     bool ValidateData();
     void SetEventHandlers();
 
-    void OnSplitChecked(wxCommandEvent &event);
-    void OnOk(wxCommandEvent &event);
-    void OnCancel(wxCommandEvent &event);
-    void OnMoreFields(wxCommandEvent &event);
-    void OnQuit(wxCloseEvent &event);
-    void OnCategs(wxCommandEvent &event);
-    void OnAttachments(wxCommandEvent &event);
-    void OnAccountOrPayeeUpdated(wxCommandEvent &event);
-    void OnDpcKillFocus(wxFocusEvent &event);
-    void OnAutoTransNum(wxCommandEvent &event);
-    void OnFrequentUsedNotes(wxCommandEvent &event);
-    void OnNoteSelected(wxCommandEvent &event);
-    void OnTransTypeChanged(wxCommandEvent &event);
-    void OnTransDateSpin(wxSpinEvent &);
-    void OnDateChanged(wxDateEvent &event);
-    void OnFocusChange(wxChildFocusEvent &event);
-    void OnTextEntered(wxCommandEvent &event);
-    void OnAdvanceChecked(wxCommandEvent &event);
+    void OnSplitChecked ( wxCommandEvent &event );
+    void OnOk ( wxCommandEvent &event );
+    void OnCancel ( wxCommandEvent &event );
+    void OnMoreFields ( wxCommandEvent &event );
+    void OnQuit ( wxCloseEvent &event );
+    void OnCategs ( wxCommandEvent &event );
+    void OnAttachments ( wxCommandEvent &event );
+    void OnAccountOrPayeeUpdated ( wxCommandEvent &event );
+    void OnDpcKillFocus ( wxFocusEvent &event );
+    void OnAutoTransNum ( wxCommandEvent &event );
+    void OnFrequentUsedNotes ( wxCommandEvent &event );
+    void OnNoteSelected ( wxCommandEvent &event );
+    void OnTransTypeChanged ( wxCommandEvent &event );
+    void OnTransDateSpin ( wxSpinEvent & );
+    void OnDateChanged ( wxDateEvent &event );
+    void OnFocusChange ( wxChildFocusEvent &event );
+    void OnTextEntered ( wxCommandEvent &event );
+    void OnAdvanceChecked ( wxCommandEvent &event );
     void ActivateSplitTransactionsDlg();
     void SetTooltips();
-    void SetCategoryForPayee(const Model_Payee::Data *payee);
+    void SetCategoryForPayee ( const Model_Payee::Data *payee );
 
     mmTextCtrl *textNumber_ = nullptr;
     mmTextCtrl *m_textAmount = nullptr;

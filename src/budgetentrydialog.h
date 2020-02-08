@@ -26,30 +26,30 @@ class wxChoice;
 
 class mmBudgetEntryDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmBudgetEntryDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmBudgetEntryDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmBudgetEntryDialog();
-    mmBudgetEntryDialog(wxWindow *parent
-                        , Model_Budget::Data *entry
-                        , const wxString &categoryEstimate, const wxString &CategoryActual);
+    mmBudgetEntryDialog ( wxWindow *parent
+                          , Model_Budget::Data *entry
+                          , const wxString &categoryEstimate, const wxString &CategoryActual );
 
-    bool Create(wxWindow *parent, wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent, wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
 
     void CreateControls();
-    void onChoiceChar(wxKeyEvent &event);
+    void onChoiceChar ( wxKeyEvent &event );
     // utility functions
-    void OnOk(wxCommandEvent &event);
+    void OnOk ( wxCommandEvent &event );
 
     void fillControls();
 
 private:
-    void OnTextEntered(wxCommandEvent &event);
+    void OnTextEntered ( wxCommandEvent &event );
 
     Model_Budget::Data *budgetEntry_ = nullptr;
     wxChoice *m_FrequencyChooser = nullptr;

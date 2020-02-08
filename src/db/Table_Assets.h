@@ -25,13 +25,13 @@ struct DB_Table_ASSETS : public DB_Table
         wxString to_json() const
         {
             StringBuffer json_buffer;
-            PrettyWriter<StringBuffer> json_writer(json_buffer);
+            PrettyWriter<StringBuffer> json_writer ( json_buffer );
 
             json_writer.StartArray();
-            for (const auto &item: *this)
+            for ( const auto &item: *this )
             {
                 json_writer.StartObject();
-                item.as_json(json_writer);
+                item.as_json ( json_writer );
                 json_writer.EndObject();
             }
             json_writer.EndArray();
@@ -57,49 +57,49 @@ struct DB_Table_ASSETS : public DB_Table
     /** Removes all records stored in memory (cache) for the table*/
     void destroy_cache()
     {
-        std::for_each(cache_.begin(), cache_.end(), std::mem_fun(&Data::destroy));
+        std::for_each ( cache_.begin(), cache_.end(), std::mem_fun ( &Data::destroy ) );
         cache_.clear();
         index_by_id_.clear(); // no memory release since it just stores pointer and the according objects are in cache
     }
 
     /** Creates the database table if the table does not exist*/
-    bool ensure(wxSQLite3Database *db)
+    bool ensure ( wxSQLite3Database *db )
     {
-        if (!exists(db))
+        if ( !exists ( db ) )
         {
             try
             {
-                db->ExecuteUpdate("CREATE TABLE ASSETS(ASSETID integer primary key, STARTDATE TEXT NOT NULL, ASSETNAME TEXT COLLATE NOCASE NOT NULL, VALUE numeric, VALUECHANGE TEXT /* None, Appreciates, Depreciates */, NOTES TEXT, VALUECHANGERATE numeric, ASSETTYPE TEXT /* Property, Automobile, Household Object, Art, Jewellery, Cash, Other */)");
-                this->ensure_data(db);
+                db->ExecuteUpdate ( "CREATE TABLE ASSETS(ASSETID integer primary key, STARTDATE TEXT NOT NULL, ASSETNAME TEXT COLLATE NOCASE NOT NULL, VALUE numeric, VALUECHANGE TEXT /* None, Appreciates, Depreciates */, NOTES TEXT, VALUECHANGERATE numeric, ASSETTYPE TEXT /* Property, Automobile, Household Object, Art, Jewellery, Cash, Other */)" );
+                this->ensure_data ( db );
             }
-            catch(const wxSQLite3Exception &e)
+            catch ( const wxSQLite3Exception &e )
             {
-                wxLogError("ASSETS: Exception %s", e.GetMessage().c_str());
+                wxLogError ( "ASSETS: Exception %s", e.GetMessage().c_str() );
                 return false;
             }
         }
 
-        this->ensure_index(db);
+        this->ensure_index ( db );
 
         return true;
     }
 
-    bool ensure_index(wxSQLite3Database *db)
+    bool ensure_index ( wxSQLite3Database *db )
     {
         try
         {
-            db->ExecuteUpdate("CREATE INDEX IF NOT EXISTS IDX_ASSETS_ASSETTYPE ON ASSETS(ASSETTYPE)");
+            db->ExecuteUpdate ( "CREATE INDEX IF NOT EXISTS IDX_ASSETS_ASSETTYPE ON ASSETS(ASSETTYPE)" );
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("ASSETS: Exception %s", e.GetMessage().c_str());
+            wxLogError ( "ASSETS: Exception %s", e.GetMessage().c_str() );
             return false;
         }
 
         return true;
     }
 
-    void ensure_data(wxSQLite3Database *db)
+    void ensure_data ( wxSQLite3Database *db )
     {
         db->Begin();
         db->Commit();
@@ -111,7 +111,7 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "ASSETID";
         }
-        explicit ASSETID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
+        explicit ASSETID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
     };
 
     struct STARTDATE : public DB_Column<wxString>
@@ -120,7 +120,7 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "STARTDATE";
         }
-        explicit STARTDATE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
+        explicit STARTDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
     };
 
     struct ASSETNAME : public DB_Column<wxString>
@@ -129,7 +129,7 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "ASSETNAME";
         }
-        explicit ASSETNAME(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
+        explicit ASSETNAME ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
     };
 
     struct VALUE : public DB_Column<double>
@@ -138,7 +138,7 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "VALUE";
         }
-        explicit VALUE(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
+        explicit VALUE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
     };
 
     struct VALUECHANGE : public DB_Column<wxString>
@@ -147,7 +147,7 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "VALUECHANGE";
         }
-        explicit VALUECHANGE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
+        explicit VALUECHANGE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
     };
 
     struct NOTES : public DB_Column<wxString>
@@ -156,7 +156,7 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "NOTES";
         }
-        explicit NOTES(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
+        explicit NOTES ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
     };
 
     struct VALUECHANGERATE : public DB_Column<double>
@@ -165,7 +165,7 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "VALUECHANGERATE";
         }
-        explicit VALUECHANGERATE(const double &v, OP op = EQUAL): DB_Column<double>(v, op) {}
+        explicit VALUECHANGERATE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
     };
 
     struct ASSETTYPE : public DB_Column<wxString>
@@ -174,7 +174,7 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "ASSETTYPE";
         }
-        explicit ASSETTYPE(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
+        explicit ASSETTYPE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
     };
 
     typedef ASSETID PRIMARY;
@@ -192,9 +192,9 @@ struct DB_Table_ASSETS : public DB_Table
     };
 
     /** Returns the column name as a string*/
-    static wxString column_to_name(COLUMN col)
+    static wxString column_to_name ( COLUMN col )
     {
-        switch(col)
+        switch ( col )
         {
             case COL_ASSETID:
                 return "ASSETID";
@@ -220,37 +220,37 @@ struct DB_Table_ASSETS : public DB_Table
     }
 
     /** Returns the column number from the given column name*/
-    static COLUMN name_to_column(const wxString &name)
+    static COLUMN name_to_column ( const wxString &name )
     {
-        if ("ASSETID" == name)
+        if ( "ASSETID" == name )
         {
             return COL_ASSETID;
         }
-        else if ("STARTDATE" == name)
+        else if ( "STARTDATE" == name )
         {
             return COL_STARTDATE;
         }
-        else if ("ASSETNAME" == name)
+        else if ( "ASSETNAME" == name )
         {
             return COL_ASSETNAME;
         }
-        else if ("VALUE" == name)
+        else if ( "VALUE" == name )
         {
             return COL_VALUE;
         }
-        else if ("VALUECHANGE" == name)
+        else if ( "VALUECHANGE" == name )
         {
             return COL_VALUECHANGE;
         }
-        else if ("NOTES" == name)
+        else if ( "NOTES" == name )
         {
             return COL_NOTES;
         }
-        else if ("VALUECHANGERATE" == name)
+        else if ( "VALUECHANGERATE" == name )
         {
             return COL_VALUECHANGERATE;
         }
-        else if ("ASSETTYPE" == name)
+        else if ( "ASSETTYPE" == name )
         {
             return COL_ASSETTYPE;
         }
@@ -279,22 +279,22 @@ struct DB_Table_ASSETS : public DB_Table
             return ASSETID;
         }
 
-        void id(int id)
+        void id ( int id )
         {
             ASSETID = id;
         }
 
-        bool operator < (const Data &r) const
+        bool operator < ( const Data &r ) const
         {
             return this->id() < r.id();
         }
 
-        bool operator < (const Data *r) const
+        bool operator < ( const Data *r ) const
         {
             return this->id() < r->id();
         }
 
-        explicit Data(Self *table = 0)
+        explicit Data ( Self *table = 0 )
         {
             table_ = table;
 
@@ -303,23 +303,23 @@ struct DB_Table_ASSETS : public DB_Table
             VALUECHANGERATE = 0.0;
         }
 
-        explicit Data(wxSQLite3ResultSet &q, Self *table = 0)
+        explicit Data ( wxSQLite3ResultSet &q, Self *table = 0 )
         {
             table_ = table;
 
-            ASSETID = q.GetInt(0);
-            STARTDATE = q.GetString(1);
-            ASSETNAME = q.GetString(2);
-            VALUE = q.GetDouble(3);
-            VALUECHANGE = q.GetString(4);
-            NOTES = q.GetString(5);
-            VALUECHANGERATE = q.GetDouble(6);
-            ASSETTYPE = q.GetString(7);
+            ASSETID = q.GetInt ( 0 );
+            STARTDATE = q.GetString ( 1 );
+            ASSETNAME = q.GetString ( 2 );
+            VALUE = q.GetDouble ( 3 );
+            VALUECHANGE = q.GetString ( 4 );
+            NOTES = q.GetString ( 5 );
+            VALUECHANGERATE = q.GetDouble ( 6 );
+            ASSETTYPE = q.GetString ( 7 );
         }
 
-        Data &operator=(const Data &other)
+        Data &operator= ( const Data &other )
         {
-            if (this == &other)
+            if ( this == &other )
             {
                 return *this;
             }
@@ -335,132 +335,132 @@ struct DB_Table_ASSETS : public DB_Table
             return *this;
         }
 
-        bool match(const Self::ASSETID &in) const
+        bool match ( const Self::ASSETID &in ) const
         {
             return this->ASSETID == in.v_;
         }
 
-        bool match(const Self::STARTDATE &in) const
+        bool match ( const Self::STARTDATE &in ) const
         {
-            return this->STARTDATE.CmpNoCase(in.v_) == 0;
+            return this->STARTDATE.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match(const Self::ASSETNAME &in) const
+        bool match ( const Self::ASSETNAME &in ) const
         {
-            return this->ASSETNAME.CmpNoCase(in.v_) == 0;
+            return this->ASSETNAME.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match(const Self::VALUE &in) const
+        bool match ( const Self::VALUE &in ) const
         {
             return this->VALUE == in.v_;
         }
 
-        bool match(const Self::VALUECHANGE &in) const
+        bool match ( const Self::VALUECHANGE &in ) const
         {
-            return this->VALUECHANGE.CmpNoCase(in.v_) == 0;
+            return this->VALUECHANGE.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match(const Self::NOTES &in) const
+        bool match ( const Self::NOTES &in ) const
         {
-            return this->NOTES.CmpNoCase(in.v_) == 0;
+            return this->NOTES.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match(const Self::VALUECHANGERATE &in) const
+        bool match ( const Self::VALUECHANGERATE &in ) const
         {
             return this->VALUECHANGERATE == in.v_;
         }
 
-        bool match(const Self::ASSETTYPE &in) const
+        bool match ( const Self::ASSETTYPE &in ) const
         {
-            return this->ASSETTYPE.CmpNoCase(in.v_) == 0;
+            return this->ASSETTYPE.CmpNoCase ( in.v_ ) == 0;
         }
 
         /** Return the data record as a json string */
         wxString to_json() const
         {
             StringBuffer json_buffer;
-            PrettyWriter<StringBuffer> json_writer(json_buffer);
+            PrettyWriter<StringBuffer> json_writer ( json_buffer );
 
             json_writer.StartObject();
-            this->as_json(json_writer);
+            this->as_json ( json_writer );
             json_writer.EndObject();
 
             return json_buffer.GetString();
         }
 
         /** Add the field data as json key:value pairs */
-        void as_json(PrettyWriter<StringBuffer> &json_writer) const
+        void as_json ( PrettyWriter<StringBuffer> &json_writer ) const
         {
-            json_writer.Key("ASSETID");
-            json_writer.Int(this->ASSETID);
-            json_writer.Key("STARTDATE");
-            json_writer.String(this->STARTDATE.c_str());
-            json_writer.Key("ASSETNAME");
-            json_writer.String(this->ASSETNAME.c_str());
-            json_writer.Key("VALUE");
-            json_writer.Double(this->VALUE);
-            json_writer.Key("VALUECHANGE");
-            json_writer.String(this->VALUECHANGE.c_str());
-            json_writer.Key("NOTES");
-            json_writer.String(this->NOTES.c_str());
-            json_writer.Key("VALUECHANGERATE");
-            json_writer.Double(this->VALUECHANGERATE);
-            json_writer.Key("ASSETTYPE");
-            json_writer.String(this->ASSETTYPE.c_str());
+            json_writer.Key ( "ASSETID" );
+            json_writer.Int ( this->ASSETID );
+            json_writer.Key ( "STARTDATE" );
+            json_writer.String ( this->STARTDATE.c_str() );
+            json_writer.Key ( "ASSETNAME" );
+            json_writer.String ( this->ASSETNAME.c_str() );
+            json_writer.Key ( "VALUE" );
+            json_writer.Double ( this->VALUE );
+            json_writer.Key ( "VALUECHANGE" );
+            json_writer.String ( this->VALUECHANGE.c_str() );
+            json_writer.Key ( "NOTES" );
+            json_writer.String ( this->NOTES.c_str() );
+            json_writer.Key ( "VALUECHANGERATE" );
+            json_writer.Double ( this->VALUECHANGERATE );
+            json_writer.Key ( "ASSETTYPE" );
+            json_writer.String ( this->ASSETTYPE.c_str() );
         }
 
         row_t to_row_t() const
         {
             row_t row;
-            row(L"ASSETID") = ASSETID;
-            row(L"STARTDATE") = STARTDATE;
-            row(L"ASSETNAME") = ASSETNAME;
-            row(L"VALUE") = VALUE;
-            row(L"VALUECHANGE") = VALUECHANGE;
-            row(L"NOTES") = NOTES;
-            row(L"VALUECHANGERATE") = VALUECHANGERATE;
-            row(L"ASSETTYPE") = ASSETTYPE;
+            row ( L"ASSETID" ) = ASSETID;
+            row ( L"STARTDATE" ) = STARTDATE;
+            row ( L"ASSETNAME" ) = ASSETNAME;
+            row ( L"VALUE" ) = VALUE;
+            row ( L"VALUECHANGE" ) = VALUECHANGE;
+            row ( L"NOTES" ) = NOTES;
+            row ( L"VALUECHANGERATE" ) = VALUECHANGERATE;
+            row ( L"ASSETTYPE" ) = ASSETTYPE;
             return row;
         }
 
-        void to_template(html_template &t) const
+        void to_template ( html_template &t ) const
         {
-            t(L"ASSETID") = ASSETID;
-            t(L"STARTDATE") = STARTDATE;
-            t(L"ASSETNAME") = ASSETNAME;
-            t(L"VALUE") = VALUE;
-            t(L"VALUECHANGE") = VALUECHANGE;
-            t(L"NOTES") = NOTES;
-            t(L"VALUECHANGERATE") = VALUECHANGERATE;
-            t(L"ASSETTYPE") = ASSETTYPE;
+            t ( L"ASSETID" ) = ASSETID;
+            t ( L"STARTDATE" ) = STARTDATE;
+            t ( L"ASSETNAME" ) = ASSETNAME;
+            t ( L"VALUE" ) = VALUE;
+            t ( L"VALUECHANGE" ) = VALUECHANGE;
+            t ( L"NOTES" ) = NOTES;
+            t ( L"VALUECHANGERATE" ) = VALUECHANGERATE;
+            t ( L"ASSETTYPE" ) = ASSETTYPE;
         }
 
         /** Save the record instance in memory to the database. */
-        bool save(wxSQLite3Database *db)
+        bool save ( wxSQLite3Database *db )
         {
-            if (db && db->IsReadOnly())
+            if ( db && db->IsReadOnly() )
             {
                 return false;
             }
-            if (!table_ || !db)
+            if ( !table_ || !db )
             {
-                wxLogError("can not save ASSETS");
+                wxLogError ( "can not save ASSETS" );
                 return false;
             }
 
-            return table_->save(this, db);
+            return table_->save ( this, db );
         }
 
         /** Remove the record instance from memory and the database. */
-        bool remove(wxSQLite3Database *db)
+        bool remove ( wxSQLite3Database *db )
         {
-            if (!table_ || !db)
+            if ( !table_ || !db )
             {
-                wxLogError("can not remove ASSETS");
+                wxLogError ( "can not remove ASSETS" );
                 return false;
             }
 
-            return table_->remove(this, db);
+            return table_->remove ( this, db );
         }
 
         void destroy()
@@ -485,7 +485,7 @@ struct DB_Table_ASSETS : public DB_Table
         return "ASSETS";
     }
 
-    DB_Table_ASSETS() : fake_(new Data())
+    DB_Table_ASSETS() : fake_ ( new Data() )
     {
         query_ = "SELECT ASSETID, STARTDATE, ASSETNAME, VALUE, VALUECHANGE, NOTES, VALUECHANGERATE, ASSETTYPE FROM ASSETS ";
     }
@@ -493,17 +493,17 @@ struct DB_Table_ASSETS : public DB_Table
     /** Create a new Data record and add to memory table (cache) */
     Self::Data *create()
     {
-        Self::Data *entity = new Self::Data(this);
-        cache_.push_back(entity);
+        Self::Data *entity = new Self::Data ( this );
+        cache_.push_back ( entity );
         return entity;
     }
 
     /** Create a copy of the Data record and add to memory table (cache) */
-    Self::Data *clone(const Data *e)
+    Self::Data *clone ( const Data *e )
     {
         Self::Data *entity = create();
         *entity = *e;
-        entity->id(-1);
+        entity->id ( -1 );
         return entity;
     }
 
@@ -512,10 +512,10 @@ struct DB_Table_ASSETS : public DB_Table
     * Either create a new record or update the existing record.
     * Remove old record from the memory table (cache)
     */
-    bool save(Self::Data *entity, wxSQLite3Database *db)
+    bool save ( Self::Data *entity, wxSQLite3Database *db )
     {
         wxString sql = wxEmptyString;
-        if (entity->id() <= 0) //  new & insert
+        if ( entity->id() <= 0 ) //  new & insert
         {
             sql = "INSERT INTO ASSETS(STARTDATE, ASSETNAME, VALUE, VALUECHANGE, NOTES, VALUECHANGERATE, ASSETTYPE) VALUES(?, ?, ?, ?, ?, ?, ?)";
         }
@@ -526,84 +526,84 @@ struct DB_Table_ASSETS : public DB_Table
 
         try
         {
-            wxSQLite3Statement stmt = db->PrepareStatement(sql);
+            wxSQLite3Statement stmt = db->PrepareStatement ( sql );
 
-            stmt.Bind(1, entity->STARTDATE);
-            stmt.Bind(2, entity->ASSETNAME);
-            stmt.Bind(3, entity->VALUE);
-            stmt.Bind(4, entity->VALUECHANGE);
-            stmt.Bind(5, entity->NOTES);
-            stmt.Bind(6, entity->VALUECHANGERATE);
-            stmt.Bind(7, entity->ASSETTYPE);
-            if (entity->id() > 0)
+            stmt.Bind ( 1, entity->STARTDATE );
+            stmt.Bind ( 2, entity->ASSETNAME );
+            stmt.Bind ( 3, entity->VALUE );
+            stmt.Bind ( 4, entity->VALUECHANGE );
+            stmt.Bind ( 5, entity->NOTES );
+            stmt.Bind ( 6, entity->VALUECHANGERATE );
+            stmt.Bind ( 7, entity->ASSETTYPE );
+            if ( entity->id() > 0 )
             {
-                stmt.Bind(8, entity->ASSETID);
+                stmt.Bind ( 8, entity->ASSETID );
             }
 
             stmt.ExecuteUpdate();
             stmt.Finalize();
 
-            if (entity->id() > 0) // existent
+            if ( entity->id() > 0 ) // existent
             {
-                for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
+                for ( Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it )
                 {
                     Self::Data *e = *it;
-                    if (e->id() == entity->id())
+                    if ( e->id() == entity->id() )
                     {
                         *e = *entity;    // in-place update
                     }
                 }
             }
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("ASSETS: Exception %s, %s", e.GetMessage().c_str(), entity->to_json());
+            wxLogError ( "ASSETS: Exception %s, %s", e.GetMessage().c_str(), entity->to_json() );
             return false;
         }
 
-        if (entity->id() <= 0)
+        if ( entity->id() <= 0 )
         {
-            entity->id((db->GetLastRowId()).ToLong());
-            index_by_id_.insert(std::make_pair(entity->id(), entity));
+            entity->id ( ( db->GetLastRowId() ).ToLong() );
+            index_by_id_.insert ( std::make_pair ( entity->id(), entity ) );
         }
         return true;
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(int id, wxSQLite3Database *db)
+    bool remove ( int id, wxSQLite3Database *db )
     {
-        if (id <= 0)
+        if ( id <= 0 )
         {
             return false;
         }
         try
         {
             wxString sql = "DELETE FROM ASSETS WHERE ASSETID = ?";
-            wxSQLite3Statement stmt = db->PrepareStatement(sql);
-            stmt.Bind(1, id);
+            wxSQLite3Statement stmt = db->PrepareStatement ( sql );
+            stmt.Bind ( 1, id );
             stmt.ExecuteUpdate();
             stmt.Finalize();
 
             Cache c;
-            for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
+            for ( Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it )
             {
                 Self::Data *entity = *it;
-                if (entity->id() == id)
+                if ( entity->id() == id )
                 {
-                    index_by_id_.erase(entity->id());
+                    index_by_id_.erase ( entity->id() );
                     delete entity;
                 }
                 else
                 {
-                    c.push_back(entity);
+                    c.push_back ( entity );
                 }
             }
             cache_.clear();
-            cache_.swap(c);
+            cache_.swap ( c );
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("ASSETS: Exception %s", e.GetMessage().c_str());
+            wxLogError ( "ASSETS: Exception %s", e.GetMessage().c_str() );
             return false;
         }
 
@@ -611,11 +611,11 @@ struct DB_Table_ASSETS : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(Self::Data *entity, wxSQLite3Database *db)
+    bool remove ( Self::Data *entity, wxSQLite3Database *db )
     {
-        if (remove(entity->id(), db))
+        if ( remove ( entity->id(), db ) )
         {
-            entity->id(-1);
+            entity->id ( -1 );
             return true;
         }
 
@@ -623,12 +623,12 @@ struct DB_Table_ASSETS : public DB_Table
     }
 
     template<typename... Args>
-    Self::Data *get_one(const Args &... args)
+    Self::Data *get_one ( const Args &... args )
     {
-        for (Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it)
+        for ( Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it )
         {
             Self::Data *item = it->second;
-            if (item->id() > 0 && match(item, args...))
+            if ( item->id() > 0 && match ( item, args... ) )
             {
                 ++ hit_;
                 return item;
@@ -644,16 +644,16 @@ struct DB_Table_ASSETS : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data *get(int id, wxSQLite3Database *db)
+    Self::Data *get ( int id, wxSQLite3Database *db )
     {
-        if (id <= 0)
+        if ( id <= 0 )
         {
             ++ skip_;
             return 0;
         }
 
-        Index_By_Id::iterator it = index_by_id_.find(id);
-        if (it != index_by_id_.end())
+        Index_By_Id::iterator it = index_by_id_.find ( id );
+        if ( it != index_by_id_.end() )
         {
             ++ hit_;
             return it->second;
@@ -661,27 +661,27 @@ struct DB_Table_ASSETS : public DB_Table
 
         ++ miss_;
         Self::Data *entity = 0;
-        wxString where = wxString::Format(" WHERE %s = ?", PRIMARY::name().c_str());
+        wxString where = wxString::Format ( " WHERE %s = ?", PRIMARY::name().c_str() );
         try
         {
-            wxSQLite3Statement stmt = db->PrepareStatement(this->query() + where);
-            stmt.Bind(1, id);
+            wxSQLite3Statement stmt = db->PrepareStatement ( this->query() + where );
+            stmt.Bind ( 1, id );
 
             wxSQLite3ResultSet q = stmt.ExecuteQuery();
-            if(q.NextRow())
+            if ( q.NextRow() )
             {
-                entity = new Self::Data(q, this);
-                cache_.push_back(entity);
-                index_by_id_.insert(std::make_pair(id, entity));
+                entity = new Self::Data ( q, this );
+                cache_.push_back ( entity );
+                index_by_id_.insert ( std::make_pair ( id, entity ) );
             }
             stmt.Finalize();
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("%s: Exception %s", this->name().c_str(), e.GetMessage().c_str());
+            wxLogError ( "%s: Exception %s", this->name().c_str(), e.GetMessage().c_str() );
         }
 
-        if (!entity)
+        if ( !entity )
         {
             entity = this->fake_;
             // wxLogError("%s: %d not found", this->name().c_str(), id);
@@ -694,24 +694,24 @@ struct DB_Table_ASSETS : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all(wxSQLite3Database *db, COLUMN col = COLUMN(0), bool asc = true)
+    const Data_Set all ( wxSQLite3Database *db, COLUMN col = COLUMN ( 0 ), bool asc = true )
     {
         Data_Set result;
         try
         {
-            wxSQLite3ResultSet q = db->ExecuteQuery(col == COLUMN(0) ? this->query() : this->query() + " ORDER BY " + column_to_name(col) + " COLLATE NOCASE " + (asc ? " ASC " : " DESC "));
+            wxSQLite3ResultSet q = db->ExecuteQuery ( col == COLUMN ( 0 ) ? this->query() : this->query() + " ORDER BY " + column_to_name ( col ) + " COLLATE NOCASE " + ( asc ? " ASC " : " DESC " ) );
 
-            while(q.NextRow())
+            while ( q.NextRow() )
             {
-                Self::Data entity(q, this);
-                result.push_back(std::move(entity));
+                Self::Data entity ( q, this );
+                result.push_back ( std::move ( entity ) );
             }
 
             q.Finalize();
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("%s: Exception %s", this->name().c_str(), e.GetMessage().c_str());
+            wxLogError ( "%s: Exception %s", this->name().c_str(), e.GetMessage().c_str() );
         }
 
         return result;

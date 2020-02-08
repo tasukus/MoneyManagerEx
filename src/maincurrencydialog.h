@@ -34,19 +34,19 @@ class mmTextCtrl;
 
 class mmMainCurrencyDialog: public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmMainCurrencyDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmMainCurrencyDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     /// Constructors
     mmMainCurrencyDialog( ) {}
 
-    mmMainCurrencyDialog(wxWindow *parent
-                         , int currencyID = -1, bool bEnableSelect = true);
+    mmMainCurrencyDialog ( wxWindow *parent
+                           , int currencyID = -1, bool bEnableSelect = true );
 
-    static bool Execute(wxWindow *parent, int &currencyID);
+    static bool Execute ( wxWindow *parent, int &currencyID );
     // Return the base currency
-    static bool Execute(int &currencyID);
+    static bool Execute ( int &currencyID );
 
 private:
     enum cols
@@ -66,41 +66,41 @@ private:
         MENU_ITEM3
     };
 
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
 
     /// Creates the controls and sizers
 
     void CreateControls();
-    void OnBtnAdd(wxCommandEvent &event);
-    void OnBtnEdit(wxCommandEvent &event);
-    void OnBtnSelect(wxCommandEvent &event);
-    void OnBtnDelete(wxCommandEvent &event);
-    void OnCancel(wxCommandEvent &event);
-    void OnListItemActivated(wxDataViewEvent &event);
-    void OnListItemSelected(wxDataViewEvent &event);
+    void OnBtnAdd ( wxCommandEvent &event );
+    void OnBtnEdit ( wxCommandEvent &event );
+    void OnBtnSelect ( wxCommandEvent &event );
+    void OnBtnDelete ( wxCommandEvent &event );
+    void OnCancel ( wxCommandEvent &event );
+    void OnListItemActivated ( wxDataViewEvent &event );
+    void OnListItemSelected ( wxDataViewEvent &event );
     void fillControls();
-    void OnShowHiddenChbClick(wxCommandEvent &event);
-    void OnHideHistoricClick(wxCommandEvent &event);
+    void OnShowHiddenChbClick ( wxCommandEvent &event );
+    void OnHideHistoricClick ( wxCommandEvent &event );
 
     void ShowCurrencyHistory();
-    void OnHistoryAdd(wxCommandEvent &event);
-    void OnHistoryDelete(wxCommandEvent &event);
-    void OnHistoryUpdate(wxCommandEvent &event);
-    void OnHistoryDeleteUnused(wxCommandEvent &event);
-    void OnHistorySelected(wxListEvent &event);
-    void OnHistoryDeselected(wxListEvent &event);
+    void OnHistoryAdd ( wxCommandEvent &event );
+    void OnHistoryDelete ( wxCommandEvent &event );
+    void OnHistoryUpdate ( wxCommandEvent &event );
+    void OnHistoryDeleteUnused ( wxCommandEvent &event );
+    void OnHistorySelected ( wxListEvent &event );
+    void OnHistoryDeselected ( wxListEvent &event );
 
-    void OnOnlineUpdateCurRate(wxCommandEvent &event);
-    bool OnlineUpdateCurRate(int curr_id = -1, bool hide = true);
-    void OnItemRightClick(wxDataViewEvent &event);
-    void OnMenuSelected(wxCommandEvent &event);
-    bool SetBaseCurrency(int &baseCurrencyID);
-    bool GetOnlineHistory(std::map<wxDateTime, double> &historical_rates, const wxString &symbol, wxString &msg);
+    void OnOnlineUpdateCurRate ( wxCommandEvent &event );
+    bool OnlineUpdateCurRate ( int curr_id = -1, bool hide = true );
+    void OnItemRightClick ( wxDataViewEvent &event );
+    void OnMenuSelected ( wxCommandEvent &event );
+    bool SetBaseCurrency ( int &baseCurrencyID );
+    bool GetOnlineHistory ( std::map<wxDateTime, double> &historical_rates, const wxString &symbol, wxString &msg );
 
     wxDataViewListCtrl *currencyListBox_ = nullptr;
     std::map<int, wxString> ColName_;

@@ -32,12 +32,12 @@ Model_Shareinfo::~Model_Shareinfo()
 * Initialize the global Model_Shareinfo table.
 * Reset the Model_Shareinfo table or create the table if it does not exist.
 */
-Model_Shareinfo &Model_Shareinfo::instance(wxSQLite3Database *db)
+Model_Shareinfo &Model_Shareinfo::instance ( wxSQLite3Database *db )
 {
     Model_Shareinfo &ins = Singleton<Model_Shareinfo>::instance();
     ins.db_ = db;
     ins.destroy_cache();
-    ins.ensure(db);
+    ins.ensure ( db );
 
     return ins;
 }
@@ -48,36 +48,36 @@ Model_Shareinfo &Model_Shareinfo::instance()
     return Singleton<Model_Shareinfo>::instance();
 }
 
-Model_Shareinfo::Data_Set Model_Shareinfo::ShareList(const int checking_id)
+Model_Shareinfo::Data_Set Model_Shareinfo::ShareList ( const int checking_id )
 {
     // SQL equivalent statement:
     // select * from Model_Shareinfo where CHECKINGACCOUNTID = checking_account_id;
     Model_Shareinfo::Data_Set trans_list = Model_Shareinfo::instance()
-                                           .find(Model_Shareinfo::CHECKINGACCOUNTID(checking_id));
+                                           .find ( Model_Shareinfo::CHECKINGACCOUNTID ( checking_id ) );
 
     return trans_list;
 }
 
-Model_Shareinfo::Data *Model_Shareinfo::ShareEntry(const int checking_id)
+Model_Shareinfo::Data *Model_Shareinfo::ShareEntry ( const int checking_id )
 {
-    Data_Set list = Model_Shareinfo::ShareList(checking_id);
-    if (!list.empty())
+    Data_Set list = Model_Shareinfo::ShareList ( checking_id );
+    if ( !list.empty() )
     {
-        return Model_Shareinfo::instance().get(list.at(0).SHAREINFOID);
+        return Model_Shareinfo::instance().get ( list.at ( 0 ).SHAREINFOID );
     }
     return NULL;
 }
 
-void Model_Shareinfo::ShareEntry(int checking_id
-                                 , double share_number
-                                 , double share_price
-                                 , double share_commission
-                                 , const wxString &share_lot)
+void Model_Shareinfo::ShareEntry ( int checking_id
+                                   , double share_number
+                                   , double share_price
+                                   , double share_commission
+                                   , const wxString &share_lot )
 {
     Data *share_entry = NULL;
-    Data_Set share_list = ShareList(checking_id);
+    Data_Set share_list = ShareList ( checking_id );
 
-    if (share_list.empty())
+    if ( share_list.empty() )
     {
         share_entry = Model_Shareinfo::instance().create();
         share_entry->CHECKINGACCOUNTID = checking_id;
@@ -91,14 +91,14 @@ void Model_Shareinfo::ShareEntry(int checking_id
     share_entry->SHAREPRICE = share_price;
     share_entry->SHARECOMMISSION = share_commission;
     share_entry->SHARELOT = share_lot;
-    Model_Shareinfo::instance().save(share_entry);
+    Model_Shareinfo::instance().save ( share_entry );
 }
 
-void Model_Shareinfo::RemoveShareEntry(const int checking_id)
+void Model_Shareinfo::RemoveShareEntry ( const int checking_id )
 {
-    Data_Set list = ShareList(checking_id);
-    if (!list.empty())
+    Data_Set list = ShareList ( checking_id );
+    if ( !list.empty() )
     {
-        Model_Shareinfo::instance().remove(list.at(0).SHAREINFOID);
+        Model_Shareinfo::instance().remove ( list.at ( 0 ).SHAREINFOID );
     }
 }

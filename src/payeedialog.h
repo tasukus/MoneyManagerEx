@@ -28,11 +28,11 @@ class wxSearchCtrl;
 
 class mmPayeeDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmPayeeDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmPayeeDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmPayeeDialog(wxWindow *parent, bool payee_choose, const wxString &name = "mmPayeeDialog");
+    mmPayeeDialog ( wxWindow *parent, bool payee_choose, const wxString &name = "mmPayeeDialog" );
 
     int getPayeeId() const
     {
@@ -75,7 +75,7 @@ private:
 
     mmPayeeDialog() {}
 
-    void Create(wxWindow *parent, const wxString &name);
+    void Create ( wxWindow *parent, const wxString &name );
     void CreateControls();
     void fillControls();
 
@@ -85,17 +85,17 @@ private:
     void DefineDefaultCategory();
     void OnOrganizeAttachments();
     void OnPayeeRelocate();
-    void OnCancel(wxCommandEvent &WXUNUSED(event));
-    void OnOk(wxCommandEvent &WXUNUSED(event));
+    void OnCancel ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnOk ( wxCommandEvent &WXUNUSED ( event ) );
 
-    void OnListItemSelected(wxDataViewEvent &event);
-    void OnListItemActivated(wxDataViewEvent &event);
-    void OnDataEditStart(wxDataViewEvent &event);
-    void OnDataChanged(wxDataViewEvent &event);
-    void OnMenuSelected(wxCommandEvent &event);
-    void OnItemRightClick(wxDataViewEvent &event);
-    void OnSearchTextChanged(wxCommandEvent &event);
-    void OnMagicButton(wxCommandEvent &event);
+    void OnListItemSelected ( wxDataViewEvent &event );
+    void OnListItemActivated ( wxDataViewEvent &event );
+    void OnDataEditStart ( wxDataViewEvent &event );
+    void OnDataChanged ( wxDataViewEvent &event );
+    void OnMenuSelected ( wxCommandEvent &event );
+    void OnItemRightClick ( wxDataViewEvent &event );
+    void OnSearchTextChanged ( wxCommandEvent &event );
+    void OnMagicButton ( wxCommandEvent &event );
 
     bool debug_ = false;
 };

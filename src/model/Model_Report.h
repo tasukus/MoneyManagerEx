@@ -38,7 +38,7 @@ public:
     * Return the static instance address for Model_Report table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Report &instance(wxSQLite3Database *db);
+    static Model_Report &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Report table
@@ -47,17 +47,17 @@ public:
     static Model_Report &instance();
 
 public:
-    bool get_objects_from_sql(const wxString &query, PrettyWriter<StringBuffer> &json_writer);
+    bool get_objects_from_sql ( const wxString &query, PrettyWriter<StringBuffer> &json_writer );
     wxArrayString allGroupNames();
-    wxString get_html(const Data *r);
-    wxString get_html(const Data &r);
+    wxString get_html ( const Data *r );
+    wxString get_html ( const Data &r );
     static void prepareTempFolder();
     static bool WindowsUpdateRegistry();
-    static bool outputReportFile(const wxString &str, const wxString &name);
-    Data *get(const wxString &name);
+    static bool outputReportFile ( const wxString &str, const wxString &name );
+    Data *get ( const wxString &name );
 
 public:
-    static bool PrepareSQL(wxString &sql, std::map <wxString, wxString> &rep_params);
+    static bool PrepareSQL ( wxString &sql, std::map <wxString, wxString> &rep_params );
 private:
     struct Values
     {

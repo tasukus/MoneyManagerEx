@@ -26,8 +26,8 @@
 
 struct PANEL_COLUMN
 {
-    PANEL_COLUMN(const wxString &header, int width, int format)
-        : HEADER(header), WIDTH(width), FORMAT(format)
+    PANEL_COLUMN ( const wxString &header, int width, int format )
+        : HEADER ( header ), WIDTH ( width ), FORMAT ( format )
     {}
     wxString HEADER;
     int WIDTH;
@@ -39,7 +39,7 @@ class mmListCtrl : public wxListCtrl
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmListCtrl(wxWindow *parent, wxWindowID winid);
+    mmListCtrl ( wxWindow *parent, wxWindowID winid );
     virtual ~mmListCtrl();
 
     wxListItemAttr *attr1_ = nullptr;
@@ -51,22 +51,22 @@ public:
     wxString m_col_width;
     int m_default_sort_column = -1;
 
-    virtual wxListItemAttr *OnGetItemAttr(long row) const;
-    wxString BuildPage(const wxString &title) const;
-    int GetColumnWidthSetting(int column_number, int default_size = wxLIST_AUTOSIZE);
-    void SetColumnWidthSetting(int column_number, int column_width);
+    virtual wxListItemAttr *OnGetItemAttr ( long row ) const;
+    wxString BuildPage ( const wxString &title ) const;
+    int GetColumnWidthSetting ( int column_number, int default_size = wxLIST_AUTOSIZE );
+    void SetColumnWidthSetting ( int column_number, int column_width );
     std::vector<long> GetSelected();
 
 protected:
-    void OnItemResize(wxListEvent &event);
-    virtual void OnColClick(wxListEvent &event);
-    void OnColRightClick(wxListEvent &event);
+    void OnItemResize ( wxListEvent &event );
+    virtual void OnColClick ( wxListEvent &event );
+    void OnColRightClick ( wxListEvent &event );
     /* Headers Right Click*/
-    void PopupSelected(wxCommandEvent &event);
-    void OnHeaderColumn(wxCommandEvent &event);
-    void OnHeaderHide(wxCommandEvent &event);
-    void OnHeaderSort(wxCommandEvent &event);
-    void OnHeaderReset(wxCommandEvent &event);
+    void PopupSelected ( wxCommandEvent &event );
+    void OnHeaderColumn ( wxCommandEvent &event );
+    void OnHeaderHide ( wxCommandEvent &event );
+    void OnHeaderSort ( wxCommandEvent &event );
+    void OnHeaderReset ( wxCommandEvent &event );
 
     int m_ColumnHeaderNbr=-1;
     enum

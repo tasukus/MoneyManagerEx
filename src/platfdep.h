@@ -32,8 +32,8 @@ namespace mmex
 const wxFileName GetDocDir();
 const wxFileName GetResourceDir();
 const wxFileName GetSharedDir();
-const wxFileName GetUserDir(bool create);
-const wxFileName GetLogDir(bool create);
+const wxFileName GetUserDir ( bool create );
+const wxFileName GetLogDir ( bool create );
 
 /*
     wxStandardPaths uses wxApp::GetAppName(), so you should

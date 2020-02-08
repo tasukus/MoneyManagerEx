@@ -38,23 +38,23 @@ class wxRadioBox;
 
 class mmFilterTransactionsDialog: public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmFilterTransactionsDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmFilterTransactionsDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     /// Constructors
     mmFilterTransactionsDialog();
     ~mmFilterTransactionsDialog();
-    mmFilterTransactionsDialog(wxWindow *parent, int account_id);
+    mmFilterTransactionsDialog ( wxWindow *parent, int account_id );
 
     virtual int ShowModal();
 
-    bool checkAll(const Model_Checking::Full_Data &tran, int accountID);
-    bool checkAll(const Model_Billsdeposits::Full_Data &tran);
-    void getDescription(mmHTMLBuilder &hb, bool html = true);
+    bool checkAll ( const Model_Checking::Full_Data &tran, int accountID );
+    bool checkAll ( const Model_Billsdeposits::Full_Data &tran );
+    void getDescription ( mmHTMLBuilder &hb, bool html = true );
     bool SomethingSelected();
     void ResetFilterStatus();
-    void setAccountToolTip(const wxString &tip) const;
+    void setAccountToolTip ( const wxString &tip ) const;
     bool getStatusCheckBox();
     bool getAccountCheckBox();
     int getAccountID();
@@ -72,56 +72,56 @@ private:
     bool getAmountRangeCheckBox();
 
     template<class MODEL, class FULL_DATA = typename MODEL::Full_Data>
-    bool checkPayee(const FULL_DATA &tran);
+    bool checkPayee ( const FULL_DATA &tran );
     template<class MODEL, class FULL_DATA = typename MODEL::Full_Data>
-    bool checkCategory(const FULL_DATA &tran);
+    bool checkCategory ( const FULL_DATA &tran );
     template<class MODEL, class FULL_DATA = typename MODEL::Full_Data>
-    bool checkAmount(const FULL_DATA &tran);
+    bool checkAmount ( const FULL_DATA &tran );
 
     wxString getNumber();
     wxString getNotes();
 
 private:
     /// Returns true if Status string matches.
-    bool compareStatus(const wxString &itemStatus, const wxString &filterStatus) const;
+    bool compareStatus ( const wxString &itemStatus, const wxString &filterStatus ) const;
 
     bool getTypeCheckBox();
-    bool allowType(const wxString &typeState, bool sameAccount) const;
+    bool allowType ( const wxString &typeState, bool sameAccount ) const;
     bool getPayeeCheckBox();
     bool getNumberCheckBox();
     bool getNotesCheckBox();
     void clearSettings();
 
     /// Creation
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
 
     /// Creates the controls and sizers
     void CreateControls();
     void dataToControls();
-    const wxString GetStoredSettings(int id);
+    const wxString GetStoredSettings ( int id );
 
     /// wxEVT_COMMAND_CHECKBOX_CLICKED event handler for ID_CHECKBOXACCOUNT
-    void OnCheckboxClick( wxCommandEvent &event );
+    void OnCheckboxClick ( wxCommandEvent &event );
 
-    void OnButtonokClick(wxCommandEvent &event);
-    void OnButtoncancelClick(wxCommandEvent &event);
-    void SaveSettings(int menu_item);
-    void OnButtonClearClick(wxCommandEvent &event);
-    void OnMoreFields(wxCommandEvent &event);
-    void OnPayeeUpdated(wxCommandEvent &event);
-    void OnTextEntered(wxCommandEvent &event);
-    void OnDateRangeChanged(wxCommandEvent &event);
-    void OnSaveSettings(wxCommandEvent &event);
-    void OnSettingsSelected(wxCommandEvent &event);
+    void OnButtonokClick ( wxCommandEvent &event );
+    void OnButtoncancelClick ( wxCommandEvent &event );
+    void SaveSettings ( int menu_item );
+    void OnButtonClearClick ( wxCommandEvent &event );
+    void OnMoreFields ( wxCommandEvent &event );
+    void OnPayeeUpdated ( wxCommandEvent &event );
+    void OnTextEntered ( wxCommandEvent &event );
+    void OnDateRangeChanged ( wxCommandEvent &event );
+    void OnSaveSettings ( wxCommandEvent &event );
+    void OnSettingsSelected ( wxCommandEvent &event );
 
-    void OnCategs(wxCommandEvent &event);
-    wxString to_json(bool i18n = false);
-    void from_json(const wxString &data);
+    void OnCategs ( wxCommandEvent &event );
+    wxString to_json ( bool i18n = false );
+    void from_json ( const wxString &data );
 
     wxString settings_string_;
     wxString prev_value_;

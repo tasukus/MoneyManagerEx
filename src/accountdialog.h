@@ -30,36 +30,36 @@ class mmTextCtrl;
 
 class mmNewAcctDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmNewAcctDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmNewAcctDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmNewAcctDialog();
-    mmNewAcctDialog(Model_Account::Data *account, wxWindow *parent, const wxString &name = "mmAccountDialog");
+    mmNewAcctDialog ( Model_Account::Data *account, wxWindow *parent, const wxString &name = "mmAccountDialog" );
     ~mmNewAcctDialog();
 
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style
-                , const wxString &name);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style
+                  , const wxString &name );
 
 private:
     void CreateControls();
 
     // utility functions
-    void OnOk(wxCommandEvent &event);
-    void OnCancel(wxCommandEvent &event);
-    void OnCurrency(wxCommandEvent &event);
-    void fillControls(void);
-    void OnCustonImage(wxCommandEvent &event);
-    void OnTextEntered(wxCommandEvent &event);
-    void OnAttachments(wxCommandEvent &event);
+    void OnOk ( wxCommandEvent &event );
+    void OnCancel ( wxCommandEvent &event );
+    void OnCurrency ( wxCommandEvent &event );
+    void fillControls ( void );
+    void OnCustonImage ( wxCommandEvent &event );
+    void OnTextEntered ( wxCommandEvent &event );
+    void OnAttachments ( wxCommandEvent &event );
 
-    void OnImageButton(wxCommandEvent &event);
-    void OnChangeFocus(wxChildFocusEvent &event);
+    void OnImageButton ( wxCommandEvent &event );
+    void OnChangeFocus ( wxChildFocusEvent &event );
 
 private:
     Model_Account::Data *m_account = nullptr;

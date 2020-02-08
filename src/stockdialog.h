@@ -32,45 +32,45 @@ class wxBitmapButton;
 
 class mmStockDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmStockDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmStockDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmStockDialog();
-    mmStockDialog(wxWindow *parent
-                  , mmGUIFrame *gui_frame
-                  , Model_Stock::Data *stock
-                  , int accountID
-                  , const wxString &name = "mmStockDialog"
-                 );
+    mmStockDialog ( wxWindow *parent
+                    , mmGUIFrame *gui_frame
+                    , Model_Stock::Data *stock
+                    , int accountID
+                    , const wxString &name = "mmStockDialog"
+                  );
 
-    bool Create(wxWindow *parent, wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style
-                , const wxString &name = "mmStockDialog"
-               );
+    bool Create ( wxWindow *parent, wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style
+                  , const wxString &name = "mmStockDialog"
+                );
 
     int m_stock_id = -1;
 
 private:
-    void OnQuit(wxCloseEvent &event);
-    void OnSave(wxCommandEvent &event);
-    void OnCancel(wxCommandEvent &event);
-    void OnAttachments(wxCommandEvent &event);
-    void OnStockPriceButton(wxCommandEvent &event);
-    void OnHistoryImportButton(wxCommandEvent &event);
-    void OnHistoryDownloadButton(wxCommandEvent &event);
-    void OnFocusChange(wxChildFocusEvent &event);
-    void OnSelectionChanged(wxDataViewEvent &event);
-    void OnListValueEditingDone(wxDataViewEvent &event);
-    void OnListValueChanged(wxDataViewEvent &event);
-    void OnTextEntered(wxCommandEvent &event);
-    void OnMagicButton(wxCommandEvent &event);
-    void OnItemRightClick(wxDataViewEvent &event);
-    void OnMenuSelected(wxCommandEvent &event);
-    void OnHistoryAddUpdateEntry(wxCommandEvent &event);
+    void OnQuit ( wxCloseEvent &event );
+    void OnSave ( wxCommandEvent &event );
+    void OnCancel ( wxCommandEvent &event );
+    void OnAttachments ( wxCommandEvent &event );
+    void OnStockPriceButton ( wxCommandEvent &event );
+    void OnHistoryImportButton ( wxCommandEvent &event );
+    void OnHistoryDownloadButton ( wxCommandEvent &event );
+    void OnFocusChange ( wxChildFocusEvent &event );
+    void OnSelectionChanged ( wxDataViewEvent &event );
+    void OnListValueEditingDone ( wxDataViewEvent &event );
+    void OnListValueChanged ( wxDataViewEvent &event );
+    void OnTextEntered ( wxCommandEvent &event );
+    void OnMagicButton ( wxCommandEvent &event );
+    void OnItemRightClick ( wxDataViewEvent &event );
+    void OnMenuSelected ( wxCommandEvent &event );
+    void OnHistoryAddUpdateEntry ( wxCommandEvent &event );
 
     void OnMenuAddSelected();
     void OnHistoryDelete();
@@ -78,8 +78,8 @@ private:
     void CreateControls();
     void UpdateControls();
     void DataToControls();
-    void RefreshStockHistory(const wxString &symbol);
-    void CreateShareAccount(Model_Account::Data *stock_account, const wxString &name);
+    void RefreshStockHistory ( const wxString &symbol );
+    void CreateShareAccount ( Model_Account::Data *stock_account, const wxString &name );
 
     mmTextCtrl *m_stock_symbol_ctrl=nullptr;
     mmTextCtrl *m_stock_name_ctrl=nullptr;

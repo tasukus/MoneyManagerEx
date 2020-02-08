@@ -28,8 +28,8 @@ class wxSQLite3Database;
 namespace mmDBWrapper
 {
 
-wxSharedPtr<wxSQLite3Database> Open(const wxString &dbpath,
-                                    const wxString &key = wxEmptyString);
+wxSharedPtr<wxSQLite3Database> Open ( const wxString &dbpath,
+                                      const wxString &key = wxEmptyString );
 
 } // namespace mmDBWrapper
 

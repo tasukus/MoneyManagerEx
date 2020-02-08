@@ -33,18 +33,18 @@ Model_Infotable::~Model_Infotable()
 * Initialize the global Model_Infotable.
 * Reset the Model_Infotable or create the table if it does not exist.
 */
-Model_Infotable &Model_Infotable::instance(wxSQLite3Database *db)
+Model_Infotable &Model_Infotable::instance ( wxSQLite3Database *db )
 {
     Model_Infotable &ins = Singleton<Model_Infotable>::instance();
     ins.db_ = db;
     ins.destroy_cache();
-    ins.ensure(db);
+    ins.ensure ( db );
     ins.preload();
-    if (!ins.KeyExists("MMEXVERSION"))
+    if ( !ins.KeyExists ( "MMEXVERSION" ) )
     {
-        ins.Set("MMEXVERSION", mmex::version::string);
-        ins.Set("DATAVERSION", mmex::DATAVERSION);
-        ins.Set("CREATEDATE", wxDateTime::Now());
+        ins.Set ( "MMEXVERSION", mmex::version::string );
+        ins.Set ( "DATAVERSION", mmex::DATAVERSION );
+        ins.Set ( "CREATEDATE", wxDateTime::Now() );
     }
 
     return ins;
@@ -57,70 +57,70 @@ Model_Infotable &Model_Infotable::instance()
 }
 
 // Setter
-void Model_Infotable::Set(const wxString &key, int value)
+void Model_Infotable::Set ( const wxString &key, int value )
 {
-    this->Set(key, wxString::Format("%d", value));
+    this->Set ( key, wxString::Format ( "%d", value ) );
 }
 
-void Model_Infotable::Set(const wxString &key, const wxDateTime &date)
+void Model_Infotable::Set ( const wxString &key, const wxDateTime &date )
 {
-    this->Set(key, date.FormatISODate());
+    this->Set ( key, date.FormatISODate() );
 }
 
-void Model_Infotable::Set(const wxString &key, const wxString &value)
+void Model_Infotable::Set ( const wxString &key, const wxString &value )
 {
-    if (!this->db_)
+    if ( !this->db_ )
     {
         return;
     }
 
-    Data *info = this->get_one(INFONAME(key));
-    if (!info) // not cached
+    Data *info = this->get_one ( INFONAME ( key ) );
+    if ( !info ) // not cached
     {
-        Data_Set items = this->find(INFONAME(key));
-        if (!items.empty())
+        Data_Set items = this->find ( INFONAME ( key ) );
+        if ( !items.empty() )
         {
-            info = this->get(items[0].INFOID);
+            info = this->get ( items[0].INFOID );
         }
     }
-    if (info)
+    if ( info )
     {
         info->INFOVALUE= value;
-        info->save(this->db_);
+        info->save ( this->db_ );
     }
     else
     {
         info = this->create();
         info->INFONAME = key;
         info->INFOVALUE = value;
-        info->save(this->db_);
+        info->save ( this->db_ );
     }
 }
 
-void Model_Infotable::Set(const wxString &key, const wxColour &value)
+void Model_Infotable::Set ( const wxString &key, const wxColour &value )
 {
-    this->Set(key, wxString::Format("%d,%d,%d", value.Red(), value.Green(), value.Blue()));
+    this->Set ( key, wxString::Format ( "%d,%d,%d", value.Red(), value.Green(), value.Blue() ) );
 }
 
 //Deleter
-void Model_Infotable::Delete(const wxString &key)
+void Model_Infotable::Delete ( const wxString &key )
 {
-    Data_Set items = this->find(INFONAME(key));
-    for (const auto entry : items)
+    Data_Set items = this->find ( INFONAME ( key ) );
+    for ( const auto entry : items )
     {
-        this->remove(entry.id());
+        this->remove ( entry.id() );
     }
 }
 
 // Getter
-bool Model_Infotable::GetBoolInfo(const wxString &key, bool default_value)
+bool Model_Infotable::GetBoolInfo ( const wxString &key, bool default_value )
 {
-    const wxString value = this->GetStringInfo(key, "");
-    if (value == "1" || value.CmpNoCase("TRUE") == 0)
+    const wxString value = this->GetStringInfo ( key, "" );
+    if ( value == "1" || value.CmpNoCase ( "TRUE" ) == 0 )
     {
         return true;
     }
-    else if (value == "0" || value.CmpNoCase("FALSE") == 0)
+    else if ( value == "0" || value.CmpNoCase ( "FALSE" ) == 0 )
     {
         return false;
     }
@@ -130,28 +130,28 @@ bool Model_Infotable::GetBoolInfo(const wxString &key, bool default_value)
     }
 }
 
-int Model_Infotable::GetIntInfo(const wxString &key, int default_value)
+int Model_Infotable::GetIntInfo ( const wxString &key, int default_value )
 {
-    const wxString value = this->GetStringInfo(key, "");
-    if (!value.IsEmpty() && value.IsNumber())
+    const wxString value = this->GetStringInfo ( key, "" );
+    if ( !value.IsEmpty() && value.IsNumber() )
     {
-        return wxAtoi(value);
+        return wxAtoi ( value );
     }
 
     return default_value;
 }
 
-wxString Model_Infotable::GetStringInfo(const wxString &key, const wxString &default_value)
+wxString Model_Infotable::GetStringInfo ( const wxString &key, const wxString &default_value )
 {
-    Data *info = this->get_one(INFONAME(key));
-    if (info)
+    Data *info = this->get_one ( INFONAME ( key ) );
+    if ( info )
     {
         return info->INFOVALUE;
     }
     else // not cached
     {
-        Data_Set items = this->find(INFONAME(key));
-        if (!items.empty())
+        Data_Set items = this->find ( INFONAME ( key ) );
+        if ( !items.empty() )
         {
             return items[0].INFOVALUE;
         }
@@ -160,23 +160,23 @@ wxString Model_Infotable::GetStringInfo(const wxString &key, const wxString &def
     return default_value;
 }
 
-const wxColour Model_Infotable::GetColourSetting(const wxString &key, const wxColour &default_value)
+const wxColour Model_Infotable::GetColourSetting ( const wxString &key, const wxColour &default_value )
 {
-    const wxString value = this->GetStringInfo(key, "");
-    if (!value.IsEmpty())
+    const wxString value = this->GetStringInfo ( key, "" );
+    if ( !value.IsEmpty() )
     {
-        wxRegEx pattern("([0-9]{1,3}),([0-9]{1,3}),([0-9]{1,3})");
-        if (pattern.Matches(value))
+        wxRegEx pattern ( "([0-9]{1,3}),([0-9]{1,3}),([0-9]{1,3})" );
+        if ( pattern.Matches ( value ) )
         {
-            const wxString red = pattern.GetMatch(value, 1);
-            const wxString green = pattern.GetMatch(value, 2);
-            const wxString blue = pattern.GetMatch(value, 3);
+            const wxString red = pattern.GetMatch ( value, 1 );
+            const wxString green = pattern.GetMatch ( value, 2 );
+            const wxString blue = pattern.GetMatch ( value, 3 );
 
-            return wxColour(wxAtoi(red), wxAtoi(green), wxAtoi(blue));
+            return wxColour ( wxAtoi ( red ), wxAtoi ( green ), wxAtoi ( blue ) );
         }
         else
         {
-            return wxColor(value);
+            return wxColor ( value );
         }
     }
 
@@ -184,25 +184,25 @@ const wxColour Model_Infotable::GetColourSetting(const wxString &key, const wxCo
 }
 
 /* Returns true if key setting found */
-bool Model_Infotable::KeyExists(const wxString &key)
+bool Model_Infotable::KeyExists ( const wxString &key )
 {
-    return !this->find(INFONAME(key)).empty();
+    return !this->find ( INFONAME ( key ) ).empty();
 }
 
 bool Model_Infotable::checkDBVersion()
 {
-    if (!this->KeyExists("DATAVERSION"))
+    if ( !this->KeyExists ( "DATAVERSION" ) )
     {
         return false;
     }
 
-    return this->GetIntInfo("DATAVERSION", 0) >= mmex::MIN_DATAVERSION;
+    return this->GetIntInfo ( "DATAVERSION", 0 ) >= mmex::MIN_DATAVERSION;
 }
 
 loop_t Model_Infotable::to_loop_t()
 {
     loop_t loop;
-    for (const auto &r: instance().all())
+    for ( const auto &r: instance().all() )
     {
         loop += r.to_row_t();
     }
@@ -210,25 +210,25 @@ loop_t Model_Infotable::to_loop_t()
 }
 
 //-------------------------------------------------------------------
-bool Model_Infotable::OpenCustomDialog(const wxString &RefType)
+bool Model_Infotable::OpenCustomDialog ( const wxString &RefType )
 {
-    return GetBoolInfo("CUSTOMDIALOG_OPEN:" + RefType, false);
+    return GetBoolInfo ( "CUSTOMDIALOG_OPEN:" + RefType, false );
 }
 
-void Model_Infotable::SetOpenCustomDialog(const wxString &RefType, const bool Status)
+void Model_Infotable::SetOpenCustomDialog ( const wxString &RefType, const bool Status )
 {
-    Set("CUSTOMDIALOG_OPEN:" + RefType, Status);
+    Set ( "CUSTOMDIALOG_OPEN:" + RefType, Status );
 }
 
-wxSize Model_Infotable::CustomDialogSize(const wxString &RefType)
+wxSize Model_Infotable::CustomDialogSize ( const wxString &RefType )
 {
-    wxString strSize = GetStringInfo("CUSTOMDIALOG_SIZE:" + RefType, "0;0");
-    return wxSize(wxAtoi(strSize.BeforeFirst(';')), wxAtoi(strSize.AfterFirst(';')));
+    wxString strSize = GetStringInfo ( "CUSTOMDIALOG_SIZE:" + RefType, "0;0" );
+    return wxSize ( wxAtoi ( strSize.BeforeFirst ( ';' ) ), wxAtoi ( strSize.AfterFirst ( ';' ) ) );
 }
 
-void Model_Infotable::SetCustomDialogSize(const wxString &RefType, const wxSize &Size)
+void Model_Infotable::SetCustomDialogSize ( const wxString &RefType, const wxSize &Size )
 {
     wxString strSize;
     strSize << Size.GetWidth() << ";" << Size.GetHeight();
-    Set("CUSTOMDIALOG_SIZE:" + RefType, strSize);
+    Set ( "CUSTOMDIALOG_SIZE:" + RefType, strSize );
 }

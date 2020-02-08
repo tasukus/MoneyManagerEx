@@ -35,7 +35,7 @@ public:
     * Return the static instance address for Model_Shareinfo table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Shareinfo &instance(wxSQLite3Database *db);
+    static Model_Shareinfo &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Shareinfo table
@@ -45,22 +45,22 @@ public:
 
 private:
     /** Return the list of share records for the given checking_id */
-    static Model_Shareinfo::Data_Set ShareList(const int checking_id);
+    static Model_Shareinfo::Data_Set ShareList ( const int checking_id );
 
 public:
     /* Return the share record for the checking account */
-    static Model_Shareinfo::Data *ShareEntry(const int checking_id);
+    static Model_Shareinfo::Data *ShareEntry ( const int checking_id );
 
     /**
     Create a Share record if it does not exist.
     save the share record linked to the checking account.
     */
-    static void ShareEntry(int checking_id
-                           , double share_number
-                           , double share_price
-                           , double share_commission
-                           , const wxString &share_lot);
+    static void ShareEntry ( int checking_id
+                             , double share_number
+                             , double share_price
+                             , double share_commission
+                             , const wxString &share_lot );
 
     /* Remove the share entry if it exists */
-    static void RemoveShareEntry(const int checking_id);
+    static void RemoveShareEntry ( const int checking_id );
 };

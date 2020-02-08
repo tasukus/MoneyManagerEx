@@ -29,12 +29,12 @@ class OptionSettingsGeneral : public OptionSettingsBase
 public:
     OptionSettingsGeneral();
 
-    OptionSettingsGeneral(wxWindow *parent, mmGUIApp *app
-                          , wxWindowID id = wxID_ANY
-                          , const wxPoint &pos = wxDefaultPosition
-                          , const wxSize &size = wxDefaultSize
-                          , long style = wxTAB_TRAVERSAL
-                          , const wxString &name = "OptionSettingsGeneral");
+    OptionSettingsGeneral ( wxWindow *parent, mmGUIApp *app
+                            , wxWindowID id = wxID_ANY
+                            , const wxPoint &pos = wxDefaultPosition
+                            , const wxSize &size = wxDefaultSize
+                            , long style = wxTAB_TRAVERSAL
+                            , const wxString &name = "OptionSettingsGeneral" );
 
     ~OptionSettingsGeneral();
 
@@ -44,8 +44,8 @@ public:
 private:
     void Create();
 
-    void OnCurrency(wxCommandEvent &event);
-    void OnDateFormatChanged(wxCommandEvent &event);
+    void OnCurrency ( wxCommandEvent &event );
+    void OnDateFormatChanged ( wxCommandEvent &event );
 
     bool SaveFinancialYearStart();
 

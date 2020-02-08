@@ -39,7 +39,7 @@ public:
     * Return the static instance address for Model_Stock table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_CurrencyHistory &instance(wxSQLite3Database *db);
+    static Model_CurrencyHistory &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_CurrencyHistory table
@@ -48,22 +48,22 @@ public:
     static Model_CurrencyHistory &instance();
 
 public:
-    Data *get(const int &currencyID, const wxDate &date);
-    static wxDate CURRDATE(const Data &hist);
+    Data *get ( const int &currencyID, const wxDate &date );
+    static wxDate CURRDATE ( const Data &hist );
 
-    static DB_Table_CURRENCYHISTORY::CURRDATE CURRDATE(const wxDate &date, OP op = EQUAL);
+    static DB_Table_CURRENCYHISTORY::CURRDATE CURRDATE ( const wxDate &date, OP op = EQUAL );
 
     /** Adds or updates an element in currency history */
-    int addUpdate(const int &currencyID, const wxDate &date, double price, UPDTYPE type);
+    int addUpdate ( const int &currencyID, const wxDate &date, double price, UPDTYPE type );
 
     /** Return the rate for a specific currency in a specific day*/
-    static double getDayRate(const int &currencyID, const wxString &DateISO);
-    static double getDayRate(const int &currencyID, const wxDate &Date = wxDate::Today());
+    static double getDayRate ( const int &currencyID, const wxString &DateISO );
+    static double getDayRate ( const int &currencyID, const wxDate &Date = wxDate::Today() );
 
     /** Return the last rate for a specific currency */
-    static double getLastRate(const int &currencyID);
+    static double getLastRate ( const int &currencyID );
     /** Return the last currency rate not after the date */
-    static double getLastRate(const int &currencyID, const wxString &dateISO);
+    static double getLastRate ( const int &currencyID, const wxString &dateISO );
 
     /** Clears the currency History table */
     static void ResetCurrencyHistory();

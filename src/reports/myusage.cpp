@@ -106,7 +106,7 @@ charset=utf-8" />
         )";
 
 mmReportMyUsage::mmReportMyUsage()
-    : mmPrintableBase(_("MMEX Usage Frequency"))
+    : mmPrintableBase ( _( "MMEX Usage Frequency" ) )
 {
 }
 
@@ -124,22 +124,22 @@ wxString mmReportMyUsage::getHTMLText()
     Model_Usage::Data_Set all_usage;
     wxDateTime _start_date, _end_date;
 
-    if (m_date_range && m_date_range->is_with_date())
+    if ( m_date_range && m_date_range->is_with_date() )
     {
-        all_usage = Model_Usage::instance().find(Model_Usage::USAGEDATE(m_date_range->start_date().FormatISODate(), GREATER_OR_EQUAL)
-                    , Model_Usage::USAGEDATE(m_date_range->end_date().FormatISODate(), LESS_OR_EQUAL));
+        all_usage = Model_Usage::instance().find ( Model_Usage::USAGEDATE ( m_date_range->start_date().FormatISODate(), GREATER_OR_EQUAL )
+                    , Model_Usage::USAGEDATE ( m_date_range->end_date().FormatISODate(), LESS_OR_EQUAL ) );
         _start_date=m_date_range->start_date();
         _end_date=m_date_range->end_date();
     }
     else
     {
         all_usage = Model_Usage::instance().all();
-        wxASSERT(_start_date.ParseISODate(all_usage.front().USAGEDATE));
-        wxASSERT(_end_date.ParseISODate(all_usage.back().USAGEDATE));
+        wxASSERT ( _start_date.ParseISODate ( all_usage.front().USAGEDATE ) );
+        wxASSERT ( _end_date.ParseISODate ( all_usage.back().USAGEDATE ) );
     }
     std::map<wxString, std::pair<int, wxString> > usage_by_day;
 
-    for (const auto &usage : all_usage)
+    for ( const auto &usage : all_usage )
     {
         usage_by_day[usage.USAGEDATE].first += 1;
 
@@ -188,54 +188,54 @@ wxString mmReportMyUsage::getHTMLText()
         // }
     }
 
-    if (usage_by_day.empty())
+    if ( usage_by_day.empty() )
     {
-        usage_by_day[wxDateTime::Today().FormatISODate()] = std::make_pair(0, "");
+        usage_by_day[wxDateTime::Today().FormatISODate()] = std::make_pair ( 0, "" );
     }
 
     loop_t contents;
     wxDateTime day;
-    for (auto it = usage_by_day.begin(); it != usage_by_day.end(); ++ it)
+    for ( auto it = usage_by_day.begin(); it != usage_by_day.end(); ++ it )
     {
         row_t r;
-        wxASSERT(day.ParseISODate(it->first));
-        r(L"USAGEDATE") = wxString::Format("new Date(%d,%d,%d,0,0,0)",
-                                           day.GetYear(), day.GetMonth(), day.GetDay());
-        r(L"FREQUENCY") = wxString::Format("%d", it->second.first);
+        wxASSERT ( day.ParseISODate ( it->first ) );
+        r ( L"USAGEDATE" ) = wxString::Format ( "new Date(%d,%d,%d,0,0,0)",
+                                                day.GetYear(), day.GetMonth(), day.GetDay() );
+        r ( L"FREQUENCY" ) = wxString::Format ( "%d", it->second.first );
         // r(L"SLOW") = it->second.second;
 
         contents += r;
     }
 
-    mm_html_template report(usage_template);
-    report(L"REPORTNAME") = getReportTitle();
+    mm_html_template report ( usage_template );
+    report ( L"REPORTNAME" ) = getReportTitle();
     // report(L"_LINECHART") = _("Line Chart");
     // report(L"_BARCHART") = _("Bar Chart");
-    report(L"_FREQUENCY") = _("Frequency");
-    report(L"STARTDATE") = wxString::Format("new Date(%d,%d,%d,0,0,0)",
-                                            _start_date.GetYear(),
-                                            _start_date.GetMonth(),
-                                            _start_date.GetDay());
-    report(L"ENDDATE") = wxString::Format("new Date(%d,%d,%d,0,0,0)",
-                                          _end_date.GetYear(),
-                                          _end_date.GetMonth(),
-                                          _end_date.GetDay());
-    report(L"CONTENTS") = contents;
-    report(L"GRAND") = wxString::Format("%zu", all_usage.size());
-    report(L"HTMLSCALE") = wxString::Format("%d", Option::instance().getHtmlFontSize());
+    report ( L"_FREQUENCY" ) = _( "Frequency" );
+    report ( L"STARTDATE" ) = wxString::Format ( "new Date(%d,%d,%d,0,0,0)",
+                              _start_date.GetYear(),
+                              _start_date.GetMonth(),
+                              _start_date.GetDay() );
+    report ( L"ENDDATE" ) = wxString::Format ( "new Date(%d,%d,%d,0,0,0)",
+                            _end_date.GetYear(),
+                            _end_date.GetMonth(),
+                            _end_date.GetDay() );
+    report ( L"CONTENTS" ) = contents;
+    report ( L"GRAND" ) = wxString::Format ( "%zu", all_usage.size() );
+    report ( L"HTMLSCALE" ) = wxString::Format ( "%d", Option::instance().getHtmlFontSize() );
 
     wxString out = wxEmptyString;
     try
     {
         out = report.Process();
     }
-    catch (const syntax_ex &e)
+    catch ( const syntax_ex &e )
     {
         return e.what();
     }
-    catch (...)
+    catch ( ... )
     {
-        return _("Caught exception");
+        return _( "Caught exception" );
     }
 
     return out;

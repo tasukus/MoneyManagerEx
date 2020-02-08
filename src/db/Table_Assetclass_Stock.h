@@ -25,13 +25,13 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         wxString to_json() const
         {
             StringBuffer json_buffer;
-            PrettyWriter<StringBuffer> json_writer(json_buffer);
+            PrettyWriter<StringBuffer> json_writer ( json_buffer );
 
             json_writer.StartArray();
-            for (const auto &item: *this)
+            for ( const auto &item: *this )
             {
                 json_writer.StartObject();
-                item.as_json(json_writer);
+                item.as_json ( json_writer );
                 json_writer.EndObject();
             }
             json_writer.EndArray();
@@ -57,48 +57,48 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     /** Removes all records stored in memory (cache) for the table*/
     void destroy_cache()
     {
-        std::for_each(cache_.begin(), cache_.end(), std::mem_fun(&Data::destroy));
+        std::for_each ( cache_.begin(), cache_.end(), std::mem_fun ( &Data::destroy ) );
         cache_.clear();
         index_by_id_.clear(); // no memory release since it just stores pointer and the according objects are in cache
     }
 
     /** Creates the database table if the table does not exist*/
-    bool ensure(wxSQLite3Database *db)
+    bool ensure ( wxSQLite3Database *db )
     {
-        if (!exists(db))
+        if ( !exists ( db ) )
         {
             try
             {
-                db->ExecuteUpdate("CREATE TABLE ASSETCLASS_STOCK (ID INTEGER primary key, ASSETCLASSID INTEGER NOT NULL, STOCKSYMBOL TEXT UNIQUE)");
-                this->ensure_data(db);
+                db->ExecuteUpdate ( "CREATE TABLE ASSETCLASS_STOCK (ID INTEGER primary key, ASSETCLASSID INTEGER NOT NULL, STOCKSYMBOL TEXT UNIQUE)" );
+                this->ensure_data ( db );
             }
-            catch(const wxSQLite3Exception &e)
+            catch ( const wxSQLite3Exception &e )
             {
-                wxLogError("ASSETCLASS_STOCK: Exception %s", e.GetMessage().c_str());
+                wxLogError ( "ASSETCLASS_STOCK: Exception %s", e.GetMessage().c_str() );
                 return false;
             }
         }
 
-        this->ensure_index(db);
+        this->ensure_index ( db );
 
         return true;
     }
 
-    bool ensure_index(wxSQLite3Database *db)
+    bool ensure_index ( wxSQLite3Database *db )
     {
         try
         {
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("ASSETCLASS_STOCK: Exception %s", e.GetMessage().c_str());
+            wxLogError ( "ASSETCLASS_STOCK: Exception %s", e.GetMessage().c_str() );
             return false;
         }
 
         return true;
     }
 
-    void ensure_data(wxSQLite3Database *db)
+    void ensure_data ( wxSQLite3Database *db )
     {
         db->Begin();
         db->Commit();
@@ -110,7 +110,7 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         {
             return "ID";
         }
-        explicit ID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
+        explicit ID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
     };
 
     struct ASSETCLASSID : public DB_Column<int>
@@ -119,7 +119,7 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         {
             return "ASSETCLASSID";
         }
-        explicit ASSETCLASSID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
+        explicit ASSETCLASSID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
     };
 
     struct STOCKSYMBOL : public DB_Column<wxString>
@@ -128,7 +128,7 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         {
             return "STOCKSYMBOL";
         }
-        explicit STOCKSYMBOL(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
+        explicit STOCKSYMBOL ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
     };
 
     typedef ID PRIMARY;
@@ -141,9 +141,9 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     };
 
     /** Returns the column name as a string*/
-    static wxString column_to_name(COLUMN col)
+    static wxString column_to_name ( COLUMN col )
     {
-        switch(col)
+        switch ( col )
         {
             case COL_ID:
                 return "ID";
@@ -159,17 +159,17 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     }
 
     /** Returns the column number from the given column name*/
-    static COLUMN name_to_column(const wxString &name)
+    static COLUMN name_to_column ( const wxString &name )
     {
-        if ("ID" == name)
+        if ( "ID" == name )
         {
             return COL_ID;
         }
-        else if ("ASSETCLASSID" == name)
+        else if ( "ASSETCLASSID" == name )
         {
             return COL_ASSETCLASSID;
         }
-        else if ("STOCKSYMBOL" == name)
+        else if ( "STOCKSYMBOL" == name )
         {
             return COL_STOCKSYMBOL;
         }
@@ -193,22 +193,22 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
             return ID;
         }
 
-        void id(int id)
+        void id ( int id )
         {
             ID = id;
         }
 
-        bool operator < (const Data &r) const
+        bool operator < ( const Data &r ) const
         {
             return this->id() < r.id();
         }
 
-        bool operator < (const Data *r) const
+        bool operator < ( const Data *r ) const
         {
             return this->id() < r->id();
         }
 
-        explicit Data(Self *table = 0)
+        explicit Data ( Self *table = 0 )
         {
             table_ = table;
 
@@ -216,18 +216,18 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
             ASSETCLASSID = -1;
         }
 
-        explicit Data(wxSQLite3ResultSet &q, Self *table = 0)
+        explicit Data ( wxSQLite3ResultSet &q, Self *table = 0 )
         {
             table_ = table;
 
-            ID = q.GetInt(0);
-            ASSETCLASSID = q.GetInt(1);
-            STOCKSYMBOL = q.GetString(2);
+            ID = q.GetInt ( 0 );
+            ASSETCLASSID = q.GetInt ( 1 );
+            STOCKSYMBOL = q.GetString ( 2 );
         }
 
-        Data &operator=(const Data &other)
+        Data &operator= ( const Data &other )
         {
-            if (this == &other)
+            if ( this == &other )
             {
                 return *this;
             }
@@ -238,87 +238,87 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
             return *this;
         }
 
-        bool match(const Self::ID &in) const
+        bool match ( const Self::ID &in ) const
         {
             return this->ID == in.v_;
         }
 
-        bool match(const Self::ASSETCLASSID &in) const
+        bool match ( const Self::ASSETCLASSID &in ) const
         {
             return this->ASSETCLASSID == in.v_;
         }
 
-        bool match(const Self::STOCKSYMBOL &in) const
+        bool match ( const Self::STOCKSYMBOL &in ) const
         {
-            return this->STOCKSYMBOL.CmpNoCase(in.v_) == 0;
+            return this->STOCKSYMBOL.CmpNoCase ( in.v_ ) == 0;
         }
 
         /** Return the data record as a json string */
         wxString to_json() const
         {
             StringBuffer json_buffer;
-            PrettyWriter<StringBuffer> json_writer(json_buffer);
+            PrettyWriter<StringBuffer> json_writer ( json_buffer );
 
             json_writer.StartObject();
-            this->as_json(json_writer);
+            this->as_json ( json_writer );
             json_writer.EndObject();
 
             return json_buffer.GetString();
         }
 
         /** Add the field data as json key:value pairs */
-        void as_json(PrettyWriter<StringBuffer> &json_writer) const
+        void as_json ( PrettyWriter<StringBuffer> &json_writer ) const
         {
-            json_writer.Key("ID");
-            json_writer.Int(this->ID);
-            json_writer.Key("ASSETCLASSID");
-            json_writer.Int(this->ASSETCLASSID);
-            json_writer.Key("STOCKSYMBOL");
-            json_writer.String(this->STOCKSYMBOL.c_str());
+            json_writer.Key ( "ID" );
+            json_writer.Int ( this->ID );
+            json_writer.Key ( "ASSETCLASSID" );
+            json_writer.Int ( this->ASSETCLASSID );
+            json_writer.Key ( "STOCKSYMBOL" );
+            json_writer.String ( this->STOCKSYMBOL.c_str() );
         }
 
         row_t to_row_t() const
         {
             row_t row;
-            row(L"ID") = ID;
-            row(L"ASSETCLASSID") = ASSETCLASSID;
-            row(L"STOCKSYMBOL") = STOCKSYMBOL;
+            row ( L"ID" ) = ID;
+            row ( L"ASSETCLASSID" ) = ASSETCLASSID;
+            row ( L"STOCKSYMBOL" ) = STOCKSYMBOL;
             return row;
         }
 
-        void to_template(html_template &t) const
+        void to_template ( html_template &t ) const
         {
-            t(L"ID") = ID;
-            t(L"ASSETCLASSID") = ASSETCLASSID;
-            t(L"STOCKSYMBOL") = STOCKSYMBOL;
+            t ( L"ID" ) = ID;
+            t ( L"ASSETCLASSID" ) = ASSETCLASSID;
+            t ( L"STOCKSYMBOL" ) = STOCKSYMBOL;
         }
 
         /** Save the record instance in memory to the database. */
-        bool save(wxSQLite3Database *db)
+        bool save ( wxSQLite3Database *db )
         {
-            if (db && db->IsReadOnly())
+            if ( db && db->IsReadOnly() )
             {
                 return false;
             }
-            if (!table_ || !db)
+            if ( !table_ || !db )
             {
-                wxLogError("can not save ASSETCLASS_STOCK");
+                wxLogError ( "can not save ASSETCLASS_STOCK" );
                 return false;
             }
 
-            return table_->save(this, db);
+            return table_->save ( this, db );
         }
 
         /** Remove the record instance from memory and the database. */
-        bool remove(wxSQLite3Database *db)
+        bool remove ( wxSQLite3Database *db )
         {
-            if (!table_ || !db)
+            if ( !table_ || !db )
             {
-                wxLogError("can not remove ASSETCLASS_STOCK");
+                wxLogError ( "can not remove ASSETCLASS_STOCK" );
                 return false;
             }
 
-            return table_->remove(this, db);
+            return table_->remove ( this, db );
         }
 
         void destroy()
@@ -343,7 +343,7 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         return "ASSETCLASS_STOCK";
     }
 
-    DB_Table_ASSETCLASS_STOCK() : fake_(new Data())
+    DB_Table_ASSETCLASS_STOCK() : fake_ ( new Data() )
     {
         query_ = "SELECT ID, ASSETCLASSID, STOCKSYMBOL FROM ASSETCLASS_STOCK ";
     }
@@ -351,17 +351,17 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     /** Create a new Data record and add to memory table (cache) */
     Self::Data *create()
     {
-        Self::Data *entity = new Self::Data(this);
-        cache_.push_back(entity);
+        Self::Data *entity = new Self::Data ( this );
+        cache_.push_back ( entity );
         return entity;
     }
 
     /** Create a copy of the Data record and add to memory table (cache) */
-    Self::Data *clone(const Data *e)
+    Self::Data *clone ( const Data *e )
     {
         Self::Data *entity = create();
         *entity = *e;
-        entity->id(-1);
+        entity->id ( -1 );
         return entity;
     }
 
@@ -370,10 +370,10 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     * Either create a new record or update the existing record.
     * Remove old record from the memory table (cache)
     */
-    bool save(Self::Data *entity, wxSQLite3Database *db)
+    bool save ( Self::Data *entity, wxSQLite3Database *db )
     {
         wxString sql = wxEmptyString;
-        if (entity->id() <= 0) //  new & insert
+        if ( entity->id() <= 0 ) //  new & insert
         {
             sql = "INSERT INTO ASSETCLASS_STOCK(ASSETCLASSID, STOCKSYMBOL) VALUES(?, ?)";
         }
@@ -384,79 +384,79 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
 
         try
         {
-            wxSQLite3Statement stmt = db->PrepareStatement(sql);
+            wxSQLite3Statement stmt = db->PrepareStatement ( sql );
 
-            stmt.Bind(1, entity->ASSETCLASSID);
-            stmt.Bind(2, entity->STOCKSYMBOL);
-            if (entity->id() > 0)
+            stmt.Bind ( 1, entity->ASSETCLASSID );
+            stmt.Bind ( 2, entity->STOCKSYMBOL );
+            if ( entity->id() > 0 )
             {
-                stmt.Bind(3, entity->ID);
+                stmt.Bind ( 3, entity->ID );
             }
 
             stmt.ExecuteUpdate();
             stmt.Finalize();
 
-            if (entity->id() > 0) // existent
+            if ( entity->id() > 0 ) // existent
             {
-                for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
+                for ( Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it )
                 {
                     Self::Data *e = *it;
-                    if (e->id() == entity->id())
+                    if ( e->id() == entity->id() )
                     {
                         *e = *entity;    // in-place update
                     }
                 }
             }
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("ASSETCLASS_STOCK: Exception %s, %s", e.GetMessage().c_str(), entity->to_json());
+            wxLogError ( "ASSETCLASS_STOCK: Exception %s, %s", e.GetMessage().c_str(), entity->to_json() );
             return false;
         }
 
-        if (entity->id() <= 0)
+        if ( entity->id() <= 0 )
         {
-            entity->id((db->GetLastRowId()).ToLong());
-            index_by_id_.insert(std::make_pair(entity->id(), entity));
+            entity->id ( ( db->GetLastRowId() ).ToLong() );
+            index_by_id_.insert ( std::make_pair ( entity->id(), entity ) );
         }
         return true;
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(int id, wxSQLite3Database *db)
+    bool remove ( int id, wxSQLite3Database *db )
     {
-        if (id <= 0)
+        if ( id <= 0 )
         {
             return false;
         }
         try
         {
             wxString sql = "DELETE FROM ASSETCLASS_STOCK WHERE ID = ?";
-            wxSQLite3Statement stmt = db->PrepareStatement(sql);
-            stmt.Bind(1, id);
+            wxSQLite3Statement stmt = db->PrepareStatement ( sql );
+            stmt.Bind ( 1, id );
             stmt.ExecuteUpdate();
             stmt.Finalize();
 
             Cache c;
-            for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
+            for ( Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it )
             {
                 Self::Data *entity = *it;
-                if (entity->id() == id)
+                if ( entity->id() == id )
                 {
-                    index_by_id_.erase(entity->id());
+                    index_by_id_.erase ( entity->id() );
                     delete entity;
                 }
                 else
                 {
-                    c.push_back(entity);
+                    c.push_back ( entity );
                 }
             }
             cache_.clear();
-            cache_.swap(c);
+            cache_.swap ( c );
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("ASSETCLASS_STOCK: Exception %s", e.GetMessage().c_str());
+            wxLogError ( "ASSETCLASS_STOCK: Exception %s", e.GetMessage().c_str() );
             return false;
         }
 
@@ -464,11 +464,11 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(Self::Data *entity, wxSQLite3Database *db)
+    bool remove ( Self::Data *entity, wxSQLite3Database *db )
     {
-        if (remove(entity->id(), db))
+        if ( remove ( entity->id(), db ) )
         {
-            entity->id(-1);
+            entity->id ( -1 );
             return true;
         }
 
@@ -476,12 +476,12 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     }
 
     template<typename... Args>
-    Self::Data *get_one(const Args &... args)
+    Self::Data *get_one ( const Args &... args )
     {
-        for (Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it)
+        for ( Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it )
         {
             Self::Data *item = it->second;
-            if (item->id() > 0 && match(item, args...))
+            if ( item->id() > 0 && match ( item, args... ) )
             {
                 ++ hit_;
                 return item;
@@ -497,16 +497,16 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data *get(int id, wxSQLite3Database *db)
+    Self::Data *get ( int id, wxSQLite3Database *db )
     {
-        if (id <= 0)
+        if ( id <= 0 )
         {
             ++ skip_;
             return 0;
         }
 
-        Index_By_Id::iterator it = index_by_id_.find(id);
-        if (it != index_by_id_.end())
+        Index_By_Id::iterator it = index_by_id_.find ( id );
+        if ( it != index_by_id_.end() )
         {
             ++ hit_;
             return it->second;
@@ -514,27 +514,27 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
 
         ++ miss_;
         Self::Data *entity = 0;
-        wxString where = wxString::Format(" WHERE %s = ?", PRIMARY::name().c_str());
+        wxString where = wxString::Format ( " WHERE %s = ?", PRIMARY::name().c_str() );
         try
         {
-            wxSQLite3Statement stmt = db->PrepareStatement(this->query() + where);
-            stmt.Bind(1, id);
+            wxSQLite3Statement stmt = db->PrepareStatement ( this->query() + where );
+            stmt.Bind ( 1, id );
 
             wxSQLite3ResultSet q = stmt.ExecuteQuery();
-            if(q.NextRow())
+            if ( q.NextRow() )
             {
-                entity = new Self::Data(q, this);
-                cache_.push_back(entity);
-                index_by_id_.insert(std::make_pair(id, entity));
+                entity = new Self::Data ( q, this );
+                cache_.push_back ( entity );
+                index_by_id_.insert ( std::make_pair ( id, entity ) );
             }
             stmt.Finalize();
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("%s: Exception %s", this->name().c_str(), e.GetMessage().c_str());
+            wxLogError ( "%s: Exception %s", this->name().c_str(), e.GetMessage().c_str() );
         }
 
-        if (!entity)
+        if ( !entity )
         {
             entity = this->fake_;
             // wxLogError("%s: %d not found", this->name().c_str(), id);
@@ -547,24 +547,24 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all(wxSQLite3Database *db, COLUMN col = COLUMN(0), bool asc = true)
+    const Data_Set all ( wxSQLite3Database *db, COLUMN col = COLUMN ( 0 ), bool asc = true )
     {
         Data_Set result;
         try
         {
-            wxSQLite3ResultSet q = db->ExecuteQuery(col == COLUMN(0) ? this->query() : this->query() + " ORDER BY " + column_to_name(col) + " COLLATE NOCASE " + (asc ? " ASC " : " DESC "));
+            wxSQLite3ResultSet q = db->ExecuteQuery ( col == COLUMN ( 0 ) ? this->query() : this->query() + " ORDER BY " + column_to_name ( col ) + " COLLATE NOCASE " + ( asc ? " ASC " : " DESC " ) );
 
-            while(q.NextRow())
+            while ( q.NextRow() )
             {
-                Self::Data entity(q, this);
-                result.push_back(std::move(entity));
+                Self::Data entity ( q, this );
+                result.push_back ( std::move ( entity ) );
             }
 
             q.Finalize();
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("%s: Exception %s", this->name().c_str(), e.GetMessage().c_str());
+            wxLogError ( "%s: Exception %s", this->name().c_str(), e.GetMessage().c_str() );
         }
 
         return result;

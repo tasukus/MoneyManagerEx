@@ -27,26 +27,26 @@ class wxButton;
 
 class relocateCategoryDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(relocateCategoryDialog);
+    wxDECLARE_DYNAMIC_CLASS ( relocateCategoryDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     relocateCategoryDialog();
-    relocateCategoryDialog(wxWindow *parent, int sourceCatID = -1, int sourceSubCatID = -1);
+    relocateCategoryDialog ( wxWindow *parent, int sourceCatID = -1, int sourceSubCatID = -1 );
 
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
 
     void CreateControls();
 
     // utility functions
-    void OnSelectSource(wxCommandEvent &event);
-    void OnSelectDest(wxCommandEvent &event);
-    void OnOk(wxCommandEvent &event);
+    void OnSelectSource ( wxCommandEvent &event );
+    void OnSelectDest ( wxCommandEvent &event );
+    void OnOk ( wxCommandEvent &event );
 
     int updatedCategoriesCount() const;
 

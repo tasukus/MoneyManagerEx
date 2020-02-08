@@ -28,11 +28,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 static const wxFileName GetInstallDir()
 {
     const wxStandardPathsBase &p = wxStandardPaths::Get();
-    wxFileName fname(p.GetExecutablePath());
-
+    wxFileName fname ( p.GetExecutablePath() );
     const wxArrayString &dirs = fname.GetDirs();
 
-    if (dirs.Last().Upper() == "BIN") // bin\mmex.exe
+    if ( dirs.Last().Upper() == "BIN" ) // bin\mmex.exe
     {
         fname.RemoveLastDir();
     }
@@ -50,7 +49,7 @@ const wxString mmex::GetAppName()
 
 const wxFileName mmex::GetSharedDir()
 {
-    static wxFileName fname(GetInstallDir());
+    static wxFileName fname ( GetInstallDir() );
     return fname;
 }
 //----------------------------------------------------------------------------
@@ -65,10 +64,10 @@ const wxFileName mmex::GetResourceDir()
 {
     static wxFileName fname;
 
-    if (!fname.IsOk())
+    if ( !fname.IsOk() )
     {
         fname = GetSharedDir();
-        fname.AppendDir("res");
+        fname.AppendDir ( "res" );
     }
 
     return fname;

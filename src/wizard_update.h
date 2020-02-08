@@ -25,22 +25,22 @@
 class mmUpdate
 {
 public:
-    static void checkUpdates(const bool bSilent, wxFrame *frame);
+    static void checkUpdates ( const bool bSilent, wxFrame *frame );
 
 };
 
 class mmUpdateWizard : public wxWizard
 {
 public:
-    mmUpdateWizard(wxFrame *frame, const rapidjson::Value &new_version);
-    void RunIt(bool modal);
+    mmUpdateWizard ( wxFrame *frame, const rapidjson::Value &new_version );
+    void RunIt ( bool modal );
 
     const rapidjson::Value &m_new_version;
 
 private:
     wxWizardPageSimple *page1 = nullptr;
-    void PageChanged(wxWizardEvent &WXUNUSED(event));
-    void LinkClicked(wxHtmlLinkEvent &WXUNUSED(event));
+    void PageChanged ( wxWizardEvent &WXUNUSED ( event ) );
+    void LinkClicked ( wxHtmlLinkEvent &WXUNUSED ( event ) );
 
     wxDECLARE_EVENT_TABLE();
 };
@@ -49,7 +49,7 @@ private:
 class mmUpdateWizardPage2 : public wxWizardPageSimple
 {
 public:
-    mmUpdateWizardPage2(mmUpdateWizard *parent);
+    mmUpdateWizardPage2 ( mmUpdateWizard *parent );
     void OnDownload();
 
 private:

@@ -31,27 +31,27 @@ class wxButton;
 /* Custom ListCtrl class that implements virtual LC style */
 class mmAssetsListCtrl: public mmListCtrl
 {
-    DECLARE_NO_COPY_CLASS(mmAssetsListCtrl)
+    DECLARE_NO_COPY_CLASS ( mmAssetsListCtrl )
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmAssetsListCtrl(mmAssetsPanel *cp, wxWindow *parent, wxWindowID winid = wxID_ANY);
+    mmAssetsListCtrl ( mmAssetsPanel *cp, wxWindow *parent, wxWindowID winid = wxID_ANY );
 
-    void OnNewAsset(wxCommandEvent &event);
-    void OnEditAsset(wxCommandEvent &event);
-    void OnDeleteAsset(wxCommandEvent &event);
-    void OnDuplicateAsset(wxCommandEvent &event);
-    void OnOrganizeAttachments(wxCommandEvent &event);
-    void OnOpenAttachment(wxCommandEvent &event);
-    void OnAddAssetTrans(wxCommandEvent &WXUNUSED(event));
-    void OnViewAssetTrans(wxCommandEvent &WXUNUSED(event));
-    void OnGotoAssetAccount(wxCommandEvent &WXUNUSED(event));
+    void OnNewAsset ( wxCommandEvent &event );
+    void OnEditAsset ( wxCommandEvent &event );
+    void OnDeleteAsset ( wxCommandEvent &event );
+    void OnDuplicateAsset ( wxCommandEvent &event );
+    void OnOrganizeAttachments ( wxCommandEvent &event );
+    void OnOpenAttachment ( wxCommandEvent &event );
+    void OnAddAssetTrans ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnViewAssetTrans ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnGotoAssetAccount ( wxCommandEvent &WXUNUSED ( event ) );
 
-    void doRefreshItems(int trx_id = -1);
-    int initVirtualListControl(int trx_id = -1, int col = 0, bool asc = true);
+    void doRefreshItems ( int trx_id = -1 );
+    int initVirtualListControl ( int trx_id = -1, int col = 0, bool asc = true );
 
 protected:
-    virtual void OnColClick(wxListEvent &event);
+    virtual void OnColClick ( wxListEvent &event );
 
 private:
     enum EIcons
@@ -69,16 +69,16 @@ private:
     mmAssetsPanel *m_panel;
 
     /* required overrides for virtual style list control */
-    virtual wxString OnGetItemText(long item, long column) const;
-    virtual int OnGetItemImage(long item) const;
+    virtual wxString OnGetItemText ( long item, long column ) const;
+    virtual int OnGetItemImage ( long item ) const;
 
-    void OnMouseRightClick(wxMouseEvent &event);
-    void OnListLeftClick(wxMouseEvent &event);
-    void OnListItemActivated(wxListEvent &event);
-    void OnListKeyDown(wxListEvent &event);
-    void OnListItemSelected(wxListEvent &event);
-    void OnEndLabelEdit(wxListEvent &event);
-    bool EditAsset(Model_Asset::Data *pEntry);
+    void OnMouseRightClick ( wxMouseEvent &event );
+    void OnListLeftClick ( wxMouseEvent &event );
+    void OnListItemActivated ( wxListEvent &event );
+    void OnListKeyDown ( wxListEvent &event );
+    void OnListItemSelected ( wxListEvent &event );
+    void OnEndLabelEdit ( wxListEvent &event );
+    bool EditAsset ( Model_Asset::Data *pEntry );
 
     enum
     {
@@ -98,10 +98,10 @@ class mmAssetsPanel : public mmPanelBase
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmAssetsPanel(mmGUIFrame *frame, wxWindow *parent, wxWindowID winid, const wxString &name="mmAssetsPanel");
+    mmAssetsPanel ( mmGUIFrame *frame, wxWindow *parent, wxWindowID winid, const wxString &name="mmAssetsPanel" );
 
-    void updateExtraAssetData(int selIndex);
-    const wxString getItem(long item, long column) const;
+    void updateExtraAssetData ( int selIndex );
+    const wxString getItem ( long item, long column ) const;
 
     int getColMax() const
     {
@@ -114,12 +114,12 @@ public:
 
     wxString BuildPage() const
     {
-        return m_listCtrlAssets->BuildPage(_("Assets"));
+        return m_listCtrlAssets->BuildPage ( _( "Assets" ) );
     }
 
-    void AddAssetTrans(const int selected_index);
-    void ViewAssetTrans(const int selected_index);
-    void GotoAssetAccount(const int selected_index);
+    void AddAssetTrans ( const int selected_index );
+    void ViewAssetTrans ( const int selected_index );
+    void GotoAssetAccount ( const int selected_index );
     void sortTable();
     wxStaticText *getHeaderText() const
     {
@@ -133,7 +133,7 @@ public:
     {
         return m_assets;
     }
-    void setAssetDataSet(const Model_Asset::Data_Set &assets)
+    void setAssetDataSet ( const Model_Asset::Data_Set &assets )
     {
         m_assets = assets;
     }
@@ -147,33 +147,33 @@ private:
     Model_Asset::TYPE m_filter_type;
     mmGUIFrame *m_frame;
     wxStaticText *m_header_text=nullptr;
-    void enableEditDeleteButtons(bool enable);
-    void OnSearchTxtEntered(wxCommandEvent &event);
+    void enableEditDeleteButtons ( bool enable );
+    void OnSearchTxtEntered ( wxCommandEvent &event );
     mmAssetsListCtrl *m_listCtrlAssets=nullptr;
 
     wxButton *m_bitmapTransFilter=nullptr;
 
     wxScopedPtr<wxImageList> m_imageList;
 
-    bool Create(wxWindow *parent
-                , wxWindowID winid
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style
-                , const wxString &name);
+    bool Create ( wxWindow *parent
+                  , wxWindowID winid
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style
+                  , const wxString &name );
     void CreateControls();
 
     /* Event handlers for Buttons */
-    void OnNewAsset(wxCommandEvent &event);
-    void OnDeleteAsset(wxCommandEvent &event);
-    void OnEditAsset(wxCommandEvent &event);
-    void OnOpenAttachment(wxCommandEvent &event);
-    void OnMouseLeftDown(wxCommandEvent &event);
-    void OnAddAssetTrans(wxCommandEvent &event);
-    void OnViewAssetTrans(wxCommandEvent &event);
+    void OnNewAsset ( wxCommandEvent &event );
+    void OnDeleteAsset ( wxCommandEvent &event );
+    void OnEditAsset ( wxCommandEvent &event );
+    void OnOpenAttachment ( wxCommandEvent &event );
+    void OnMouseLeftDown ( wxCommandEvent &event );
+    void OnAddAssetTrans ( wxCommandEvent &event );
+    void OnViewAssetTrans ( wxCommandEvent &event );
 
-    void OnViewPopupSelected(wxCommandEvent &event);
-    void SetAccountParameters(const Model_Account::Data *account);
+    void OnViewPopupSelected ( wxCommandEvent &event );
+    void SetAccountParameters ( const Model_Account::Data *account );
 
 private:
     wxString m_tips;

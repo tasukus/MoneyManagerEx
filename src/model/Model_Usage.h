@@ -34,7 +34,7 @@ public:
     * Return the static instance address for Model_Usage table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Usage &instance(wxSQLite3Database *db);
+    static Model_Usage &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Usage table
@@ -48,16 +48,16 @@ private:
 
 public:
     // Appends to usage array
-    void AppendToUsage(const wxString &json_string);
+    void AppendToUsage ( const wxString &json_string );
 
     // Appends to cache array
-    void AppendToCache(const wxString &json_string);
+    void AppendToCache ( const wxString &json_string );
 
     //Return a json string
     wxString To_JSON_String() const;
 
 public:
-    void pageview(const wxString &documentPath, const wxString &documentTitle, long plt = 0 /*msec*/);
-    void timing(const wxString &documentPath, const wxString &documentTitle, long plt = 0 /*msec*/);
-    void pageview(const wxWindow *window, long plt = 0 /*msec*/);
+    void pageview ( const wxString &documentPath, const wxString &documentTitle, long plt = 0 /*msec*/ );
+    void timing ( const wxString &documentPath, const wxString &documentTitle, long plt = 0 /*msec*/ );
+    void pageview ( const wxWindow *window, long plt = 0 /*msec*/ );
 };

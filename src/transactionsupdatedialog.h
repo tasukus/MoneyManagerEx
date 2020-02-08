@@ -25,27 +25,27 @@ class mmTextCtrl;
 
 class transactionsUpdateDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(transactionsUpdateDialog);
+    wxDECLARE_DYNAMIC_CLASS ( transactionsUpdateDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     transactionsUpdateDialog();
     ~transactionsUpdateDialog();
-    transactionsUpdateDialog(wxWindow *parent, int account_id, std::vector<int> &transaction_id);
+    transactionsUpdateDialog ( wxWindow *parent, int account_id, std::vector<int> &transaction_id );
 
 private:
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
 
     void CreateControls();
-    void OnOk(wxCommandEvent &event);
-    void OnCheckboxClick(wxCommandEvent &event);
-    void onFocusChange(wxChildFocusEvent &event);
-    void OnCategChange(wxCommandEvent &event);
+    void OnOk ( wxCommandEvent &event );
+    void OnCheckboxClick ( wxCommandEvent &event );
+    void onFocusChange ( wxChildFocusEvent &event );
+    void OnCategChange ( wxCommandEvent &event );
 
 private:
     wxCheckBox *m_payee_checkbox = nullptr;

@@ -27,12 +27,12 @@ class OptionSettingsAttachment : public OptionSettingsBase
 public:
     OptionSettingsAttachment();
 
-    OptionSettingsAttachment(wxWindow *parent
-                             , wxWindowID id = wxID_ANY
-                             , const wxPoint &pos = wxDefaultPosition
-                             , const wxSize &size = wxDefaultSize
-                             , long style = wxTAB_TRAVERSAL
-                             , const wxString &name = "OptionSettingsAttachment");
+    OptionSettingsAttachment ( wxWindow *parent
+                               , wxWindowID id = wxID_ANY
+                               , const wxPoint &pos = wxDefaultPosition
+                               , const wxSize &size = wxDefaultSize
+                               , long style = wxTAB_TRAVERSAL
+                               , const wxString &name = "OptionSettingsAttachment" );
 
     ~OptionSettingsAttachment();
 
@@ -42,10 +42,10 @@ public:
 private:
     void Create();
 
-    void OnAttachmentsButton(wxCommandEvent &event);
-    void OnAttachmentsMenu(wxCommandEvent &event);
-    void OnAttachmentsPathChanged(wxCommandEvent &event);
-    void OnAttachmentsSubfolderChanged(wxCommandEvent &event);
+    void OnAttachmentsButton ( wxCommandEvent &event );
+    void OnAttachmentsMenu ( wxCommandEvent &event );
+    void OnAttachmentsPathChanged ( wxCommandEvent &event );
+    void OnAttachmentsSubfolderChanged ( wxCommandEvent &event );
 
 private:
     wxCheckBox *m_attachments_subfolder = nullptr;

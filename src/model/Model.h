@@ -40,9 +40,9 @@ namespace std
 template<>
 struct hash<wxString>
 {
-    size_t operator()(const wxString &k) const
+    size_t operator() ( const wxString &k ) const
     {
-        return std::hash<std::wstring>()(k.ToStdWstring());
+        return std::hash<std::wstring>() ( k.ToStdWstring() );
     }
 };
 }
@@ -51,36 +51,36 @@ struct hash<wxString>
 class ModelBase
 {
 public:
-    ModelBase():db_(0) {};
+    ModelBase() :db_ ( 0 ) {};
     virtual ~ModelBase() {};
 
 public:
     void Savepoint()
     {
-        this->db_->Savepoint("MMEX");
+        this->db_->Savepoint ( "MMEX" );
     }
     void ReleaseSavepoint()
     {
-        this->db_->ReleaseSavepoint("MMEX");
+        this->db_->ReleaseSavepoint ( "MMEX" );
     }
     void Rollback()
     {
-        this->db_->Rollback("MMEX");
+        this->db_->Rollback ( "MMEX" );
     }
 
 protected:
-    static wxDate to_date(const wxString &str_date)
+    static wxDate to_date ( const wxString &str_date )
     {
         static std::unordered_map<wxString, wxDate> cache;
-        const auto it = cache.find(str_date);
-        if (it != cache.end())
+        const auto it = cache.find ( str_date );
+        if ( it != cache.end() )
         {
             return it->second;
         }
 
         wxDate date;
-        date.ParseISODate(str_date); // the date in ISO 8601 format "YYYY-MM-DD".
-        cache.insert(std::make_pair(str_date, date));
+        date.ParseISODate ( str_date ); // the date in ISO 8601 format "YYYY-MM-DD".
+        cache.insert ( std::make_pair ( str_date, date ) );
         return date;
     }
 
@@ -103,10 +103,10 @@ public:
 
     typedef typename DB_TABLE::COLUMN COLUMN;
     /** Return a list of Data record addresses (Data_Set) derived directly from the database. */
-    const typename DB_TABLE::Data_Set all(COLUMN col = COLUMN(0), bool asc = true)
+    const typename DB_TABLE::Data_Set all ( COLUMN col = COLUMN ( 0 ), bool asc = true )
     {
-        this->ensure(this->db_);
-        return all(db_, col, asc);
+        this->ensure ( this->db_ );
+        return all ( db_, col, asc );
     }
 
     template<typename... Args>
@@ -120,9 +120,9 @@ public:
     * Returns a Data_Set containing the addresses of the items found.
     * The Data_Set is empty when nothing found.
     */
-    const typename DB_TABLE::Data_Set find(const Args &... args)
+    const typename DB_TABLE::Data_Set find ( const Args &... args )
     {
-        return find_by(this, db_, true, args...);
+        return find_by ( this, db_, true, args... );
     }
 
     template<typename... Args>
@@ -136,24 +136,24 @@ public:
     * Returns a Data_Set containing the addresses of the items found.
     * The Data_Set is empty when nothing found.
     */
-    const typename DB_TABLE::Data_Set find_or(const Args &... args)
+    const typename DB_TABLE::Data_Set find_or ( const Args &... args )
     {
-        return find_by(this, db_, false, args...);
+        return find_by ( this, db_, false, args... );
     }
 
     /**
     * Return the Data record pointer for the given ID
     * from either memory cache or the database.
     */
-    typename DB_TABLE::Data *get(int id)
+    typename DB_TABLE::Data *get ( int id )
     {
-        return this->get(id, this->db_);
+        return this->get ( id, this->db_ );
     }
 
     /** Save the Data record memory instance to the database. */
-    int save(typename DB_TABLE::Data *r)
+    int save ( typename DB_TABLE::Data *r )
     {
-        r->save(this->db_);
+        r->save ( this->db_ );
         return r->id();
     }
 
@@ -162,16 +162,16 @@ public:
     * in the record list (Data_Set) to the database.
     */
     template<class DATA>
-    int save(std::vector<DATA> &rows)
+    int save ( std::vector<DATA> &rows )
     {
         this->Savepoint();
-        for (auto &r : rows)
+        for ( auto &r : rows )
         {
-            if (r.id() < 0)
+            if ( r.id() < 0 )
             {
-                wxLogDebug("Incorrect function call to save %s", r.to_json().c_str());
+                wxLogDebug ( "Incorrect function call to save %s", r.to_json().c_str() );
             }
-            this->save(&r);
+            this->save ( &r );
         }
         this->ReleaseSavepoint();
 
@@ -179,12 +179,12 @@ public:
     }
 
     template<class DATA>
-    int save(std::vector<DATA *> &rows)
+    int save ( std::vector<DATA *> &rows )
     {
         this->Savepoint();
-        for (auto &r : rows)
+        for ( auto &r : rows )
         {
-            this->save(r);
+            this->save ( r );
         }
         this->ReleaseSavepoint();
 
@@ -192,19 +192,19 @@ public:
     }
 
     /** Remove the Data record instance from memory and the database. */
-    bool remove(int id)
+    bool remove ( int id )
     {
-        return this->remove(id, db_);
+        return this->remove ( id, db_ );
     }
 
 public:
-    void preload(int max_num = 1000)
+    void preload ( int max_num = 1000 )
     {
         int i = 0;
-        for (const auto &item : all())
+        for ( const auto &item : all() )
         {
-            get(item.id());
-            if (++i >= max_num)
+            get ( item.id() );
+            if ( ++i >= max_num )
             {
                 break;
             }
@@ -215,24 +215,24 @@ public:
     wxString  GetTableStatsAsJson() const
     {
         StringBuffer json_buffer;
-        Writer<StringBuffer> json_writer(json_buffer);
+        Writer<StringBuffer> json_writer ( json_buffer );
         json_writer.StartObject();
-        json_writer.Key("table");
-        json_writer.String(this->name().c_str());
-        json_writer.Key("cached");
-        json_writer.Int(this->cache_.size());
-        json_writer.Key("index_by_id");
-        json_writer.Int(this->index_by_id_.size());
-        json_writer.Key("hit");
-        json_writer.Int(this->hit_);
-        json_writer.Key("miss");
-        json_writer.Int(this->miss_);
-        json_writer.Key("skip");
-        json_writer.Int(this->skip_);
+        json_writer.Key ( "table" );
+        json_writer.String ( this->name().c_str() );
+        json_writer.Key ( "cached" );
+        json_writer.Int ( this->cache_.size() );
+        json_writer.Key ( "index_by_id" );
+        json_writer.Int ( this->index_by_id_.size() );
+        json_writer.Key ( "hit" );
+        json_writer.Int ( this->hit_ );
+        json_writer.Key ( "miss" );
+        json_writer.Int ( this->miss_ );
+        json_writer.Key ( "skip" );
+        json_writer.Int ( this->skip_ );
         json_writer.EndObject();
 
-        wxLogDebug("======== Model.h : GetTableStatsAsJson =======");
-        wxLogDebug("%s", json_buffer.GetString());
+        wxLogDebug ( "======== Model.h : GetTableStatsAsJson =======" );
+        wxLogDebug ( "%s", json_buffer.GetString() );
 
         return json_buffer.GetString();
     }
@@ -240,10 +240,10 @@ public:
     /** Show table statistics*/
     void show_statistics() const
     {
-        wxLogDebug("%s : (cache %zu, index_by_id %zu, hit %zu, miss %zu, skip %zu)",
-                   this->name(),
-                   this->cache_.size(),
-                   this->index_by_id_.size(),
-                   this->hit_, this->miss_, this->skip_);
+        wxLogDebug ( "%s : (cache %zu, index_by_id %zu, hit %zu, miss %zu, skip %zu)",
+                     this->name(),
+                     this->cache_.size(),
+                     this->index_by_id_.size(),
+                     this->hit_, this->miss_, this->skip_ );
     }
 };

@@ -19,17 +19,17 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "qif_import.h"
 #include <vector>
 
-bool mmQIFImport::isLineOK(const wxString &line)
+bool mmQIFImport::isLineOK ( const wxString &line )
 {
-    return wxString("!DNPAT^MLSE$C/UI").Contains(line.Left(1));
+    return wxString ( "!DNPAT^MLSE$C/UI" ).Contains ( line.Left ( 1 ) );
 }
 
-wxString mmQIFImport::getLineData(const wxString &line)
+wxString mmQIFImport::getLineData ( const wxString &line )
 {
-    return line.substr(1, line.Length() - 1);
+    return line.substr ( 1, line.Length() - 1 );
 }
 
-wxString mmQIFImport::getFileLine(wxTextInputStream &textFile, int &lineNumber)
+wxString mmQIFImport::getFileLine ( wxTextInputStream &textFile, int &lineNumber )
 {
     wxString textLine = textFile.ReadLine();
     lineNumber++;
@@ -38,16 +38,16 @@ wxString mmQIFImport::getFileLine(wxTextInputStream &textFile, int &lineNumber)
     return textLine;
 }
 
-wxString mmQIFImport::getFinancistoProject(wxString &sSubCateg)
+wxString mmQIFImport::getFinancistoProject ( wxString &sSubCateg )
 {
     //Additional parsing for Financisto like apps
     wxString sProject = "";
-    if (sSubCateg.Contains("/"))
+    if ( sSubCateg.Contains ( "/" ) )
     {
-        wxStringTokenizer cattkz(sSubCateg, "/");
+        wxStringTokenizer cattkz ( sSubCateg, "/" );
 
         sSubCateg = cattkz.GetNextToken();
-        if (cattkz.HasMoreTokens())
+        if ( cattkz.HasMoreTokens() )
         {
             sProject = cattkz.GetNextToken().Trim();
         }
@@ -55,15 +55,15 @@ wxString mmQIFImport::getFinancistoProject(wxString &sSubCateg)
     return sProject;
 }
 
-qifAccountInfoType mmQIFImport::accountInfoType(const wxString &line)
+qifAccountInfoType mmQIFImport::accountInfoType ( const wxString &line )
 {
-    if (line.IsEmpty())
+    if ( line.IsEmpty() )
     {
         return UnknownInfo;
     }
 
-    wxChar fChar = line.GetChar(0);
-    switch (fChar)
+    wxChar fChar = line.GetChar ( 0 );
+    switch ( fChar )
     {
         case 'N':
             return Name;
@@ -84,15 +84,15 @@ qifAccountInfoType mmQIFImport::accountInfoType(const wxString &line)
     }
 }
 
-qifLineType mmQIFImport::lineType(const wxString &line)
+qifLineType mmQIFImport::lineType ( const wxString &line )
 {
-    if (line.IsEmpty())
+    if ( line.IsEmpty() )
     {
         return UnknownType;
     }
 
-    wxChar fChar = line.GetChar(0);
-    switch (fChar)
+    wxChar fChar = line.GetChar ( 0 );
+    switch ( fChar )
     {
         case '!':
             return AcctType;
@@ -125,30 +125,30 @@ qifLineType mmQIFImport::lineType(const wxString &line)
     }
 }
 
-bool mmQIFImport::handle_file(wxFileInputStream &input)
+bool mmQIFImport::handle_file ( wxFileInputStream &input )
 {
-    wxTextInputStream text(input, "\x09", wxConvUTF8);
+    wxTextInputStream text ( input, "\x09", wxConvUTF8 );
 
     bool qif_record_end = false;
     std::vector<QIF_Line> qif_record;  // each qif_record may contains mult lines
-    while (input.IsOk() && !input.Eof())
+    while ( input.IsOk() && !input.Eof() )
     {
         wxString line = text.ReadLine();
         QIF_Line qif_line;
-        if (this->handle_line(line, qif_line))
+        if ( this->handle_line ( line, qif_line ) )
         {
-            qif_record_end = (qif_line.first == EOTLT);
-            if (qif_line.first == EOTLT)
+            qif_record_end = ( qif_line.first == EOTLT );
+            if ( qif_line.first == EOTLT )
             {
                 QIF_Transaction tran;
                 // process qif_record
-                this->handle_qif_record(qif_record, tran);
+                this->handle_qif_record ( qif_record, tran );
                 // release qif_record
                 qif_record.clear();
             }
             else
             {
-                qif_record.push_back(qif_line);
+                qif_record.push_back ( qif_line );
             }
         }
         else
@@ -157,7 +157,7 @@ bool mmQIFImport::handle_file(wxFileInputStream &input)
         }
     }
 
-    if (!qif_record_end)
+    if ( !qif_record_end )
     {
         // TODO incomplete file ?
     }
@@ -165,32 +165,32 @@ bool mmQIFImport::handle_file(wxFileInputStream &input)
     return true;
 }
 
-bool mmQIFImport::handle_file(const wxString &input_file)
+bool mmQIFImport::handle_file ( const wxString &input_file )
 {
-    wxFileInputStream input(input_file);
-    return this->handle_file(input);
+    wxFileInputStream input ( input_file );
+    return this->handle_file ( input );
 }
 
-bool mmQIFImport::handle_line(const wxString &line, QIF_Line &qif_line)
+bool mmQIFImport::handle_line ( const wxString &line, QIF_Line &qif_line )
 {
-    qif_line.first = lineType(line);
-    qif_line.second = getLineData(line);
+    qif_line.first = lineType ( line );
+    qif_line.second = getLineData ( line );
 
     return qif_line.first != UnknownType;
 }
 
-bool mmQIFImport::handle_qif_record(const QIF_Record &qif_record, QIF_Transaction &tran)
+bool mmQIFImport::handle_qif_record ( const QIF_Record &qif_record, QIF_Transaction &tran )
 {
-    for (const auto &line : qif_record)
+    for ( const auto &line : qif_record )
     {
-        this->handle_qif_line(line, tran);
+        this->handle_qif_line ( line, tran );
     }
     return true;
 }
 
-bool mmQIFImport::handle_qif_line(const QIF_Line &qif_line, QIF_Transaction &tran)
+bool mmQIFImport::handle_qif_line ( const QIF_Line &qif_line, QIF_Transaction &tran )
 {
-    switch (qif_line.first)
+    switch ( qif_line.first )
     {
         case Date:
             tran.D = qif_line.second;

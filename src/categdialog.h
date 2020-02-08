@@ -25,9 +25,9 @@
 class mmTreeItemCateg : public wxTreeItemData
 {
 public:
-    mmTreeItemCateg(const Model_Category::Data &categData, const Model_Subcategory::Data &subcategData)
-        : categData_(categData)
-        , subcategData_(subcategData)
+    mmTreeItemCateg ( const Model_Category::Data &categData, const Model_Subcategory::Data &subcategData )
+        : categData_ ( categData )
+        , subcategData_ ( subcategData )
     {}
     Model_Category::Data *getCategData()
     {
@@ -45,32 +45,32 @@ private:
 
 class mmCategDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmCategDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmCategDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmCategDialog();
-    mmCategDialog(wxWindow *parent
-                  , const int category_id = -1, const int subcategory_id = -1
-                  , const bool bEnableRelocate = false
-                  , const bool bEnableSelect = true);
+    mmCategDialog ( wxWindow *parent
+                    , const int category_id = -1, const int subcategory_id = -1
+                    , const bool bEnableRelocate = false
+                    , const bool bEnableSelect = true );
 
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
 
-    int getCategId( )const noexcept
+    int getCategId( ) const noexcept
     {
         return m_categ_id;
     }
-    int getSubCategId( )const noexcept
+    int getSubCategId( ) const noexcept
     {
         return m_subcateg_id;
     }
-    bool getRefreshRequested( )const noexcept
+    bool getRefreshRequested( ) const noexcept
     {
         return m_refresh_requested;
     }
@@ -79,23 +79,23 @@ public:
 private:
     void CreateControls();
     void fillControls();
-    void setTreeSelection(int category_id, int subcategory_id);
+    void setTreeSelection ( int category_id, int subcategory_id );
 
-    void OnCancel(wxCommandEvent &event);
-    void OnAdd(wxCommandEvent &event);
-    void OnDelete(wxCommandEvent &event);
-    void OnBSelect(wxCommandEvent &event);
-    void OnEdit(wxCommandEvent &event);
-    void OnSelChanged(wxTreeEvent &event);
-    void OnDoubleClicked(wxTreeEvent &event);
-    void showCategDialogDeleteError(bool category = true);
-    void OnCategoryRelocation(wxCommandEvent &WXUNUSED(event));
-    void OnExpandChbClick(wxCommandEvent &WXUNUSED(event));
-    void OnShowHiddenChbClick(wxCommandEvent &WXUNUSED(event));
-    void OnMenuSelected(wxCommandEvent &event);
-    void OnItemRightClick(wxTreeEvent &event);
-    bool categShowStatus(int categId, int subCategId);
-    void setTreeSelection(const wxString &catName, const wxString &subCatName);
+    void OnCancel ( wxCommandEvent &event );
+    void OnAdd ( wxCommandEvent &event );
+    void OnDelete ( wxCommandEvent &event );
+    void OnBSelect ( wxCommandEvent &event );
+    void OnEdit ( wxCommandEvent &event );
+    void OnSelChanged ( wxTreeEvent &event );
+    void OnDoubleClicked ( wxTreeEvent &event );
+    void showCategDialogDeleteError ( bool category = true );
+    void OnCategoryRelocation ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnExpandChbClick ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnShowHiddenChbClick ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnMenuSelected ( wxCommandEvent &event );
+    void OnItemRightClick ( wxTreeEvent &event );
+    bool categShowStatus (const int categId,const int subCategId );
+    void setTreeSelection ( const wxString &catName, const wxString &subCatName );
 
     wxTreeCtrl *m_treeCtrl = nullptr;
     wxButton *m_buttonAdd = nullptr;
@@ -107,7 +107,7 @@ private:
     wxCheckBox *m_cbShowAll = nullptr;
     wxTreeItemId selectedItemId_;
     wxTreeItemId root_;
-    wxTreeItemId getTreeItemFor(const wxTreeItemId &itemID, const wxString &itemText);
+    wxTreeItemId getTreeItemFor ( const wxTreeItemId &itemID, const wxString &itemText );
     bool m_enable_select = false;
     bool m_enable_relocate = false;
     int m_categ_id = -1;

@@ -32,7 +32,7 @@ public:
     virtual wxString getHTMLText();
 
 private:
-    void display_header(mmHTMLBuilder &hb);
+    void display_header ( mmHTMLBuilder &hb );
     // structure for sorting of data
     struct data_holder
     {

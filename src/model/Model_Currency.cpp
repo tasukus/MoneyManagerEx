@@ -26,8 +26,8 @@
 
 const std::vector<std::pair<Model_Currency::CURRTYPE, wxString> > Model_Currency::CURRTYPE_CHOICES =
 {
-    { Model_Currency::FIAT, wxString(wxTRANSLATE("Fiat")) },
-    { Model_Currency::CRYPTO, wxString(wxTRANSLATE("Crypto")) }
+    { Model_Currency::FIAT, wxString ( wxTRANSLATE ( "Fiat" ) ) },
+    { Model_Currency::CRYPTO, wxString ( wxTRANSLATE ( "Crypto" ) ) }
 };
 
 Model_Currency::Model_Currency()
@@ -43,11 +43,11 @@ Model_Currency::~Model_Currency()
 * Initialize the global Model_Currency table.
 * Reset the Model_Currency table or create the table if it does not exist.
 */
-Model_Currency &Model_Currency::instance(wxSQLite3Database *db)
+Model_Currency &Model_Currency::instance ( wxSQLite3Database *db )
 {
     Model_Currency &ins = Singleton<Model_Currency>::instance();
     ins.db_ = db;
-    ins.ensure(db);
+    ins.ensure ( db );
     ins.destroy_cache();
     ins.preload();
     return ins;
@@ -62,9 +62,9 @@ Model_Currency &Model_Currency::instance()
 wxArrayString Model_Currency::all_currency_names()
 {
     wxArrayString c;
-    for (const auto &i : all(COL_CURRENCYNAME))
+    for ( const auto &i : all ( COL_CURRENCYNAME ) )
     {
-        c.Add(i.CURRENCYNAME);
+        c.Add ( i.CURRENCYNAME );
     }
     return c;
 }
@@ -72,9 +72,9 @@ wxArrayString Model_Currency::all_currency_names()
 wxArrayString Model_Currency::all_currency_symbols()
 {
     wxArrayString c;
-    for (const auto &i : all(COL_CURRENCY_SYMBOL))
+    for ( const auto &i : all ( COL_CURRENCY_SYMBOL ) )
     {
-        c.Add(i.CURRENCY_SYMBOL);
+        c.Add ( i.CURRENCY_SYMBOL );
     }
     return c;
 }
@@ -82,11 +82,11 @@ wxArrayString Model_Currency::all_currency_symbols()
 wxArrayString Model_Currency::all_currency_types()
 {
     static wxArrayString types;
-    if (types.empty())
+    if ( types.empty() )
     {
-        for (const auto &item : CURRTYPE_CHOICES)
+        for ( const auto &item : CURRTYPE_CHOICES )
         {
-            types.Add(item.second);
+            types.Add ( item.second );
         }
     }
     return types;
@@ -96,14 +96,14 @@ wxArrayString Model_Currency::all_currency_types()
 Model_Currency::Data *Model_Currency::GetBaseCurrency()
 {
     int currency_id = Option::instance().getBaseCurrencyID();
-    Model_Currency::Data *currency = Model_Currency::instance().get(currency_id);
+    Model_Currency::Data *currency = Model_Currency::instance().get ( currency_id );
     return currency;
 }
 
-bool Model_Currency::GetBaseCurrencySymbol(wxString &base_currency_symbol)
+bool Model_Currency::GetBaseCurrencySymbol ( wxString &base_currency_symbol )
 {
     const auto base_currency = GetBaseCurrency();
-    if (base_currency)
+    if ( base_currency )
     {
         base_currency_symbol = base_currency->CURRENCY_SYMBOL;
         return true;
@@ -111,43 +111,43 @@ bool Model_Currency::GetBaseCurrencySymbol(wxString &base_currency_symbol)
     return false;
 }
 
-Model_Currency::Data *Model_Currency::GetCurrencyRecord(const wxString &currency_symbol)
+Model_Currency::Data *Model_Currency::GetCurrencyRecord ( const wxString &currency_symbol )
 {
-    Model_Currency::Data *record = this->get_one(CURRENCY_SYMBOL(currency_symbol));
-    if (record)
+    Model_Currency::Data *record = this->get_one ( CURRENCY_SYMBOL ( currency_symbol ) );
+    if ( record )
     {
         return record;
     }
 
-    Model_Currency::Data_Set items = Model_Currency::instance().find(CURRENCY_SYMBOL(currency_symbol));
-    if (!items.empty())
+    Model_Currency::Data_Set items = Model_Currency::instance().find ( CURRENCY_SYMBOL ( currency_symbol ) );
+    if ( !items.empty() )
     {
-        record = this->get(items[0].id(), this->db_);
+        record = this->get ( items[0].id(), this->db_ );
     }
 
     return record;
 }
 
-std::map<wxDateTime, int> Model_Currency::DateUsed(int CurrencyID)
+std::map<wxDateTime, int> Model_Currency::DateUsed ( int CurrencyID )
 {
     wxDateTime dt;
     std::map<wxDateTime, int> DatesList;
-    const auto &accounts = Model_Account::instance().find(CURRENCYID(CurrencyID));
-    for (const auto &account : accounts)
+    const auto &accounts = Model_Account::instance().find ( CURRENCYID ( CurrencyID ) );
+    for ( const auto &account : accounts )
     {
-        if (Model_Account::type(account) == Model_Account::TYPE::INVESTMENT)
+        if ( Model_Account::type ( account ) == Model_Account::TYPE::INVESTMENT )
         {
-            for (const auto trans : Model_Stock::instance().find(Model_Stock::HELDAT(account.ACCOUNTID)))
+            for ( const auto trans : Model_Stock::instance().find ( Model_Stock::HELDAT ( account.ACCOUNTID ) ) )
             {
-                dt.ParseDate(trans.PURCHASEDATE);
+                dt.ParseDate ( trans.PURCHASEDATE );
                 DatesList[dt] = 1;
             }
         }
         else
         {
-            for (const auto trans : Model_Checking::instance().find(Model_Checking::ACCOUNTID(account.ACCOUNTID)))
+            for ( const auto trans : Model_Checking::instance().find ( Model_Checking::ACCOUNTID ( account.ACCOUNTID ) ) )
             {
-                dt.ParseDate(trans.TRANSDATE);
+                dt.ParseDate ( trans.TRANSDATE );
                 DatesList[dt] = 1;
             }
         }
@@ -158,113 +158,113 @@ std::map<wxDateTime, int> Model_Currency::DateUsed(int CurrencyID)
 * Remove the Data record from memory and the database.
 * Delete also all currency history
 */
-bool Model_Currency::remove(int id)
+bool Model_Currency::remove ( int id )
 {
     this->Savepoint();
-    for (const auto &r : Model_CurrencyHistory::instance().find(Model_CurrencyHistory::CURRENCYID(id)))
+    for ( const auto &r : Model_CurrencyHistory::instance().find ( Model_CurrencyHistory::CURRENCYID ( id ) ) )
     {
-        Model_CurrencyHistory::instance().remove(r.id());
+        Model_CurrencyHistory::instance().remove ( r.id() );
     }
     this->ReleaseSavepoint();
-    return this->remove(id, db_);
+    return this->remove ( id, db_ );
 }
 
 /** Return the description of the choice type */
-wxString Model_Currency::currtype_desc(const int CurrTypeEnum)
+wxString Model_Currency::currtype_desc ( const int CurrTypeEnum )
 {
     const auto &item = CURRTYPE_CHOICES[CurrTypeEnum];
     wxString reftype_desc = item.second;
     return reftype_desc;
 }
 
-wxString Model_Currency::toCurrency(double value, const Data *currency, int precision)
+wxString Model_Currency::toCurrency ( double value, const Data *currency, int precision )
 {
-    precision = precision >= 0 ? precision : (currency ? log10(currency->SCALE) : 2);
-    wxString d2s = toString(value, currency, precision);
-    if (currency)
+    precision = precision >= 0 ? precision : ( currency ? log10 ( currency->SCALE ) : 2 );
+    wxString d2s = toString ( value, currency, precision );
+    if ( currency )
     {
-        d2s.Prepend(currency->PFX_SYMBOL);
-        d2s.Append(currency->SFX_SYMBOL);
+        d2s.Prepend ( currency->PFX_SYMBOL );
+        d2s.Append ( currency->SFX_SYMBOL );
     }
     return d2s;
 }
 
-wxString Model_Currency::toStringNoFormatting(double value, const Data *currency, int precision)
+wxString Model_Currency::toStringNoFormatting ( double value, const Data *currency, int precision )
 {
-    precision = (precision >= 0 ? precision : (currency ? log10(currency->SCALE) : 2));
-    wxString s = wxString::FromCDouble(value, precision);
+    precision = ( precision >= 0 ? precision : ( currency ? log10 ( currency->SCALE ) : 2 ) );
+    wxString s = wxString::FromCDouble ( value, precision );
 
     // remove minus from -0 or -0.0000 that comes from printf("%.Nf")
-    wxRegEx re ("^-(?=0(\\.0+)?$)", wxRE_ADVANCED);
-    re.Replace(&s, wxEmptyString);
+    wxRegEx re ( "^-(?=0(\\.0+)?$)", wxRE_ADVANCED );
+    re.Replace ( &s, wxEmptyString );
     return s;
 }
-wxString Model_Currency::toString(double value, const Data *currency, int precision)
+wxString Model_Currency::toString ( double value, const Data *currency, int precision )
 {
     wxString sep = currency ? currency->DECIMAL_POINT : ".",
-             s = Model_Currency::toStringNoFormatting(value, currency, precision);
+             s = Model_Currency::toStringNoFormatting ( value, currency, precision );
 
-    if (sep!=".") // protect decimal point
+    if ( sep!="." ) // protect decimal point
     {
         sep="\t";
-        s.Replace(".", sep);
+        s.Replace ( ".", sep );
     }
 
     // add proper group separator
-    wxRegEx re ("(\\d)(?=(\\d{3})+[" + sep + "$])", wxRE_ADVANCED);
-    re.Replace(&s, "\\1" + (currency ? currency->GROUP_SEPARATOR : ","));
+    wxRegEx re ( "(\\d)(?=(\\d{3})+[" + sep + "$])", wxRE_ADVANCED );
+    re.Replace ( &s, "\\1" + ( currency ? currency->GROUP_SEPARATOR : "," ) );
 
-    if (sep!=".")
+    if ( sep!="." )
     {
-        s.Replace(sep, currency->DECIMAL_POINT);
+        s.Replace ( sep, currency->DECIMAL_POINT );
     }
     return s;
 }
 
-const wxString Model_Currency::fromString2Default(const wxString &s, const Data *currency)
+const wxString Model_Currency::fromString2Default ( const wxString &s, const Data *currency )
 {
     wxString str = s;
     const auto bc = Model_Currency::GetBaseCurrency();
     const Data *c = currency ? currency : bc;
 
-    if(c)
+    if ( c )
     {
-        if (!c->GROUP_SEPARATOR.empty())
+        if ( !c->GROUP_SEPARATOR.empty() )
         {
-            str.Replace(c->GROUP_SEPARATOR, wxEmptyString);
+            str.Replace ( c->GROUP_SEPARATOR, wxEmptyString );
         }
-        if (!c->DECIMAL_POINT.empty())
+        if ( !c->DECIMAL_POINT.empty() )
         {
-            str.Replace(c->DECIMAL_POINT, ".");
+            str.Replace ( c->DECIMAL_POINT, "." );
         }
 
-        wxRegEx pattern(R"([^0-9.+-/*()])");
-        pattern.ReplaceAll(&str, wxEmptyString);
+        wxRegEx pattern ( R"([^0-9.+-/*()])" );
+        pattern.ReplaceAll ( &str, wxEmptyString );
     }
     return str;
 }
 
-bool Model_Currency::fromString(wxString s, double &val, const Data *currency)
+bool Model_Currency::fromString ( wxString s, double &val, const Data *currency )
 {
-    return fromString2Default(s, currency).ToCDouble(&val);
+    return fromString2Default ( s, currency ).ToCDouble ( &val );
 }
 
-int Model_Currency::precision(const Data *r)
+int Model_Currency::precision ( const Data *r )
 {
-    return static_cast<int>(log10(static_cast<double>(r->SCALE)));
+    return static_cast<int> ( log10 ( static_cast<double> ( r->SCALE ) ) );
 }
 
-int Model_Currency::precision(const Data &r)
+int Model_Currency::precision ( const Data &r )
 {
-    return precision(&r);
+    return precision ( &r );
 }
 
-int Model_Currency::precision(int account_id)
+int Model_Currency::precision ( int account_id )
 {
-    const Model_Account::Data *trans_account = Model_Account::instance().get(account_id);
-    if (account_id > 0)
+    const Model_Account::Data *trans_account = Model_Account::instance().get ( account_id );
+    if ( account_id > 0 )
     {
-        return precision(Model_Account::currency(trans_account));
+        return precision ( Model_Account::currency ( trans_account ) );
     }
     else
     {
@@ -272,7 +272,7 @@ int Model_Currency::precision(int account_id)
     }
 }
 
-bool Model_Currency::BoolOf(int value)
+bool Model_Currency::BoolOf ( int value )
 {
     return value > 0 ? true : false;
 }

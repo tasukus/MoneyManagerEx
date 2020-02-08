@@ -37,47 +37,47 @@ class wxBitmapButton;
 
 class mmBDDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmBDDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmBDDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmBDDialog();
-    mmBDDialog(wxWindow *parent, int bdD, bool edit, bool enterOccur);
+    mmBDDialog ( wxWindow *parent, int bdD, bool edit, bool enterOccur );
     int GetTransID()
     {
         return transID_;
     }
 
-    void SetDialogHeader(const wxString &header);
-    void SetDialogParameters(const Model_Checking::Full_Data &transaction);
+    void SetDialogHeader ( const wxString &header );
+    void SetDialogParameters ( const Model_Checking::Full_Data &transaction );
 
 private:
-    bool Create(wxWindow *parent, wxWindowID id,
-                const wxString &caption,
-                const wxPoint &pos,
-                const wxSize &size,
-                long style);
+    bool Create ( wxWindow *parent, wxWindowID id,
+                  const wxString &caption,
+                  const wxPoint &pos,
+                  const wxSize &size,
+                  long style );
 
     void CreateControls();
 
     // utility functions
-    void OnQuit(wxCloseEvent &event);
-    void OnOk(wxCommandEvent &event);
-    void OnCancel(wxCommandEvent &event);
-    void OnCategs(wxCommandEvent &event);
-    void OnPayee(wxCommandEvent &event);
-    void OnTo(wxCommandEvent &event);
-    void OnTypeChanged(wxCommandEvent &event);
-    void OnAttachments(wxCommandEvent &event);
+    void OnQuit ( wxCloseEvent &event );
+    void OnOk ( wxCommandEvent &event );
+    void OnCancel ( wxCommandEvent &event );
+    void OnCategs ( wxCommandEvent &event );
+    void OnPayee ( wxCommandEvent &event );
+    void OnTo ( wxCommandEvent &event );
+    void OnTypeChanged ( wxCommandEvent &event );
+    void OnAttachments ( wxCommandEvent &event );
 
     void dataToControls();
     void updateControlsForTransType();
-    void addPayee(wxString payee, int categID, int subcategID );
-    void OnAccountName(wxCommandEvent &event);
-    void OnSplitChecked(wxCommandEvent &event);
-    void OnAutoExecutionUserAckChecked(wxCommandEvent &event);
-    void OnAutoExecutionSilentChecked(wxCommandEvent &event);
-    void OnTextEntered(wxCommandEvent &event);
+    void addPayee ( wxString payee, int categID, int subcategID );
+    void OnAccountName ( wxCommandEvent &event );
+    void OnSplitChecked ( wxCommandEvent &event );
+    void OnAutoExecutionUserAckChecked ( wxCommandEvent &event );
+    void OnAutoExecutionSilentChecked ( wxCommandEvent &event );
+    void OnTextEntered ( wxCommandEvent &event );
     int transID_ = 0;
 
     wxTextCtrl *textNumber_ = nullptr;
@@ -101,9 +101,9 @@ private:
     bool m_transfer = false;
     bool m_enter_occur = false;
 
-    wxDatePickerCtrl *m_date_paid=nullptr;      // Stored in ::NEXTOCCURRENCEDATE
-    wxDatePickerCtrl *m_date_due=nullptr;       // Stored in ::TRANSDATE
-    wxChoice *m_choice_repeat=nullptr;
+    wxDatePickerCtrl *m_date_paid = nullptr;      // Stored in ::NEXTOCCURRENCEDATE
+    wxDatePickerCtrl *m_date_due = nullptr;       // Stored in ::TRANSDATE
+    wxChoice *m_choice_repeat = nullptr;
     wxCheckBox *itemCheckBoxAutoExeUserAck_=nullptr;
     wxCheckBox *itemCheckBoxAutoExeSilent_=nullptr;
     bool autoExecuteUserAck_ = false;
@@ -116,33 +116,33 @@ private:
     int prevType_ = -1;
     std::vector<wxString> frequentNotes_;
 
-    const wxString payeeWithdrawalTip_ = _("Specify where the transaction is going to");
-    const wxString payeeDepositTip_ = _("Specify where the transaction is coming from");
-    const wxString payeeTransferTip_ = _("Specify which account the transfer is going to");
-    const wxString amountNormalTip_ = _("Specify the amount for this transaction");
-    const wxString amountTransferTip_ = _("Specify the amount to be transferred");
+    const wxString payeeWithdrawalTip_ = _( "Specify where the transaction is going to" );
+    const wxString payeeDepositTip_ = _( "Specify where the transaction is coming from" );
+    const wxString payeeTransferTip_ = _( "Specify which account the transfer is going to" );
+    const wxString amountNormalTip_ = _( "Specify the amount for this transaction" );
+    const wxString amountTransferTip_ = _( "Specify the amount to be transferred" );
     wxSpinButton *spinNextOccDate_ = nullptr;
     wxSpinButton *spinTransDate_ = nullptr;
 
     void resetPayeeString();
     void setTooltips();
     void setCategoryLabel();
-    void OnPaidDateChanged(wxDateEvent &event);
-    void OnDueDateChanged(wxDateEvent &event);
-    void OnAdvanceChecked(wxCommandEvent &event);
-    void SetTransferControls(bool transfers = false);
-    void SetAdvancedTransferControls(bool advanced = false);
-    void SetSplitControls(bool split = false);
-    void OnSpinEventPaid(wxSpinEvent &event);
-    void OnSpinEventDue(wxSpinEvent &event);
-    void OnFrequentUsedNotes(wxCommandEvent &event);
-    void onNoteSelected(wxCommandEvent &event);
+    void OnPaidDateChanged ( wxDateEvent &event );
+    void OnDueDateChanged ( wxDateEvent &event );
+    void OnAdvanceChecked ( wxCommandEvent &event );
+    void SetTransferControls ( bool transfers = false );
+    void SetAdvancedTransferControls ( bool advanced = false );
+    void SetSplitControls ( bool split = false );
+    void OnSpinEventPaid ( wxSpinEvent &event );
+    void OnSpinEventDue ( wxSpinEvent &event );
+    void OnFrequentUsedNotes ( wxCommandEvent &event );
+    void onNoteSelected ( wxCommandEvent &event );
 
     wxStaticText *staticTimesRepeat_ = nullptr;
     wxStaticText *staticTextRepeats_ = nullptr;
     wxBitmapButton *m_btn_due_date = nullptr;
-    void OnRepeatTypeChanged(wxCommandEvent &event);
-    void OnsetNextRepeatDate(wxCommandEvent &event);
+    void OnRepeatTypeChanged ( wxCommandEvent &event );
+    void OnsetNextRepeatDate ( wxCommandEvent &event );
     void setRepeatDetails();
 
     void activateSplitTransactionsDlg();

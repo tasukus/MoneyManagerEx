@@ -11,36 +11,36 @@ enum
     margin_id_fold,
 };
 
-wxIMPLEMENT_DYNAMIC_CLASS(MinimalEditor, wxStyledTextCtrl);
+wxIMPLEMENT_DYNAMIC_CLASS ( MinimalEditor, wxStyledTextCtrl );
 
-wxBEGIN_EVENT_TABLE(MinimalEditor, wxStyledTextCtrl)
-    EVT_STC_MARGINCLICK(wxID_ANY, MinimalEditor::OnMarginClick)
-    EVT_STC_CHANGE(wxID_ANY, MinimalEditor::OnText)
+wxBEGIN_EVENT_TABLE ( MinimalEditor, wxStyledTextCtrl )
+    EVT_STC_MARGINCLICK ( wxID_ANY, MinimalEditor::OnMarginClick )
+    EVT_STC_CHANGE ( wxID_ANY, MinimalEditor::OnText )
 wxEND_EVENT_TABLE()
 
-MinimalEditor::MinimalEditor(wxWindow *parent, wxWindowID id)
-    : wxStyledTextCtrl(parent, id)
+MinimalEditor::MinimalEditor ( wxWindow *parent, wxWindowID id )
+    : wxStyledTextCtrl ( parent, id )
 {
     int font_size = this->GetFont().GetPointSize();
-    m_font = wxFont(font_size, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL);
+    m_font = wxFont ( font_size, wxFONTFAMILY_SWISS, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL );
 }
-bool MinimalEditor::SetFont(const wxFont &font)
+bool MinimalEditor::SetFont ( const wxFont &font )
 {
-    StyleSetFont(wxSTC_STYLE_DEFAULT, const_cast<wxFont &>(font));
-    return wxStyledTextCtrl::SetFont(font);
+    StyleSetFont ( wxSTC_STYLE_DEFAULT, const_cast<wxFont &> ( font ) );
+    return wxStyledTextCtrl::SetFont ( font );
 }
 
 void MinimalEditor::SetLexerSql()
 {
-    StyleSetForeground(wxSTC_STYLE_LINENUMBER, wxColour(75, 75, 75));
-    StyleSetBackground(wxSTC_STYLE_LINENUMBER, wxColour(220, 220, 220));
-    SetMarginWidth(margin_id_lineno, 32);
+    StyleSetForeground ( wxSTC_STYLE_LINENUMBER, wxColour ( 75, 75, 75 ) );
+    StyleSetBackground ( wxSTC_STYLE_LINENUMBER, wxColour ( 220, 220, 220 ) );
+    SetMarginWidth ( margin_id_lineno, 32 );
     StyleClearAll();
-    SetLexer(wxSTC_LEX_SQL);
-    StyleSetForeground(wxSTC_SQL_WORD, wxColour(0, 150, 0));
+    SetLexer ( wxSTC_LEX_SQL );
+    StyleSetForeground ( wxSTC_SQL_WORD, wxColour ( 0, 150, 0 ) );
     const wxString sqlwords =
         "asc by delete desc from group having insert into order select set update values where";
-    SetKeyWords(0, sqlwords);
+    SetKeyWords ( 0, sqlwords );
 }
 
 void MinimalEditor::SetLexerLua() //https://code.google.com/p/wxamcl/source/browse/trunk/scriptedit.cpp?r=63
@@ -67,127 +67,118 @@ void MinimalEditor::SetLexerLua() //https://code.google.com/p/wxamcl/source/brow
         wxamcl.draw.text wxamcl.draw.line wxamcl.draw.circle wxamcl.draw.square wxamcl.draw.winsize";
     wxString amcwords =
         "clearwin capstart capend setvar gag help loadprofile func script bscript gagwin connect pwd refreshwin raw capturewin capturenb log htmllog resume test";
-
-    SetLexer(wxSTC_LEX_LUA);
-
-    SetKeyWords(0, luawords);
-    SetKeyWords(1, luawords2);
+    SetLexer ( wxSTC_LEX_LUA );
+    SetKeyWords ( 0, luawords );
+    SetKeyWords ( 1, luawords2 );
     //SetKeyWords(1, luawords3);
-    SetKeyWords(2, amcwords);
-
-    SetMarginWidth(0, 0);
-    SetMarginType(0, wxSTC_MARGIN_NUMBER);
-    StyleSetForeground(wxSTC_STYLE_LINENUMBER, wxColour("DARK GREY"));
-    StyleSetBackground(wxSTC_STYLE_LINENUMBER, *wxLIGHT_GREY);
-
+    SetKeyWords ( 2, amcwords );
+    SetMarginWidth ( 0, 0 );
+    SetMarginType ( 0, wxSTC_MARGIN_NUMBER );
+    StyleSetForeground ( wxSTC_STYLE_LINENUMBER, wxColour ( "DARK GREY" ) );
+    StyleSetBackground ( wxSTC_STYLE_LINENUMBER, *wxLIGHT_GREY );
     // set margin as unused
-    SetMarginType(1, wxSTC_MARGIN_SYMBOL);
-    SetMarginWidth(1, 0);
-    SetMarginSensitive(1, false);
-
+    SetMarginType ( 1, wxSTC_MARGIN_SYMBOL );
+    SetMarginWidth ( 1, 0 );
+    SetMarginSensitive ( 1, false );
     // set visibility
-    SetVisiblePolicy(wxSTC_VISIBLE_STRICT | wxSTC_VISIBLE_SLOP, 1);
-    SetXCaretPolicy(wxSTC_CARET_EVEN | wxSTC_VISIBLE_STRICT | wxSTC_CARET_SLOP, 1);
-    SetYCaretPolicy(wxSTC_CARET_EVEN | wxSTC_VISIBLE_STRICT | wxSTC_CARET_SLOP, 1);
-
-    SetProperty("fold.compact", "0");
-    SetProperty("fold.comment", "1");
-    SetProperty("fold", "1");
-    SetMarginWidth(2, 0);
-    SetMarginType(2, wxSTC_MARGIN_SYMBOL);
-    SetMarginMask(2, wxSTC_MASK_FOLDERS);
-    StyleSetBackground(2, *wxWHITE);
-    SetMarginSensitive(2, true);
-
-    SetMarginWidth(0, 36);
-    SetMarginWidth(2, 16);
+    SetVisiblePolicy ( wxSTC_VISIBLE_STRICT | wxSTC_VISIBLE_SLOP, 1 );
+    SetXCaretPolicy ( wxSTC_CARET_EVEN | wxSTC_VISIBLE_STRICT | wxSTC_CARET_SLOP, 1 );
+    SetYCaretPolicy ( wxSTC_CARET_EVEN | wxSTC_VISIBLE_STRICT | wxSTC_CARET_SLOP, 1 );
+    SetProperty ( "fold.compact", "0" );
+    SetProperty ( "fold.comment", "1" );
+    SetProperty ( "fold", "1" );
+    SetMarginWidth ( 2, 0 );
+    SetMarginType ( 2, wxSTC_MARGIN_SYMBOL );
+    SetMarginMask ( 2, wxSTC_MASK_FOLDERS );
+    StyleSetBackground ( 2, *wxWHITE );
+    SetMarginSensitive ( 2, true );
+    SetMarginWidth ( 0, 36 );
+    SetMarginWidth ( 2, 16 );
     // markers
-    MarkerDefine(wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS, "WHITE", "BLACK");
-    MarkerDefine(wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_BOXMINUS, "WHITE", "BLACK");
-    MarkerDefine(wxSTC_MARKNUM_FOLDERSUB, wxSTC_MARK_VLINE, "WHITE", "BLACK");
-    MarkerDefine(wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_BOXPLUSCONNECTED, "WHITE", "BLACK");
-    MarkerDefine(wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUSCONNECTED, "WHITE", "WHITE");
-    MarkerDefine(wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_TCORNER, "WHITE", "BLACK");
-    MarkerDefine(wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_LCORNER, "WHITE", "BLACK");
-    SetFoldFlags(wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED |
-                 wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED);
-
-    StyleSetForeground(wxSTC_STYLE_INDENTGUIDE, wxColour("DARK GREY"));
-
+    MarkerDefine ( wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS, "WHITE", "BLACK" );
+    MarkerDefine ( wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_BOXMINUS, "WHITE", "BLACK" );
+    MarkerDefine ( wxSTC_MARKNUM_FOLDERSUB, wxSTC_MARK_VLINE, "WHITE", "BLACK" );
+    MarkerDefine ( wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_BOXPLUSCONNECTED, "WHITE", "BLACK" );
+    MarkerDefine ( wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUSCONNECTED, "WHITE", "WHITE" );
+    MarkerDefine ( wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_TCORNER, "WHITE", "BLACK" );
+    MarkerDefine ( wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_LCORNER, "WHITE", "BLACK" );
+    SetFoldFlags ( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED |
+        wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
+    StyleSetForeground ( wxSTC_STYLE_INDENTGUIDE, wxColour ( "DARK GREY" ) );
     // set spaces and indention
-    SetTabWidth(4);
-    SetUseTabs(false);
-    SetTabIndents(true);
-    SetBackSpaceUnIndents(true);
+    SetTabWidth ( 4 );
+    SetUseTabs ( false );
+    SetTabIndents ( true );
+    SetBackSpaceUnIndents ( true );
     //Set Lua styles
-
-    StyleSetFont(wxSTC_LUA_DEFAULT, m_font); //TODO;
-    StyleSetForeground(wxSTC_LUA_DEFAULT, *wxBLACK);
-    StyleSetBackground (wxSTC_LUA_DEFAULT, *wxWHITE);
-    StyleSetForeground(wxSTC_LUA_COMMENTLINE, wxColour("FOREST GREEN"));
-    StyleSetForeground(wxSTC_LUA_COMMENT, wxColour("FOREST GREEN"));
-    StyleSetForeground(wxSTC_LUA_COMMENTDOC, wxColour("FOREST GREEN"));
-    StyleSetForeground(wxSTC_LUA_PREPROCESSOR, wxColour("BLUE"));
+    StyleSetFont ( wxSTC_LUA_DEFAULT, m_font ); //TODO;
+    StyleSetForeground ( wxSTC_LUA_DEFAULT, *wxBLACK );
+    StyleSetBackground ( wxSTC_LUA_DEFAULT, *wxWHITE );
+    StyleSetForeground ( wxSTC_LUA_COMMENTLINE, wxColour ( "FOREST GREEN" ) );
+    StyleSetForeground ( wxSTC_LUA_COMMENT, wxColour ( "FOREST GREEN" ) );
+    StyleSetForeground ( wxSTC_LUA_COMMENTDOC, wxColour ( "FOREST GREEN" ) );
+    StyleSetForeground ( wxSTC_LUA_PREPROCESSOR, wxColour ( "BLUE" ) );
     //StyleSetFont(wxSTC_LUA_WORD, bfont);
-    StyleSetBold(wxSTC_LUA_WORD, true);
-    StyleSetForeground(wxSTC_LUA_WORD, wxColour("BLUE"));
-    StyleSetFont(wxSTC_LUA_WORD2, m_font);
-    StyleSetForeground(wxSTC_LUA_WORD2, wxColour("BLUE"));
-    StyleSetForeground(wxSTC_LUA_WORD3, wxColour("MEDIUM BLUE"));
+    StyleSetBold ( wxSTC_LUA_WORD, true );
+    StyleSetForeground ( wxSTC_LUA_WORD, wxColour ( "BLUE" ) );
+    StyleSetFont ( wxSTC_LUA_WORD2, m_font );
+    StyleSetForeground ( wxSTC_LUA_WORD2, wxColour ( "BLUE" ) );
+    StyleSetForeground ( wxSTC_LUA_WORD3, wxColour ( "MEDIUM BLUE" ) );
     //StyleSetFont(wxSTC_LUA_WORD3, bfont);
-    StyleSetBold(wxSTC_LUA_WORD3, true);
-    StyleSetFont(wxSTC_LUA_STRING, m_font);
-    StyleSetForeground(wxSTC_LUA_STRING, wxColour("RED"));
-    StyleSetFont(wxSTC_LUA_CHARACTER, m_font);
-    StyleSetForeground(wxSTC_LUA_CHARACTER, wxColour("RED"));
-    StyleSetFont(wxSTC_LUA_LITERALSTRING, m_font);
-    StyleSetForeground(wxSTC_LUA_LITERALSTRING, wxColour("ORANGE RED"));
-    StyleSetFont(wxSTC_LUA_NUMBER, m_font);
-    StyleSetForeground(wxSTC_LUA_NUMBER, wxColour("SIENNA"));
-    StyleSetFont(wxSTC_LUA_STRINGEOL, m_font);
-    StyleSetForeground(wxSTC_LUA_STRINGEOL, wxColour("SIENNA"));
-    StyleSetFont(wxSTC_LUA_OPERATOR, m_font);
-    StyleSetForeground(wxSTC_LUA_OPERATOR, wxColour("DARK ORCHID"));
-    StyleSetFont(wxSTC_LUA_IDENTIFIER, m_font);
-    StyleSetForeground(wxSTC_LUA_IDENTIFIER, wxColour("DARK ORCHID"));
-    SetViewWhiteSpace(false);
-    SetCurrentPos(0);
+    StyleSetBold ( wxSTC_LUA_WORD3, true );
+    StyleSetFont ( wxSTC_LUA_STRING, m_font );
+    StyleSetForeground ( wxSTC_LUA_STRING, wxColour ( "RED" ) );
+    StyleSetFont ( wxSTC_LUA_CHARACTER, m_font );
+    StyleSetForeground ( wxSTC_LUA_CHARACTER, wxColour ( "RED" ) );
+    StyleSetFont ( wxSTC_LUA_LITERALSTRING, m_font );
+    StyleSetForeground ( wxSTC_LUA_LITERALSTRING, wxColour ( "ORANGE RED" ) );
+    StyleSetFont ( wxSTC_LUA_NUMBER, m_font );
+    StyleSetForeground ( wxSTC_LUA_NUMBER, wxColour ( "SIENNA" ) );
+    StyleSetFont ( wxSTC_LUA_STRINGEOL, m_font );
+    StyleSetForeground ( wxSTC_LUA_STRINGEOL, wxColour ( "SIENNA" ) );
+    StyleSetFont ( wxSTC_LUA_OPERATOR, m_font );
+    StyleSetForeground ( wxSTC_LUA_OPERATOR, wxColour ( "DARK ORCHID" ) );
+    StyleSetFont ( wxSTC_LUA_IDENTIFIER, m_font );
+    StyleSetForeground ( wxSTC_LUA_IDENTIFIER, wxColour ( "DARK ORCHID" ) );
+    SetViewWhiteSpace ( false );
+    SetCurrentPos ( 0 );
 }
 
 void MinimalEditor::SetLexerHtml()
 {
     static const wxString templatewords = "TMPL_VAR TMPL_LOOP TMPL_IF __FIRST__ __LAST_ __COUNT__ __COUNTER__ __TOTAL__ __ODD__ __EVEN__ __INNER__ ";
-    SetLexer(wxSTC_LEX_HTML);
-    SetKeyWords(0, templatewords);
-    SetMarginWidth(margin_id_lineno, 32);
-    StyleSetForeground(wxSTC_STYLE_LINENUMBER, wxColour(75, 75, 75));
-    StyleSetBackground(wxSTC_STYLE_LINENUMBER, wxColour(220, 220, 220));
-    SetWrapMode(wxSTC_WRAP_WORD);
+    SetLexer ( wxSTC_LEX_HTML );
+    SetKeyWords ( 0, templatewords );
+    SetMarginWidth ( margin_id_lineno, 32 );
+    StyleSetForeground ( wxSTC_STYLE_LINENUMBER, wxColour ( 75, 75, 75 ) );
+    StyleSetBackground ( wxSTC_STYLE_LINENUMBER, wxColour ( 220, 220, 220 ) );
+    SetWrapMode ( wxSTC_WRAP_WORD );
     StyleClearAll();
-    StyleSetForeground(wxSTC_H_DOUBLESTRING, *wxRED);
-    StyleSetForeground(wxSTC_H_SINGLESTRING, *wxRED);
-    StyleSetForeground(wxSTC_H_ENTITY, *wxRED);
-    StyleSetForeground(wxSTC_H_TAG, wxColour(0, 150, 0));
-    StyleSetForeground(wxSTC_H_TAGUNKNOWN, wxColour(0, 150, 0));
-    StyleSetForeground(wxSTC_H_ATTRIBUTE, wxColour(0, 0, 150));
-    StyleSetForeground(wxSTC_H_ATTRIBUTEUNKNOWN, wxColour(0, 0, 150));
-    StyleSetForeground(wxSTC_H_COMMENT, wxColour(150, 150, 150));
+    StyleSetForeground ( wxSTC_H_DOUBLESTRING, *wxRED );
+    StyleSetForeground ( wxSTC_H_SINGLESTRING, *wxRED );
+    StyleSetForeground ( wxSTC_H_ENTITY, *wxRED );
+    StyleSetForeground ( wxSTC_H_TAG, wxColour ( 0, 150, 0 ) );
+    StyleSetForeground ( wxSTC_H_TAGUNKNOWN, wxColour ( 0, 150, 0 ) );
+    StyleSetForeground ( wxSTC_H_ATTRIBUTE, wxColour ( 0, 0, 150 ) );
+    StyleSetForeground ( wxSTC_H_ATTRIBUTEUNKNOWN, wxColour ( 0, 0, 150 ) );
+    StyleSetForeground ( wxSTC_H_COMMENT, wxColour ( 150, 150, 150 ) );
 }
 
-void MinimalEditor::OnMarginClick(wxStyledTextEvent &event)
+void MinimalEditor::OnMarginClick ( wxStyledTextEvent &event )
 {
-    if (event.GetMargin() == margin_id_fold)
+    if ( event.GetMargin() == margin_id_fold )
     {
-        const int lineClick = LineFromPosition( event.GetPosition( ) );
-        const int levelClick = GetFoldLevel( lineClick );
-        if ((levelClick & wxSTC_FOLDLEVELHEADERFLAG) > 0)
+        const int lineClick = LineFromPosition ( event.GetPosition( ) );
+        const int levelClick = GetFoldLevel ( lineClick );
+
+        if ( ( levelClick & wxSTC_FOLDLEVELHEADERFLAG ) > 0 )
         {
-            ToggleFold(lineClick);
+            ToggleFold ( lineClick );
         }
     }
 }
 
-void MinimalEditor::OnText(wxStyledTextEvent &event)
+void MinimalEditor::OnText ( wxStyledTextEvent &event )
 {
     event.Skip();
 }

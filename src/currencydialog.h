@@ -35,13 +35,13 @@ enum
 
 class mmCurrencyDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmCurrencyDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmCurrencyDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmCurrencyDialog();
     ~mmCurrencyDialog();
-    mmCurrencyDialog(wxWindow *parent, const Model_Currency::Data *currency);
+    mmCurrencyDialog ( wxWindow *parent, const Model_Currency::Data *currency );
 
     int getCurrencyID()
     {
@@ -49,18 +49,18 @@ public:
     };
 
 private:
-    bool Create(wxWindow *parent, wxWindowID id,
-                const wxString &caption,
-                const wxPoint &pos,
-                const wxSize &size,
-                long style);
+    bool Create ( wxWindow *parent, wxWindowID id,
+                  const wxString &caption,
+                  const wxPoint &pos,
+                  const wxSize &size,
+                  long style );
 
     void CreateControls();
     void fillControls();
 
-    void OnOk(wxCommandEvent &event);
-    void OnCancel(wxCommandEvent &event);
-    void OnTextChanged(wxCommandEvent &event);
+    void OnOk ( wxCommandEvent &event );
+    void OnCancel ( wxCommandEvent &event );
+    void OnTextChanged ( wxCommandEvent &event );
 
     Model_Currency::Data *m_currency=nullptr;
     int m_scale = 9;

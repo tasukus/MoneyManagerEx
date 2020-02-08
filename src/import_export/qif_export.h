@@ -25,35 +25,35 @@ class wxDatePickerCtrl;
 
 class mmQIFExportDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmQIFExportDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmQIFExportDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmQIFExportDialog() {}
     //virtual ~mmQIFExportDialog() {}
 
-    mmQIFExportDialog(wxWindow *parent /*, int gotoAccountID*/);
+    mmQIFExportDialog ( wxWindow *parent /*, int gotoAccountID*/ );
 
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
 
 private:
     void mmExportQIF();
-    void OnAccountsButton(wxCommandEvent &WXUNUSED(event));
-    void OnCheckboxClick(wxCommandEvent &WXUNUSED(event));
-    void OnFileNameEntered(wxCommandEvent &event);
-    void OnFileNameChanged(wxCommandEvent &event);
-    void OnFileSearch(wxCommandEvent &event);
-    void OnButtonClear(wxCommandEvent &WXUNUSED(event));
+    void OnAccountsButton ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnCheckboxClick ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnFileNameEntered ( wxCommandEvent &event );
+    void OnFileNameChanged ( wxCommandEvent &event );
+    void OnFileSearch ( wxCommandEvent &event );
+    void OnButtonClear ( wxCommandEvent &WXUNUSED ( event ) );
     void CreateControls();
     void fillControls();
-    void OnQuit(wxCloseEvent &event);
-    void OnCancel(wxCommandEvent &event);
-    void OnOk(wxCommandEvent &WXUNUSED(event));
+    void OnQuit ( wxCloseEvent &event );
+    void OnCancel ( wxCommandEvent &event );
+    void OnOk ( wxCommandEvent &WXUNUSED ( event ) );
 
     wxCheckBox *cCategs_;
     wxCheckBox *accountsCheckBox_;

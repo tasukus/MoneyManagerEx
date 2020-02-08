@@ -31,8 +31,8 @@ class wxChoice;
 class mmChoiceAmountMask : public wxChoice
 {
 public:
-    mmChoiceAmountMask(wxWindow *parent, wxWindowID id);
-    virtual void SetDecimalChar(const wxString &str);
+    mmChoiceAmountMask ( wxWindow *parent, wxWindowID id );
+    virtual void SetDecimalChar ( const wxString &str );
 };
 
 class mmSingleChoiceDialog : public wxSingleChoiceDialog
@@ -41,10 +41,10 @@ public:
     using wxSingleChoiceDialog::ShowModal;
 
     mmSingleChoiceDialog();
-    mmSingleChoiceDialog(wxWindow *parent, const wxString &message,
-                         const wxString &caption, const wxArrayString &choices);
-    mmSingleChoiceDialog(wxWindow *parent, const wxString &message,
-                         const wxString &caption, const Model_Account::Data_Set &accounts);
+    mmSingleChoiceDialog ( wxWindow *parent, const wxString &message,
+                           const wxString &caption, const wxArrayString &choices );
+    mmSingleChoiceDialog ( wxWindow *parent, const wxString &message,
+                           const wxString &caption, const Model_Account::Data_Set &accounts );
     int ShowModal()
     {
         return wxSingleChoiceDialog::ShowModal();
@@ -57,8 +57,8 @@ public:
     using wxMultiChoiceDialog::ShowModal;
 
     mmMultiChoiceDialog();
-    mmMultiChoiceDialog(wxWindow *parent, const wxString &message,
-                        const wxString &caption, const Model_Account::Data_Set &accounts);
+    mmMultiChoiceDialog ( wxWindow *parent, const wxString &message,
+                          const wxString &caption, const Model_Account::Data_Set &accounts );
     int ShowModal()
     {
         return wxMultiChoiceDialog::ShowModal();
@@ -69,14 +69,14 @@ class mmDialogComboBoxAutocomplete : public wxDialog
 {
 public:
     mmDialogComboBoxAutocomplete();
-    mmDialogComboBoxAutocomplete(wxWindow *parent, const wxString &message, const wxString &caption,
-                                 const wxString &defaultText, const wxArrayString &choices);
+    mmDialogComboBoxAutocomplete ( wxWindow *parent, const wxString &message, const wxString &caption,
+                                   const wxString &defaultText, const wxArrayString &choices );
 
     wxString getText();
 
 private:
-    bool Create(wxWindow *parent, wxWindowID id,
-                const wxString &caption, const wxPoint &pos, const wxSize &size, long style);
+    bool Create ( wxWindow *parent, wxWindowID id,
+                  const wxString &caption, const wxPoint &pos, const wxSize &size, long style );
     wxString Message, Default;
     wxArrayString Choices;
     wxComboBox *cbText_ = nullptr;
@@ -91,17 +91,17 @@ public:
         MESSAGE_POPUP_BOX,
     };
 
-    static void MessageInvalid(wxWindow *parent, const wxString &message);
-    static void MessageError(wxWindow *parent, const wxString &message, const wxString &title);
-    static void MessageWarning(wxWindow *parent, const wxString &message, const wxString &title);
-    static void InvalidCategory(wxWindow *button, bool simple = true);
-    static void InvalidAccount(wxWindow *object, bool transfer = false, TOOL_TIP tm = MESSAGE_DROPDOWN_BOX);
-    static void InvalidFile(wxWindow *object, bool open = false);
-    static void InvalidPayee(wxWindow *object, TOOL_TIP tm = MESSAGE_DROPDOWN_BOX);
-    static void InvalidName(wxTextCtrl *textBox, bool alreadyexist = false);
-    static void InvalidSymbol(wxTextCtrl *textBox, bool alreadyexist = false);
-    static void ToolTip4Object(wxWindow *object, const wxString &message, const wxString &title, int ico = wxICON_WARNING);
-    static void InvalidAmount(wxWindow *object);
-    static void InvalidChoice(wxChoice *choice);
+    static void MessageInvalid ( wxWindow *parent, const wxString &message );
+    static void MessageError ( wxWindow *parent, const wxString &message, const wxString &title );
+    static void MessageWarning ( wxWindow *parent, const wxString &message, const wxString &title );
+    static void InvalidCategory ( wxWindow *button, bool simple = true );
+    static void InvalidAccount ( wxWindow *object, bool transfer = false, TOOL_TIP tm = MESSAGE_DROPDOWN_BOX );
+    static void InvalidFile ( wxWindow *object, bool open = false );
+    static void InvalidPayee ( wxWindow *object, TOOL_TIP tm = MESSAGE_DROPDOWN_BOX );
+    static void InvalidName ( wxTextCtrl *textBox, bool alreadyexist = false );
+    static void InvalidSymbol ( wxTextCtrl *textBox, bool alreadyexist = false );
+    static void ToolTip4Object ( wxWindow *object, const wxString &message, const wxString &title, int ico = wxICON_WARNING );
+    static void InvalidAmount ( wxWindow *object );
+    static void InvalidChoice ( wxChoice *choice );
 };
 #endif // MM_EX_MMSIMPLEDIALOGS_H_

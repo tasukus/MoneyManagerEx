@@ -33,7 +33,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //----------------------------------------------------------------------------
 
 mmReportCategoryOverTimePerformance::mmReportCategoryOverTimePerformance()
-    : mmPrintableBase(_("Category Income/Expenses"))
+    : mmPrintableBase ( _( "Category Income/Expenses" ) )
 {
     m_date_range = new mmLast12Months();
 }
@@ -51,7 +51,7 @@ int mmReportCategoryOverTimePerformance::report_parameters()
 wxString mmReportCategoryOverTimePerformance::getHTMLText()
 {
     const int MONTHS_IN_PERIOD = 12; // including current month
-    if (m_date_range)
+    if ( m_date_range )
     {
         delete m_date_range;
     }
@@ -59,10 +59,10 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
 
     //Get statistic
     std::map<int, std::map<int, std::map<int, double> > > categoryStats;
-    Model_Category::instance().getCategoryStats(categoryStats
+    Model_Category::instance().getCategoryStats ( categoryStats
             , accountArray_
-            , const_cast<mmDateRange *>(m_date_range)
-            , Option::instance().getIgnoreFutureTransactions());
+            , const_cast<mmDateRange *> ( m_date_range )
+            , Option::instance().getIgnoreFutureTransactions() );
 
     //Init totals
     //Type(Withdrawal/Income/Summ), month, value
@@ -76,13 +76,13 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
         double overall;
     } line;
     std::vector<data_holder> data;
-    for (const auto &category: Model_Category::instance().all(Model_Category::COL_CATEGNAME))
+    for ( const auto &category: Model_Category::instance().all ( Model_Category::COL_CATEGNAME ) )
     {
         const int categID = category.CATEGID;
         line.name = category.CATEGNAME;
         line.overall = 0;
         unsigned month = 0;
-        for (const auto &i : categoryStats[categID][-1])
+        for ( const auto &i : categoryStats[categID][-1] )
         {
             double value = i.second;
             line.period[month++] = value;
@@ -91,15 +91,15 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
             totals[value>=0][i.first] += 0;
             totals[TOTAL][i.first] += value;
         }
-        data.push_back(line);
+        data.push_back ( line );
 
-        for (const auto &sub_category: Model_Category::sub_category(category))
+        for ( const auto &sub_category: Model_Category::sub_category ( category ) )
         {
             const int subcategID = sub_category.SUBCATEGID;
             line.name = category.CATEGNAME + " : " + sub_category.SUBCATEGNAME;
             line.overall = 0;
             month = 0;
-            for (const auto &i : categoryStats[categID][subcategID])
+            for ( const auto &i : categoryStats[categID][subcategID] )
             {
                 double value = i.second;
                 line.period[month++] = value;
@@ -108,15 +108,15 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
                 totals[value >= 0][i.first] += 0;
                 totals[TOTAL][i.first] += value;
             }
-            data.push_back(line);
+            data.push_back ( line );
         }
     }
 
     mmHTMLBuilder hb;
     hb.init();
     hb.addDivContainer();
-    hb.addHeader(2, getReportTitle());
-    hb.addHeader(3, getAccountNames());
+    hb.addHeader ( 2, getReportTitle() );
+    hb.addHeader ( 3, getAccountNames() );
     hb.addDateNow();
     hb.addLineBreak();
 
@@ -124,20 +124,20 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
 
     //Chart
     wxArrayString labels;
-    if (getChartSelection() == 0)
+    if ( getChartSelection() == 0 )
     {
         std::vector<BarGraphData> aData;
         BarGraphData data_negative;
         BarGraphData data_positive;
-        for (int i = 0; i < MONTHS_IN_PERIOD; i++)
+        for ( int i = 0; i < MONTHS_IN_PERIOD; i++ )
         {
-            const wxDateTime d = start_date.Add(wxDateSpan::Months(i));
+            const wxDateTime d = start_date.Add ( wxDateSpan::Months ( i ) );
 
             double val_negative = 0;
             double val_positive = 0;
-            for (const auto &entry : data)
+            for ( const auto &entry : data )
             {
-                if (entry.period[i] < 0)
+                if ( entry.period[i] < 0 )
                 {
                     val_negative += -entry.period[i];
                 }
@@ -147,25 +147,25 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
                 }
             }
 
-            data_negative.data.push_back(val_negative);
-            data_positive.data.push_back(val_positive);
+            data_negative.data.push_back ( val_negative );
+            data_positive.data.push_back ( val_positive );
 
-            data_negative.title = _("Expenses");
-            data_positive.title = _("Income");
+            data_negative.title = _( "Expenses" );
+            data_positive.title = _( "Income" );
 
             data_negative.fillColor = "rgba(220,66,66,0.5)";
             data_positive.fillColor = "rgba(151,187,205,0.5)";
-            const auto mon = wxGetTranslation(wxDateTime::GetEnglishMonthName(d.GetMonth()));
-            labels.Add(mon);
+            const auto mon = wxGetTranslation ( wxDateTime::GetEnglishMonthName ( d.GetMonth() ) );
+            labels.Add ( mon );
         }
-        aData.push_back(data_positive);
-        aData.push_back(data_negative);
+        aData.push_back ( data_positive );
+        aData.push_back ( data_negative );
 
-        if (!aData.empty())
+        if ( !aData.empty() )
         {
             hb.addDivRow();
             hb.addDivCol17_67();
-            hb.addBarChart(labels, aData, "BarChart", 1000, 400);
+            hb.addBarChart ( labels, aData, "BarChart", 1000, 400 );
             hb.endDiv();
             hb.endDiv();
         }
@@ -176,31 +176,31 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
     //Add header
     hb.startThead();
     hb.startTableRow();
-    hb.addTableHeaderCell(_("Category"));
+    hb.addTableHeaderCell ( _( "Category" ) );
 
-    for (int i = 0; i < MONTHS_IN_PERIOD; i++)
+    for ( int i = 0; i < MONTHS_IN_PERIOD; i++ )
     {
-        const wxDateTime d = start_date.Add(wxDateSpan::Months(i));
-        hb.addTableHeaderCell(wxGetTranslation(wxDateTime::GetEnglishMonthName(d.GetMonth()
-                                               , wxDateTime::Name_Abbr)) + wxString::Format("<br>%i", d.GetYear()), true);
+        const wxDateTime d = start_date.Add ( wxDateSpan::Months ( i ) );
+        hb.addTableHeaderCell ( wxGetTranslation ( wxDateTime::GetEnglishMonthName ( d.GetMonth()
+                                , wxDateTime::Name_Abbr ) ) + wxString::Format ( "<br>%i", d.GetYear() ), true );
     }
-    hb.addTableHeaderCell(_("Overall"), true);
+    hb.addTableHeaderCell ( _( "Overall" ), true );
     hb.endTableRow();
     hb.endThead();
 
     hb.startTbody();
     //Begin of table
-    for (const auto &entry : data)
+    for ( const auto &entry : data )
     {
-        if (entry.overall != 0.0)
+        if ( entry.overall != 0.0 )
         {
             hb.startTableRow();
-            hb.addTableCell(entry.name);
-            for (int i = 0; i < MONTHS_IN_PERIOD; i++)
+            hb.addTableCell ( entry.name );
+            for ( int i = 0; i < MONTHS_IN_PERIOD; i++ )
             {
-                hb.addMoneyCell(entry.period[i]);
+                hb.addMoneyCell ( entry.period[i] );
             }
-            hb.addMoneyCell(entry.overall);
+            hb.addMoneyCell ( entry.overall );
             hb.endTableRow();
         }
     }
@@ -209,21 +209,21 @@ wxString mmReportCategoryOverTimePerformance::getHTMLText()
     //Totals
     hb.startTfoot();
     std::map<int, wxString> totalLabels;
-    totalLabels[INCOME] = _("Incomes");
-    totalLabels[EXPENSES] = _("Expenses");
-    totalLabels[TOTAL] = _("Total");
-    for (const auto &print_totals : totals)
+    totalLabels[INCOME] = _( "Incomes" );
+    totalLabels[EXPENSES] = _( "Expenses" );
+    totalLabels[TOTAL] = _( "Total" );
+    for ( const auto &print_totals : totals )
     {
         hb.startTotalTableRow();
-        hb.addTableCell(totalLabels[print_totals.first]);
+        hb.addTableCell ( totalLabels[print_totals.first] );
         double overall = 0;
-        for (const auto &range : totals[print_totals.first])
+        for ( const auto &range : totals[print_totals.first] )
         {
             const double amount = range.second;
             overall += amount;
-            hb.addMoneyCell(amount);
+            hb.addMoneyCell ( amount );
         }
-        hb.addMoneyCell(overall);
+        hb.addMoneyCell ( overall );
         hb.endTableRow();
     }
     hb.endTfoot();

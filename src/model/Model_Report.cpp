@@ -40,17 +40,17 @@ public:
     Record() {}
     ~Record() {}
     /* Access functions for LuaGlue (The required conversion between char and wchar_t is done through wxString.) */
-    std::string get(const char *index)
+    std::string get ( const char *index )
     {
-        return std::string(wxString((*this)[wxString(index).ToStdWstring()]).ToUTF8());
+        return std::string ( wxString ( ( *this ) [wxString ( index ).ToStdWstring()] ).ToUTF8() );
     }
-    void set(const char *index, const char *val)
+    void set ( const char *index, const char *val )
     {
-        (*this)[wxString(index).ToStdWstring()] = wxString::FromUTF8(val).ToStdWstring();
+        ( *this ) [wxString ( index ).ToStdWstring()] = wxString::FromUTF8 ( val ).ToStdWstring();
     }
 };
 
-Model_Report::Model_Report(): Model<DB_Table_REPORT>()
+Model_Report::Model_Report() : Model<DB_Table_REPORT>()
 {
 }
 
@@ -68,12 +68,12 @@ Model_Report &Model_Report::instance()
 * Initialize the global Model_Report table.
 * Reset the Model_Report table or create the table if it does not exist.
 */
-Model_Report &Model_Report::instance(wxSQLite3Database *db)
+Model_Report &Model_Report::instance ( wxSQLite3Database *db )
 {
     Model_Report &ins = Singleton<Model_Report>::instance();
     ins.db_ = db;
     ins.destroy_cache();
-    ins.ensure(db);
+    ins.ensure ( db );
 
     return ins;
 }
@@ -81,9 +81,9 @@ Model_Report &Model_Report::instance(wxSQLite3Database *db)
 const std::vector<Model_Report::Values> Model_Report::SqlPlaceHolders()
 {
     const wxString def_date = wxDateTime::Today().FormatISODate();
-    const wxString def_year = wxString::Format("%d", wxDateTime::Today().GetYear());
-    const wxString def_day = Model_Infotable::instance().GetStringInfo("FINANCIAL_YEAR_START_DAY", "1");
-    const wxString def_mon = Model_Infotable::instance().GetStringInfo("FINANCIAL_YEAR_START_MONTH", "1");
+    const wxString def_year = wxString::Format ( "%d", wxDateTime::Today().GetYear() );
+    const wxString def_day = Model_Infotable::instance().GetStringInfo ( "FINANCIAL_YEAR_START_DAY", "1" );
+    const wxString def_mon = Model_Infotable::instance().GetStringInfo ( "FINANCIAL_YEAR_START_MONTH", "1" );
 
     const std::vector<Model_Report::Values> v =
     {
@@ -97,54 +97,54 @@ const std::vector<Model_Report::Values> Model_Report::SqlPlaceHolders()
     return v;
 };
 
-bool Model_Report::get_objects_from_sql(const wxString &query, PrettyWriter<StringBuffer> &json_writer)
+bool Model_Report::get_objects_from_sql ( const wxString &query, PrettyWriter<StringBuffer> &json_writer )
 {
     wxSQLite3Statement stmt;
     try
     {
-        stmt = this->db_->PrepareStatement(query);
-        if (!stmt.IsReadOnly())
+        stmt = this->db_->PrepareStatement ( query );
+        if ( !stmt.IsReadOnly() )
         {
-            json_writer.Key("msg");
-            json_writer.String("the sql is not readonly");
+            json_writer.Key ( "msg" );
+            json_writer.String ( "the sql is not readonly" );
             return false;
         }
     }
-    catch (const wxSQLite3Exception &e)
+    catch ( const wxSQLite3Exception &e )
     {
-        json_writer.Key("msg");
-        json_writer.String(e.GetMessage().c_str());
+        json_writer.Key ( "msg" );
+        json_writer.String ( e.GetMessage().c_str() );
         return false;
     }
 
     try
     {
-        json_writer.Key("results");
+        json_writer.Key ( "results" );
         json_writer.StartArray();
 
         wxSQLite3ResultSet q = stmt.ExecuteQuery();
         int columns = q.GetColumnCount();
-        while (q.NextRow())
+        while ( q.NextRow() )
         {
             json_writer.StartObject();
 
-            for (int i = 0; i < columns; ++i)
+            for ( int i = 0; i < columns; ++i )
             {
-                wxString column_name = q.GetColumnName(i);
+                wxString column_name = q.GetColumnName ( i );
 
-                switch (q.GetColumnType(i))
+                switch ( q.GetColumnType ( i ) )
                 {
                     case WXSQLITE_INTEGER:
-                        json_writer.Key(column_name.c_str());
-                        json_writer.Int(q.GetInt(i));
+                        json_writer.Key ( column_name.c_str() );
+                        json_writer.Int ( q.GetInt ( i ) );
                         break;
                     case WXSQLITE_FLOAT:
-                        json_writer.Key(column_name.c_str());
-                        json_writer.Double(q.GetDouble(i));
+                        json_writer.Key ( column_name.c_str() );
+                        json_writer.Double ( q.GetDouble ( i ) );
                         break;
                     default:
-                        json_writer.Key(column_name.c_str());
-                        json_writer.String(q.GetString(i).c_str());
+                        json_writer.Key ( column_name.c_str() );
+                        json_writer.String ( q.GetString ( i ).c_str() );
                         break;
                 }
             }
@@ -155,10 +155,10 @@ bool Model_Report::get_objects_from_sql(const wxString &query, PrettyWriter<Stri
 
         json_writer.EndArray();
     }
-    catch (const wxSQLite3Exception &e)
+    catch ( const wxSQLite3Exception &e )
     {
-        json_writer.Key("msg");
-        json_writer.String(e.GetMessage().c_str());
+        json_writer.Key ( "msg" );
+        json_writer.String ( e.GetMessage().c_str() );
         return false;
     }
 
@@ -169,58 +169,58 @@ wxArrayString Model_Report::allGroupNames()
 {
     wxArrayString groups;
     wxString PreviousGroup;
-    for (const auto &report : this->all(COL_GROUPNAME))
+    for ( const auto &report : this->all ( COL_GROUPNAME ) )
     {
-        if (report.GROUPNAME != PreviousGroup)
+        if ( report.GROUPNAME != PreviousGroup )
         {
-            groups.Add(report.GROUPNAME);
+            groups.Add ( report.GROUPNAME );
             PreviousGroup = report.GROUPNAME;
         }
     }
     return groups;
 }
 
-bool Model_Report::PrepareSQL(wxString &sql, std::map <wxString, wxString> &rep_params)
+bool Model_Report::PrepareSQL ( wxString &sql, std::map <wxString, wxString> &rep_params )
 {
     sql.Trim();
-    if (sql.empty())
+    if ( sql.empty() )
     {
         return false;
     }
-    if (sql.Last() != ';')
+    if ( sql.Last() != ';' )
     {
         sql += ';';
     }
 
-    for (const auto &entry : SqlPlaceHolders())
+    for ( const auto &entry : SqlPlaceHolders() )
     {
         wxString value;
-        int pos = sql.Lower().Find(entry.label);
-        size_t len = wxString(entry.label).size();
+        int pos = sql.Lower().Find ( entry.label );
+        size_t len = wxString ( entry.label ).size();
 
-        if (pos != wxNOT_FOUND)
+        if ( pos != wxNOT_FOUND )
         {
             value = entry.def_value;
 
-            const auto w = wxWindow::FindWindowById(entry.ID);
+            const auto w = wxWindow::FindWindowById ( entry.ID );
             //const auto name = w->GetClassInfo()->GetClassName();
-            if (w && entry.type == "wxDatePickerCtrl")
+            if ( w && entry.type == "wxDatePickerCtrl" )
             {
-                wxDatePickerCtrl *date = static_cast<wxDatePickerCtrl *>(w);
+                wxDatePickerCtrl *date = static_cast<wxDatePickerCtrl *> ( w );
                 value = date->GetValue().FormatISODate();
             }
-            else if (w && entry.type == "wxChoice")
+            else if ( w && entry.type == "wxChoice" )
             {
-                wxChoice *year = static_cast<wxChoice *>(w);
+                wxChoice *year = static_cast<wxChoice *> ( w );
                 value = year->GetStringSelection();
             }
 
-            rep_params[entry.label.Mid(1)] = value;
+            rep_params[entry.label.Mid ( 1 )] = value;
 
-            while (pos != wxNOT_FOUND)
+            while ( pos != wxNOT_FOUND )
             {
-                sql.replace(pos, len, value);
-                pos = sql.Lower().Find(entry.label);
+                sql.replace ( pos, len, value );
+                pos = sql.Lower().Find ( entry.label );
             }
         }
     }
@@ -228,10 +228,10 @@ bool Model_Report::PrepareSQL(wxString &sql, std::map <wxString, wxString> &rep_
     return true;
 }
 
-wxString Model_Report::get_html(const Data *r)
+wxString Model_Report::get_html ( const Data *r )
 {
-    mm_html_template report(r->TEMPLATECONTENT);
-    r->to_template(report);
+    mm_html_template report ( r->TEMPLATECONTENT );
+    r->to_template ( report );
 
     loop_t contents;
 
@@ -244,12 +244,12 @@ wxString Model_Report::get_html(const Data *r)
     std::map <wxString, wxString> rep_params;
     try
     {
-        PrepareSQL(sql, rep_params);
+        PrepareSQL ( sql, rep_params );
 
-        wxSQLite3Statement stmt = this->db_->PrepareStatement(sql);
-        if (!stmt.IsReadOnly())
+        wxSQLite3Statement stmt = this->db_->PrepareStatement ( sql );
+        if ( !stmt.IsReadOnly() )
         {
-            return wxString::Format(_("The SQL script:\n%s \nwill modify database! aborted!"), r->SQLCONTENT);
+            return wxString::Format ( _( "The SQL script:\n%s \nwill modify database! aborted!" ), r->SQLCONTENT );
         }
         else
         {
@@ -257,7 +257,7 @@ wxString Model_Report::get_html(const Data *r)
             columnCount = q.GetColumnCount();
         }
     }
-    catch (const wxSQLite3Exception &e)
+    catch ( const wxSQLite3Exception &e )
     {
         return e.GetMessage();
     }
@@ -265,68 +265,68 @@ wxString Model_Report::get_html(const Data *r)
     std::map <std::wstring, int> colHeaders;
 
     loop_t columns;
-    for (int i = 0; i < columnCount; ++i)
+    for ( int i = 0; i < columnCount; ++i )
     {
-        int col_type = q.GetColumnType(i);
-        const std::wstring col_name = q.GetColumnName(i).ToStdWstring();
+        int col_type = q.GetColumnType ( i );
+        const std::wstring col_name = q.GetColumnName ( i ).ToStdWstring();
         colHeaders[col_name] = col_type;
         row_t row;
-        row(L"COLUMN") = col_name;
+        row ( L"COLUMN" ) = col_name;
         columns += row;
     }
-    report(L"COLUMNS") = columns;
+    report ( L"COLUMNS" ) = columns;
 
     LuaGlue state;
     state.
-    Class<Record>("Record").
-    ctor("new").
-    method("get", &Record::get).
-    method("set", &Record::set).
+    Class<Record> ( "Record" ).
+    ctor ( "new" ).
+    method ( "get", &Record::get ).
+    method ( "set", &Record::set ).
     end().open().glue();
 
     bool skip_lua = r->LUACONTENT.IsEmpty();
-    bool lua_status = state.doString(std::string(r->LUACONTENT.ToUTF8()));
-    if (!skip_lua && !lua_status)
+    bool lua_status = state.doString ( std::string ( r->LUACONTENT.ToUTF8() ) );
+    if ( !skip_lua && !lua_status )
     {
-        error(L"ERROR") = wxString("failed to doString : ") + r->LUACONTENT + wxString(" err: ") + wxString(state.lastError());
+        error ( L"ERROR" ) = wxString ( "failed to doString : " ) + r->LUACONTENT + wxString ( " err: " ) + wxString ( state.lastError() );
         errors += error;
     }
 
-    while (q.NextRow())
+    while ( q.NextRow() )
     {
         Record rec;
-        for (int i = 0; i < columnCount; ++i)
+        for ( int i = 0; i < columnCount; ++i )
         {
-            const wxString column_name = q.GetColumnName(i);
-            rec[column_name.ToStdWstring()] = q.GetAsString(i);
+            const wxString column_name = q.GetColumnName ( i );
+            rec[column_name.ToStdWstring()] = q.GetAsString ( i );
         }
 
-        if (lua_status && !skip_lua)
+        if ( lua_status && !skip_lua )
         {
             try
             {
-                state.invokeVoidFunction("handle_record", &rec);
+                state.invokeVoidFunction ( "handle_record", &rec );
             }
-            catch (const std::runtime_error &e)
+            catch ( const std::runtime_error &e )
             {
-                error(L"ERROR") = wxString("failed to call handle_record : ") + wxString(e.what());
+                error ( L"ERROR" ) = wxString ( "failed to call handle_record : " ) + wxString ( e.what() );
                 errors += error;
             }
-            catch (const std::exception &e)
+            catch ( const std::exception &e )
             {
-                error(L"ERROR") = wxString("failed to call handle_record : ") + wxString(e.what());
+                error ( L"ERROR" ) = wxString ( "failed to call handle_record : " ) + wxString ( e.what() );
                 errors += error;
             }
-            catch (...)
+            catch ( ... )
             {
-                error(L"ERROR") = L"failed to call handle_record ";
+                error ( L"ERROR" ) = L"failed to call handle_record ";
                 errors += error;
             }
         }
         row_t row;
-        for (const auto &item : rec)
+        for ( const auto &item : rec )
         {
-            row(item.first) = item.second;
+            row ( item.first ) = item.second;
         }
         contents += row;
 
@@ -334,64 +334,64 @@ wxString Model_Report::get_html(const Data *r)
     q.Finalize();
 
     Record result;
-    if (lua_status && !skip_lua)
+    if ( lua_status && !skip_lua )
     {
         try
         {
-            state.invokeVoidFunction("complete", &result);
+            state.invokeVoidFunction ( "complete", &result );
         }
-        catch (const std::runtime_error &e)
+        catch ( const std::runtime_error &e )
         {
-            error(L"ERROR") = wxString("failed to call complete: ") + wxString(e.what());
+            error ( L"ERROR" ) = wxString ( "failed to call complete: " ) + wxString ( e.what() );
             errors += error;
         }
-        catch (const std::exception &e)
+        catch ( const std::exception &e )
         {
-            error(L"ERROR") = wxString("failed to call complete: ") + wxString(e.what());
+            error ( L"ERROR" ) = wxString ( "failed to call complete: " ) + wxString ( e.what() );
             errors += error;
         }
-        catch (...)
+        catch ( ... )
         {
-            error(L"ERROR") = L"failed to call complete";
+            error ( L"ERROR" ) = L"failed to call complete";
             errors += error;
         }
     }
 
-    for (const auto &item : result)
+    for ( const auto &item : result )
     {
-        report(item.first) = item.second;
+        report ( item.first ) = item.second;
     }
 
-    report(L"CONTENTS") = contents;
+    report ( L"CONTENTS" ) = contents;
     {
-        for (const auto &item : rep_params)
+        for ( const auto &item : rep_params )
         {
-            report(item.first.Upper().ToStdWstring()) = item.second;
+            report ( item.first.Upper().ToStdWstring() ) = item.second;
         }
-        auto p = mmex::getPathAttachment(mmAttachmentManage::InfotablePathSetting());
+        auto p = mmex::getPathAttachment ( mmAttachmentManage::InfotablePathSetting() );
         //javascript does not handle backslashs
-        p.Replace("\\", "\\\\");
-        report(L"ATTACHMENTSFOLDER") = p;
-        auto s = wxString(wxFileName::GetPathSeparator());
-        s.Replace("\\", "\\\\");
-        report(L"FILESEPARATOR") = s;
-        report(L"LANGUAGE") = Option::instance().getLanguageISO6391();
-        report(L"HTMLSCALE") = wxString::Format("%d", Option::instance().getHtmlFontSize());
+        p.Replace ( "\\", "\\\\" );
+        report ( L"ATTACHMENTSFOLDER" ) = p;
+        auto s = wxString ( wxFileName::GetPathSeparator() );
+        s.Replace ( "\\", "\\\\" );
+        report ( L"FILESEPARATOR" ) = s;
+        report ( L"LANGUAGE" ) = Option::instance().getLanguageISO6391();
+        report ( L"HTMLSCALE" ) = wxString::Format ( "%d", Option::instance().getHtmlFontSize() );
     }
-    report(L"ERRORS") = errors;
+    report ( L"ERRORS" ) = errors;
 
     wxString out = wxEmptyString;
     try
     {
         out = report.Process();
     }
-    catch (const syntax_ex &e)
+    catch ( const syntax_ex &e )
     {
         return e.what();
     }
-    catch (...)
+    catch ( ... )
     {
-        return _("Caught exception");
+        return _( "Caught exception" );
     }
 
     return out;
@@ -401,24 +401,24 @@ void Model_Report::prepareTempFolder()
 {
     const wxString resDir = mmex::GetResourceDir().GetPathWithSep();
     const wxString tempDir = mmex::getTempFolder();
-    wxFileName::Mkdir(tempDir, 511, wxPATH_MKDIR_FULL);
+    wxFileName::Mkdir ( tempDir, 511, wxPATH_MKDIR_FULL );
     wxArrayString filesArray;
-    wxDir::GetAllFiles(resDir, &filesArray);
-    for (const auto &sourceFile : filesArray)
+    wxDir::GetAllFiles ( resDir, &filesArray );
+    for ( const auto &sourceFile : filesArray )
     {
-        const wxString repFile = tempDir + wxFileName(sourceFile).GetFullName();
-        if (::wxFileExists(sourceFile))
+        const wxString repFile = tempDir + wxFileName ( sourceFile ).GetFullName();
+        if ( ::wxFileExists ( sourceFile ) )
         {
-            if (!::wxFileExists(repFile)
-                    || wxFileName(sourceFile).GetModificationTime() > wxFileName(repFile).GetModificationTime())
+            if ( !::wxFileExists ( repFile )
+                    || wxFileName ( sourceFile ).GetModificationTime() > wxFileName ( repFile ).GetModificationTime() )
             {
-                if (!::wxCopyFile(sourceFile, repFile))
+                if ( !::wxCopyFile ( sourceFile, repFile ) )
                 {
-                    wxLogError("Could not copy %s !", sourceFile);
+                    wxLogError ( "Could not copy %s !", sourceFile );
                 }
                 else
                 {
-                    wxLogDebug("Coping file:\n %s \nto\n %s", sourceFile, repFile);
+                    wxLogDebug ( "Coping file:\n %s \nto\n %s", sourceFile, repFile );
                 }
             }
         }
@@ -430,8 +430,8 @@ bool Model_Report::WindowsUpdateRegistry()
 #if defined (__WXMSW__)
     // https://msdn.microsoft.com/en-us/library/ee330730(v=vs.85).aspx
     // https://kevinragsdale.net/windows-10-and-the-web-browser-control/
-    wxRegKey Key(wxRegKey::HKCU, "Software\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION");
-    if (Key.Create(true) && Key.SetValue(wxFileName(wxStandardPaths::Get().GetExecutablePath()).GetFullName(), 11001))
+    wxRegKey Key ( wxRegKey::HKCU, "Software\\Microsoft\\Internet Explorer\\Main\\FeatureControl\\FEATURE_BROWSER_EMULATION" );
+    if ( Key.Create ( true ) && Key.SetValue ( wxFileName ( wxStandardPaths::Get().GetExecutablePath() ).GetFullName(), 11001 ) )
     {
         return true;
     }
@@ -444,13 +444,13 @@ bool Model_Report::WindowsUpdateRegistry()
 #endif
 }
 
-bool Model_Report::outputReportFile(const wxString &str, const wxString &name)
+bool Model_Report::outputReportFile ( const wxString &str, const wxString &name )
 {
     bool ok = true;
-    wxFileOutputStream index_output(mmex::getReportFullFileName(name));
-    if (index_output.IsOk())
+    wxFileOutputStream index_output ( mmex::getReportFullFileName ( name ) );
+    if ( index_output.IsOk() )
     {
-        wxTextOutputStream index_file(index_output);
+        wxTextOutputStream index_file ( index_output );
         index_file << str;
         index_output.Close();
     }
@@ -461,23 +461,23 @@ bool Model_Report::outputReportFile(const wxString &str, const wxString &name)
     return ok;
 }
 
-wxString Model_Report::get_html(const Data &r)
+wxString Model_Report::get_html ( const Data &r )
 {
-    return get_html(&r);
+    return get_html ( &r );
 }
 
-Model_Report::Data *Model_Report::get(const wxString &name)
+Model_Report::Data *Model_Report::get ( const wxString &name )
 {
-    Data *report = this->get_one(REPORTNAME(name));
-    if (report)
+    Data *report = this->get_one ( REPORTNAME ( name ) );
+    if ( report )
     {
         return report;
     }
 
-    Data_Set items = this->find(REPORTNAME(name));
-    if (!items.empty())
+    Data_Set items = this->find ( REPORTNAME ( name ) );
+    if ( !items.empty() )
     {
-        report = this->get(items[0].id(), this->db_);
+        report = this->get ( items[0].id(), this->db_ );
     }
     return report;
 }

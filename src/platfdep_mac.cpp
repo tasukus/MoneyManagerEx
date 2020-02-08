@@ -24,7 +24,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 const wxFileName mmex::GetSharedDir()
 {
-    static wxFileName fname(wxFileName::DirName(wxStandardPaths::Get().GetDataDir()));
+    static wxFileName fname ( wxFileName::DirName ( wxStandardPaths::Get().GetDataDir() ) );
     return fname;
 }
 //----------------------------------------------------------------------------
@@ -33,10 +33,10 @@ const wxFileName mmex::GetDocDir()
 {
     static wxFileName fname;
 
-    if (!fname.IsOk())
+    if ( !fname.IsOk() )
     {
         fname = GetSharedDir();
-        fname.AppendDir("doc");
+        fname.AppendDir ( "doc" );
     }
 
     return fname;
@@ -45,7 +45,7 @@ const wxFileName mmex::GetDocDir()
 
 const wxFileName mmex::GetResourceDir()
 {
-    static wxFileName fname(wxFileName::DirName(wxStandardPaths::Get().GetResourcesDir()));
+    static wxFileName fname ( wxFileName::DirName ( wxStandardPaths::Get().GetResourcesDir() ) );
     return fname;
 }
 //----------------------------------------------------------------------------

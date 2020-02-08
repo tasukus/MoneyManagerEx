@@ -36,7 +36,7 @@ public:
     * Return the static instance address for Model_Setting table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Setting &instance(wxSQLite3Database *db);
+    static Model_Setting &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Setting table
@@ -45,43 +45,43 @@ public:
     static Model_Setting &instance();
     void Savepoint()
     {
-        this->db_->Savepoint("MMEX_Setting");
+        this->db_->Savepoint ( "MMEX_Setting" );
     }
     void ReleaseSavepoint()
     {
-        this->db_->ReleaseSavepoint("MMEX_Setting");
+        this->db_->ReleaseSavepoint ( "MMEX_Setting" );
     }
     void Rollback()
     {
-        this->db_->Rollback("MMEX_Setting");
+        this->db_->Rollback ( "MMEX_Setting" );
     }
 
 public:
     // Setter
-    void Set(const wxString &key, int value);
-    void Set(const wxString &key, bool value);
-    void Set(const wxString &key, const wxColour &value);
-    void Set(const wxString &key, const wxString &value);
+    void Set ( const wxString &key, int value );
+    void Set ( const wxString &key, bool value );
+    void Set ( const wxString &key, const wxColour &value );
+    void Set ( const wxString &key, const wxString &value );
 
 public:
     // Getter
-    bool GetBoolSetting(const wxString &key, bool default_value);
-    int GetIntSetting(const wxString &key, int default_value);
+    bool GetBoolSetting ( const wxString &key, bool default_value );
+    int GetIntSetting ( const wxString &key, int default_value );
 
-    wxString GetStringSetting(const wxString &key, const wxString &default_value);
+    wxString GetStringSetting ( const wxString &key, const wxString &default_value );
     wxString getLastDbPath();
 
     /* Returns true if key setting found */
-    bool ContainsSetting(const wxString &key);
+    bool ContainsSetting ( const wxString &key );
 
     static row_t to_row_t();
 
 public:
     wxString ViewAccounts();
-    void SetViewAccounts(const wxString &value);
+    void SetViewAccounts ( const wxString &value );
 
     wxString ViewTransactions();
-    void SetViewTransactions(const wxString &value);
+    void SetViewTransactions ( const wxString &value );
 
     void ShrinkUsageTable();
 };

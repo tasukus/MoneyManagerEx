@@ -40,10 +40,10 @@ public:
     struct Full_Data: public Data
     {
         Full_Data();
-        explicit Full_Data(int account_id, const Data &r);
-        Full_Data(int account_id, const Data &r
-                  , const std::map<int /*trans id*/
-                  , Model_Splittransaction::Data_Set /*split trans*/ > &splits);
+        explicit Full_Data ( int account_id, const Data &r );
+        Full_Data ( int account_id, const Data &r
+                    , const std::map<int /*trans id*/
+                    , Model_Splittransaction::Data_Set /*split trans*/ > &splits );
         ~Full_Data();
         wxString ACCOUNTNAME, TOACCOUNTNAME;
         wxString PAYEENAME;
@@ -61,7 +61,7 @@ public:
         double AMOUNT;
         double BALANCE;
         Model_Splittransaction::Data_Set m_splits;
-        wxString real_payee_name(int account_id) const;
+        wxString real_payee_name ( int account_id ) const;
         bool has_split() const;
         bool is_foreign() const;
         bool is_foreign_transfer() const;
@@ -70,14 +70,14 @@ public:
         const wxString to_json();
 
     private:
-        void Initialise(int account_id, const Data &r);
+        void Initialise ( int account_id, const Data &r );
     };
     typedef std::vector<Full_Data> Full_Data_Set;
 
     struct SorterByBALANCE
     {
         template<class DATA>
-        bool operator()(const DATA &x, const DATA &y)
+        bool operator() ( const DATA &x, const DATA &y )
         {
             return x.BALANCE < y.BALANCE;
         }
@@ -85,7 +85,7 @@ public:
     struct SorterByDEPOSIT
     {
         template<class DATA>
-        bool operator()(const DATA &x, const DATA &y)
+        bool operator() ( const DATA &x, const DATA &y )
         {
             return x.AMOUNT < y.AMOUNT;
         }
@@ -93,7 +93,7 @@ public:
     struct SorterByWITHDRAWAL
     {
         template<class DATA>
-        bool operator()(const DATA &x, const DATA &y)
+        bool operator() ( const DATA &x, const DATA &y )
         {
             return x.AMOUNT > y.AMOUNT;
         }
@@ -101,10 +101,10 @@ public:
     struct SorterByNUMBER
     {
         template<class DATA>
-        bool operator()(const DATA &x, const DATA &y)
+        bool operator() ( const DATA &x, const DATA &y )
         {
             return x.TRANSACTIONNUMBER.IsNumber() && y.TRANSACTIONNUMBER.IsNumber()
-                   ? (wxAtoi(x.TRANSACTIONNUMBER) < wxAtoi(y.TRANSACTIONNUMBER))
+                   ? ( wxAtoi ( x.TRANSACTIONNUMBER ) < wxAtoi ( y.TRANSACTIONNUMBER ) )
                    : x.TRANSACTIONNUMBER < y.TRANSACTIONNUMBER;
         }
     };
@@ -123,7 +123,7 @@ public:
     * Return the static instance address for Model_Checking table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Checking &instance(wxSQLite3Database *db);
+    static Model_Checking &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Checking table
@@ -132,48 +132,48 @@ public:
     static Model_Checking &instance();
 
 public:
-    bool remove(int id);
+    bool remove ( int id );
 
 public:
-    static const Model_Splittransaction::Data_Set splittransaction(const Data *r);
-    static const Model_Splittransaction::Data_Set splittransaction(const Data &r);
+    static const Model_Splittransaction::Data_Set splittransaction ( const Data *r );
+    static const Model_Splittransaction::Data_Set splittransaction ( const Data &r );
 
 public:
-    static DB_Table_CHECKINGACCOUNT::TRANSDATE TRANSDATE(const wxDate &date, OP op = EQUAL);
-    static DB_Table_CHECKINGACCOUNT::TRANSDATE TRANSDATE(const wxString &date, OP op = EQUAL);
-    static DB_Table_CHECKINGACCOUNT::STATUS STATUS(STATUS_ENUM status, OP op = EQUAL);
-    static DB_Table_CHECKINGACCOUNT::TRANSCODE TRANSCODE(TYPE type, OP op = EQUAL);
+    static DB_Table_CHECKINGACCOUNT::TRANSDATE TRANSDATE ( const wxDate &date, OP op = EQUAL );
+    static DB_Table_CHECKINGACCOUNT::TRANSDATE TRANSDATE ( const wxString &date, OP op = EQUAL );
+    static DB_Table_CHECKINGACCOUNT::STATUS STATUS ( STATUS_ENUM status, OP op = EQUAL );
+    static DB_Table_CHECKINGACCOUNT::TRANSCODE TRANSCODE ( TYPE type, OP op = EQUAL );
 
 public:
-    static wxDate TRANSDATE(const Data *r);
-    static wxDate TRANSDATE(const Data &r);
-    static TYPE type(const wxString &r);
-    static TYPE type(const Data *r);
-    static TYPE type(const Data &r);
-    static STATUS_ENUM status(const wxString &r);
-    static STATUS_ENUM status(const Data *r);
-    static STATUS_ENUM status(const Data &r);
-    static double amount(const Data *r, int account_id = -1);
-    static double amount(const Data &r, int account_id = -1);
-    static double balance(const Data *r, int account_id = -1);
-    static double balance(const Data &r, int account_id = -1);
-    static double withdrawal(const Data *r, int account_id = -1);
-    static double withdrawal(const Data &r, int account_id);
-    static double deposit(const Data *r, int account_id);
-    static double deposit(const Data &r, int account_id);
-    static double reconciled(const Data *r, int account_id);
-    static double reconciled(const Data &r, int account_id);
-    static bool is_transfer(const wxString &r);
-    static bool is_transfer(const Data *r);
-    static bool is_deposit(const wxString &r);
-    static bool is_deposit(const Data *r);
-    static wxString toShortStatus(const wxString &fullStatus);
-    static void getFrequentUsedNotes(std::vector<wxString> &frequentNotes, int accountID = -1);
-    static void getEmptyTransaction(Data &data, int accountID);
-    static bool getTransactionData(Data &data, const Data *r);
-    static void putDataToTransaction(Data *r, const Data &data);
-    static bool foreignTransaction(const Data &data);
-    static bool foreignTransactionAsTransfer(const Data &data);
+    static wxDate TRANSDATE ( const Data *r );
+    static wxDate TRANSDATE ( const Data &r );
+    static TYPE type ( const wxString &r );
+    static TYPE type ( const Data *r );
+    static TYPE type ( const Data &r );
+    static STATUS_ENUM status ( const wxString &r );
+    static STATUS_ENUM status ( const Data *r );
+    static STATUS_ENUM status ( const Data &r );
+    static double amount ( const Data *r, int account_id = -1 );
+    static double amount ( const Data &r, int account_id = -1 );
+    static double balance ( const Data *r, int account_id = -1 );
+    static double balance ( const Data &r, int account_id = -1 );
+    static double withdrawal ( const Data *r, int account_id = -1 );
+    static double withdrawal ( const Data &r, int account_id );
+    static double deposit ( const Data *r, int account_id );
+    static double deposit ( const Data &r, int account_id );
+    static double reconciled ( const Data *r, int account_id );
+    static double reconciled ( const Data &r, int account_id );
+    static bool is_transfer ( const wxString &r );
+    static bool is_transfer ( const Data *r );
+    static bool is_deposit ( const wxString &r );
+    static bool is_deposit ( const Data *r );
+    static wxString toShortStatus ( const wxString &fullStatus );
+    static void getFrequentUsedNotes ( std::vector<wxString> &frequentNotes, int accountID = -1 );
+    static void getEmptyTransaction ( Data &data, int accountID );
+    static bool getTransactionData ( Data &data, const Data *r );
+    static void putDataToTransaction ( Data *r, const Data &data );
+    static bool foreignTransaction ( const Data &data );
+    static bool foreignTransactionAsTransfer ( const Data &data );
 };
 
 class TransactionStatus
@@ -185,11 +185,11 @@ private:
 
 public:
     TransactionStatus();
-    TransactionStatus(const DB_Table_CHECKINGACCOUNT::Data &data);
-    TransactionStatus(const DB_Table_CHECKINGACCOUNT::Data *data);
-    void InitStatus(const DB_Table_CHECKINGACCOUNT::Data &data);
-    void InitStatus(const DB_Table_CHECKINGACCOUNT::Data *data);
-    void SetStatus(const wxString &status, int account_id, DB_Table_CHECKINGACCOUNT::Data &data);
-    void SetStatusA(const wxString &status);
-    wxString Status(int account_id);
+    TransactionStatus ( const DB_Table_CHECKINGACCOUNT::Data &data );
+    TransactionStatus ( const DB_Table_CHECKINGACCOUNT::Data *data );
+    void InitStatus ( const DB_Table_CHECKINGACCOUNT::Data &data );
+    void InitStatus ( const DB_Table_CHECKINGACCOUNT::Data *data );
+    void SetStatus ( const wxString &status, int account_id, DB_Table_CHECKINGACCOUNT::Data &data );
+    void SetStatusA ( const wxString &status );
+    wxString Status ( int account_id );
 };

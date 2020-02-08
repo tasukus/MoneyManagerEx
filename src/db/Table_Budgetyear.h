@@ -25,13 +25,13 @@ struct DB_Table_BUDGETYEAR : public DB_Table
         wxString to_json() const
         {
             StringBuffer json_buffer;
-            PrettyWriter<StringBuffer> json_writer(json_buffer);
+            PrettyWriter<StringBuffer> json_writer ( json_buffer );
 
             json_writer.StartArray();
-            for (const auto &item: *this)
+            for ( const auto &item: *this )
             {
                 json_writer.StartObject();
-                item.as_json(json_writer);
+                item.as_json ( json_writer );
                 json_writer.EndObject();
             }
             json_writer.EndArray();
@@ -57,49 +57,49 @@ struct DB_Table_BUDGETYEAR : public DB_Table
     /** Removes all records stored in memory (cache) for the table*/
     void destroy_cache()
     {
-        std::for_each(cache_.begin(), cache_.end(), std::mem_fun(&Data::destroy));
+        std::for_each ( cache_.begin(), cache_.end(), std::mem_fun ( &Data::destroy ) );
         cache_.clear();
         index_by_id_.clear(); // no memory release since it just stores pointer and the according objects are in cache
     }
 
     /** Creates the database table if the table does not exist*/
-    bool ensure(wxSQLite3Database *db)
+    bool ensure ( wxSQLite3Database *db )
     {
-        if (!exists(db))
+        if ( !exists ( db ) )
         {
             try
             {
-                db->ExecuteUpdate("CREATE TABLE BUDGETYEAR(BUDGETYEARID integer primary key, BUDGETYEARNAME TEXT NOT NULL UNIQUE)");
-                this->ensure_data(db);
+                db->ExecuteUpdate ( "CREATE TABLE BUDGETYEAR(BUDGETYEARID integer primary key, BUDGETYEARNAME TEXT NOT NULL UNIQUE)" );
+                this->ensure_data ( db );
             }
-            catch(const wxSQLite3Exception &e)
+            catch ( const wxSQLite3Exception &e )
             {
-                wxLogError("BUDGETYEAR: Exception %s", e.GetMessage().c_str());
+                wxLogError ( "BUDGETYEAR: Exception %s", e.GetMessage().c_str() );
                 return false;
             }
         }
 
-        this->ensure_index(db);
+        this->ensure_index ( db );
 
         return true;
     }
 
-    bool ensure_index(wxSQLite3Database *db)
+    bool ensure_index ( wxSQLite3Database *db )
     {
         try
         {
-            db->ExecuteUpdate("CREATE INDEX IF NOT EXISTS IDX_BUDGETYEAR_BUDGETYEARNAME ON BUDGETYEAR(BUDGETYEARNAME)");
+            db->ExecuteUpdate ( "CREATE INDEX IF NOT EXISTS IDX_BUDGETYEAR_BUDGETYEARNAME ON BUDGETYEAR(BUDGETYEARNAME)" );
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("BUDGETYEAR: Exception %s", e.GetMessage().c_str());
+            wxLogError ( "BUDGETYEAR: Exception %s", e.GetMessage().c_str() );
             return false;
         }
 
         return true;
     }
 
-    void ensure_data(wxSQLite3Database *db)
+    void ensure_data ( wxSQLite3Database *db )
     {
         db->Begin();
         db->Commit();
@@ -111,7 +111,7 @@ struct DB_Table_BUDGETYEAR : public DB_Table
         {
             return "BUDGETYEARID";
         }
-        explicit BUDGETYEARID(const int &v, OP op = EQUAL): DB_Column<int>(v, op) {}
+        explicit BUDGETYEARID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
     };
 
     struct BUDGETYEARNAME : public DB_Column<wxString>
@@ -120,7 +120,7 @@ struct DB_Table_BUDGETYEAR : public DB_Table
         {
             return "BUDGETYEARNAME";
         }
-        explicit BUDGETYEARNAME(const wxString &v, OP op = EQUAL): DB_Column<wxString>(v, op) {}
+        explicit BUDGETYEARNAME ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
     };
 
     typedef BUDGETYEARID PRIMARY;
@@ -132,9 +132,9 @@ struct DB_Table_BUDGETYEAR : public DB_Table
     };
 
     /** Returns the column name as a string*/
-    static wxString column_to_name(COLUMN col)
+    static wxString column_to_name ( COLUMN col )
     {
-        switch(col)
+        switch ( col )
         {
             case COL_BUDGETYEARID:
                 return "BUDGETYEARID";
@@ -148,13 +148,13 @@ struct DB_Table_BUDGETYEAR : public DB_Table
     }
 
     /** Returns the column number from the given column name*/
-    static COLUMN name_to_column(const wxString &name)
+    static COLUMN name_to_column ( const wxString &name )
     {
-        if ("BUDGETYEARID" == name)
+        if ( "BUDGETYEARID" == name )
         {
             return COL_BUDGETYEARID;
         }
-        else if ("BUDGETYEARNAME" == name)
+        else if ( "BUDGETYEARNAME" == name )
         {
             return COL_BUDGETYEARNAME;
         }
@@ -177,39 +177,39 @@ struct DB_Table_BUDGETYEAR : public DB_Table
             return BUDGETYEARID;
         }
 
-        void id(int id)
+        void id ( int id )
         {
             BUDGETYEARID = id;
         }
 
-        bool operator < (const Data &r) const
+        bool operator < ( const Data &r ) const
         {
             return this->id() < r.id();
         }
 
-        bool operator < (const Data *r) const
+        bool operator < ( const Data *r ) const
         {
             return this->id() < r->id();
         }
 
-        explicit Data(Self *table = 0)
+        explicit Data ( Self *table = 0 )
         {
             table_ = table;
 
             BUDGETYEARID = -1;
         }
 
-        explicit Data(wxSQLite3ResultSet &q, Self *table = 0)
+        explicit Data ( wxSQLite3ResultSet &q, Self *table = 0 )
         {
             table_ = table;
 
-            BUDGETYEARID = q.GetInt(0);
-            BUDGETYEARNAME = q.GetString(1);
+            BUDGETYEARID = q.GetInt ( 0 );
+            BUDGETYEARNAME = q.GetString ( 1 );
         }
 
-        Data &operator=(const Data &other)
+        Data &operator= ( const Data &other )
         {
-            if (this == &other)
+            if ( this == &other )
             {
                 return *this;
             }
@@ -219,78 +219,78 @@ struct DB_Table_BUDGETYEAR : public DB_Table
             return *this;
         }
 
-        bool match(const Self::BUDGETYEARID &in) const
+        bool match ( const Self::BUDGETYEARID &in ) const
         {
             return this->BUDGETYEARID == in.v_;
         }
 
-        bool match(const Self::BUDGETYEARNAME &in) const
+        bool match ( const Self::BUDGETYEARNAME &in ) const
         {
-            return this->BUDGETYEARNAME.CmpNoCase(in.v_) == 0;
+            return this->BUDGETYEARNAME.CmpNoCase ( in.v_ ) == 0;
         }
 
         /** Return the data record as a json string */
         wxString to_json() const
         {
             StringBuffer json_buffer;
-            PrettyWriter<StringBuffer> json_writer(json_buffer);
+            PrettyWriter<StringBuffer> json_writer ( json_buffer );
 
             json_writer.StartObject();
-            this->as_json(json_writer);
+            this->as_json ( json_writer );
             json_writer.EndObject();
 
             return json_buffer.GetString();
         }
 
         /** Add the field data as json key:value pairs */
-        void as_json(PrettyWriter<StringBuffer> &json_writer) const
+        void as_json ( PrettyWriter<StringBuffer> &json_writer ) const
         {
-            json_writer.Key("BUDGETYEARID");
-            json_writer.Int(this->BUDGETYEARID);
-            json_writer.Key("BUDGETYEARNAME");
-            json_writer.String(this->BUDGETYEARNAME.c_str());
+            json_writer.Key ( "BUDGETYEARID" );
+            json_writer.Int ( this->BUDGETYEARID );
+            json_writer.Key ( "BUDGETYEARNAME" );
+            json_writer.String ( this->BUDGETYEARNAME.c_str() );
         }
 
         row_t to_row_t() const
         {
             row_t row;
-            row(L"BUDGETYEARID") = BUDGETYEARID;
-            row(L"BUDGETYEARNAME") = BUDGETYEARNAME;
+            row ( L"BUDGETYEARID" ) = BUDGETYEARID;
+            row ( L"BUDGETYEARNAME" ) = BUDGETYEARNAME;
             return row;
         }
 
-        void to_template(html_template &t) const
+        void to_template ( html_template &t ) const
         {
-            t(L"BUDGETYEARID") = BUDGETYEARID;
-            t(L"BUDGETYEARNAME") = BUDGETYEARNAME;
+            t ( L"BUDGETYEARID" ) = BUDGETYEARID;
+            t ( L"BUDGETYEARNAME" ) = BUDGETYEARNAME;
         }
 
         /** Save the record instance in memory to the database. */
-        bool save(wxSQLite3Database *db)
+        bool save ( wxSQLite3Database *db )
         {
-            if (db && db->IsReadOnly())
+            if ( db && db->IsReadOnly() )
             {
                 return false;
             }
-            if (!table_ || !db)
+            if ( !table_ || !db )
             {
-                wxLogError("can not save BUDGETYEAR");
+                wxLogError ( "can not save BUDGETYEAR" );
                 return false;
             }
 
-            return table_->save(this, db);
+            return table_->save ( this, db );
         }
 
         /** Remove the record instance from memory and the database. */
-        bool remove(wxSQLite3Database *db)
+        bool remove ( wxSQLite3Database *db )
         {
-            if (!table_ || !db)
+            if ( !table_ || !db )
             {
-                wxLogError("can not remove BUDGETYEAR");
+                wxLogError ( "can not remove BUDGETYEAR" );
                 return false;
             }
 
-            return table_->remove(this, db);
+            return table_->remove ( this, db );
         }
 
         void destroy()
@@ -315,7 +315,7 @@ struct DB_Table_BUDGETYEAR : public DB_Table
         return "BUDGETYEAR";
     }
 
-    DB_Table_BUDGETYEAR() : fake_(new Data())
+    DB_Table_BUDGETYEAR() : fake_ ( new Data() )
     {
         query_ = "SELECT BUDGETYEARID, BUDGETYEARNAME FROM BUDGETYEAR ";
     }
@@ -323,17 +323,17 @@ struct DB_Table_BUDGETYEAR : public DB_Table
     /** Create a new Data record and add to memory table (cache) */
     Self::Data *create()
     {
-        Self::Data *entity = new Self::Data(this);
-        cache_.push_back(entity);
+        Self::Data *entity = new Self::Data ( this );
+        cache_.push_back ( entity );
         return entity;
     }
 
     /** Create a copy of the Data record and add to memory table (cache) */
-    Self::Data *clone(const Data *e)
+    Self::Data *clone ( const Data *e )
     {
         Self::Data *entity = create();
         *entity = *e;
-        entity->id(-1);
+        entity->id ( -1 );
         return entity;
     }
 
@@ -342,10 +342,10 @@ struct DB_Table_BUDGETYEAR : public DB_Table
     * Either create a new record or update the existing record.
     * Remove old record from the memory table (cache)
     */
-    bool save(Self::Data *entity, wxSQLite3Database *db)
+    bool save ( Self::Data *entity, wxSQLite3Database *db )
     {
         wxString sql = wxEmptyString;
-        if (entity->id() <= 0) //  new & insert
+        if ( entity->id() <= 0 ) //  new & insert
         {
             sql = "INSERT INTO BUDGETYEAR(BUDGETYEARNAME) VALUES(?)";
         }
@@ -356,78 +356,78 @@ struct DB_Table_BUDGETYEAR : public DB_Table
 
         try
         {
-            wxSQLite3Statement stmt = db->PrepareStatement(sql);
+            wxSQLite3Statement stmt = db->PrepareStatement ( sql );
 
-            stmt.Bind(1, entity->BUDGETYEARNAME);
-            if (entity->id() > 0)
+            stmt.Bind ( 1, entity->BUDGETYEARNAME );
+            if ( entity->id() > 0 )
             {
-                stmt.Bind(2, entity->BUDGETYEARID);
+                stmt.Bind ( 2, entity->BUDGETYEARID );
             }
 
             stmt.ExecuteUpdate();
             stmt.Finalize();
 
-            if (entity->id() > 0) // existent
+            if ( entity->id() > 0 ) // existent
             {
-                for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
+                for ( Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it )
                 {
                     Self::Data *e = *it;
-                    if (e->id() == entity->id())
+                    if ( e->id() == entity->id() )
                     {
                         *e = *entity;    // in-place update
                     }
                 }
             }
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("BUDGETYEAR: Exception %s, %s", e.GetMessage().c_str(), entity->to_json());
+            wxLogError ( "BUDGETYEAR: Exception %s, %s", e.GetMessage().c_str(), entity->to_json() );
             return false;
         }
 
-        if (entity->id() <= 0)
+        if ( entity->id() <= 0 )
         {
-            entity->id((db->GetLastRowId()).ToLong());
-            index_by_id_.insert(std::make_pair(entity->id(), entity));
+            entity->id ( ( db->GetLastRowId() ).ToLong() );
+            index_by_id_.insert ( std::make_pair ( entity->id(), entity ) );
         }
         return true;
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(int id, wxSQLite3Database *db)
+    bool remove ( int id, wxSQLite3Database *db )
     {
-        if (id <= 0)
+        if ( id <= 0 )
         {
             return false;
         }
         try
         {
             wxString sql = "DELETE FROM BUDGETYEAR WHERE BUDGETYEARID = ?";
-            wxSQLite3Statement stmt = db->PrepareStatement(sql);
-            stmt.Bind(1, id);
+            wxSQLite3Statement stmt = db->PrepareStatement ( sql );
+            stmt.Bind ( 1, id );
             stmt.ExecuteUpdate();
             stmt.Finalize();
 
             Cache c;
-            for(Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it)
+            for ( Cache::iterator it = cache_.begin(); it != cache_.end(); ++ it )
             {
                 Self::Data *entity = *it;
-                if (entity->id() == id)
+                if ( entity->id() == id )
                 {
-                    index_by_id_.erase(entity->id());
+                    index_by_id_.erase ( entity->id() );
                     delete entity;
                 }
                 else
                 {
-                    c.push_back(entity);
+                    c.push_back ( entity );
                 }
             }
             cache_.clear();
-            cache_.swap(c);
+            cache_.swap ( c );
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("BUDGETYEAR: Exception %s", e.GetMessage().c_str());
+            wxLogError ( "BUDGETYEAR: Exception %s", e.GetMessage().c_str() );
             return false;
         }
 
@@ -435,11 +435,11 @@ struct DB_Table_BUDGETYEAR : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove(Self::Data *entity, wxSQLite3Database *db)
+    bool remove ( Self::Data *entity, wxSQLite3Database *db )
     {
-        if (remove(entity->id(), db))
+        if ( remove ( entity->id(), db ) )
         {
-            entity->id(-1);
+            entity->id ( -1 );
             return true;
         }
 
@@ -447,12 +447,12 @@ struct DB_Table_BUDGETYEAR : public DB_Table
     }
 
     template<typename... Args>
-    Self::Data *get_one(const Args &... args)
+    Self::Data *get_one ( const Args &... args )
     {
-        for (Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it)
+        for ( Index_By_Id::iterator it = index_by_id_.begin(); it != index_by_id_.end(); ++ it )
         {
             Self::Data *item = it->second;
-            if (item->id() > 0 && match(item, args...))
+            if ( item->id() > 0 && match ( item, args... ) )
             {
                 ++ hit_;
                 return item;
@@ -468,16 +468,16 @@ struct DB_Table_BUDGETYEAR : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data *get(int id, wxSQLite3Database *db)
+    Self::Data *get ( int id, wxSQLite3Database *db )
     {
-        if (id <= 0)
+        if ( id <= 0 )
         {
             ++ skip_;
             return 0;
         }
 
-        Index_By_Id::iterator it = index_by_id_.find(id);
-        if (it != index_by_id_.end())
+        Index_By_Id::iterator it = index_by_id_.find ( id );
+        if ( it != index_by_id_.end() )
         {
             ++ hit_;
             return it->second;
@@ -485,27 +485,27 @@ struct DB_Table_BUDGETYEAR : public DB_Table
 
         ++ miss_;
         Self::Data *entity = 0;
-        wxString where = wxString::Format(" WHERE %s = ?", PRIMARY::name().c_str());
+        wxString where = wxString::Format ( " WHERE %s = ?", PRIMARY::name().c_str() );
         try
         {
-            wxSQLite3Statement stmt = db->PrepareStatement(this->query() + where);
-            stmt.Bind(1, id);
+            wxSQLite3Statement stmt = db->PrepareStatement ( this->query() + where );
+            stmt.Bind ( 1, id );
 
             wxSQLite3ResultSet q = stmt.ExecuteQuery();
-            if(q.NextRow())
+            if ( q.NextRow() )
             {
-                entity = new Self::Data(q, this);
-                cache_.push_back(entity);
-                index_by_id_.insert(std::make_pair(id, entity));
+                entity = new Self::Data ( q, this );
+                cache_.push_back ( entity );
+                index_by_id_.insert ( std::make_pair ( id, entity ) );
             }
             stmt.Finalize();
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("%s: Exception %s", this->name().c_str(), e.GetMessage().c_str());
+            wxLogError ( "%s: Exception %s", this->name().c_str(), e.GetMessage().c_str() );
         }
 
-        if (!entity)
+        if ( !entity )
         {
             entity = this->fake_;
             // wxLogError("%s: %d not found", this->name().c_str(), id);
@@ -518,24 +518,24 @@ struct DB_Table_BUDGETYEAR : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all(wxSQLite3Database *db, COLUMN col = COLUMN(0), bool asc = true)
+    const Data_Set all ( wxSQLite3Database *db, COLUMN col = COLUMN ( 0 ), bool asc = true )
     {
         Data_Set result;
         try
         {
-            wxSQLite3ResultSet q = db->ExecuteQuery(col == COLUMN(0) ? this->query() : this->query() + " ORDER BY " + column_to_name(col) + " COLLATE NOCASE " + (asc ? " ASC " : " DESC "));
+            wxSQLite3ResultSet q = db->ExecuteQuery ( col == COLUMN ( 0 ) ? this->query() : this->query() + " ORDER BY " + column_to_name ( col ) + " COLLATE NOCASE " + ( asc ? " ASC " : " DESC " ) );
 
-            while(q.NextRow())
+            while ( q.NextRow() )
             {
-                Self::Data entity(q, this);
-                result.push_back(std::move(entity));
+                Self::Data entity ( q, this );
+                result.push_back ( std::move ( entity ) );
             }
 
             q.Finalize();
         }
-        catch(const wxSQLite3Exception &e)
+        catch ( const wxSQLite3Exception &e )
         {
-            wxLogError("%s: Exception %s", this->name().c_str(), e.GetMessage().c_str());
+            wxLogError ( "%s: Exception %s", this->name().c_str(), e.GetMessage().c_str() );
         }
 
         return result;

@@ -35,27 +35,27 @@ class mmReportsPanel : public mmPanelBase
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmReportsPanel(mmPrintableBase *rb,
-                   bool cleanupReport,
-                   wxWindow *parent,
-                   mmGUIFrame *frame,
-                   wxWindowID winid = wxID_ANY,
-                   const wxPoint &pos = wxDefaultPosition,
-                   const wxSize &size = wxDefaultSize,
-                   long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-                   const wxString &name = "mmReportsPanel");
+    mmReportsPanel ( mmPrintableBase *rb,
+                     bool cleanupReport,
+                     wxWindow *parent,
+                     mmGUIFrame *frame,
+                     wxWindowID winid = wxID_ANY,
+                     const wxPoint &pos = wxDefaultPosition,
+                     const wxSize &size = wxDefaultSize,
+                     long style = wxTAB_TRAVERSAL | wxNO_BORDER,
+                     const wxString &name = "mmReportsPanel" );
     ~mmReportsPanel();
 
-    bool Create(wxWindow *parent, wxWindowID winid,
-                const wxPoint &pos = wxDefaultPosition,
-                const wxSize &size = wxDefaultSize,
-                long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-                const wxString &name = "mmReportsPanel");
+    bool Create ( wxWindow *parent, wxWindowID winid,
+                  const wxPoint &pos = wxDefaultPosition,
+                  const wxSize &size = wxDefaultSize,
+                  long style = wxTAB_TRAVERSAL | wxNO_BORDER,
+                  const wxString &name = "mmReportsPanel" );
 
     void CreateControls();
     void sortTable() {}
 
-    bool saveReportText(wxString &error, bool initial = true);
+    bool saveReportText ( wxString &error, bool initial = true );
     mmPrintableBase *getPrintableBase()
     {
         return rb_;
@@ -63,10 +63,10 @@ public:
     void PrintPage();
 
 public:
-    void OnDateRangeChanged(wxCommandEvent &event);
-    void OnAccountChanged(wxCommandEvent &event);
-    void OnStartEndDateChanged(wxDateEvent &event);
-    void OnChartChanged(wxCommandEvent &event);
+    void OnDateRangeChanged ( wxCommandEvent &event );
+    void OnAccountChanged ( wxCommandEvent &event );
+    void OnStartEndDateChanged ( wxDateEvent &event );
+    void OnChartChanged ( wxCommandEvent &event );
 
 protected:
     std::vector<mmDateRange *> m_all_date_ranges;
@@ -85,8 +85,8 @@ private:
     bool cleanupmem_=false;
     wxString htmlreport_;
 
-    void OnPrevReport(wxCommandEvent &event);
-    void OnNextReport(wxCommandEvent &event);
+    void OnPrevReport ( wxCommandEvent &event );
+    void OnNextReport ( wxCommandEvent &event );
 
 public:
     mmGUIFrame *m_frame;

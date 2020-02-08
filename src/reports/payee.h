@@ -35,8 +35,8 @@ public:
     virtual wxString getHTMLText();
 
 protected:
-    void getPayeeStats(std::map<int, std::pair<double, double> > &payeeStats
-                       , mmDateRange *date_range, bool ignoreFuture) const;
+    void getPayeeStats ( std::map<int, std::pair<double, double> > &payeeStats
+                         , mmDateRange *date_range, bool ignoreFuture ) const;
 
     enum TYPE {INCOME = 0, EXPENSES, MAX};
 

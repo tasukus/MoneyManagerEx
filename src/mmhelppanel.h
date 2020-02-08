@@ -30,12 +30,12 @@ class mmHelpPanel : public mmPanelBase
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmHelpPanel(wxWindow *parent, mmGUIFrame *frame,
-                wxWindowID winid = wxID_ANY,
-                const wxPoint &pos = wxDefaultPosition,
-                const wxSize &size = wxDefaultSize,
-                long style = wxTAB_TRAVERSAL | wxNO_BORDER,
-                const wxString &name = "mmHelpPanel");
+    mmHelpPanel ( wxWindow *parent, mmGUIFrame *frame,
+                  wxWindowID winid = wxID_ANY,
+                  const wxPoint &pos = wxDefaultPosition,
+                  const wxSize &size = wxDefaultSize,
+                  long style = wxTAB_TRAVERSAL | wxNO_BORDER,
+                  const wxString &name = "mmHelpPanel" );
 
     wxString BuildPage() const
     {
@@ -48,17 +48,17 @@ public:
 private:
     wxWebView *browser_;
 
-    bool Create(wxWindow *parent, wxWindowID winid
-                , const wxPoint &pos = wxDefaultPosition
-                , const wxSize &size = wxDefaultSize
-                , long style = wxTAB_TRAVERSAL | wxNO_BORDER
-                , const wxString &name = "mmHelpPanel");
+    bool Create ( wxWindow *parent, wxWindowID winid
+                  , const wxPoint &pos = wxDefaultPosition
+                  , const wxSize &size = wxDefaultSize
+                  , long style = wxTAB_TRAVERSAL | wxNO_BORDER
+                  , const wxString &name = "mmHelpPanel" );
 
     void CreateControls();
     virtual void sortTable();
 
-    void OnHelpPageBack(wxCommandEvent &event);
-    void OnHelpPageForward(wxCommandEvent &event);
+    void OnHelpPageBack ( wxCommandEvent &event );
+    void OnHelpPageForward ( wxCommandEvent &event );
 };
 
 #endif

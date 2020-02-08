@@ -39,98 +39,98 @@ public:
 public:
     Option();
     static Option &instance();
-    void LoadOptions(bool include_infotable = true);
+    void LoadOptions ( bool include_infotable = true );
 
     // set and save the option: m_dateFormat
-    void setDateFormat(const wxString &datefornat);
+    void setDateFormat ( const wxString &datefornat );
     const wxString getDateFormat() const;
 
     // set and save the option: m_language
-    void setLanguage(wxLanguage &language);
-    wxLanguage getLanguageID(bool get_db = false);
+    void setLanguage ( wxLanguage &language );
+    wxLanguage getLanguageID ( bool get_db = false );
     // get 2-letter ISO 639-1 code
-    const wxString getLanguageISO6391(bool get_db = false);
+    const wxString getLanguageISO6391 ( bool get_db = false );
 
     // set and save the option: m_userNameString
-    void setUserName(const wxString &username);
+    void setUserName ( const wxString &username );
     const wxString getUserName() const;
 
     // set and save the option: m_financialYearStartDayString
-    void setFinancialYearStartDay(const wxString &setting);
+    void setFinancialYearStartDay ( const wxString &setting );
     const wxString getFinancialYearStartDay() const;
 
     // set and save the option: m_financialYearStartMonthString
-    void setFinancialYearStartMonth(const wxString &setting);
+    void setFinancialYearStartMonth ( const wxString &setting );
     const wxString getFinancialYearStartMonth() const;
 
     // set the base currency ID
-    void setBaseCurrencyID(int base_currency_id);
+    void setBaseCurrencyID ( const int base_currency_id );
     // returns the base currency ID
     int getBaseCurrencyID() const;
 
     // set and save the option: m_databaseUpdated
-    void setDatabaseUpdated(bool value);
+    void setDatabaseUpdated ( const bool value );
     bool getDatabaseUpdated() const;
 
-    void setBudgetFinancialYears(bool value);
+    void setBudgetFinancialYears ( const bool value );
     bool getBudgetFinancialYears() const;
 
-    void setBudgetIncludeTransfers(bool value);
+    void setBudgetIncludeTransfers ( bool value );
     bool getBudgetIncludeTransfers() const;
 
-    void setBudgetSetupWithoutSummaries(bool value);
+    void setBudgetSetupWithoutSummaries ( bool value );
     bool getBudgetSetupWithoutSummaries() const;
 
-    void setBudgetReportWithSummaries(bool value);
+    void setBudgetReportWithSummaries ( bool value );
     bool getBudgetReportWithSummaries() const;
 
-    void setIgnoreFutureTransactions(bool value);
+    void setIgnoreFutureTransactions ( bool value );
     bool getIgnoreFutureTransactions() const;
 
-    void setTransPayeeSelection(int value);
+    void setTransPayeeSelection ( int value );
     int getTransPayeeSelection() const;
 
-    void setTransCategorySelection(int value);
+    void setTransCategorySelection ( int value );
     int getTransCategorySelection() const;
 
-    void setTransStatusReconciled(int value);
+    void setTransStatusReconciled ( int value );
     int getTransStatusReconciled() const;
 
-    void setTransDateDefault(int value);
+    void setTransDateDefault ( int value );
     int getTransDateDefault() const;
 
-    void setSendUsageStatistics(bool value);
+    void setSendUsageStatistics ( bool value );
     bool getSendUsageStatistics() const;
 
-    void setSharePrecision(int value);
+    void setSharePrecision ( int value );
     int getSharePrecision() const;
 
     /* stored value in percentage for scale html font and other objects */
-    void setHtmlFontSize(int value);
+    void setHtmlFontSize ( int value );
     int getHtmlFontSize() const;
 
     // Allows a year or financial year to start before or after the 1st of the month.
-    void setBudgetDaysOffset(int value);
+    void setBudgetDaysOffset ( int value );
     int getBudgetDaysOffset() const;
     /**Re-adjust date by the date offset value*/
-    void setBudgetDateOffset(wxDateTime &date) const;
+    void setBudgetDateOffset ( wxDateTime &date ) const;
 
-    void setIconSize(int value);
+    void setIconSize ( const int value );
     int getIconSize() const;
 
-    int getAccountImageId(int account_id, bool def = false) const;
+    int getAccountImageId ( int account_id, bool def = false ) const;
 
-    void setHideReport(int report, bool value);
-    bool getHideReport(int report) const;
+    void setHideReport ( const int report, const bool value );
+    bool getHideReport ( const int report ) const;
     int getReportCount() const;
-    const wxString getReportFullName(int report) const;
-    const wxString getReportGroup(int report) const;
-    const wxString getReportName(int report) const;
-    bool getBudgetReport(int report) const;
-    mmPrintableBase *getReportFunction(int report) const;
+    const wxString getReportFullName ( int report ) const;
+    const wxString getReportGroup ( int report ) const;
+    const wxString getReportName ( int report ) const;
+    bool getBudgetReport ( int report ) const;
+    mmPrintableBase *getReportFunction ( int report ) const;
 
 private:
-    bool isReportIDCorrect(int report) const;
+    bool isReportIDCorrect ( const int report ) const;
     int m_report_count;
     wxString m_dateFormat;
     wxLanguage m_language;
@@ -160,7 +160,7 @@ private:
     struct ReportInfo;
     std::vector<Option::ReportInfo> m_reports;
 
-    const wxString ReportSettings(int id) const;
+    const wxString ReportSettings ( int id ) const;
 };
 
 inline const wxString Option::getUserName() const
@@ -268,9 +268,9 @@ inline int Option::getReportCount() const
     return m_report_count;
 }
 
-inline bool Option::isReportIDCorrect(int report) const
+inline bool Option::isReportIDCorrect ( const int report ) const
 {
-    return (report >= 0) && (report < getReportCount());
+    return ( report >= 0 ) && ( report < getReportCount() );
 }
 
 #endif // MM_EX_OPTION_H_

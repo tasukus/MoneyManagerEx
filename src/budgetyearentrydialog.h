@@ -25,25 +25,25 @@ class wxSpinCtrl;
 
 class mmBudgetYearEntryDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmBudgetYearDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmBudgetYearDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmBudgetYearEntryDialog();
-    mmBudgetYearEntryDialog(wxWindow *parent,
-                            bool withMonth = false);
+    mmBudgetYearEntryDialog ( wxWindow *parent,
+                              bool withMonth = false );
 
-    bool Create(wxWindow *parent
-                , wxWindowID id
-                , const wxString &caption
-                , const wxPoint &pos
-                , const wxSize &size
-                , long style);
+    bool Create ( wxWindow *parent
+                  , wxWindowID id
+                  , const wxString &caption
+                  , const wxPoint &pos
+                  , const wxSize &size
+                  , long style );
 
     void CreateControls();
 
     // utility functions
-    void OnOk(wxCommandEvent &event);
+    void OnOk ( wxCommandEvent &event );
 
 public:
     wxString budgetYear_;

@@ -28,12 +28,12 @@ class OptionSettingsMisc : public OptionSettingsBase
 public:
     OptionSettingsMisc();
 
-    OptionSettingsMisc(wxWindow *parent
-                       , wxWindowID id = wxID_ANY
-                       , const wxPoint &pos = wxDefaultPosition
-                       , const wxSize &size = wxDefaultSize
-                       , long style = wxTAB_TRAVERSAL
-                       , const wxString &name = "OptionSettingsMisc");
+    OptionSettingsMisc ( wxWindow *parent
+                         , wxWindowID id = wxID_ANY
+                         , const wxPoint &pos = wxDefaultPosition
+                         , const wxSize &size = wxDefaultSize
+                         , long style = wxTAB_TRAVERSAL
+                         , const wxString &name = "OptionSettingsMisc" );
 
     ~OptionSettingsMisc();
 
@@ -43,7 +43,7 @@ public:
 private:
     void Create();
 
-    void OnBackupChanged(wxCommandEvent &event);
+    void OnBackupChanged ( wxCommandEvent &event );
     void SaveStocksUrl();
 
 private:

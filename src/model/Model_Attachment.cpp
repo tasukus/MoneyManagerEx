@@ -21,12 +21,12 @@
 
 const std::vector<std::pair<Model_Attachment::REFTYPE, wxString> > Model_Attachment::REFTYPE_CHOICES =
 {
-    {Model_Attachment::TRANSACTION, wxString(wxTRANSLATE("Transaction"))},
-    {Model_Attachment::STOCK, wxString(wxTRANSLATE("Stock"))},
-    {Model_Attachment::ASSET, wxString(wxTRANSLATE("Asset"))},
-    {Model_Attachment::BANKACCOUNT, wxString(wxTRANSLATE("Bank Account"))},
-    {Model_Attachment::BILLSDEPOSIT, wxString(wxTRANSLATE("Recurring Transaction"))},
-    {Model_Attachment::PAYEE, wxString(wxTRANSLATE("Payee"))}
+    {Model_Attachment::TRANSACTION, wxString ( wxTRANSLATE ( "Transaction" ) ) },
+    {Model_Attachment::STOCK, wxString ( wxTRANSLATE ( "Stock" ) ) },
+    {Model_Attachment::ASSET, wxString ( wxTRANSLATE ( "Asset" ) ) },
+    {Model_Attachment::BANKACCOUNT, wxString ( wxTRANSLATE ( "Bank Account" ) ) },
+    {Model_Attachment::BILLSDEPOSIT, wxString ( wxTRANSLATE ( "Recurring Transaction" ) ) },
+    {Model_Attachment::PAYEE, wxString ( wxTRANSLATE ( "Payee" ) ) }
 };
 
 Model_Attachment::Model_Attachment()
@@ -42,12 +42,12 @@ Model_Attachment::~Model_Attachment()
 * Initialize the global Model_Attachment table.
 * Reset the Model_Attachment table or create the table if it does not exist.
 */
-Model_Attachment &Model_Attachment::instance(wxSQLite3Database *db)
+Model_Attachment &Model_Attachment::instance ( wxSQLite3Database *db )
 {
     Model_Attachment &ins = Singleton<Model_Attachment>::instance();
     ins.db_ = db;
     ins.destroy_cache();
-    ins.ensure(db);
+    ins.ensure ( db );
 
     return ins;
 }
@@ -62,47 +62,47 @@ Model_Attachment &Model_Attachment::instance()
 wxArrayString Model_Attachment::all_type()
 {
     static wxArrayString types;
-    if (types.empty())
+    if ( types.empty() )
     {
-        for (const auto &item : REFTYPE_CHOICES)
+        for ( const auto &item : REFTYPE_CHOICES )
         {
-            types.Add(item.second);
+            types.Add ( item.second );
         }
     }
     return types;
 }
 
 /** Return a dataset with attachments linked to a specific object */
-const Model_Attachment::Data_Set Model_Attachment::FilterAttachments(const wxString &RefType, const int RefId)
+const Model_Attachment::Data_Set Model_Attachment::FilterAttachments ( const wxString &RefType, const int RefId )
 {
     Data_Set attachments;
-    for (auto &attachment : this->all(COL_DESCRIPTION))
+    for ( auto &attachment : this->all ( COL_DESCRIPTION ) )
     {
-        if (attachment.REFTYPE.Lower().Matches(RefType.Lower().Append("*")) && attachment.REFID == RefId)
+        if ( attachment.REFTYPE.Lower().Matches ( RefType.Lower().Append ( "*" ) ) && attachment.REFID == RefId )
         {
-            attachments.push_back(attachment);
+            attachments.push_back ( attachment );
         }
     }
     return attachments;
 }
 
 /** Return the number of attachments linked to a specific object */
-int Model_Attachment::NrAttachments(const wxString &RefType, const int RefId)
+int Model_Attachment::NrAttachments ( const wxString &RefType, const int RefId )
 {
-    return Model_Attachment::instance().find(Model_Attachment::DB_Table_ATTACHMENT::REFTYPE(RefType), Model_Attachment::REFID(RefId)).size();
+    return Model_Attachment::instance().find ( Model_Attachment::DB_Table_ATTACHMENT::REFTYPE ( RefType ), Model_Attachment::REFID ( RefId ) ).size();
 }
 
 /** Return the last attachment number linked to a specific object */
-int Model_Attachment::LastAttachmentNumber(const wxString &RefType, const int RefId)
+int Model_Attachment::LastAttachmentNumber ( const wxString &RefType, const int RefId )
 {
     int LastAttachmentNumber = 0;
-    Model_Attachment::Data_Set attachments = Model_Attachment::instance().FilterAttachments(RefType, RefId);
+    Model_Attachment::Data_Set attachments = Model_Attachment::instance().FilterAttachments ( RefType, RefId );
 
-    for (auto &attachment : attachments)
+    for ( auto &attachment : attachments )
     {
         const wxString FileName = attachment.FILENAME;
-        int AttachNumb = wxAtoi(FileName.SubString(FileName.Find("Attach") + 6, FileName.Find(".") - 1));
-        if (AttachNumb > LastAttachmentNumber)
+        int AttachNumb = wxAtoi ( FileName.SubString ( FileName.Find ( "Attach" ) + 6, FileName.Find ( "." ) - 1 ) );
+        if ( AttachNumb > LastAttachmentNumber )
         {
             LastAttachmentNumber = AttachNumb;
         }
@@ -112,7 +112,7 @@ int Model_Attachment::LastAttachmentNumber(const wxString &RefType, const int Re
 }
 
 /** Return the description of the choice reftype */
-const wxString Model_Attachment::reftype_desc(const int RefTypeEnum)
+const wxString Model_Attachment::reftype_desc ( const int RefTypeEnum )
 {
     const auto &item = REFTYPE_CHOICES[RefTypeEnum];
     const wxString reftype_desc = item.second;
@@ -120,13 +120,13 @@ const wxString Model_Attachment::reftype_desc(const int RefTypeEnum)
 }
 
 /** Return a dataset with attachments linked to a specific type*/
-std::map<int, Model_Attachment::Data_Set> Model_Attachment::get_all(REFTYPE reftype)
+std::map<int, Model_Attachment::Data_Set> Model_Attachment::get_all ( REFTYPE reftype )
 {
     std::map<int, Model_Attachment::Data_Set> data;
-    const wxString reftype_desc = Model_Attachment::reftype_desc(reftype);
-    for (const auto &attachment : this->find(Model_Attachment::DB_Table_ATTACHMENT::REFTYPE(reftype_desc)))
+    const wxString reftype_desc = Model_Attachment::reftype_desc ( reftype );
+    for ( const auto &attachment : this->find ( Model_Attachment::DB_Table_ATTACHMENT::REFTYPE ( reftype_desc ) ) )
     {
-        data[attachment.REFID].push_back(attachment);
+        data[attachment.REFID].push_back ( attachment );
     }
 
     return data;
@@ -137,11 +137,11 @@ wxArrayString Model_Attachment::allDescriptions()
 {
     wxArrayString descriptions;
     wxString PreviousDescription;
-    for (const auto &attachment : this->all(COL_DESCRIPTION))
+    for ( const auto &attachment : this->all ( COL_DESCRIPTION ) )
     {
-        if (attachment.DESCRIPTION != PreviousDescription)
+        if ( attachment.DESCRIPTION != PreviousDescription )
         {
-            descriptions.Add(attachment.DESCRIPTION);
+            descriptions.Add ( attachment.DESCRIPTION );
             PreviousDescription = attachment.DESCRIPTION;
         }
     }

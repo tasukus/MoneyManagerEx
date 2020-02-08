@@ -30,23 +30,23 @@
 #include <wx/cmdline.h>
 
 //----------------------------------------------------------------------------
-wxIMPLEMENT_APP(mmGUIApp);
+wxIMPLEMENT_APP ( mmGUIApp );
 //----------------------------------------------------------------------------
 
 static const wxCmdLineEntryDesc g_cmdLineDesc [] =
 {
-    { wxCMD_LINE_PARAM, nullptr, nullptr, wxT_2("database file"), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
+    { wxCMD_LINE_PARAM, nullptr, nullptr, wxT_2 ( "database file" ), wxCMD_LINE_VAL_STRING, wxCMD_LINE_PARAM_OPTIONAL },
     { wxCMD_LINE_NONE, nullptr, nullptr, nullptr, wxCMD_LINE_VAL_NONE, 0 }
 };
 
 //----------------------------------------------------------------------------
 
 mmGUIApp::mmGUIApp()
-    : m_locale(wxLanguage::wxLANGUAGE_DEFAULT)
+    : m_locale ( wxLanguage::wxLANGUAGE_DEFAULT )
 {
 #if wxUSE_ON_FATAL_EXCEPTION
     // catch fatal exceptions
-    wxHandleFatalExceptions(true);
+    wxHandleFatalExceptions ( true );
 #endif
 }
 
@@ -55,76 +55,86 @@ wxLanguage mmGUIApp::getGUILanguage() const
     return this->m_lang;
 }
 
-bool mmGUIApp::setGUILanguage(wxLanguage lang)
+bool mmGUIApp::setGUILanguage ( wxLanguage lang )
 {
-    if (lang == wxLANGUAGE_UNKNOWN)
+    if ( lang == wxLANGUAGE_UNKNOWN )
     {
         lang = wxLANGUAGE_DEFAULT;
     }
-    if (lang == this->m_lang)
+
+    if ( lang == this->m_lang )
     {
         return false;
     }
+
     wxTranslations *trans = new wxTranslations;
-    trans->SetLanguage(lang);
+    trans->SetLanguage ( lang );
     trans->AddStdCatalog();
-    if (!trans->AddCatalog("mmex", wxLANGUAGE_ENGLISH_US) && lang != wxLANGUAGE_ENGLISH_US)
+
+    if ( !trans->AddCatalog ( "mmex", wxLANGUAGE_ENGLISH_US ) && lang != wxLANGUAGE_ENGLISH_US )
     {
-        size_t count = trans->GetAvailableTranslations("mmex").GetCount();
+        size_t count = trans->GetAvailableTranslations ( "mmex" ).GetCount();
         wxString msg;
-        if (lang == wxLANGUAGE_DEFAULT)
+
+        if ( lang == wxLANGUAGE_DEFAULT )
         {
             wxString best;
 #if wxCHECK_VERSION(3, 1, 2) && !wxCHECK_VERSION(3, 1, 3)
 // workaround for https://github.com/wxWidgets/wxWidgets/pull/1082
-            wxArrayString all = trans->GetAcceptableTranslations("mmex");
+            wxArrayString all = trans->GetAcceptableTranslations ( "mmex" );
             best = all.IsEmpty() ? "" : all[0];
 #else
-            best = trans->GetBestTranslation("mmex");
+            best = trans->GetBestTranslation ( "mmex" );
 #endif
-            if (best.IsEmpty())
+
+            if ( best.IsEmpty() )
             {
-                best = wxLocale::GetLanguageName(wxLocale::GetSystemLanguage());
+                best = wxLocale::GetLanguageName ( wxLocale::GetSystemLanguage() );
             }
-            msg = wxString::Format(_("Cannot load a translation for the default language of your system (%s)."),
-                                   best);
+
+            msg = wxString::Format ( _( "Cannot load a translation for the default language of your system (%s)." ),
+                    best );
         }
         else
         {
-            msg = wxString::Format(_("Cannot load a translation for the selected language (%s).")
-                                   , wxLocale::GetLanguageName(lang));
-        }
-        msg += "\n\n";
-        if (count)
-        {
-            msg += wxString::Format(_("Please use the Switch Application Language option in View menu to select one of the %zu available languages."), count + 1);
-        }
-        else
-        {
-            msg += _("There are no translation files installed.");
+            msg = wxString::Format ( _( "Cannot load a translation for the selected language (%s)." )
+                    , wxLocale::GetLanguageName ( lang ) );
         }
 
-        mmErrorDialogs::MessageWarning(nullptr, msg, _("Language change"));
-        wxDELETE(trans);
+        msg += "\n\n";
+
+        if ( count )
+        {
+            msg += wxString::Format ( _( "Please use the Switch Application Language option in View menu to select one of the %zu available languages." ), count + 1 );
+        }
+        else
+        {
+            msg += _( "There are no translation files installed." );
+        }
+
+        mmErrorDialogs::MessageWarning ( nullptr, msg, _( "Language change" ) );
+        wxDELETE ( trans );
         return false;
     }
-    wxTranslations::Set(trans);
+
+    wxTranslations::Set ( trans );
     this->m_lang = lang;
-    Option::instance().setLanguage(lang);
+    Option::instance().setLanguage ( lang );
     return true;
 }
 
-void mmGUIApp::OnInitCmdLine(wxCmdLineParser &parser)
+void mmGUIApp::OnInitCmdLine ( wxCmdLineParser &parser )
 {
-    parser.SetDesc (g_cmdLineDesc);
+    parser.SetDesc ( g_cmdLineDesc );
 }
 
-bool mmGUIApp::OnCmdLineParsed(wxCmdLineParser &parser)
+bool mmGUIApp::OnCmdLineParsed ( wxCmdLineParser &parser )
 {
-    if(parser.GetParamCount() > 0)
+    if ( parser.GetParamCount() > 0 )
     {
-        m_optParam = parser.GetParam(0);
+        m_optParam = parser.GetParam ( 0 );
     }
+
     return true;
 }
 
@@ -132,22 +142,21 @@ bool mmGUIApp::OnCmdLineParsed(wxCmdLineParser &parser)
 /*
     See also: wxStackWalker, wxDebugReportUpload.
 */
-void mmGUIApp::reportFatalException(wxDebugReport::Context ctx)
+void mmGUIApp::reportFatalException ( wxDebugReport::Context ctx )
 {
     // TODO email it or upload it
     wxDebugReportCompress report;
 
-    if (!report.IsOk())
+    if ( !report.IsOk() )
     {
-        return wxSafeShowMessage(mmex::getProgramName()
-                                 , _("Fatal error occurred.\nApplication will be terminated."));
+        return wxSafeShowMessage ( mmex::getProgramName()
+                , _( "Fatal error occurred.\nApplication will be terminated." ) );
     }
 
-    report.AddAll(ctx);
-
+    report.AddAll ( ctx );
     wxDebugReportPreviewStd preview;
 
-    if (preview.Show(report) && report.Process())
+    if ( preview.Show ( report ) && report.Process() )
     {
         report.Reset();
     }
@@ -155,33 +164,33 @@ void mmGUIApp::reportFatalException(wxDebugReport::Context ctx)
 /*
     This method allows catching the exceptions thrown by any event handler.
 */
-void mmGUIApp::HandleEvent(wxEvtHandler *handler, wxEventFunction func, wxEvent &event) const
+void mmGUIApp::HandleEvent ( wxEvtHandler *handler, wxEventFunction func, wxEvent &event ) const
 {
     try
     {
-        wxApp::HandleEvent(handler, func, event);
+        wxApp::HandleEvent ( handler, func, event );
     }
-    catch (const wxSQLite3Exception &e)
+    catch ( const wxSQLite3Exception &e )
     {
-        wxLogError(e.GetMessage());
+        wxLogError ( e.GetMessage() );
     }
-    catch (const std::exception &e)
+    catch ( const std::exception &e )
     {
-        wxLogError("%s", e.what());
+        wxLogError ( "%s", e.what() );
     }
 }
 
-int mmGUIApp::FilterEvent(wxEvent &event)
+int mmGUIApp::FilterEvent ( wxEvent &event )
 {
-    const int ret = wxApp::FilterEvent( event );
+    const int ret = wxApp::FilterEvent ( event );
 
-    if (event.GetEventType() == wxEVT_SHOW)
+    if ( event.GetEventType() == wxEVT_SHOW )
     {
-        wxWindow *win = static_cast<wxWindow *>(event.GetEventObject());
+        wxWindow *win = static_cast<wxWindow *> ( event.GetEventObject() );
 
-        if (win && win->IsTopLevel() && win != this->m_frame) // wxDialog & wxFrame http://docs.wxwidgets.org/trunk/classwx_top_level_window.html
+        if ( win && win->IsTopLevel() && win != this->m_frame ) // wxDialog & wxFrame http://docs.wxwidgets.org/trunk/classwx_top_level_window.html
         {
-            Model_Usage::instance().pageview(win);
+            Model_Usage::instance().pageview ( win );
         }
     }
 
@@ -192,83 +201,72 @@ int mmGUIApp::FilterEvent(wxEvent &event)
 
 void mmGUIApp::OnFatalException()
 {
-    reportFatalException(wxDebugReport::Context_Exception);
+    reportFatalException ( wxDebugReport::Context_Exception );
 }
 //----------------------------------------------------------------------------
 
-bool OnInitImpl(mmGUIApp *app)
+bool OnInitImpl ( mmGUIApp *app )
 {
-    app->SetAppName(mmex::GetAppName());
-
+    app->SetAppName ( mmex::GetAppName() );
     /* initialize GUI with best language */
     wxTranslations *trans = new wxTranslations;
-    trans->SetLanguage(wxLANGUAGE_DEFAULT);
+    trans->SetLanguage ( wxLANGUAGE_DEFAULT );
     trans->AddStdCatalog();
-    trans->AddCatalog("mmex", wxLANGUAGE_ENGLISH_US);
-    wxTranslations::Set(trans);
-
+    trans->AddCatalog ( "mmex", wxLANGUAGE_ENGLISH_US );
+    wxTranslations::Set ( trans );
     Model_Report::prepareTempFolder();
     Model_Report::WindowsUpdateRegistry();
-
     /* Initialize CURL */
-    curl_global_init(CURL_GLOBAL_ALL);
-
+    curl_global_init ( CURL_GLOBAL_ALL );
     /* Initialize Image Handlers */
     wxInitAllImageHandlers();
-
-    app->setSettingDB(new wxSQLite3Database());
-    app->getSettingDB()->Open(mmex::getPathUser(mmex::SETTINGS));
-    Model_Setting::instance(app->getSettingDB());
+    app->setSettingDB ( new wxSQLite3Database() );
+    app->getSettingDB()->Open ( mmex::getPathUser ( mmex::SETTINGS ) );
+    Model_Setting::instance ( app->getSettingDB() );
     Model_Setting::instance().ShrinkUsageTable();
-
-    Model_Usage::instance(app->getSettingDB());
-
+    Model_Usage::instance ( app->getSettingDB() );
     /* Load general MMEX Custom Settings */
-    Option::instance().LoadOptions(false);
-
+    Option::instance().LoadOptions ( false );
     /* set preffered GUI language */
-    app->setGUILanguage(Option::instance().getLanguageID());
-
+    app->setGUILanguage ( Option::instance().getLanguageID() );
     /* Was App Maximized? */
-    bool isMax = Model_Setting::instance().GetBoolSetting("ISMAXIMIZED", true);
-
+    bool isMax = Model_Setting::instance().GetBoolSetting ( "ISMAXIMIZED", true );
     //Get System screen size
 #ifdef _MSC_VER
-    const int sys_screen_x = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-    const int sys_screen_y = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+    const int sys_screen_x = GetSystemMetrics ( SM_CXVIRTUALSCREEN );
+    const int sys_screen_y = GetSystemMetrics ( SM_CYVIRTUALSCREEN );
 #else
-    const int sys_screen_x = wxSystemSettings::GetMetric(wxSYS_SCREEN_X);
-    const int sys_screen_y = wxSystemSettings::GetMetric(wxSYS_SCREEN_Y);
+    const int sys_screen_x = wxSystemSettings::GetMetric ( wxSYS_SCREEN_X );
+    const int sys_screen_y = wxSystemSettings::GetMetric ( wxSYS_SCREEN_Y );
 #endif
-
     /* Load Dimensions of Window */
-    int valx = Model_Setting::instance().GetIntSetting("ORIGINX", 50);
-    int valy = Model_Setting::instance().GetIntSetting("ORIGINY", 50);
-    const int valw = Model_Setting::instance().GetIntSetting("SIZEW", sys_screen_x/4*3);
-    const int valh = Model_Setting::instance().GetIntSetting("SIZEH", sys_screen_y/4*3);
+    int valx = Model_Setting::instance().GetIntSetting ( "ORIGINX", 50 );
+    int valy = Model_Setting::instance().GetIntSetting ( "ORIGINY", 50 );
+    const int valw = Model_Setting::instance().GetIntSetting ( "SIZEW", sys_screen_x/4*3 );
+    const int valh = Model_Setting::instance().GetIntSetting ( "SIZEH", sys_screen_y/4*3 );
 
     //BUGFIX: #214 MMEX Window is "off screen"
-    if (valx >= sys_screen_x )
+    if ( valx >= sys_screen_x )
     {
         valx = sys_screen_x - valw;
     }
-    if (valy >= sys_screen_y )
+
+    if ( valy >= sys_screen_y )
     {
         valy = sys_screen_y - valh;
     }
 
-    app->m_frame = new mmGUIFrame(app, mmex::getProgramName(), wxPoint(valx, valy), wxSize(valw, valh));
-
+    app->m_frame = new mmGUIFrame ( app, mmex::getProgramName(), wxPoint ( valx, valy ), wxSize ( valw, valh ) );
     const bool ok = app->m_frame->Show();
-    if (isMax)
+
+    if ( isMax )
     {
-        app->m_frame->Maximize(true);
+        app->m_frame->Maximize ( true );
     }
 
     // success: wxApp::OnRun() will be called which will enter the main message
     // loop and the application will run. If we returned FALSE here, the
     // application would exit immediately.
-
     return ok;
 }
 
@@ -276,11 +274,12 @@ bool OnInitImpl(mmGUIApp *app)
 bool mmGUIApp::OnInit()
 {
     m_checker = new wxSingleInstanceChecker;
-    if (m_checker->IsAnotherRunning())
+
+    if ( m_checker->IsAnotherRunning() )
     {
-        wxMessageBox(_(
-                         "MMEX is already running...\n\n"
-                         "Multiple instances are no longer supported."), _("MMEX Instance Check"));
+        wxMessageBox ( _(
+                "MMEX is already running...\n\n"
+                "Multiple instances are no longer supported." ), _( "MMEX Instance Check" ) );
         delete m_checker;
         return false;
     }
@@ -289,15 +288,15 @@ bool mmGUIApp::OnInit()
 
     try
     {
-        ok = wxApp::OnInit() && OnInitImpl(this);
+        ok = wxApp::OnInit() && OnInitImpl ( this );
     }
-    catch (const wxSQLite3Exception &e)
+    catch ( const wxSQLite3Exception &e )
     {
-        wxLogError(e.GetMessage());
+        wxLogError ( e.GetMessage() );
     }
-    catch (const std::exception &e)
+    catch ( const std::exception &e )
     {
-        wxLogError("%s", e.what());
+        wxLogError ( "%s", e.what() );
     }
 
     return ok;
@@ -305,33 +304,28 @@ bool mmGUIApp::OnInit()
 
 int mmGUIApp::OnExit()
 {
-    wxLogDebug("OnExit()");
+    wxLogDebug ( "OnExit()" );
     Model_Usage::Data *usage = Model_Usage::instance().create();
     usage->USAGEDATE = wxDate::Today().FormatISODate();
-
     wxString rj = Model_Usage::instance().To_JSON_String();
-    wxLogDebug("===== mmGUIApp::OnExit ===========================");
-    wxLogDebug("RapidJson\n%s", rj);
-
+    wxLogDebug ( "===== mmGUIApp::OnExit ===========================" );
+    wxLogDebug ( "RapidJson\n%s", rj );
     //Document rapidjson;
     //rapidjson.Parse(rj);
     //wxLogDebug("===== mmGUIApp::OnExit ======== DOM Check ========");
     //wxLogDebug("RapidJson\n%s", JSON_PrettyFormated(rapidjson));
-
     usage->JSONCONTENT = rj;
-    Model_Usage::instance().save(usage);
+    Model_Usage::instance().save ( usage );
 
-    if (m_setting_db)
+    if ( m_setting_db )
     {
         delete m_setting_db;
     }
 
     /* CURL Cleanup */
     curl_global_cleanup();
-
     //Delete mmex temp folder for current user
-    wxFileName::Rmdir(mmex::getTempFolder(), wxPATH_RMDIR_RECURSIVE);
-
+    wxFileName::Rmdir ( mmex::getTempFolder(), wxPATH_RMDIR_RECURSIVE );
     delete m_checker;
     return 0;
 }

@@ -29,20 +29,20 @@ class mmBudgetingPanel;
 /* Custom ListCtrl class that implements virtual LC style */
 class budgetingListCtrl : public mmListCtrl
 {
-    DECLARE_NO_COPY_CLASS(budgetingListCtrl)
+    DECLARE_NO_COPY_CLASS ( budgetingListCtrl )
     wxDECLARE_EVENT_TABLE();
 
 public:
-    budgetingListCtrl(mmBudgetingPanel *cp, wxWindow *parent, const wxWindowID id);
+    budgetingListCtrl ( mmBudgetingPanel *cp, wxWindow *parent, const wxWindowID id );
 
 public:
     /* required overrides for virtual style list control */
-    virtual wxString OnGetItemText(long item, long column) const;
-    virtual wxListItemAttr *OnGetItemAttr(long item) const;
-    virtual int OnGetItemImage(long item) const;
+    virtual wxString OnGetItemText ( long item, long column ) const;
+    virtual wxListItemAttr *OnGetItemAttr ( long item ) const;
+    virtual int OnGetItemImage ( long item ) const;
 
-    void OnListItemSelected(wxListEvent &event);
-    void OnListItemActivated(wxListEvent &event);
+    void OnListItemSelected ( wxListEvent &event );
+    void OnListItemActivated ( wxListEvent &event );
 
 private:
     wxListItemAttr attr3_; // style3
@@ -55,13 +55,13 @@ class mmBudgetingPanel : public mmPanelBase
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmBudgetingPanel(int budgetYearID
-                     , wxWindow *parent
-                     , wxWindowID winid = wxID_ANY
-                     , const wxPoint &pos = wxDefaultPosition
-                     , const wxSize &size = wxDefaultSize
-                     , long style = wxTAB_TRAVERSAL | wxNO_BORDER
-                     , const wxString &name = "mmBudgetingPanel");
+    mmBudgetingPanel ( int budgetYearID
+                       , wxWindow *parent
+                       , wxWindowID winid = wxID_ANY
+                       , const wxPoint &pos = wxDefaultPosition
+                       , const wxSize &size = wxDefaultSize
+                       , long style = wxTAB_TRAVERSAL | wxNO_BORDER
+                       , const wxString &name = "mmBudgetingPanel" );
     ~mmBudgetingPanel();
 
     /* updates the checking panel data */
@@ -72,9 +72,9 @@ public:
     }
 
     /* Getter for Virtual List Control */
-    wxString getItem(long item, long column);
+    wxString getItem ( long item, long column );
 
-    void DisplayBudgetingDetails(int budgetYearID);
+    void DisplayBudgetingDetails ( int budgetYearID );
     int GetBudgetYearID()
     {
         return budgetYearID_;
@@ -83,9 +83,9 @@ public:
     {
         return currentView_;
     }
-    int GetItemImage(long item) const;
-    void OnListItemActivated(int selectedIndex);
-    int GetTransID(long item)
+    int GetItemImage ( long item ) const;
+    void OnListItemActivated ( int selectedIndex );
+    int GetTransID ( long item )
     {
         return budget_[item].first;
     }
@@ -94,7 +94,7 @@ public:
 
     wxString BuildPage() const
     {
-        return listCtrlBudget_->BuildPage(GetPanelTitle());
+        return listCtrlBudget_->BuildPage ( GetPanelTitle() );
     }
 
 private:
@@ -118,22 +118,22 @@ private:
     wxStaticText *expenses_actual_=nullptr;
     wxStaticText *expenses_diff_=nullptr;
 
-    bool Create(wxWindow *parent, wxWindowID winid
-                , const wxPoint &pos = wxDefaultPosition
-                , const wxSize &size = wxDefaultSize
-                , long style = wxTAB_TRAVERSAL | wxNO_BORDER
-                , const wxString &name = "mmBudgetingPanel");
+    bool Create ( wxWindow *parent, wxWindowID winid
+                  , const wxPoint &pos = wxDefaultPosition
+                  , const wxSize &size = wxDefaultSize
+                  , long style = wxTAB_TRAVERSAL | wxNO_BORDER
+                  , const wxString &name = "mmBudgetingPanel" );
 
     void CreateControls();
     void sortTable();
-    bool DisplayEntryAllowed(int categoryID, int subcategoryID);
+    bool DisplayEntryAllowed ( int categoryID, int subcategoryID );
     void UpdateBudgetHeading();
-    double getEstimate(int category, int subcategory) const;
+    double getEstimate ( int category, int subcategory ) const;
     wxString GetPanelTitle() const;
 
     /* Event handlers for Buttons */
-    void OnViewPopupSelected(wxCommandEvent &event);
-    void OnMouseLeftDown(wxMouseEvent &event);
+    void OnViewPopupSelected ( wxCommandEvent &event );
+    void OnMouseLeftDown ( wxMouseEvent &event );
 
     enum EColumn
     {

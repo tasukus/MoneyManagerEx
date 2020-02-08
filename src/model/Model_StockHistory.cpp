@@ -31,11 +31,11 @@ Model_StockHistory::~Model_StockHistory()
 * Initialize the global Model_StockHistory table.
 * Reset the Model_StockHistory table or create the table if it does not exist.
 */
-Model_StockHistory &Model_StockHistory::instance(wxSQLite3Database *db)
+Model_StockHistory &Model_StockHistory::instance ( wxSQLite3Database *db )
 {
     Model_StockHistory &ins = Singleton<Model_StockHistory>::instance();
     ins.db_ = db;
-    ins.ensure(db);
+    ins.ensure ( db );
 
     return ins;
 }
@@ -46,39 +46,39 @@ Model_StockHistory &Model_StockHistory::instance()
     return Singleton<Model_StockHistory>::instance();
 }
 
-Model_StockHistory::Data *Model_StockHistory::get(const wxString &symbol, const wxDate &date)
+Model_StockHistory::Data *Model_StockHistory::get ( const wxString &symbol, const wxDate &date )
 {
-    Data *hist = this->get_one(SYMBOL(symbol), DB_Table_STOCKHISTORY::DATE(date.FormatISODate()));
-    if (hist)
+    Data *hist = this->get_one ( SYMBOL ( symbol ), DB_Table_STOCKHISTORY::DATE ( date.FormatISODate() ) );
+    if ( hist )
     {
         return hist;
     }
 
-    Data_Set items = this->find(SYMBOL(symbol), DB_Table_STOCKHISTORY::DATE(date.FormatISODate()));
-    if (!items.empty())
+    Data_Set items = this->find ( SYMBOL ( symbol ), DB_Table_STOCKHISTORY::DATE ( date.FormatISODate() ) );
+    if ( !items.empty() )
     {
-        hist = this->get(items[0].id(), this->db_);
+        hist = this->get ( items[0].id(), this->db_ );
     }
     return hist;
 }
 
-wxDate Model_StockHistory::DATE(const Data &hist)
+wxDate Model_StockHistory::DATE ( const Data &hist )
 {
-    return Model::to_date(hist.DATE);
+    return Model::to_date ( hist.DATE );
 }
 
-DB_Table_STOCKHISTORY::DATE Model_StockHistory::DATE(const wxDate &date, OP op)
+DB_Table_STOCKHISTORY::DATE Model_StockHistory::DATE ( const wxDate &date, OP op )
 {
-    return DB_Table_STOCKHISTORY::DATE(date.FormatISODate(), op);
+    return DB_Table_STOCKHISTORY::DATE ( date.FormatISODate(), op );
 }
 
 /**
 Adds or updates an element in stock history
 */
-int Model_StockHistory::addUpdate(const wxString &symbol, const wxDate &date, double price, UPDTYPE type)
+int Model_StockHistory::addUpdate ( const wxString &symbol, const wxDate &date, double price, UPDTYPE type )
 {
-    Data *stockHist = this->get(symbol, date);
-    if (!stockHist)
+    Data *stockHist = this->get ( symbol, date );
+    if ( !stockHist )
     {
         stockHist = this->create();
     }
@@ -87,5 +87,5 @@ int Model_StockHistory::addUpdate(const wxString &symbol, const wxDate &date, do
     stockHist->DATE = date.FormatISODate();
     stockHist->VALUE = price;
     stockHist->UPDTYPE = type;
-    return save(stockHist);
+    return save ( stockHist );
 }

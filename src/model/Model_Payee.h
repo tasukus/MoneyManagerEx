@@ -39,7 +39,7 @@ public:
     * Return the static instance address for Model_Payee table
     * Note: Assigning the address to a local variable can destroy the instance.
     */
-    static Model_Payee &instance(wxSQLite3Database *db);
+    static Model_Payee &instance ( wxSQLite3Database *db );
 
     /**
     * Return the static instance address for Model_Payee table
@@ -48,23 +48,23 @@ public:
     static Model_Payee &instance();
 
 public:
-    const Data_Set FilterPayees(const wxString &payee_pattern);
+    const Data_Set FilterPayees ( const wxString &payee_pattern );
 
     /**
     * Return the Data record pointer for the given payee name
     * Returns 0 when payee not found.
     */
-    Data *get(const wxString &name);
-    static wxString get_payee_name(int payee_id);
+    Data *get ( const wxString &name );
+    static wxString get_payee_name ( int payee_id );
 
-    bool remove(int id);
+    bool remove ( int id );
 
     const wxArrayString all_payee_names();
     const wxArrayString used_payee_names();
 
-    static bool is_used(int id);
-    static bool is_used(const Data *record);
-    static bool is_used(const Data &record);
+    static bool is_used ( int id );
+    static bool is_used ( const Data *record );
+    static bool is_used ( const Data &record );
 };
 
 #endif

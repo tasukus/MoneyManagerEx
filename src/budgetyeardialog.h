@@ -24,31 +24,31 @@
 
 class mmBudgetYearDialog : public wxDialog
 {
-    wxDECLARE_DYNAMIC_CLASS(mmBudgetYearDialog);
+    wxDECLARE_DYNAMIC_CLASS ( mmBudgetYearDialog );
     wxDECLARE_EVENT_TABLE();
 
 public:
     mmBudgetYearDialog();
-    mmBudgetYearDialog(wxWindow *parent);
+    mmBudgetYearDialog ( wxWindow *parent );
 
 private:
-    bool Create(wxWindow *parent, wxWindowID id,
-                const wxString &caption,
-                const wxPoint &pos,
-                const wxSize &size,
-                long style);
+    bool Create ( wxWindow *parent, wxWindowID id,
+                  const wxString &caption,
+                  const wxPoint &pos,
+                  const wxSize &size,
+                  long style );
 
     void CreateControls();
 
     // utility functions
-    void OnOk(wxCommandEvent &event);
-    void OnAdd(wxCommandEvent &event);
-    void OnAddMonth(wxCommandEvent &WXUNUSED(event));
-    void OnDelete(wxCommandEvent &event);
-    void OnBSelect(wxCommandEvent &event);
-    void OnEdit(wxCommandEvent &event);
+    void OnOk ( wxCommandEvent &event );
+    void OnAdd ( wxCommandEvent &event );
+    void OnAddMonth ( wxCommandEvent &WXUNUSED ( event ) );
+    void OnDelete ( wxCommandEvent &event );
+    void OnBSelect ( wxCommandEvent &event );
+    void OnEdit ( wxCommandEvent &event );
     void fillControls();
-    void OnDoubleClicked(wxCommandEvent &event);
+    void OnDoubleClicked ( wxCommandEvent &event );
 
     wxListBox *m_listBox=nullptr;
     enum { ID_ADD_MONTH = wxID_HIGHEST + 300 };
