@@ -29,10 +29,13 @@ class mmQIFExportDialog : public wxDialog
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmQIFExportDialog() {}
+    mmQIFExportDialog() : wxDialog()
+    {
+        return;
+    }
     //virtual ~mmQIFExportDialog() {}
 
-    mmQIFExportDialog ( wxWindow *parent /*, int gotoAccountID*/ );
+    explicit mmQIFExportDialog ( wxWindow *parent /*, int gotoAccountID*/ );
 
     bool Create ( wxWindow *parent
                   , wxWindowID id
@@ -55,20 +58,20 @@ private:
     void OnCancel ( wxCommandEvent &event );
     void OnOk ( wxCommandEvent &WXUNUSED ( event ) );
 
-    wxCheckBox *cCategs_;
-    wxCheckBox *accountsCheckBox_;
-    wxButton *bSelectedAccounts_;
-    wxCheckBox *dateFromCheckBox_;
-    wxCheckBox *dateToCheckBox_;
-    wxDatePickerCtrl *fromDateCtrl_;
-    wxDatePickerCtrl *toDateCtrl_;
-    wxStaticText *choiceDateFormat_label_;
-    wxComboBox *m_choiceDateFormat;
-    wxCheckBox *toFileCheckBox_;
-    wxStaticText *file_name_label_;
-    wxButton *button_search_;
-    wxTextCtrl *m_text_ctrl_;
-    wxTextCtrl *log_field_;
+    wxCheckBox *cCategs_=nullptr;
+    wxCheckBox *accountsCheckBox_=nullptr;
+    wxButton *bSelectedAccounts_=nullptr;
+    wxCheckBox *dateFromCheckBox_=nullptr;
+    wxCheckBox *dateToCheckBox_=nullptr;
+    wxDatePickerCtrl *fromDateCtrl_ = nullptr;
+    wxDatePickerCtrl *toDateCtrl_ = nullptr;
+    wxStaticText *choiceDateFormat_label_ = nullptr;
+    wxComboBox *m_choiceDateFormat = nullptr;
+    wxCheckBox *toFileCheckBox_ = nullptr;
+    wxStaticText *file_name_label_ = nullptr;
+    wxButton *button_search_ = nullptr;
+    wxTextCtrl *m_text_ctrl_ = nullptr;
+    wxTextCtrl *log_field_ = nullptr;
     //wxLog *logger_;
 
     /* Selected accounts values */

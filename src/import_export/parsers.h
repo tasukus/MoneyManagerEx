@@ -42,13 +42,13 @@ public:
 
     // Gets the number of lines that can be parsed.
     // Depending on type of file there may be lines that are not transactions.
-    virtual unsigned int GetLinesCount() const = 0;
+    virtual size_t GetLinesCount() const = 0;
 
     // Gets the number of items in the specified line.
-    virtual unsigned int GetItemsCount ( unsigned int line ) const = 0;
+    virtual size_t GetItemsCount ( const size_t line ) const = 0;
 
     // Gets the item or wxEmptyString if there is none.
-    virtual wxString GetItem ( unsigned int line, unsigned int itemInLine ) const = 0;
+    virtual const wxString &GetItem ( const size_t line, const size_t itemInLine ) const = 0;
 
 // *********************** Export related methods ***********************
     // Adds a new empty line to the output file. Use NewItem() to add items to this line.
@@ -66,6 +66,7 @@ public:
 // A base class for a parser that reads the file in to a string table in memory.
 class TableBasedFile : public ITransactionsFile
 {
+    TableBasedFile() = delete;
 public:
     explicit TableBasedFile ( wxWindow *pParentWindow ) : pParentWindow_( pParentWindow )
     {
@@ -73,17 +74,17 @@ public:
     }
     virtual ~TableBasedFile()
     {
-        for ( auto line : itemsTable_ )
+        for ( auto &line : itemsTable_ )
         {
             line.clear();
         }
         itemsTable_.clear();
     }
-    unsigned int GetLinesCount() const override
+    size_t GetLinesCount() const override
     {
         return itemsTable_.size();
     }
-    unsigned int GetItemsCount ( unsigned int line ) const override
+    size_t GetItemsCount ( const size_t line ) const override
     {
         if ( line >= GetLinesCount() )
         {
@@ -91,7 +92,7 @@ public:
         }
         return itemsTable_[line].size();
     }
-    wxString GetItem ( unsigned int line, unsigned int itemInLine ) const override
+    inline const wxString &GetItem ( const size_t line, const size_t itemInLine ) const override
     {
         if ( line >= GetLinesCount() || itemInLine >= itemsTable_[line].size() )
         {

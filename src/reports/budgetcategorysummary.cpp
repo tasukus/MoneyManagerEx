@@ -55,13 +55,13 @@ const wxString mmReportBudgetCategorySummary::actualAmountColour ( double amount
 
     if ( amount == 0 )
     {
-        actAmtColStr = "blue";
+        return "blue";
     }
     else
     {
         if ( actual < estimated )
         {
-            actAmtColStr = "red";
+            return "red";
         }
     }
 

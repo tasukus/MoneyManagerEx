@@ -204,7 +204,7 @@ struct DB_Table_%s : public DB_Table
     typedef std::map<int, Self::Data*> Index_By_Id;
     Cache cache_;
     Index_By_Id index_by_id_;
-    Data* fake_; // in case the entity not found
+    Data* fake_ = nullptr; // in case the entity not found
 
     /** Destructor: clears any data records stored in memory */
     ~DB_Table_%s()
@@ -323,7 +323,7 @@ struct DB_Table_%s : public DB_Table
 '''
         s += '''
     /** Returns the column name as a string*/
-    static wxString column_to_name(COLUMN col)
+    static wxString column_to_name( const COLUMN col)
     {
         switch(col)
         {
@@ -375,7 +375,7 @@ struct DB_Table_%s : public DB_Table
             return %s;
         }
 
-        void id(int id)
+        void id(const int id)
         {
             %s = id;
         }
@@ -392,7 +392,7 @@ struct DB_Table_%s : public DB_Table
 ''' % (self._primay_key, self._primay_key)
 
         s += '''
-        explicit Data(Self* table = 0)
+        explicit Data(Self* table = nullptr)
         {
             table_ = table;
         '''
@@ -412,7 +412,7 @@ struct DB_Table_%s : public DB_Table
         s += '''
         }
 
-        explicit Data(wxSQLite3ResultSet& q, Self* table = 0)
+        explicit Data(wxSQLite3ResultSet& q, Self* table = nullptr)
         {
             table_ = table;
         '''
@@ -519,7 +519,10 @@ struct DB_Table_%s : public DB_Table
         /** Save the record instance in memory to the database. */
         bool save(wxSQLite3Database* db)
         {
-            if (db && db->IsReadOnly()) return false;
+            if (db && db->IsReadOnly())
+            {
+                return false;
+            }
             if (!table_ || !db)
             {
                 wxLogError("can not save %s");

@@ -68,7 +68,7 @@ const wxString mmExportTransaction::getTransactionQIF ( const Model_Checking::Fu
     buffer << "C" << ( full_tran.STATUS == "R" ? "R" : "" ) << "\n";
     const double value = Model_Checking::balance ( full_tran
                          , ( reverce ? full_tran.TOACCOUNTID : full_tran.ACCOUNTID ) );
-    const wxString &s = wxString::FromCDouble ( value, 2 );
+    const wxString s = wxString::FromCDouble ( value, 2 );
     buffer << "T" << s << "\n";
     if ( !payee.empty() )
     {

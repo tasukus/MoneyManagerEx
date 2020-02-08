@@ -31,8 +31,8 @@ public:
     explicit mmReportCashFlow ( TYPE cashflowreporttype );
     virtual ~mmReportCashFlow();
 
-    virtual wxString getHTMLText();
-    virtual int report_parameters();
+    wxString getHTMLText() override;
+    int report_parameters() const noexcept override;
 
 protected:
     wxString getHTMLText_i();

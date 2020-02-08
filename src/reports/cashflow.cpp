@@ -328,7 +328,7 @@ wxString mmReportCashFlow::getHTMLText_i()
         }
         else
         {
-            const wxDateTime &firstDayOfTheMonth = wxDateTime ( dtEnd ).SetDay ( 1 );
+            const wxDateTime firstDayOfTheMonth = wxDateTime ( dtEnd ).SetDay ( 1 );
             if ( dtEnd == firstDayOfTheMonth )
             {
                 colorNum = ( colorNum + 1 ) % 2;

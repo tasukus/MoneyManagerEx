@@ -38,7 +38,7 @@ wxEND_EVENT_TABLE()
 
 mmQIFExportDialog::mmQIFExportDialog ( wxWindow *parent /*, int gotoAccountID*/ )
 {
-    long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
+    const long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create ( parent, wxID_ANY, _( "QIF Export" ), wxDefaultPosition, wxSize ( 500, 300 ), style );
 }
 
@@ -55,7 +55,7 @@ bool mmQIFExportDialog::Create ( wxWindow *parent, wxWindowID id, const wxString
     this->SetMinSize ( wxSize ( 350, 450 ) );
     this->Fit();
 
-    return TRUE;
+    return true;
 }
 
 void mmQIFExportDialog::fillControls()
@@ -85,8 +85,8 @@ void mmQIFExportDialog::fillControls()
 
 void mmQIFExportDialog::CreateControls()
 {
-    int border = 5;
-    int fieldWidth = 180;
+    const int border = 5;
+    const int fieldWidth = 180;
 
     wxBoxSizer *main_sizer = new wxBoxSizer ( wxVERTICAL );
     this->SetSizer ( main_sizer );
@@ -246,8 +246,8 @@ void mmQIFExportDialog::OnAccountsButton ( wxCommandEvent &WXUNUSED ( event ) )
         selected_items = s_acc.GetSelections();
         for ( const auto &entry : selected_items )
         {
-            int index = entry;
-            const wxString accounts_name = m_accounts_name[index];
+            const int index = entry;
+            const wxString &accounts_name = m_accounts_name.Item ( index );
             const auto account = Model_Account::instance().get ( accounts_name );
             if ( account )
             {
@@ -264,7 +264,7 @@ void mmQIFExportDialog::OnAccountsButton ( wxCommandEvent &WXUNUSED ( event ) )
     }
     else if ( selected_accounts_id_.GetCount() == 1 )
     {
-        int account_id = accounts_id_[selected_items[0]];
+        const int account_id = accounts_id_[ selected_items[ 0 ] ];
         const Model_Account::Data *account = Model_Account::instance().get ( account_id );
         if ( account )
         {
@@ -386,9 +386,9 @@ void mmQIFExportDialog::OnFileNameEntered ( wxCommandEvent &event )
 
 void mmQIFExportDialog::mmExportQIF()
 {
-    bool exp_categ = cCategs_->IsChecked();
-    bool exp_transactions = ( accountsCheckBox_->IsChecked() && selected_accounts_id_.GetCount() > 0 );
-    bool write_to_file = toFileCheckBox_->IsChecked();
+    const bool exp_categ = cCategs_->IsChecked();
+    const bool exp_transactions = ( accountsCheckBox_->IsChecked() && selected_accounts_id_.GetCount() > 0 );
+    const bool write_to_file = toFileCheckBox_->IsChecked();
     wxString sErrorMsg;
     wxString buffer;
     size_t numRecords = 0, numCategories = 0, numAccounts = 0;

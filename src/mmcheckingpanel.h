@@ -252,7 +252,7 @@ public:
 
     void RefreshList ( int transID = -1 );
 
-    wxString BuildPage() const;
+    wxString BuildPage() const override;
 
 private:
     enum
@@ -368,7 +368,7 @@ private:
     const wxString GetPanelTitle ( const Model_Account::Data &account ) const;
 
     /* Getter for Virtual List Control */
-    const wxString getItem ( const long item, long column );
+    const wxString getItem ( const long item, const TransactionListCtrl::EColumn column );
 
 private:
     static void mmPlayTransactionSound();

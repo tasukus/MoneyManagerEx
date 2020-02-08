@@ -50,7 +50,7 @@ void mmReportBudget::SetDateToEndOfYear ( const int day, const wxDateTime::Month
     }
 }
 
-void mmReportBudget::SetBudgetMonth ( wxString budgetYearStr, wxDateTime &startDate, wxDateTime &endDate ) const
+void mmReportBudget::SetBudgetMonth ( const wxString &budgetYearStr, wxDateTime &startDate, wxDateTime &endDate ) const
 {
     wxStringTokenizer tz ( budgetYearStr,"-" );
     wxString yearStr = tz.GetNextToken();
