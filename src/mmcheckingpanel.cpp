@@ -739,15 +739,34 @@ void mmCheckingPanel::OnOpenAttachment ( wxCommandEvent &event )
 
 void mmCheckingPanel::initViewTransactionsHeader()
 {
-    const wxString def_view = Model_Setting::instance().ViewTransactions();
-    m_currentView = menu_labels().Index ( Model_Infotable::instance().GetStringInfo ( wxString::Format ( "CHECK_FILTER_ID_%d", m_AccountID ), def_view ) );
-
-    if ( m_currentView < 0 || static_cast<size_t> ( m_currentView ) >= menu_labels().size() )
+    //---------------------
     {
-        m_currentView = menu_labels().Index ( VIEW_TRANS_ALL_STR );
-    }
+        const wxString def_view = Model_Setting::instance().ViewTransactions();
+        const wxString def_viewLabelText = Model_Infotable::instance().GetStringInfo ( wxString::Format ( "CHECK_FILTER_ID_%d", m_AccountID ), def_view );
 
-    m_bitmapTransFilter->SetLabel ( wxGetTranslation ( menu_labels() [m_currentView] ) );
+        if ( def_viewLabelText.IsEmpty() == true )
+        {
+            m_currentView = MENU_VIEW_ALLTRANSACTIONS;
+        }
+        else
+        {
+            auto result = std::find_if ( menu_labels.cbegin(), menu_labels.cend(), [def_viewLabelText] ( const auto& mo )
+            {
+                return mo.second == def_viewLabelText;
+            } );
+
+            if ( result != menu_labels.cend() )
+            {
+                m_currentView = result->first;
+            }
+            else
+            {
+                m_currentView = MENU_VIEW_ALLTRANSACTIONS;
+            }
+        }
+    }
+    //---------------------
+    m_bitmapTransFilter->SetLabel ( wxGetTranslation ( menu_labels.at ( m_currentView ) ) );
 
     if ( m_currentView == MENU_VIEW_FILTER_DIALOG )
     {
@@ -764,23 +783,24 @@ void mmCheckingPanel::initViewTransactionsHeader()
 
 void mmCheckingPanel::setDateRange()
 {
-    mmDateRange *date_range = nullptr;
     const bool show_future = !Option::instance().getIgnoreFutureTransactions();
     const wxString future_date_string = wxDateTime ( 31, wxDateTime::Dec, 9999 ).FormatISODate();
 
     m_begin_date = "";
     m_end_date = "";
 
+    std::unique_ptr<mmDateRange> date_range;
+
     if ( !m_transFilterActive )
     {
         switch ( m_currentView )
         {
             case MENU_VIEW_TODAY:
-                date_range = new mmToday;
+                date_range = std::make_unique<mmToday>();
                 break;
 
             case MENU_VIEW_CURRENTMONTH:
-                date_range = new mmCurrentMonth;
+                date_range = std::make_unique<mmCurrentMonth>();
 
                 if ( show_future )
                 {
@@ -790,7 +810,7 @@ void mmCheckingPanel::setDateRange()
                 break;
 
             case MENU_VIEW_LAST30:
-                date_range = new mmLast30Days;
+                date_range = std::make_unique<mmLast30Days>();
 
                 if ( show_future )
                 {
@@ -800,7 +820,7 @@ void mmCheckingPanel::setDateRange()
                 break;
 
             case MENU_VIEW_LAST90:
-                date_range = new mmLast90Days;
+                date_range = std::make_unique<mmLast90Days>();
 
                 if ( show_future )
                 {
@@ -810,19 +830,19 @@ void mmCheckingPanel::setDateRange()
                 break;
 
             case MENU_VIEW_LASTMONTH:
-                date_range = new mmLastMonth;
+                date_range = std::make_unique<mmLastMonth>();
                 break;
 
             case MENU_VIEW_LAST3MONTHS:
-                date_range = new mmLast3Months;
+                date_range = std::make_unique<mmLast3Months>();
                 break;
 
             case MENU_VIEW_LAST12MONTHS:
-                date_range = new mmLast12Months;
+                date_range = std::make_unique<mmLast12Months>();
                 break;
 
             case  MENU_VIEW_CURRENTYEAR:
-                date_range = new mmCurrentYear;
+                date_range = std::make_unique<mmCurrentYear>();
 
                 if ( show_future )
                 {
@@ -832,7 +852,7 @@ void mmCheckingPanel::setDateRange()
                 break;
 
             case  MENU_VIEW_CURRENTFINANCIALYEAR:
-                date_range = new mmCurrentFinancialYear ( wxAtoi ( Option::instance().getFinancialYearStartDay() )
+                date_range = std::make_unique<mmCurrentFinancialYear> ( wxAtoi ( Option::instance().getFinancialYearStartDay() )
                     , wxAtoi ( Option::instance().getFinancialYearStartMonth() ) );
 
                 if ( show_future )
@@ -843,28 +863,40 @@ void mmCheckingPanel::setDateRange()
                 break;
 
             case  MENU_VIEW_LASTYEAR:
-                date_range = new mmLastYear;
+                date_range = std::make_unique<mmLastYear>();
                 break;
 
             case  MENU_VIEW_LASTFINANCIALYEAR:
-                date_range = new mmLastFinancialYear ( wxAtoi ( Option::instance().getFinancialYearStartDay() )
+                date_range = std::make_unique<mmLastFinancialYear> ( wxAtoi ( Option::instance().getFinancialYearStartDay() )
                     , wxAtoi ( Option::instance().getFinancialYearStartMonth() ) );
                 break;
 
             case  MENU_VIEW_STATEMENTDATE:
                 if ( Model_Account::BoolOf ( m_account->STATEMENTLOCKED ) )
                 {
-                    date_range = new mmSpecifiedRange ( Model_Account::DateOf ( m_account->STATEMENTDATE )
+                    date_range = std::make_unique<mmSpecifiedRange> ( Model_Account::DateOf ( m_account->STATEMENTDATE )
                         .Add ( wxDateSpan::Day() ), wxDateTime::Today() );
                 }
+
+                break;
+
+            case  MENU_VIEW_ALLTRANSACTIONS:
+                date_range = std::make_unique<mmAllTime>();
+                break;
         }
     }
 
     if ( date_range == nullptr )
     {
-        date_range = new mmAllTime;
+        date_range = std::make_unique<mmAllTime>();
     }
 
+    if ( date_range == nullptr )
+    {
+        return;
+    }
+
+    //------------------------------------------------
     if ( m_begin_date.empty() )
     {
         m_begin_date = date_range->start_date().FormatISODate();
@@ -875,7 +907,8 @@ void mmCheckingPanel::setDateRange()
         m_end_date = date_range->end_date().FormatISODate();
     }
 
-    delete date_range;
+    date_range.reset();
+    return;
 }
 
 void mmCheckingPanel::OnViewPopupSelected ( wxCommandEvent &event )
@@ -1720,46 +1753,49 @@ wxListItemAttr *TransactionListCtrl::OnGetItemAttr ( long item ) const
         user_colour_id = 0;
     }
 
-    if ( user_colour_id != 0 )
+    switch ( user_colour_id )
     {
-        if      ( user_colour_id == 1 )
-        {
+        case  1:
             return const_cast<wxListItemAttr *> ( &m_attr11 );
-        }
-        else if ( user_colour_id == 2 )
-        {
+
+        case 2:
             return const_cast<wxListItemAttr *> ( &m_attr12 );
-        }
-        else if ( user_colour_id == 3 )
-        {
+
+        case 3:
             return const_cast<wxListItemAttr *> ( &m_attr13 );
-        }
-        else if ( user_colour_id == 4 )
-        {
+
+        case 4:
             return const_cast<wxListItemAttr *> ( &m_attr14 );
-        }
-        else if ( user_colour_id == 5 )
-        {
+
+        case 5:
             return const_cast<wxListItemAttr *> ( &m_attr15 );
-        }
-        else if ( user_colour_id == 6 )
-        {
+
+        case 6:
             return const_cast<wxListItemAttr *> ( &m_attr16 );
-        }
-        else if ( user_colour_id == 7 )
-        {
+
+        case 7:
             return const_cast<wxListItemAttr *> ( &m_attr17 );
-        }
+
+        default:
+            break;
     }
 
     if ( in_the_future )
     {
-        return ( item % 2 ? const_cast<wxListItemAttr *> ( &m_attr3 )
-                : const_cast<wxListItemAttr *> ( &m_attr4 ) );
+        if ( item % 2 )
+        {
+            return const_cast<wxListItemAttr *> ( &m_attr3 );
+        }
+
+        return const_cast<wxListItemAttr *> ( &m_attr4 );
     }
 
-    return ( item % 2 ? const_cast<wxListItemAttr *> ( &m_attr1 )
-            : const_cast<wxListItemAttr *> ( &m_attr2 ) );
+    if ( item % 2 )
+    {
+        return const_cast<wxListItemAttr *> ( &m_attr1 );
+    }
+
+    return const_cast<wxListItemAttr *> ( &m_attr2 );
 }
 //----------------------------------------------------------------------------
 // If any of these keys are encountered, the search for the event handler
