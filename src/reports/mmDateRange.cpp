@@ -36,17 +36,17 @@ void mmDateRange::destroy()
     delete this;
 }
 
-const wxDateTime mmDateRange::start_date() const
+const wxDateTime& mmDateRange::start_date() const
 {
     return start_date_;
 }
 
-const wxDateTime mmDateRange::end_date() const
+const wxDateTime& mmDateRange::end_date() const
 {
     return end_date_;
 }
 
-const wxDateTime mmDateRange::today() const
+const wxDateTime& mmDateRange::today() const
 {
     return today_;
 }
@@ -56,12 +56,12 @@ bool mmDateRange::is_with_date() const
     return true;
 }
 
-const wxString mmDateRange::title() const
+const wxString& mmDateRange::title() const
 {
     return title_;
 }
 
-const wxString mmDateRange::local_title() const
+const wxString& mmDateRange::local_title() const
 {
     return wxGetTranslation ( title_ );
 }
@@ -159,9 +159,9 @@ mmLastYear::mmLastYear()
 mmCurrentFinancialYear::mmCurrentFinancialYear ( const int day, const int month )
     : mmDateRange()
 {
-    int this_month = today_.GetMonth() + 1;
+    const int this_month = today_.GetMonth() + 1;
     auto finDate = start_date_.SetDay ( 1 ).SetMonth ( wxDateTime::Month ( month - 1 ) );
-    auto last_month_day = finDate.GetLastMonthDay().GetDay();
+    const auto last_month_day = finDate.GetLastMonthDay().GetDay();
     wxASSERT ( day <= last_month_day );
     finDate.SetDay ( day <= last_month_day ? day : last_month_day );
 

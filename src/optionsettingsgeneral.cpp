@@ -33,8 +33,9 @@ wxBEGIN_EVENT_TABLE ( OptionSettingsGeneral, wxPanel )
 wxEND_EVENT_TABLE()
 /*******************************************************/
 
-OptionSettingsGeneral::OptionSettingsGeneral()
+OptionSettingsGeneral::OptionSettingsGeneral() : OptionSettingsBase()
 {
+    return;
 }
 
 OptionSettingsGeneral::OptionSettingsGeneral ( wxWindow *parent, mmGUIApp *app

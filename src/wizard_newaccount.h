@@ -27,8 +27,9 @@
 
 class mmAddAccountWizard : public wxWizard
 {
+    mmAddAccountWizard() = delete;
 public:
-    mmAddAccountWizard ( wxFrame *frame );
+    explicit mmAddAccountWizard ( wxFrame *frame );
     void RunIt();
     wxString accountName_;
     int currencyID_;
@@ -43,9 +44,10 @@ private:
 
 class mmAddAccountNamePage : public wxWizardPageSimple
 {
+    mmAddAccountNamePage() = delete;
 public:
-    mmAddAccountNamePage ( mmAddAccountWizard *parent );
-    virtual bool TransferDataFromWindow();
+    explicit mmAddAccountNamePage ( mmAddAccountWizard *parent );
+    bool TransferDataFromWindow() override;
 
 private:
     mmAddAccountWizard *parent_;
@@ -55,9 +57,10 @@ private:
 
 class mmAddAccountTypePage : public wxWizardPageSimple
 {
+    mmAddAccountTypePage() = delete;
 public:
-    mmAddAccountTypePage ( mmAddAccountWizard *parent );
-    virtual bool TransferDataFromWindow();
+    explicit mmAddAccountTypePage ( mmAddAccountWizard *parent );
+    bool TransferDataFromWindow() override;
 
 private:
     wxChoice *itemChoiceType_;

@@ -21,7 +21,7 @@
 class CommitCallbackHook : public wxSQLite3Hook
 {
 public:
-    virtual bool CommitCallback()
+    bool CommitCallback() override
     {
         Option::instance().setDatabaseUpdated ( true );
         return false;
@@ -31,7 +31,7 @@ public:
 class UpdateCallbackHook : public wxSQLite3Hook
 {
 public:
-    virtual void UpdateCallback ( wxUpdateType type, const wxString &database, const wxString &table, wxLongLong rowid )
+    void UpdateCallback ( wxUpdateType type, const wxString &database, const wxString &table, wxLongLong rowid ) override
     {
         switch ( type )
         {

@@ -53,14 +53,17 @@ public:
                   const wxString &name = "mmReportsPanel" );
 
     void CreateControls();
-    void sortTable() {}
+    void sortTable() override
+    {
+        return;
+    }
 
     bool saveReportText ( wxString &error, bool initial = true );
     mmPrintableBase *getPrintableBase()
     {
         return rb_;
     }
-    void PrintPage();
+    void PrintPage() override;
 
 public:
     void OnDateRangeChanged ( wxCommandEvent &event );
@@ -73,10 +76,10 @@ protected:
     wxChoice *m_date_ranges=nullptr;
     wxDatePickerCtrl *m_start_date, *m_end_date;
     mmDateRange *m_cust_date=nullptr;
-    wxChoice *m_accounts;
-    wxChoice *m_chart;
-    wxWebView *browser_;
-    mmPrintableBase *rb_;
+    wxChoice *m_accounts = nullptr;
+    wxChoice *m_chart = nullptr;
+    wxWebView *browser_ = nullptr;
+    mmPrintableBase *rb_ = nullptr;
 
     friend class WebViewHandlerReportsPage;
 

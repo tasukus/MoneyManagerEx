@@ -202,7 +202,7 @@ void OptionSettingsMisc::SaveSettings()
     Model_Setting::instance().Set ( "BACKUPDB_UPDATE", itemCheckBoxUpdate->GetValue() );
     Model_Setting::instance().Set ( "MAX_BACKUP_FILES", m_max_files->GetValue() );
     wxTextCtrl *st = static_cast<wxTextCtrl *> ( FindWindow ( ID_DIALOG_OPTIONS_TEXTCTRL_DELIMITER4 ) );
-    const wxString &delim = st->GetValue();
+    const wxString delim = st->GetValue();
 
     if ( !delim.IsEmpty() )
     {

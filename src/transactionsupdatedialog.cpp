@@ -39,6 +39,7 @@ wxEND_EVENT_TABLE()
 
 transactionsUpdateDialog::transactionsUpdateDialog()
 {
+    return;
 }
 
 transactionsUpdateDialog::~transactionsUpdateDialog()
@@ -132,9 +133,7 @@ void transactionsUpdateDialog::CreateControls()
     // Payee --------------------------------------------
     m_payee_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Payee" )
         , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
-    m_payee = new mmComboBox ( this, wxID_FILE2
-        , "", true //payee mode
-        , wxDefaultPosition );
+    m_payee = new mmComboBox ( this, wxID_FILE2 , "", true , wxDefaultPosition ); //payee mode
     m_payee->Enable ( false );
     grid_sizer->Add ( m_payee_checkbox, g_flagsH );
     grid_sizer->Add ( m_payee, g_flagsExpand );
@@ -148,10 +147,8 @@ void transactionsUpdateDialog::CreateControls()
     grid_sizer->Add ( m_categ_btn, g_flagsExpand );
     // Number --------------------------------------------
     // Notes --------------------------------------------
-    m_notes_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Notes" )
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
-    m_append_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Append" )
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    m_notes_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Notes" ) , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    m_append_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Append" ) , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
     m_append_checkbox->SetValue ( true );
     m_notes_ctrl = new wxTextCtrl ( this, wxID_ANY, ""
         , wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
@@ -172,8 +169,7 @@ void transactionsUpdateDialog::CreateControls()
     wxBoxSizer *button_panel_sizer = new wxBoxSizer ( wxHORIZONTAL );
     button_panel->SetSizer ( button_panel_sizer );
     wxButton *button_ok = new wxButton ( button_panel, wxID_OK, _( "&OK " ) );
-    wxButton *button_cancel = new wxButton ( button_panel
-        , wxID_CANCEL, wxGetTranslation ( g_CancelLabel ) );
+    wxButton *button_cancel = new wxButton ( button_panel , wxID_CANCEL, wxGetTranslation ( g_CancelLabel ) );
     button_cancel->SetFocus();
     button_panel_sizer->Add ( button_ok, g_flagsH );
     button_panel_sizer->Add ( button_cancel, g_flagsH );
@@ -375,3 +371,4 @@ void transactionsUpdateDialog::OnCategChange ( wxCommandEvent &WXUNUSED ( event 
         m_categ_btn->SetLabelText ( dlg.getFullCategName() );
     }
 }
+

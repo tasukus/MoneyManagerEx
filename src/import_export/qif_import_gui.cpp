@@ -53,30 +53,9 @@ wxBEGIN_EVENT_TABLE ( mmQIFImportDialog, wxDialog )
 wxEND_EVENT_TABLE()
 
 mmQIFImportDialog::mmQIFImportDialog ( wxWindow *parent, int account_id )
-    : m_userDefinedDateMask ( false )
-    , m_today ( wxDate::Today() )
-    , m_fresh ( wxDate::Today().Subtract ( wxDateSpan::Months ( 1 ) ) )
-    , dataListBox_ ( nullptr )
-    , accListBox_ ( nullptr )
-    , payeeListBox_ ( nullptr )
-    , categoryListBox_ ( nullptr )
-    , button_search_ ( nullptr )
-    , file_name_ctrl_ ( nullptr )
-    , m_choiceEncoding ( nullptr )
-    , log_field_ ( nullptr )
-    , dateFromCheckBox_ ( nullptr )
-    , dateToCheckBox_ ( nullptr )
-    , fromDateCtrl_ ( nullptr )
-    , toDateCtrl_ ( nullptr )
-    , choiceDateFormat_ ( nullptr )
-    , accountCheckBox_ ( nullptr )
-    , accountDropDown_ ( nullptr )
-    , btnOK_ ( nullptr )
-    , m_choiceDecimalSeparator ( nullptr )
 {
     decimal_ = Model_Currency::GetBaseCurrency()->DECIMAL_POINT;
-    payeeIsNotes_ = false;
-    long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
+    const long style = wxCAPTION | wxRESIZE_BORDER | wxSYSTEM_MENU | wxCLOSE_BOX;
     Create ( parent, wxID_ANY, _( "QIF Import" ), wxDefaultPosition, wxSize ( 500, 300 ), style );
 
     const auto &acc = Model_Account::instance().get ( account_id );
@@ -115,7 +94,7 @@ bool mmQIFImportDialog::Create ( wxWindow *parent, wxWindowID id, const wxString
     SetIcon ( mmex::getProgramIcon() );
     Centre();
 
-    return TRUE;
+    return true;
 }
 
 void mmQIFImportDialog::CreateControls()
@@ -365,7 +344,7 @@ bool mmQIFImportDialog::mmReadQIFFile()
     wxProgressDialog progressDlg ( _( "Please wait" ), _( "Scanning" )
                                    , 0, this, wxPD_APP_MODAL | wxPD_CAN_ABORT );
 
-    wxLongLong start = wxGetUTCTimeMillis();
+    const wxLongLong start = wxGetUTCTimeMillis();
     wxLongLong interval = wxGetUTCTimeMillis() - start;
 
     wxString accName = "";
@@ -434,7 +413,7 @@ bool mmQIFImportDialog::mmReadQIFFile()
             continue;
         }
         //Parse Categories
-        const wxString &s = trx.find ( CategorySplit ) != trx.end() ? trx[CategorySplit] : "";
+        const wxString s = trx.find ( CategorySplit ) != trx.end() ? trx[CategorySplit] : "";
         if ( !s.empty() )
         {
             wxStringTokenizer token ( s, "\n" );
@@ -473,7 +452,7 @@ bool mmQIFImportDialog::mmReadQIFFile()
         if ( dParser->isDateFormatFound() )
         {
             m_dateFormatStr = dParser->getDateFormat();
-            const wxString date_mask = dParser->getDateMask();
+            const wxString &date_mask = dParser->getDateMask();
             choiceDateFormat_->SetStringSelection ( date_mask );
         }
     }
@@ -586,7 +565,7 @@ bool mmQIFImportDialog::completeTransaction ( std::unordered_map <int, wxString>
 
     if ( !isTransfer )
     {
-        int i = m_payee_names.Index ( trx[Payee], false );
+        const int i = m_payee_names.Index ( trx[ Payee ], false );
         if ( i == wxNOT_FOUND )
         {
             m_payee_names.Add ( trx[Payee] );
@@ -875,7 +854,7 @@ void mmQIFImportDialog::OnOk ( wxCommandEvent &WXUNUSED ( event ) )
                              , wxYES_NO | wxNO_DEFAULT | wxICON_QUESTION );
     if ( msgDlg.ShowModal() == wxID_YES )
     {
-        int numTransactions = vQIF_trxs_.size();
+        const int numTransactions = vQIF_trxs_.size();
         wxProgressDialog progressDlg ( _( "Please wait" ), _( "Importing" )
                                        , numTransactions + 1, this, wxPD_APP_MODAL | wxPD_CAN_ABORT | wxPD_AUTO_HIDE );
         progressDlg.Update ( 1, _( "Importing Accounts" ) );
@@ -1111,7 +1090,7 @@ bool mmQIFImportDialog::completeTransaction ( /*in*/ const std::unordered_map <i
         msg = _( "Transaction code is missing" );
         return false;
     }
-    bool transfer = Model_Checking::is_transfer ( trx->TRANSCODE );
+    const bool transfer = Model_Checking::is_transfer ( trx->TRANSCODE );
 
     if ( !transfer )
     {
@@ -1186,7 +1165,7 @@ bool mmQIFImportDialog::completeTransaction ( /*in*/ const std::unordered_map <i
         msg = _( "Transaction Amount is incorrect" );
         return false;
     }
-    double amt = wxAtof ( value );
+    const double amt = wxAtof ( value );
     trx->TRANSAMOUNT = fabs ( amt );
     trx->TOTRANSAMOUNT = transfer ? amt : trx->TRANSAMOUNT;
 
@@ -1202,7 +1181,7 @@ bool mmQIFImportDialog::completeTransaction ( /*in*/ const std::unordered_map <i
             {
                 return false;
             }
-            int categID = m_QIFcategoryNames[c].first;
+            const int categID = m_QIFcategoryNames[ c ].first;
             if ( categID <= 0 )
             {
                 msg = _( "Transaction Category is incorrect" );
@@ -1211,8 +1190,8 @@ bool mmQIFImportDialog::completeTransaction ( /*in*/ const std::unordered_map <i
             Model_Splittransaction::Data *s = Model_Splittransaction::instance().create();
             s->CATEGID = categID;
             s->SUBCATEGID = m_QIFcategoryNames[c].second;
-            double amount;
-            const wxString &amtSplit = Model_Currency::fromString2Default ( amtToken.GetNextToken() );
+            double amount = 0.0;
+            const wxString amtSplit = Model_Currency::fromString2Default ( amtToken.GetNextToken() );
             amtSplit.ToCDouble ( &amount );
             s->SPLITTRANSAMOUNT = ( Model_Checking::is_deposit ( trx ) ? amount : -amount );
             s->TRANSID = trx->TRANSID;
@@ -1424,7 +1403,7 @@ int mmQIFImportDialog::get_last_imported_acc()
 
 void mmQIFImportDialog::OnDecimalChange ( wxCommandEvent &event )
 {
-    int i = m_choiceDecimalSeparator->GetSelection();
+    const int i = m_choiceDecimalSeparator->GetSelection();
     wxStringClientData *type_obj = static_cast<wxStringClientData *> ( m_choiceDecimalSeparator->GetClientObject ( i ) );
     if ( type_obj )
     {

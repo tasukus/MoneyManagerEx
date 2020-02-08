@@ -28,8 +28,8 @@ class mmReportSummaryStocks : public mmPrintableBase
 {
 public:
     mmReportSummaryStocks();
-    virtual void RefreshData();
-    virtual wxString getHTMLText();
+    void RefreshData() override;
+    wxString getHTMLText() override;
 
 private:
     void display_header ( mmHTMLBuilder &hb );
@@ -64,8 +64,8 @@ class mmReportChartStocks : public mmPrintableBase
 public:
     mmReportChartStocks();
     ~mmReportChartStocks();
-    virtual int report_parameters();
-    wxString getHTMLText();
+    int report_parameters() const noexcept override;
+    wxString getHTMLText() override;
 };
 
 #endif // _MM_EX_REPORTSUMMARYSTOCKS_H_

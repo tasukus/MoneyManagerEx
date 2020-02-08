@@ -52,9 +52,10 @@ private:
 
 class mmReportSummaryByDate : public mmPrintableBase
 {
+    mmReportSummaryByDate() = delete;
 public:
-    mmReportSummaryByDate ( int mode );
-    wxString getHTMLText();
+    explicit mmReportSummaryByDate ( const int mode );
+    wxString getHTMLText() override;
 
 private:
     int mode_;

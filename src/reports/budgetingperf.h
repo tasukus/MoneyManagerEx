@@ -29,8 +29,8 @@ public:
     mmReportBudgetingPerformance();
     virtual ~mmReportBudgetingPerformance();
 
-    virtual int report_parameters();
-    virtual wxString getHTMLText();
+    int report_parameters() const noexcept override;
+    wxString getHTMLText() override;
 
 private:
     void DisplayRow ( mmHTMLBuilder &hb, double estimated, double actual

@@ -36,7 +36,7 @@ mmReportIncomeExpenses::~mmReportIncomeExpenses()
 {
 }
 
-int mmReportIncomeExpenses::report_parameters()
+int mmReportIncomeExpenses::report_parameters() const noexcept
 {
     return RepParams::DATE_RANGE | RepParams::ACCOUNTS_LIST;
 }
@@ -161,7 +161,7 @@ mmReportIncomeExpensesMonthly::~mmReportIncomeExpensesMonthly()
 {
 }
 
-int mmReportIncomeExpensesMonthly::report_parameters()
+int mmReportIncomeExpensesMonthly::report_parameters() const noexcept
 {
     return RepParams::DATE_RANGE | RepParams::ACCOUNTS_LIST;
 }
@@ -192,7 +192,7 @@ wxString mmReportIncomeExpensesMonthly::getHTMLText()
             convRate = Model_CurrencyHistory::getDayRate ( Model_Account::currency ( account )->CURRENCYID, transaction.TRANSDATE );
         }
 
-        int idx = ( Model_Checking::TRANSDATE ( transaction ).GetYear() * 100
+        const int idx = ( Model_Checking::TRANSDATE ( transaction ).GetYear() * 100
                     + Model_Checking::TRANSDATE ( transaction ).GetMonth() );
 
         if ( Model_Checking::type ( transaction ) == Model_Checking::DEPOSIT )

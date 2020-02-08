@@ -403,7 +403,7 @@ void mmStockDialog::OnCancel ( wxCommandEvent &WXUNUSED ( event ) )
 
 void mmStockDialog::OnAttachments ( wxCommandEvent &WXUNUSED ( event ) )
 {
-    const wxString RefType = Model_Attachment::reftype_desc ( Model_Attachment::STOCK );
+    const wxString &RefType = Model_Attachment::reftype_desc ( Model_Attachment::STOCK );
     int RefId = m_stock_id;
 
     if ( RefId < 0 )
@@ -421,8 +421,8 @@ void mmStockDialog::OnStockPriceButton ( wxCommandEvent &WXUNUSED ( event ) )
 
     if ( !stockSymbol.IsEmpty() )
     {
-        const wxString &stockURL = Model_Infotable::instance().GetStringInfo ( "STOCKURL", mmex::weblink::DefStockUrl );
-        const wxString &httpString = wxString::Format ( stockURL, stockSymbol );
+        const wxString stockURL = Model_Infotable::instance().GetStringInfo ( "STOCKURL", mmex::weblink::DefStockUrl );
+        const wxString httpString = wxString::Format ( stockURL, stockSymbol );
         wxLaunchDefaultBrowser ( httpString );
     }
 }
@@ -436,7 +436,7 @@ void mmStockDialog::OnSave ( wxCommandEvent &WXUNUSED ( event ) )
         return mmErrorDialogs::MessageInvalid ( this, _( "Held At" ) );
     }
 
-    const wxString &stockSymbol = m_stock_symbol_ctrl->GetValue();
+    const wxString stockSymbol = m_stock_symbol_ctrl->GetValue();
 
     if ( stockSymbol.empty() )
     {
@@ -535,7 +535,7 @@ void mmStockDialog::OnSave ( wxCommandEvent &WXUNUSED ( event ) )
     UpdateControls();
 }
 
-void mmStockDialog::CreateShareAccount ( Model_Account::Data *stock_account, const wxString &name )
+void mmStockDialog::CreateShareAccount ( const Model_Account::Data *stock_account, const wxString &name )
 {
     if ( name.empty() )
     {
@@ -632,7 +632,7 @@ void mmStockDialog::OnHistoryImportButton ( wxCommandEvent &WXUNUSED ( event ) )
 
             while ( tkz.HasMoreTokens() )
             {
-                wxString token = tkz.GetNextToken();
+                const wxString token = tkz.GetNextToken();
                 tokens.push_back ( token );
             }
 

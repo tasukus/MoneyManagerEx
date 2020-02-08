@@ -43,7 +43,7 @@ public:
     ~mmCurrencyDialog();
     mmCurrencyDialog ( wxWindow *parent, const Model_Currency::Data *currency );
 
-    int getCurrencyID()
+    int getCurrencyID() const noexcept
     {
         return m_currency->CURRENCYID;
     };

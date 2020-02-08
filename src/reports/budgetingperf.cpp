@@ -32,7 +32,9 @@ mmReportBudgetingPerformance::mmReportBudgetingPerformance()
 }
 
 mmReportBudgetingPerformance::~mmReportBudgetingPerformance()
-{}
+{
+    return;
+}
 
 void mmReportBudgetingPerformance::DisplayRow ( mmHTMLBuilder &hb
         , double estimated, double actual, const wxString &catName
@@ -80,7 +82,7 @@ void mmReportBudgetingPerformance::DisplayRow ( mmHTMLBuilder &hb
         if ( ( ( estimated < 0 ) && ( actual < 0 ) ) ||
                 ( ( estimated > 0 ) && ( actual > 0 ) ) )
         {
-            double percent = ( fabs ( actual ) / fabs ( estimated ) ) * 100.0;
+            const double percent = ( fabs ( actual ) / fabs ( estimated ) ) * 100.0;
             hb.addTableCell ( wxString::Format ( "%.0f", percent ) );
         }
         else
@@ -91,18 +93,17 @@ void mmReportBudgetingPerformance::DisplayRow ( mmHTMLBuilder &hb
     }
 }
 
-int mmReportBudgetingPerformance::report_parameters()
+int mmReportBudgetingPerformance::report_parameters() const noexcept
 {
     return RepParams::ONLY_YEARS;
 }
 
 wxString mmReportBudgetingPerformance::getHTMLText()
 {
-    unsigned short startDay = 1;
-    wxDate::Month startMonth = wxDateTime::Jan;
-    long startYear;
+    constexpr unsigned short startDay = 1;
+    constexpr wxDate::Month startMonth = wxDateTime::Jan;
 
-    wxString value = Model_Budgetyear::instance().Get ( m_date_selection );
+    const wxString &value = Model_Budgetyear::instance().Get ( m_date_selection );
     wxString budget_year = value;
 
     wxRegEx pattern ( "^([0-9]{4})$" );
@@ -111,6 +112,7 @@ wxString mmReportBudgetingPerformance::getHTMLText()
         budget_year = pattern.GetMatch ( value, 1 );
     }
 
+    long startYear = 0;
     if ( !budget_year.ToLong ( &startYear ) )
     {
         startYear = static_cast<long> ( wxDateTime::Today().GetYear() );
@@ -173,8 +175,7 @@ wxString mmReportBudgetingPerformance::getHTMLText()
         }
     }
 
-    const wxString &headingStr = AdjustYearValues ( static_cast<int> ( startDay )
-                                 , startMonth, startYear, budget_year );
+    const wxString headingStr = AdjustYearValues ( static_cast<int> ( startDay ), startMonth, startYear, budget_year );
     mmHTMLBuilder hb;
     hb.init();
     hb.addDivContainer();

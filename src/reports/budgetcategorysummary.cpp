@@ -36,9 +36,11 @@ mmReportBudgetCategorySummary::mmReportBudgetCategorySummary()
 }
 
 mmReportBudgetCategorySummary::~mmReportBudgetCategorySummary()
-{}
+{
+    return;
+}
 
-int mmReportBudgetCategorySummary::report_parameters()
+int mmReportBudgetCategorySummary::report_parameters() const noexcept
 {
     return RepParams::BUDGET_DATES | RepParams::CHART;
 }
@@ -68,12 +70,12 @@ const wxString mmReportBudgetCategorySummary::actualAmountColour ( double amount
 
 wxString mmReportBudgetCategorySummary::getHTMLText()
 {
-    wxDateTime::wxDateTime_t startDay = 1;
-    long tmp;
+    const wxDateTime::wxDateTime_t startDay = 1;
+    long tmp{};
     wxDateTime::Month startMonth = wxDateTime::Jan;
-    int startYear;
+    int startYear{};
 
-    wxString value = Model_Budgetyear::instance().Get ( m_date_selection );
+    const wxString &value = Model_Budgetyear::instance().Get ( m_date_selection );
     wxString budget_month, budget_year = value;
 
     wxRegEx pattern ( "^([0-9]{4})(-([0-9]{2}))?$" );
@@ -101,7 +103,7 @@ wxString mmReportBudgetCategorySummary::getHTMLText()
     wxDateTime yearBegin ( startDay, startMonth, startYear );
     wxDateTime yearEnd = yearBegin;
 
-    bool monthlyBudget = ( !budget_month.empty() );
+    const bool monthlyBudget = ( !budget_month.empty() );
     if ( monthlyBudget )
     {
         yearEnd.Add ( wxDateSpan::Month() ).Subtract ( wxDateSpan::Day() );
@@ -136,12 +138,11 @@ wxString mmReportBudgetCategorySummary::getHTMLText()
     int categID = -1;
     mmHTMLBuilder hb;
     //---------------------------------
-    const wxString &headingStr = AdjustYearValues ( startDay
-                                 , startMonth, startYear, budget_year );
+    const wxString headingStr = AdjustYearValues ( startDay, startMonth, startYear, budget_year );
     hb.init();
     hb.addDivContainer();
-    bool amply = Option::instance().getBudgetReportWithSummaries();
-    const wxString &headerStartupMsg = amply
+    const bool amply = Option::instance().getBudgetReportWithSummaries();
+    const wxString headerStartupMsg = amply
                                        ? _( "Budget Categories for %s" ) : _( "Budget Category Summary for %s" );
 
     hb.addHeader ( 2, wxString::Format ( headerStartupMsg
@@ -178,12 +179,12 @@ wxString mmReportBudgetCategorySummary::getHTMLText()
             }
             if ( category.second.first != -1 )
             {
-                double estimated = ( monthlyBudget
+                const double estimated = ( monthlyBudget
                                      ? Model_Budget::getMonthlyEstimate ( budgetPeriod[category.second.first][category.second.second]
                                              , budgetAmt[category.second.first][category.second.second] )
                                      : Model_Budget::getYearlyEstimate ( budgetPeriod[category.second.first][category.second.second]
                                              , budgetAmt[category.second.first][category.second.second] ) );
-                double actual = categoryStats[category.second.first][category.second.second][0];
+                const double actual = categoryStats[ category.second.first ][ category.second.second ][ 0 ];
 
                 ValueTrio vt;
                 vt.label = category.first;
@@ -213,7 +214,7 @@ wxString mmReportBudgetCategorySummary::getHTMLText()
 
     for ( const auto &category : categs )
     {
-        double estimated = ( monthlyBudget
+        const double estimated = ( monthlyBudget
                              ? Model_Budget::getMonthlyEstimate ( budgetPeriod[category.second.first][category.second.second]
                                      , budgetAmt[category.second.first][category.second.second] )
                              : Model_Budget::getYearlyEstimate ( budgetPeriod[category.second.first][category.second.second]
@@ -228,7 +229,7 @@ wxString mmReportBudgetCategorySummary::getHTMLText()
             estIncome += estimated;
         }
 
-        double actual = categoryStats[category.second.first][category.second.second][0];
+        const double actual = categoryStats[ category.second.first ][ category.second.second ][ 0 ];
         if ( actual < 0 )
         {
             actExpenses += actual;
@@ -268,7 +269,7 @@ wxString mmReportBudgetCategorySummary::getHTMLText()
         /***************************************************************************/
         if ( amply && category.second.first != -1 )
         {
-            double amt = budgetAmt[category.second.first][category.second.second];
+            const double amt = budgetAmt[ category.second.first ][ category.second.second ];
             hb.startTableRow();
             hb.addTableCell ( category.first );
             hb.addMoneyCell ( amt );
@@ -283,8 +284,8 @@ wxString mmReportBudgetCategorySummary::getHTMLText()
 
     hb.endTable();
 
-    double difIncome = actIncome - estIncome;
-    double difExpense = actExpenses - estExpenses;
+    const double difIncome = actIncome - estIncome;
+    const double difExpense = actExpenses - estExpenses;
 
     //Summary of Estimated Vs Actual totals
     hb.startTfoot();

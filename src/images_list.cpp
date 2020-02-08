@@ -338,8 +338,7 @@ const wxBitmap mmBitmap ( int ref )
 
         case SAVINGS_NORMAL:
             return x == 16 ? wxBITMAP_PNG_FROM_DATA ( savings_acc_normal ) : x == 24 ? wxBITMAP_PNG_FROM_DATA ( savings_acc_normal24 ) : x == 32 ? wxBITMAP_PNG_FROM_DATA (
-                    savings_acc_normal32 ) : wxBITMAP_PNG_FROM_DATA (
-                    savings_acc_normal48 );
+                    savings_acc_normal32 ) : wxBITMAP_PNG_FROM_DATA ( savings_acc_normal48 );
 
         case SAVINGS_FAVORITES:
             return x == 16 ? wxBITMAP_PNG_FROM_DATA ( savings_acc_favorite ) : x == 24 ? wxBITMAP_PNG_FROM_DATA ( savings_acc_favorite24 ) : x == 32 ? wxBITMAP_PNG_FROM_DATA (
@@ -347,8 +346,7 @@ const wxBitmap mmBitmap ( int ref )
 
         case SAVINGS_CLOSED:
             return x == 16 ? wxBITMAP_PNG_FROM_DATA ( savings_acc_closed ) : x == 24 ? wxBITMAP_PNG_FROM_DATA ( savings_acc_closed24 ) : x == 32 ? wxBITMAP_PNG_FROM_DATA (
-                    savings_acc_closed32 ) : wxBITMAP_PNG_FROM_DATA (
-                    savings_acc_closed48 );
+                    savings_acc_closed32 ) : wxBITMAP_PNG_FROM_DATA ( savings_acc_closed48 );
 
         case CASH_NORMAL:
             return x == 16 ? wxBITMAP_PNG_FROM_DATA ( cash_acc_16 ) : x == 24 ? wxBITMAP_PNG_FROM_DATA ( cash_acc_24 ) : x == 32 ? wxBITMAP_PNG_FROM_DATA ( cash_acc_32 ) : wxBITMAP_PNG_FROM_DATA ( cash_acc_48 );
@@ -437,8 +435,7 @@ const wxBitmap mmBitmap ( int ref )
 
         case RIGHTARROW_ACTIVE:
             return x == 16 ? wxBITMAP_PNG_FROM_DATA ( rightarrow_active ) : x == 24 ? wxBITMAP_PNG_FROM_DATA ( rightarrow_active24 ) : x == 32 ? wxBITMAP_PNG_FROM_DATA (
-                    rightarrow_active32 ) : wxBITMAP_PNG_FROM_DATA (
-                    rightarrow_active48 );
+                    rightarrow_active32 ) : wxBITMAP_PNG_FROM_DATA ( rightarrow_active48 );
 
         case LEFTARROWSIMPLE:
             return x == 16 ? wxBITMAP_PNG_FROM_DATA ( simplearrow_left ) : x == 24 ? wxBITMAP_PNG_FROM_DATA ( simplearrow_left24 ) : x == 32 ? wxBITMAP_PNG_FROM_DATA (
@@ -447,8 +444,7 @@ const wxBitmap mmBitmap ( int ref )
 
         case RIGHTARROWSIMPLE:
             return x == 16 ? wxBITMAP_PNG_FROM_DATA ( simplearrow_right ) : x == 24 ? wxBITMAP_PNG_FROM_DATA ( simplearrow_right24 ) : x == 32 ? wxBITMAP_PNG_FROM_DATA (
-                    simplearrow_right32 ) : wxBITMAP_PNG_FROM_DATA (
-                    simplearrow_right48 );
+                    simplearrow_right32 ) : wxBITMAP_PNG_FROM_DATA ( simplearrow_right48 );
 
         case GOOGLE_PLAY:
             return x == 16 ? wxBITMAP_PNG_FROM_DATA ( google_play ) : x == 24 ? wxBITMAP_PNG_FROM_DATA ( google_play24 ) : x == 32 ? wxBITMAP_PNG_FROM_DATA ( google_play32 ) : wxBITMAP_PNG_FROM_DATA (

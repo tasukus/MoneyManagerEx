@@ -40,8 +40,9 @@ wxBEGIN_EVENT_TABLE ( mmOptionsDialog, wxDialog )
     EVT_BUTTON ( wxID_APPLY, mmOptionsDialog::OnApply )
 wxEND_EVENT_TABLE()
 
-mmOptionsDialog::mmOptionsDialog( )
+mmOptionsDialog::mmOptionsDialog() : wxDialog()
 {
+    return;
 }
 
 mmOptionsDialog::~mmOptionsDialog( )
@@ -67,7 +68,7 @@ bool mmOptionsDialog::Create ( wxWindow *parent
     SetIcon ( mmex::getProgramIcon() );
     SetMinSize ( wxSize ( 424, 610 ) );
     Centre();
-    return TRUE;
+    return true;
 }
 
 void mmOptionsDialog::CreateControls()
@@ -169,6 +170,6 @@ void mmOptionsDialog::OnApply ( wxCommandEvent &WXUNUSED ( event ) )
     m_panel_list[selected_page]->SaveSettings();
     Model_Setting::instance().ReleaseSavepoint();
     Model_Infotable::instance().ReleaseSavepoint();
-    const wxString &msg = wxString::Format ( _( "%s page has been saved." ), m_notebook->GetPageText ( selected_page ) );
+    const wxString msg = wxString::Format ( _( "%s page has been saved." ), m_notebook->GetPageText ( selected_page ) );
     wxMessageBox ( msg, _( "MMEX Options" ) );
 }

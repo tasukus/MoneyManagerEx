@@ -29,7 +29,7 @@ class mmBudgetYearDialog : public wxDialog
 
 public:
     mmBudgetYearDialog();
-    mmBudgetYearDialog ( wxWindow *parent );
+    explicit mmBudgetYearDialog ( wxWindow *parent );
 
 private:
     bool Create ( wxWindow *parent, wxWindowID id,

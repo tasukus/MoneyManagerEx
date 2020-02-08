@@ -40,7 +40,7 @@ public:
 
     sqlListCtrl ( mmGeneralReportManager *grm, wxWindow *parent
                   , const wxWindowID id );
-    virtual wxString OnGetItemText ( long item, long column ) const;
+    wxString OnGetItemText ( long item, long column ) const override;
 private:
     mmGeneralReportManager *m_grm;
 };
@@ -52,8 +52,10 @@ class mmGeneralReportManager: public wxDialog
 
 public:
     /// Constructors
-    mmGeneralReportManager( ) {}
-    virtual ~mmGeneralReportManager();
+    mmGeneralReportManager( )
+    {
+    }
+    ~mmGeneralReportManager();
 
     mmGeneralReportManager ( wxWindow *parent, wxSQLite3Database *db );
     wxString OnGetItemText ( long item, long column ) const;

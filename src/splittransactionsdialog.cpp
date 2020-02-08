@@ -94,7 +94,8 @@ bool SplitTransactionDialog::Create ( wxWindow *parent
     GetSizer()->SetSizeHints ( this );
     Centre();
     SetIcon ( mmex::getProgramIcon() );
-    return TRUE;
+
+    return true;
 }
 
 void SplitTransactionDialog::DataToControls()
@@ -141,7 +142,7 @@ void SplitTransactionDialog::CreateControls()
     lcSplit_->AppendTextColumn ( _( "Amount" ), wxDATAVIEW_CELL_INERT, 180 );
     listCtrlSizer->Add ( lcSplit_, g_flagsExpand );
     wxBoxSizer *totalAmountSizer = new wxBoxSizer ( wxHORIZONTAL );
-    const wxString &totalMessage = _( "Total:" );
+    const wxString totalMessage = _( "Total:" );
     wxStaticText *transAmountText = new wxStaticText ( this, wxID_STATIC, totalMessage );
     transAmount_ = new wxStaticText ( this, wxID_STATIC, wxEmptyString );
     totalAmountSizer->Add ( transAmountText, g_flagsH );

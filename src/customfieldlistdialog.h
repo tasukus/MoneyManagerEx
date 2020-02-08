@@ -53,7 +53,10 @@ private:
 
     wxString m_RefType;
     int m_field_id=-1;
-    mmCustomFieldListDialog() {}
+    mmCustomFieldListDialog() noexcept
+    {
+        return;
+    }
     std::map<int, wxString> ColName_;
 
     void Create ( wxWindow *parent );

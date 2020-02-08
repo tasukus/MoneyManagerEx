@@ -30,15 +30,18 @@ public:
     mmReportPayeeExpenses();
     virtual ~mmReportPayeeExpenses();
 
-    virtual void RefreshData();
-    virtual int report_parameters();
-    virtual wxString getHTMLText();
+    void RefreshData() override;
+    int report_parameters() const noexcept override;
+    wxString getHTMLText() override;
 
 protected:
     void getPayeeStats ( std::map<int, std::pair<double, double> > &payeeStats
                          , mmDateRange *date_range, bool ignoreFuture ) const;
 
-    enum TYPE {INCOME = 0, EXPENSES, MAX};
+    enum TYPE
+    {
+        INCOME = 0, EXPENSES, MAX
+    };
 
 private:
     // structure for sorting of data
@@ -51,8 +54,8 @@ private:
     };
     std::vector<data_holder> data_;
     std::vector<ValueTrio> valueList_;
-    double positiveTotal_;
-    double negativeTotal_;
+    double positiveTotal_=0.0;
+    double negativeTotal_=0.0;
 };
 
 #endif //MM_EX_REPORTPAYEE_H_

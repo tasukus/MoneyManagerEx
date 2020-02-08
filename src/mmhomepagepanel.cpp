@@ -346,7 +346,9 @@ protected:
 htmlWidgetBillsAndDeposits::htmlWidgetBillsAndDeposits ( const wxString &title, mmDateRange *date_range )
     : date_range_ ( date_range )
     , title_ ( title )
-{}
+{
+    return;
+}
 
 htmlWidgetBillsAndDeposits::~htmlWidgetBillsAndDeposits()
 {
@@ -474,8 +476,9 @@ public:
         m_reportPanel = panel;
     }
 
-    virtual ~WebViewHandlerHomePage()
+    ~WebViewHandlerHomePage()
     {
+        return;
     }
 
     virtual wxFSFile *GetFile ( const wxString &uri )
@@ -582,12 +585,15 @@ bool mmHomePagePanel::Create ( wxWindow *parent
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
     wxPanelBase::Create ( parent, winid, pos, size, style, name );
     const wxDateTime start = wxDateTime::UNow();
+
     CreateControls();
     createHTML();
     GetSizer()->Fit ( this );
     GetSizer()->SetSizeHints ( this );
+
     Model_Usage::instance().pageview ( this, ( wxDateTime::UNow() - start ).GetMilliseconds().ToLong() );
-    return TRUE;
+
+    return true;
 }
 
 void mmHomePagePanel::createHTML()
@@ -601,6 +607,7 @@ void mmHomePagePanel::CreateControls()
 {
     wxBoxSizer *itemBoxSizer2 = new wxBoxSizer ( wxVERTICAL );
     this->SetSizer ( itemBoxSizer2 );
+
     browser_ = wxWebView::New ( this, mmID_BROWSER );
     browser_->RegisterHandler ( wxSharedPtr<wxWebViewHandler> ( new wxWebViewFSHandler ( "memory" ) ) );
     browser_->RegisterHandler ( wxSharedPtr<wxWebViewHandler> ( new WebViewHandlerHomePage ( this, "assets" ) ) );

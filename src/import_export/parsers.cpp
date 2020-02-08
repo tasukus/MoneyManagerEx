@@ -25,7 +25,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <wx/tokenzr.h>
 
 // ---------------------------- CSV Parser --------------------------------
-FileCSV::FileCSV ( wxWindow *pParentWindow, wxConvAuto encoding, wxString delimiter ) :
+FileCSV::FileCSV ( wxWindow *pParentWindow, wxConvAuto encoding, const wxString &delimiter ) :
     TableBasedFile ( pParentWindow ), encoding_ ( encoding ), delimiter_ ( delimiter )
 {
 }
@@ -117,7 +117,7 @@ bool FileCSV::Save ( const wxString &fileName )
     return true;
 }
 // ---------------------------- XML Parser --------------------------------
-FileXML::FileXML ( wxWindow *pParentWindow, wxString encoding ) :
+FileXML::FileXML ( wxWindow *pParentWindow, const wxString &encoding ) :
     TableBasedFile ( pParentWindow ), encoding_ ( encoding )
 {
 }
@@ -213,7 +213,7 @@ bool FileXML::Save ( const wxString &fileName )
     wxXmlDocument xmlFile;
 
     // Workbook
-    wxXmlNode *workbookElement = new wxXmlNode ( NULL, wxXML_ELEMENT_NODE, "Workbook" );
+    wxXmlNode *workbookElement = new wxXmlNode ( nullptr, wxXML_ELEMENT_NODE, "Workbook" );
     xmlFile.SetRoot ( workbookElement );
     workbookElement->AddAttribute ( "xmlns", "urn:schemas-microsoft-com:office:spreadsheet" );
     workbookElement->AddAttribute ( "xmlns:o", "urn:schemas-microsoft-com:office:office" );

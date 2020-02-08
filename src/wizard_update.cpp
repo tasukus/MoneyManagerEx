@@ -332,10 +332,12 @@ struct Version
     bool operator == ( const Version &other )
     {
         for ( int i=0; i<5; i++ )
+        {
             if ( v[i] != other.v[i] )
             {
                 return false;
             }
+        }
 
         return true;
     }
@@ -388,7 +390,7 @@ void mmUpdate::checkUpdates ( const bool bSilent, wxFrame *frame )
     {
         if ( !bSilent )
         {
-            const wxString &msgStr = _( "Unable to check for updates!" )
+            const wxString msgStr = _( "Unable to check for updates!" )
                 + "\n\n" + _( "Error: " ) + curl_easy_strerror ( err_code );
             wxMessageBox ( msgStr, _( "MMEX Update Check" ) );
         }
@@ -404,7 +406,7 @@ void mmUpdate::checkUpdates ( const bool bSilent, wxFrame *frame )
     {
         if ( !bSilent )
         {
-            const wxString &msgStr = _( "Unable to check for updates!" )
+            const wxString msgStr = _( "Unable to check for updates!" )
                 + "\n\n" + _( "Error: " )
                 + ( ( !res ) ? GetParseError_En ( res.Code() )
                     : json_releases.GetString() );

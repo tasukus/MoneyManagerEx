@@ -31,7 +31,7 @@ mmReportForecast::~mmReportForecast()
 {
 }
 
-int mmReportForecast::report_parameters()
+int mmReportForecast::report_parameters() const noexcept
 {
     return RepParams::DATE_RANGE;
 }
@@ -98,8 +98,7 @@ const char *mmReportForecast::m_template = R"(
         <!DOCTYPE html>
         <html>
         <head>
-        <meta http-equiv="content-type" content="text/html;
-charset=utf-8" />
+        <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <title><TMPL_VAR REPORTNAME></title>
         <script src = "ChartNew.js"></script>
         <script src = "sorttable.js"></script>

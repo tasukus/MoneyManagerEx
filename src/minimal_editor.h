@@ -7,9 +7,12 @@ class MinimalEditor : public wxStyledTextCtrl
     wxDECLARE_EVENT_TABLE();
 
 public:
-    MinimalEditor() {};
-    MinimalEditor ( wxWindow *parent, wxWindowID id = wxID_ANY );
-    virtual bool SetFont ( const wxFont &font );
+    MinimalEditor() : wxStyledTextCtrl()
+    {
+        return;
+    }
+    explicit MinimalEditor ( wxWindow *parent, wxWindowID id = wxID_ANY );
+    bool SetFont ( const wxFont &font ) override;
     void SetLexerSql();
     void SetLexerLua();
     void SetLexerHtml();

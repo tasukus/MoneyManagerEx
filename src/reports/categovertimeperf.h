@@ -28,14 +28,16 @@ class mmReportCategoryOverTimePerformance : public mmPrintableBase
 public:
     mmReportCategoryOverTimePerformance();
     ~mmReportCategoryOverTimePerformance();
-    virtual int report_parameters();
+    int report_parameters() const noexcept override;
 
-    wxString getHTMLText();
+    wxString getHTMLText() override;
 
 protected:
-    enum TYPE { INCOME = 0, EXPENSES, TOTAL, MAX };
+    enum TYPE
+    {
+        INCOME = 0, EXPENSES, TOTAL, MAX
+    };
 };
 //----------------------------------------------------------------------------
 #endif // MM_EX_REPORTCATEGOVERTIME_H_
 //----------------------------------------------------------------------------
-

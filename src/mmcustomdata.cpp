@@ -30,6 +30,7 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 mmCustomData::mmCustomData()
     : wxDialog()
 {
+    return;
 }
 
 mmCustomData::mmCustomData ( wxDialog *dialog, const wxString &ref_type, int ref_id )
@@ -114,7 +115,7 @@ bool mmCustomData::FillCustomFields ( wxBoxSizer *box_sizer )
 
             case Model_CustomField::INTEGER:
             {
-                int value;
+                int value = 0;
                 double test;
 
                 if ( !fieldData->CONTENT.ToDouble ( &test ) )
@@ -294,13 +295,13 @@ void mmCustomData::OnMultiChoice ( wxCommandEvent &event )
     }
 
     const auto &name = button->GetName();
-    const wxString &type = Model_CustomField::FIELDTYPE_CHOICES[Model_CustomField::MULTICHOICE].second;
+    const wxString type = Model_CustomField::FIELDTYPE_CHOICES[Model_CustomField::MULTICHOICE].second;
     Model_CustomField::Data_Set fields = Model_CustomField::instance()
         .find ( Model_CustomField::REFTYPE ( m_ref_type )
             , Model_CustomField::TYPE ( type )
             , Model_CustomField::DESCRIPTION ( name ) );
     wxArrayString all_choices = Model_CustomField::getChoices ( fields.begin()->PROPERTIES );
-    const wxString &label = button->GetLabelText();
+    const wxString label = button->GetLabelText();
     wxArrayInt arr_selections;
     int i = 0;
 
@@ -514,7 +515,7 @@ void mmCustomData::ClearSettings() const
 
 void mmCustomData::OnSingleChoice ( wxCommandEvent &event )
 {
-    const wxString &data = event.GetString();
+    const wxString data = event.GetString();
     SetWidgetChanged ( event.GetId(), data );
 }
 
@@ -555,9 +556,9 @@ int mmCustomData::GetWidgetType ( wxWindowID controlID ) const
 
 void mmCustomData::OnCheckBoxActivated ( wxCommandEvent &event )
 {
-    const auto id = event.GetId();
+    const int id = event.GetId();
     const auto widget_id = id - GetLabelID() + GetBaseID();
-    const auto checked = event.IsChecked();
+    const bool checked = event.IsChecked();
 
     if ( checked )
     {
@@ -585,7 +586,7 @@ void mmCustomData::OnTimeChanged ( wxDateEvent &event )
 
 bool mmCustomData::IsWidgetChanged ( wxWindowID id )
 {
-    const wxString &value = m_data_changed.find ( id ) == m_data_changed.end()
+    const wxString value = m_data_changed.find ( id ) == m_data_changed.end()
         ? wxString ( wxEmptyString ) : m_data_changed.at ( id );
     return !value.empty();
 }

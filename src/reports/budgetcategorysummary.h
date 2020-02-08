@@ -32,8 +32,8 @@ public:
     mmReportBudgetCategorySummary();
     virtual ~mmReportBudgetCategorySummary();
 
-    virtual wxString getHTMLText();
-    virtual int report_parameters();
+    wxString getHTMLText() override;
+    int report_parameters() const noexcept override;
 
 private:
     const wxString actualAmountColour ( double amount, double actual, double estimated, bool total = false ) const;

@@ -62,7 +62,7 @@ qifAccountInfoType mmQIFImport::accountInfoType ( const wxString &line )
         return UnknownInfo;
     }
 
-    wxChar fChar = line.GetChar ( 0 );
+    const wxChar fChar = line.GetChar ( 0 );
     switch ( fChar )
     {
         case 'N':
@@ -91,7 +91,7 @@ qifLineType mmQIFImport::lineType ( const wxString &line )
         return UnknownType;
     }
 
-    wxChar fChar = line.GetChar ( 0 );
+    const wxChar fChar = line.GetChar ( 0 );
     switch ( fChar )
     {
         case '!':

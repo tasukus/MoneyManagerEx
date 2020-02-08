@@ -32,7 +32,7 @@ class relocateCategoryDialog : public wxDialog
 
 public:
     relocateCategoryDialog();
-    relocateCategoryDialog ( wxWindow *parent, int sourceCatID = -1, int sourceSubCatID = -1 );
+    relocateCategoryDialog ( wxWindow *parent,const int sourceCatID = -1, const int sourceSubCatID = -1 );
 
     bool Create ( wxWindow *parent
                   , wxWindowID id

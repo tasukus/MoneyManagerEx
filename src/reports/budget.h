@@ -53,9 +53,9 @@ public:
     void SetDateToEndOfYear ( int day, const wxDateTime::Month month, wxDateTime &date, bool isEndDate = true ) const;
 
     /// sets the start and end dates for a budget month
-    void SetBudgetMonth ( wxString budgetYearStr, wxDateTime &startDate, wxDateTime &endDate ) const;
+    void SetBudgetMonth ( const wxString &budgetYearStr, wxDateTime &startDate, wxDateTime &endDate ) const;
 
-    virtual wxString getHTMLText();
+    wxString getHTMLText() override;
 };
 
 #endif // MM_EX_REPORTBUDGETING_H_

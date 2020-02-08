@@ -39,7 +39,7 @@ public:
     ~OptionSettingsGeneral();
 
 public:
-    virtual void SaveSettings();
+    void SaveSettings() override;
 
 private:
     void Create();

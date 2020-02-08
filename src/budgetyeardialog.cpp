@@ -36,6 +36,7 @@ wxEND_EVENT_TABLE()
 mmBudgetYearDialog::mmBudgetYearDialog( )
     : m_listBox()
 {
+    return;
 }
 
 mmBudgetYearDialog::mmBudgetYearDialog ( wxWindow *parent )

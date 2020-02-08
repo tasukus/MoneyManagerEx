@@ -31,7 +31,10 @@ class mmCustomFieldEditDialog : public wxDialog
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmCustomFieldEditDialog() {};
+    mmCustomFieldEditDialog() noexcept : wxDialog()
+    {
+        return;
+    };
     mmCustomFieldEditDialog ( wxWindow *parent, Model_CustomField::Data *field, const wxString &fieldRefType );
 
     Model_CustomField::Data *m_field = nullptr;
@@ -70,3 +73,4 @@ private:
     };
 };
 #endif // MM_EX_CUSTOMFIELDEDITDIALOG_H_
+

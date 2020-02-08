@@ -59,29 +59,29 @@ public:
     bool SaveCustomValues ( int ref_id );
     const wxString GetWidgetData ( wxWindowID controlID ) const;
     int GetWidgetType ( wxWindowID controlID ) const;
-    size_t GetCustomFieldsCount() const
+    size_t GetCustomFieldsCount() const noexcept
     {
         return m_fields.size();
     }
     size_t GetActiveCustomFieldsCount() const;
     std::map<wxString, wxString> GetActiveCustomFields() const;
-    void SetBaseID ( const wxWindowID id )
+    void SetBaseID ( const wxWindowID id ) noexcept
     {
         m_init_control_id = id;
     }
-    wxWindowID GetBaseID() const
+    wxWindowID GetBaseID() const noexcept
     {
         return m_init_control_id;
     }
-    void SetLabelID ( const wxWindowID id )
+    void SetLabelID ( const wxWindowID id ) noexcept
     {
         m_init_label_id = id;
     }
-    wxWindowID GetLabelID() const
+    wxWindowID GetLabelID() const noexcept
     {
         return m_init_label_id;
     }
-    void ResetRefID()
+    void ResetRefID() noexcept
     {
         m_ref_id = wxID_ANY;
     }

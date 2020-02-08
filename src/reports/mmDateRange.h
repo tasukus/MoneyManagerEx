@@ -25,19 +25,20 @@ class mmDateRange
 {
 protected:
     const wxDateTime today_;
-    wxDateTime start_date_, end_date_;
+    wxDateTime start_date_;
+    wxDateTime end_date_;
     wxString title_;
 
 public:
     mmDateRange();
     virtual ~mmDateRange();
     void destroy();
-    const virtual wxDateTime start_date() const;
-    const virtual wxDateTime end_date() const;
-    const virtual wxDateTime today() const;
+    virtual const  wxDateTime& start_date() const;
+    virtual const  wxDateTime& end_date() const;
+    virtual const  wxDateTime& today() const;
     virtual bool is_with_date() const;
-    const virtual wxString title() const;
-    const virtual wxString local_title() const;
+    virtual const  wxString& title() const;
+    virtual const  wxString& local_title() const;
 };
 
 class mmCurrentMonth: public mmDateRange
@@ -128,7 +129,7 @@ class mmAllTime: public mmDateRange
 {
 public:
     mmAllTime();
-    bool is_with_date() const;
+    bool is_with_date() const override;
 };
 
 class mmSpecifiedRange : public mmDateRange

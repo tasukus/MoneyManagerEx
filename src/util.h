@@ -37,19 +37,19 @@ wxString JSON_Formated ( rapidjson::Document &j_doc );
 struct ValuePair
 {
     wxString label;
-    double   amount;
+    double   amount = 0.0;
 };
 struct ValueTrio
 {
     wxString color;
     wxString label;
-    double   amount;
+    double   amount = 0.0;
 };
 struct LineGraphData
 {
     wxString xPos;
     wxString label;
-    double   amount;
+    double   amount = 0.0;
 };
 struct BarGraphData
 {
@@ -72,9 +72,10 @@ class mmListBoxItem: public wxClientData
 public:
     mmListBoxItem ( int index, const wxString &name )
         : index_ ( index ), name_ ( name )
-    {}
+    {
+    }
 
-    int getIndex() const
+    int getIndex() const noexcept
     {
         return index_;
     }
@@ -90,29 +91,30 @@ private:
 
 class mmTreeItemData : public wxTreeItemData
 {
+    mmTreeItemData() = delete;
 public:
-    mmTreeItemData ( int id, bool isBudget );
-    mmTreeItemData ( const wxString &string, mmPrintableBase *report );
-    mmTreeItemData ( mmPrintableBase *report );
-    mmTreeItemData ( const wxString &string );
+    explicit mmTreeItemData ( const int id, const bool isBudget );
+    explicit mmTreeItemData ( const wxString &string, mmPrintableBase *report );
+    explicit mmTreeItemData ( mmPrintableBase *report );
+    explicit mmTreeItemData ( const wxString &string );
     ~mmTreeItemData();
-    int getData() const
+    int getData() const noexcept
     {
         return id_;
     }
-    const wxString getString() const
+    const wxString &getString() const noexcept
     {
         return stringData_;
     }
-    mmPrintableBase *get_report() const
+    mmPrintableBase *get_report() const noexcept
     {
         return report_;
     }
-    bool isStringData() const
+    bool isStringData() const noexcept
     {
         return isString_;
     }
-    bool isBudgetingNode() const
+    bool isBudgetingNode() const noexcept
     {
         return isBudgetingNode_;
     }
@@ -190,10 +192,10 @@ public:
     mmDates();
     ~mmDates();
     void doHandleStatistics ( const wxString &dateStr );
-    const wxString getDateMask() const;
-    const wxString getDateFormat() const;
+    const wxString &getDateMask() const noexcept;
+    const wxString &getDateFormat() const noexcept;
     void doFinalizeStatistics();
-    int getErrorCount() const;
+    int getErrorCount() const noexcept;
     bool isDateFormatFound() const;
 private:
     std::map<wxString, wxString> m_date_formats_temp;
@@ -214,17 +216,17 @@ inline bool mmDates::isDateFormatFound() const
 }
 
 //Get the most appropriate human readable date mask.
-inline const wxString mmDates::getDateMask() const
+inline const wxString &mmDates::getDateMask() const noexcept
 {
     return m_date_mask;
 }
 
 //Get the most appropriate date Format Specifier.
-inline const wxString mmDates::getDateFormat() const
+inline const wxString &mmDates::getDateFormat() const noexcept
 {
     return m_date_format;
 }
-inline int mmDates::getErrorCount() const
+inline int mmDates::getErrorCount() const noexcept
 {
     return m_error_count;
 }

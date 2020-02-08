@@ -193,8 +193,8 @@ const wxString mmex::getPathAttachment ( const wxString &attachmentsFolder )
     wxString AttachmentsFolder = attachmentsFolder;
     const wxString sep = wxFileName::GetPathSeparator();
     const wxString LastDBPath = Model_Setting::instance().getLastDbPath();
-    const wxString &LastDBFolder = wxFileName::FileName ( LastDBPath ).GetPath() + sep;
-    const wxString &UserFolder = mmex::GetUserDir ( false ).GetPath() + sep;
+    const wxString LastDBFolder = wxFileName::FileName ( LastDBPath ).GetPath() + sep;
+    const wxString UserFolder = mmex::GetUserDir ( false ).GetPath() + sep;
 
     if ( attachmentsFolder.StartsWith ( ATTACHMENTS_FOLDER_USERPROFILE, &AttachmentsFolder ) )
     {

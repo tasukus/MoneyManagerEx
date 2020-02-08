@@ -109,12 +109,12 @@ void mmCurrencyDialog::fillControls()
         m_currencySymbol->ChangeValue ( m_currency->CURRENCY_SYMBOL );
         pfxTx_->ChangeValue ( m_currency->PFX_SYMBOL );
         sfxTx_->ChangeValue ( m_currency->SFX_SYMBOL );
-        const wxString &decimal_separator = wxString::FromAscii ( wxNumberFormatter::GetDecimalSeparator() );
-        const wxString &ds = m_currency->DECIMAL_POINT.empty() ? decimal_separator : m_currency->DECIMAL_POINT;
+        const wxString decimal_separator = wxString::FromAscii ( wxNumberFormatter::GetDecimalSeparator() );
+        const wxString ds = m_currency->DECIMAL_POINT.empty() ? decimal_separator : m_currency->DECIMAL_POINT;
         decTx_->ChangeValue ( ds );
         grpTx_->ChangeValue ( m_currency->GROUP_SEPARATOR );
         m_scale = log10 ( m_currency->SCALE );
-        const wxString &scale_value = wxString::Format ( "%i", m_scale );
+        const wxString scale_value = wxString::Format ( "%i", m_scale );
         scaleTx_->ChangeValue ( scale_value );
         m_currencySymbol->ChangeValue ( m_currency->CURRENCY_SYMBOL );
         m_historic->SetValue ( Model_Currency::BoolOf ( m_currency->HISTORIC ) );

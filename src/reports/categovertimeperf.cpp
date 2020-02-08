@@ -43,7 +43,7 @@ mmReportCategoryOverTimePerformance::~mmReportCategoryOverTimePerformance()
     delete m_date_range;
 }
 
-int mmReportCategoryOverTimePerformance::report_parameters()
+int mmReportCategoryOverTimePerformance::report_parameters() const noexcept
 {
     return RepParams::NONE | RepParams::CHART | RepParams::ACCOUNTS_LIST;
 }

@@ -37,7 +37,10 @@ class mmQIFImportDialog : public wxDialog
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmQIFImportDialog() {}
+    mmQIFImportDialog()
+    {
+        return;
+    }
     mmQIFImportDialog ( wxWindow *parent, int account_id );
 
     bool Create ( wxWindow *parent, wxWindowID id
@@ -87,33 +90,33 @@ private:
     wxString m_accountNameStr;
     wxString m_dateFormatStr;
     wxString decimal_;
-    bool m_userDefinedDateMask;
-    int fromAccountID_;
+    bool m_userDefinedDateMask = false;
+    int fromAccountID_ = -1;
     wxString m_FileNameStr;
-    const wxDateTime m_today;
-    const wxDateTime m_fresh;
+    const wxDateTime m_today = wxDate::Today();
+    const wxDateTime m_fresh = wxDate::Today().Subtract ( wxDateSpan::Months ( 1 ) );
 
-    wxDataViewListCtrl *dataListBox_;
-    wxDataViewListCtrl *accListBox_;
-    wxDataViewListCtrl *payeeListBox_;
-    wxDataViewListCtrl *categoryListBox_;
-    wxButton *button_search_;
-    wxTextCtrl *file_name_ctrl_;
-    wxChoice *m_choiceEncoding;
-    wxTextCtrl *log_field_;
-    wxCheckBox *dateFromCheckBox_;
-    wxCheckBox *dateToCheckBox_;
-    wxDatePickerCtrl *fromDateCtrl_;
-    wxDatePickerCtrl *toDateCtrl_;
-    wxComboBox *choiceDateFormat_;
-    wxCheckBox *accountCheckBox_;
-    wxChoice *accountDropDown_;
-    wxCheckBox *accountNumberCheckBox_;
-    wxCheckBox *payeeIsNotesCheckBox_;
-    wxButton *btnOK_;
-    mmChoiceAmountMask *m_choiceDecimalSeparator;
+    wxDataViewListCtrl *dataListBox_ = nullptr;
+    wxDataViewListCtrl *accListBox_ = nullptr;
+    wxDataViewListCtrl *payeeListBox_ = nullptr;
+    wxDataViewListCtrl *categoryListBox_ = nullptr;
+    wxButton *button_search_ = nullptr;
+    wxTextCtrl *file_name_ctrl_ = nullptr;
+    wxChoice *m_choiceEncoding = nullptr;
+    wxTextCtrl *log_field_ = nullptr;
+    wxCheckBox *dateFromCheckBox_ = nullptr;
+    wxCheckBox *dateToCheckBox_ = nullptr;
+    wxDatePickerCtrl *fromDateCtrl_ = nullptr;
+    wxDatePickerCtrl *toDateCtrl_ = nullptr;
+    wxComboBox *choiceDateFormat_ = nullptr;
+    wxCheckBox *accountCheckBox_ = nullptr;
+    wxChoice *accountDropDown_ = nullptr;
+    wxCheckBox *accountNumberCheckBox_ = nullptr;
+    wxCheckBox *payeeIsNotesCheckBox_ = nullptr;
+    wxButton *btnOK_ = nullptr;
+    mmChoiceAmountMask *m_choiceDecimalSeparator = nullptr;
 
-    bool payeeIsNotes_; //Include payee field in notes
+    bool payeeIsNotes_ = false; //Include payee field in notes
 
     enum EColumn
     {

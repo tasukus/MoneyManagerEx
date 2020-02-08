@@ -263,7 +263,7 @@ bool mmGeneralReportManager::Create ( wxWindow *parent
     GetSizer()->SetSizeHints ( this );
     SetIcon ( mmex::getProgramIcon() );
     Centre();
-    return TRUE;
+    return true;
 }
 
 void mmGeneralReportManager::fillControls()
@@ -1205,7 +1205,7 @@ void mmGeneralReportManager::getSqlTableInfo ( std::vector<std::pair<wxString, w
         {
             const wxString table_name = qTables.GetAsString ( 1 );
             // Get a list of the table columns
-            const wxString &sql = wxString::Format ( "PRAGMA table_info(%s);", table_name );
+            const wxString sql = wxString::Format ( "PRAGMA table_info(%s);", table_name );
             wxSQLite3ResultSet qColumns;
 
             try

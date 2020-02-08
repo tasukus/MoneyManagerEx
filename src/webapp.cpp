@@ -521,7 +521,7 @@ int mmWebApp::MMEX_InsertNewTransaction ( webtran_holder &WebAppTrans )
     {
         Model_Category::Data *NewCategory = Model_Category::instance().create();
         NewCategory->CATEGNAME = WebAppTrans.Category;
-        int NewCategoryID = Model_Category::instance().save ( NewCategory );
+        const int NewCategoryID = Model_Category::instance().save ( NewCategory );
         CategoryID = NewCategoryID;
     }
 

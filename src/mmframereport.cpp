@@ -75,7 +75,7 @@ public:
         m_sub_reports = Model_Report::instance().find ( Model_Report::GROUPNAME ( groupname ) );
     }
 
-    wxString getHTMLText()
+    wxString getHTMLText() override
     {
         loop_t contents;
 
@@ -121,7 +121,7 @@ void mmGUIFrame::updateReportNavigation ( wxTreeItemId &reports, bool budget )
 
     for ( int r = 0; r < Option::instance().getReportCount(); r++ )
     {
-        const wxString &groupName = Option::instance().getReportGroup ( r );
+        const wxString groupName = Option::instance().getReportGroup ( r );
         const bool no_group = groupName.IsEmpty();
 
         if ( reportGroupName != groupName && !no_group )

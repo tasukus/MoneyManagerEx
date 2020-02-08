@@ -28,8 +28,7 @@
 #define CATEGORY_SORT_BY_NAME        1
 #define CATEGORY_SORT_BY_AMOUNT      2
 
-mmReportCategoryExpenses::mmReportCategoryExpenses
-( const wxString &title, enum TYPE type )
+mmReportCategoryExpenses::mmReportCategoryExpenses( const wxString &title, enum TYPE type )
     : mmPrintableBase ( title )
     , type_ ( type )
 {
@@ -39,7 +38,7 @@ mmReportCategoryExpenses::~mmReportCategoryExpenses()
 {
 }
 
-int mmReportCategoryExpenses::report_parameters()
+int mmReportCategoryExpenses::report_parameters() const noexcept
 {
     return RepParams::DATE_RANGE | RepParams::CHART | RepParams::ACCOUNTS_LIST;
 }
@@ -125,9 +124,13 @@ wxString mmReportCategoryExpenses::getHTMLText()
         if ( getChartSelection() == 0 )
         {
             if ( entry.amount < 0 )
+            {
                 expensesList.push_back ( { entry.color, entry.name, entry.amount } );
+            }
             else if ( entry.amount > 0 )
+            {
                 incomeList.push_back ( { entry.color, entry.name, entry.amount } );
+            }
         }
     }
 

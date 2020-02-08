@@ -31,9 +31,9 @@ public:
     explicit mmReportCategoryExpenses ( const wxString &title, enum TYPE type );
     virtual ~mmReportCategoryExpenses();
 
-    virtual void RefreshData();
-    virtual int report_parameters();
-    virtual wxString getHTMLText();
+    void RefreshData() override;
+    int report_parameters() const noexcept override;
+    wxString getHTMLText() override;
 
 protected:
     enum TYPE type_;

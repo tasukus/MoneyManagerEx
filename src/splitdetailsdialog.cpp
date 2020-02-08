@@ -82,8 +82,7 @@ bool SplitDetailDialog::Create ( wxWindow *parent )
 
 void SplitDetailDialog::DataToControls()
 {
-    const wxString &category_name = Model_Category::full_name ( split_.CATEGID
-            , split_.SUBCATEGID );
+    const wxString category_name = Model_Category::full_name ( split_.CATEGID, split_.SUBCATEGID );
     m_bcategory->SetLabelText ( category_name );
 
     if ( split_.SPLITTRANSAMOUNT )

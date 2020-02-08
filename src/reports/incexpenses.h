@@ -27,8 +27,8 @@ class mmReportIncomeExpenses : public mmPrintableBase
 public:
     mmReportIncomeExpenses();
     virtual ~mmReportIncomeExpenses();
-    virtual int report_parameters();
-    virtual wxString getHTMLText();
+    int report_parameters() const noexcept override;
+    wxString getHTMLText() override;
 };
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -37,8 +37,8 @@ class mmReportIncomeExpensesMonthly : public mmPrintableBase
 public:
     mmReportIncomeExpensesMonthly();
     virtual ~mmReportIncomeExpensesMonthly();
-    virtual int report_parameters();
-    virtual wxString getHTMLText();
+    int report_parameters() const noexcept override;
+    wxString getHTMLText() override;
 };
 
 #endif // MM_EX_REPORTINCEXP_H_

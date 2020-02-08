@@ -189,7 +189,7 @@ void mmErrorDialogs::InvalidFile ( wxWindow *object, bool open )
 
 void mmErrorDialogs::InvalidAccount ( wxWindow *object, bool transfer, TOOL_TIP tm )
 {
-    const wxString &errorHeader = _( "Invalid Account" );
+    const wxString errorHeader = _( "Invalid Account" );
     wxString errorMessage;
 
     if ( !transfer )
@@ -216,7 +216,7 @@ void mmErrorDialogs::InvalidAccount ( wxWindow *object, bool transfer, TOOL_TIP 
 
 void mmErrorDialogs::InvalidPayee ( wxWindow *object, TOOL_TIP tm )
 {
-    const wxString &errorHeader = _( "Invalid Payee" );
+    const wxString errorHeader = _( "Invalid Payee" );
     wxString errorMessage = _( "Please type in a new payee,\n"
             "or make a selection using the dropdown button." )
         + "\n";
@@ -233,7 +233,7 @@ void mmErrorDialogs::InvalidPayee ( wxWindow *object, TOOL_TIP tm )
 
 void mmErrorDialogs::InvalidName ( wxTextCtrl *textBox, bool alreadyexist )
 {
-    const wxString &errorHeader = _( "Invalid Name" );
+    const wxString errorHeader = _( "Invalid Name" );
     wxString errorMessage;
 
     if ( alreadyexist )
@@ -252,7 +252,7 @@ void mmErrorDialogs::InvalidName ( wxTextCtrl *textBox, bool alreadyexist )
 
 void mmErrorDialogs::InvalidSymbol ( wxTextCtrl *textBox, bool alreadyexist )
 {
-    const wxString &errorHeader = _( "Invalid Name" );
+    const wxString errorHeader = _( "Invalid Name" );
     wxString errorMessage;
 
     if ( alreadyexist )
@@ -278,8 +278,8 @@ void mmErrorDialogs::ToolTip4Object ( wxWindow *object, const wxString &message,
 
 void mmErrorDialogs::InvalidAmount ( wxWindow *object )
 {
-    const wxString &errorHeader = _( "Invalid Amount" );
-    const wxString &errorMessage = _( "Please enter a calculated or fixed amount" );
+    const wxString errorHeader = _( "Invalid Amount" );
+    const wxString errorMessage = _( "Please enter a calculated or fixed amount" );
     wxRichToolTip tip ( errorHeader, errorMessage );
     tip.SetIcon ( wxICON_WARNING );
     tip.ShowFor ( object );
@@ -287,8 +287,8 @@ void mmErrorDialogs::InvalidAmount ( wxWindow *object )
 
 void mmErrorDialogs::InvalidChoice ( wxChoice *choice )
 {
-    const wxString &errorHeader = _( "Invalid Choice" );
-    const wxString &errorMessage = _( "Please select a valid choice" );
+    const wxString errorHeader = _( "Invalid Choice" );
+    const wxString errorMessage = _( "Please select a valid choice" );
     wxRichToolTip tip ( errorHeader, errorMessage );
     tip.SetIcon ( wxICON_WARNING );
     tip.ShowFor ( choice );

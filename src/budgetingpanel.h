@@ -33,13 +33,13 @@ class budgetingListCtrl : public mmListCtrl
     wxDECLARE_EVENT_TABLE();
 
 public:
-    budgetingListCtrl ( mmBudgetingPanel *cp, wxWindow *parent, const wxWindowID id );
+    explicit budgetingListCtrl ( mmBudgetingPanel *cp, wxWindow *parent, const wxWindowID id );
 
 public:
     /* required overrides for virtual style list control */
-    virtual wxString OnGetItemText ( long item, long column ) const;
-    virtual wxListItemAttr *OnGetItemAttr ( long item ) const;
-    virtual int OnGetItemImage ( long item ) const;
+    wxString OnGetItemText ( long item, long column ) const override;
+    wxListItemAttr *OnGetItemAttr ( long item ) const override;
+    int OnGetItemImage ( long item ) const override;
 
     void OnListItemSelected ( wxListEvent &event );
     void OnListItemActivated ( wxListEvent &event );
@@ -66,7 +66,7 @@ public:
 
     /* updates the checking panel data */
     void initVirtualListControl();
-    int col_max()
+    int col_max() const noexcept
     {
         return COL_MAX;
     }
@@ -75,11 +75,11 @@ public:
     wxString getItem ( long item, long column );
 
     void DisplayBudgetingDetails ( int budgetYearID );
-    int GetBudgetYearID()
+    int GetBudgetYearID() const noexcept
     {
         return budgetYearID_;
     }
-    wxString GetCurrentView()
+    wxString GetCurrentView() const
     {
         return currentView_;
     }
@@ -92,7 +92,7 @@ public:
 
     void RefreshList();
 
-    wxString BuildPage() const
+    wxString BuildPage() const override
     {
         return listCtrlBudget_->BuildPage ( GetPanelTitle() );
     }
@@ -125,7 +125,7 @@ private:
                   , const wxString &name = "mmBudgetingPanel" );
 
     void CreateControls();
-    void sortTable();
+    void sortTable() override;
     bool DisplayEntryAllowed ( int categoryID, int subcategoryID );
     void UpdateBudgetHeading();
     double getEstimate ( int category, int subcategory ) const;

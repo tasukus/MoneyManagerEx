@@ -51,7 +51,7 @@ public:
     int initVirtualListControl ( int trx_id = -1, int col = 0, bool asc = true );
 
 protected:
-    virtual void OnColClick ( wxListEvent &event );
+    void OnColClick ( wxListEvent &event ) override;
 
 private:
     enum EIcons
@@ -69,8 +69,8 @@ private:
     mmAssetsPanel *m_panel;
 
     /* required overrides for virtual style list control */
-    virtual wxString OnGetItemText ( long item, long column ) const;
-    virtual int OnGetItemImage ( long item ) const;
+    wxString OnGetItemText ( long item, long column ) const override;
+    int OnGetItemImage ( long item ) const override;
 
     void OnMouseRightClick ( wxMouseEvent &event );
     void OnListLeftClick ( wxMouseEvent &event );
@@ -112,7 +112,7 @@ public:
         return COL_DATE;
     }
 
-    wxString BuildPage() const
+    wxString BuildPage() const override
     {
         return m_listCtrlAssets->BuildPage ( _( "Assets" ) );
     }

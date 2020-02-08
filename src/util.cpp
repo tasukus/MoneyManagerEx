@@ -58,7 +58,7 @@ int CaseInsensitiveCmp ( const wxString &s1, const wxString &s2 )
 }
 
 //----------------------------------------------------------------------------
-mmTreeItemData::mmTreeItemData ( int id, bool isBudget )
+mmTreeItemData::mmTreeItemData ( const int id, const bool isBudget )
     : id_ ( id )
     , isBudgetingNode_ ( isBudget )
 {}
@@ -177,8 +177,8 @@ wxColour mmColors::userDefColor7;
 
 struct curlBuff
 {
-    char *memory;
-    size_t size;
+    char *memory = nullptr;
+    size_t size = 0;
 };
 
 static size_t curlWriteMemoryCallback ( void *contents, size_t size, size_t nmemb, void *userp )
@@ -810,7 +810,7 @@ bool get_yahoo_prices ( std::vector<wxString> &symbols
                 continue;
             }
 
-            auto price = v["regularMarketPrice"].GetFloat();
+            const auto price = v["regularMarketPrice"].GetFloat();
 
             if ( !v.HasMember ( "symbol" ) || !v["symbol"].IsString() )
             {
@@ -1281,7 +1281,7 @@ void mmCalcValidator::OnChar ( wxKeyEvent &event )
         return event.Skip();
     }
 
-    int keyCode = event.GetKeyCode();
+    const int keyCode = event.GetKeyCode();
 
     // we don't filter special keys and delete
     if ( keyCode < WXK_SPACE || keyCode == WXK_DELETE || keyCode >= WXK_START )

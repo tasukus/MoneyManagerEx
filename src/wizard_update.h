@@ -48,8 +48,9 @@ private:
 
 class mmUpdateWizardPage2 : public wxWizardPageSimple
 {
+    mmUpdateWizardPage2() = delete;
 public:
-    mmUpdateWizardPage2 ( mmUpdateWizard *parent );
+    explicit mmUpdateWizardPage2 ( mmUpdateWizard *parent );
     void OnDownload();
 
 private:

@@ -44,7 +44,7 @@ mmReportCashFlow::~mmReportCashFlow()
 {
 }
 
-int mmReportCashFlow::report_parameters()
+int mmReportCashFlow::report_parameters() const noexcept
 {
     return RepParams::ACCOUNTS_LIST | RepParams::CHART;
 }
@@ -56,7 +56,7 @@ wxString mmReportCashFlow::getHTMLText()
 
 void mmReportCashFlow::getStats ( double &tInitialBalance, std::vector<ValueTrio> &forecastVector )
 {
-    int years = cashFlowReportType_ == MONTHLY ? 10 : 1;// Monthly for 10 years or Daily for 1 year
+    const int years = cashFlowReportType_ == MONTHLY ? 10 : 1;// Monthly for 10 years or Daily for 1 year
     std::map<wxDateTime, double> daily_balance;
     wxArrayInt account_id;
 
@@ -107,8 +107,8 @@ void mmReportCashFlow::getStats ( double &tInitialBalance, std::vector<ValueTrio
 
         int repeatsType = entry.REPEATS;
         int numRepeats = entry.NUMOCCURRENCES;
-        double amt = entry.TRANSAMOUNT;
-        double toAmt = entry.TOTRANSAMOUNT;
+        const double amt = entry.TRANSAMOUNT;
+        const double toAmt = entry.TOTRANSAMOUNT;
 
         // DeMultiplex the Auto Executable fields from the db entry: REPEATS
         repeatsType %= BD_REPEATS_MULTIPLEX_BASE;
@@ -120,8 +120,8 @@ void mmReportCashFlow::getStats ( double &tInitialBalance, std::vector<ValueTrio
             processNumRepeats = true;
         }
 
-        bool isAccountFound = account_id.Index ( entry.ACCOUNTID ) != wxNOT_FOUND;
-        bool isToAccountFound = account_id.Index ( entry.TOACCOUNTID ) != wxNOT_FOUND;
+        const bool isAccountFound = account_id.Index ( entry.ACCOUNTID ) != wxNOT_FOUND;
+        const bool isToAccountFound = account_id.Index ( entry.TOACCOUNTID ) != wxNOT_FOUND;
         if ( !isAccountFound && !isToAccountFound )
         {
             continue;    // skip account
@@ -212,7 +212,7 @@ void mmReportCashFlow::getStats ( double &tInitialBalance, std::vector<ValueTrio
     const wxDateTime &dtBegin = today_;
     for ( size_t idx = 0; idx < forecastVector.size(); idx++ )
     {
-        wxDateTime dtEnd = cashFlowReportType_ == MONTHLY
+        const wxDateTime dtEnd = cashFlowReportType_ == MONTHLY
                            ? dtBegin.Add ( wxDateSpan::Months ( idx ) ) : dtBegin.Add ( wxDateSpan::Days ( idx ) );
 
         for ( const auto &balance : fvec )
@@ -236,12 +236,12 @@ void mmReportCashFlow::getStats ( double &tInitialBalance, std::vector<ValueTrio
 
 wxString mmReportCashFlow::getHTMLText_i()
 {
-    bool monthly_report = ( cashFlowReportType_ == MONTHLY );
-    int years = ( monthly_report ? 10 : 1 ); // Monthly for 10 years or Daily for 1 year
+    const bool monthly_report = ( cashFlowReportType_ == MONTHLY );
+    const int years = ( monthly_report ? 10 : 1 ); // Monthly for 10 years or Daily for 1 year
     double tInitialBalance = 0.0;
 
     // Now we have a vector of dates and amounts over next year
-    int forecastItemsNum = ( monthly_report ? 12 * years : 366 * years );
+    const int forecastItemsNum = ( monthly_report ? 12 * years : 366 * years );
     std::vector<ValueTrio> forecastVector ( forecastItemsNum, {"", "", 0.0} );
     getStats ( tInitialBalance, forecastVector );
 
@@ -249,7 +249,7 @@ wxString mmReportCashFlow::getHTMLText_i()
     hb.init();
     hb.addDivContainer();
 
-    const wxString &headerMsg = wxString::Format ( wxPLURAL ( "Cash Flow Forecast for %i Year Ahead",
+    const wxString headerMsg = wxString::Format ( wxPLURAL ( "Cash Flow Forecast for %i Year Ahead",
                                 "Cash Flow Forecast for %i Years Ahead",
                                 years ),
                                 years );
@@ -316,8 +316,8 @@ wxString mmReportCashFlow::getHTMLText_i()
     int colorNum = 0;
     for ( size_t idx = 0; idx < forecastVector.size(); idx++ )
     {
-        double balance = forecastVector[idx].amount + tInitialBalance;
-        double diff = ( idx == 0 ? 0 : forecastVector[idx].amount - forecastVector[idx-1].amount ) ;
+        const double balance = forecastVector[idx].amount + tInitialBalance;
+        const double diff = ( idx == 0 ? 0 : forecastVector[idx].amount - forecastVector[idx-1].amount ) ;
         const wxDateTime dtEnd = cashFlowReportType_ == MONTHLY
                                  ? today_.Add ( wxDateSpan::Months ( idx ) ) : today_.Add ( wxDateSpan::Days ( idx ) );
 

@@ -29,7 +29,7 @@ public:
     ~mmReportTransactions();
     mmReportTransactions ( int refAccountID, mmFilterTransactionsDialog *transDialog );
 
-    wxString getHTMLText();
+    wxString getHTMLText() override;
 
 private:
     void Run ( mmFilterTransactionsDialog *transDialog );

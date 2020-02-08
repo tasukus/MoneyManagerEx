@@ -42,8 +42,7 @@ static const wxString END = R"(
                             )";
 static const char HTML[] = R"(<!DOCTYPE html>
                            <html><head>
-                           <meta http-equiv="content-type" content="text/html;
-charset=utf-8" />
+                           <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <title>%s - Report</title>
         <link href = 'master.css' rel = 'stylesheet' />
         <script src = 'ChartNew.js'></script>
@@ -284,7 +283,7 @@ void mmHTMLBuilder::addColorMarker ( const wxString &color )
     endTableCell();
 }
 
-const wxString mmHTMLBuilder::getColor ( int i ) const
+const wxString mmHTMLBuilder::getColor ( const int i ) const
 {
     int c = i % ( sizeof ( tags::COLORS ) / sizeof ( wxString ) );
     return tags::COLORS[c];
@@ -294,7 +293,7 @@ void mmHTMLBuilder::addTableCellMonth ( const wxDateTime::Month month )
 {
     if ( month >= 0 && month < 12 )
     {
-        wxString f = wxString::Format ( " sorttable_customkey = '%i'", month );
+        const wxString f = wxString::Format ( " sorttable_customkey = '%i'", month );
         html_ += wxString::Format ( tags::TABLE_CELL, f );
         html_ += wxGetTranslation ( wxDateTime::GetEnglishMonthName ( month ) );
         endTableCell();
@@ -486,8 +485,8 @@ void mmHTMLBuilder::addPieChart ( std::vector<ValueTrio> &valueList, const wxStr
                                        </script>
                                        )";
 
-    int precision = Model_Currency::precision ( Model_Currency::GetBaseCurrency() );
-    int round = pow ( 10, precision );
+    const int precision = Model_Currency::precision( Model_Currency::GetBaseCurrency() );
+    const int round = pow( 10 , precision );
 
     Document jsonDoc;
     jsonDoc.SetObject();
@@ -510,7 +509,7 @@ void mmHTMLBuilder::addPieChart ( std::vector<ValueTrio> &valueList, const wxStr
         color.SetString ( entry.color.c_str(), allocator );
         objValue.AddMember ( "color", color, allocator );
 
-        double v = ( floor ( fabs ( entry.amount ) * round ) / round );
+        const double v = (floor( fabs( entry.amount ) * round ) / round);
         objValue.AddMember ( "value", v, allocator );
 
         data_array.PushBack ( objValue, allocator );
@@ -547,7 +546,7 @@ void mmHTMLBuilder::addBarChart ( const wxArrayString &labels
                                        </script>
                                        )";
 
-    int precision = Model_Currency::precision ( Model_Currency::GetBaseCurrency() );
+    const int precision = Model_Currency::precision( Model_Currency::GetBaseCurrency() );
 
     Document jsonDoc;
     jsonDoc.SetObject();
@@ -566,7 +565,7 @@ void mmHTMLBuilder::addBarChart ( const wxArrayString &labels
     dataObjValue.AddMember ( "labels", labelsArray, allocator );
 
     double max_value = 0;
-    int round = pow ( 10, precision );
+    const int round = pow( 10 , precision );
     Value datasets_array ( kArrayType );
     for ( const auto &entry : data )
     {
@@ -586,7 +585,7 @@ void mmHTMLBuilder::addBarChart ( const wxArrayString &labels
         Value data_array ( kArrayType );
         for ( const auto &item : entry.data )
         {
-            double v = ( floor ( fabs ( item ) * round ) / round );
+            const double v = (floor( fabs( item ) * round ) / round);
             data_array.PushBack ( v, allocator );
             max_value = std::max ( v, max_value );
         }
@@ -598,17 +597,15 @@ void mmHTMLBuilder::addBarChart ( const wxArrayString &labels
 
     jsonDoc.AddMember ( "data", dataObjValue, allocator );
 
-    double vertical_steps = 10.0;
+    constexpr double vertical_steps = 10.0;
     // Compute chart spacing and interval (chart forced to start at zero)
     double scaleStepWidth = ceil ( max_value / vertical_steps );
     // Compute chart spacing and interval (chart forced to start at zero)
     if ( scaleStepWidth < 1.0 )
-    {
         scaleStepWidth = 1.0;
-    }
     else
     {
-        double s = ( pow ( 10, ceil ( log10 ( scaleStepWidth ) ) - 1.0 ) );
+        const double s = (pow( 10 , ceil( log10( scaleStepWidth ) ) - 1.0 ));
         if ( s > 0 )
         {
             scaleStepWidth = ceil ( scaleStepWidth / s ) * s;
@@ -648,8 +645,8 @@ void mmHTMLBuilder::addLineChart ( const std::vector<LineGraphData> &data, const
                                        </script>
                                        )";
 
-    int precision = Model_Currency::precision ( Model_Currency::GetBaseCurrency() );
-    int round = pow ( 10, precision );
+    const int precision = Model_Currency::precision( Model_Currency::GetBaseCurrency() );
+    const int round = pow( 10 , precision );
 
     Document jsonDoc;
     jsonDoc.SetObject();
@@ -670,7 +667,7 @@ void mmHTMLBuilder::addLineChart ( const std::vector<LineGraphData> &data, const
         xPos.SetString ( entry.xPos.c_str(), allocator );
         xPosArray.PushBack ( xPos, allocator );
 
-        double v = ( floor ( ( entry.amount ) * round ) / round );
+        const double v = (floor( (entry.amount) * round ) / round);
         valuesArray.PushBack ( v, allocator );
     }
 

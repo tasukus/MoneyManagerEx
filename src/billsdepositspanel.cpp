@@ -131,7 +131,7 @@ billsDepositsListCtrl::~billsDepositsListCtrl()
 
 void billsDepositsListCtrl::OnColClick ( wxListEvent &event )
 {
-    int ColumnNr;
+    int ColumnNr = 0;
 
     if ( event.GetId() != MENU_HEADER_SORT )
     {

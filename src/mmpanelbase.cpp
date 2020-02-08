@@ -68,7 +68,12 @@ mmListCtrl::~mmListCtrl()
 
 wxListItemAttr *mmListCtrl::OnGetItemAttr ( long row ) const
 {
-    return ( row % 2 ) ? attr2_ : attr1_;
+    if ( row % 2 )
+    {
+        return attr2_.get();
+    }
+
+    return attr1_.get();
 }
 
 wxString mmListCtrl::BuildPage ( const wxString &title ) const
@@ -288,6 +293,7 @@ mmPanelBase::mmPanelBase()
 
 mmPanelBase::~mmPanelBase()
 {
+    return;
 }
 
 wxString mmPanelBase::BuildPage() const

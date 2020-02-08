@@ -56,7 +56,7 @@ private:
     wxString m_RefType;
     int m_RefId = 0;
 
-    mmAttachmentDialog( )
+    mmAttachmentDialog( ) noexcept
     {
         return;
     }

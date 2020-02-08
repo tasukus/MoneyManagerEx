@@ -25,10 +25,14 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include "Model_Category.h"
 
 mmExportTransaction::mmExportTransaction()
-{}
+{
+    return;
+}
 
 mmExportTransaction::~mmExportTransaction()
-{}
+{
+    return;
+}
 
 const wxString mmExportTransaction::getTransactionQIF ( const Model_Checking::Full_Data &full_tran
         , const wxString &dateMask, bool reverce )

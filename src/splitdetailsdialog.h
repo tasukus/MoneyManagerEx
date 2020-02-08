@@ -45,7 +45,7 @@ public:
         , int transType
         , int accountID
     );
-    Split getResult()
+    Split getResult() const
     {
         return split_;
     }

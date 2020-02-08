@@ -34,7 +34,7 @@ class billsDepositsListCtrl: public mmListCtrl
     wxDECLARE_EVENT_TABLE();
 
 public:
-    billsDepositsListCtrl ( mmBillsDepositsPanel *bdp, wxWindow *parent, wxWindowID winid = wxID_ANY );
+    explicit billsDepositsListCtrl ( mmBillsDepositsPanel *bdp, wxWindow *parent, wxWindowID winid = wxID_ANY );
     ~billsDepositsListCtrl();
 
     void OnNewBDSeries ( wxCommandEvent &event );
@@ -47,12 +47,12 @@ public:
     void RefreshList();
 
 protected:
-    virtual void OnColClick ( wxListEvent &event );
+    void OnColClick ( wxListEvent &event ) override;
 
 private:
     /* required overrides for virtual style list control */
-    virtual wxString OnGetItemText ( long item, long column ) const;
-    virtual int OnGetItemImage ( long item ) const;
+    wxString OnGetItemText ( long item, long column ) const override;
+    int OnGetItemImage ( long item ) const override;
 
     void OnItemRightClick ( wxMouseEvent &event );
     void OnListLeftClick ( wxMouseEvent &event );
@@ -102,7 +102,7 @@ public:
     const wxString GetFrequency ( const Model_Billsdeposits::Data *item ) const;
     const wxString GetRemainingDays ( const Model_Billsdeposits::Data *item ) const;
 
-    wxString BuildPage() const;
+    wxString BuildPage() const override;
     wxDate getToday() const;
 
 private:
@@ -123,7 +123,7 @@ private:
     void OnOpenAttachment ( wxCommandEvent &event );
     void OnFilterTransactions ( wxCommandEvent &event );
 
-    void sortTable();
+    void sortTable() override;
 
     bool transFilterActive_;
     wxString tips();

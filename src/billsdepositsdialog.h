@@ -43,7 +43,7 @@ class mmBDDialog : public wxDialog
 public:
     mmBDDialog();
     mmBDDialog ( wxWindow *parent, int bdD, bool edit, bool enterOccur );
-    int GetTransID()
+    int GetTransID() const
     {
         return transID_;
     }

@@ -43,11 +43,12 @@ public:
     {
     }
 
-    virtual ~WebViewHandlerReportsPage()
+    ~WebViewHandlerReportsPage()
     {
+        return;
     }
 
-    virtual wxFSFile *GetFile ( const wxString &uri )
+    wxFSFile *GetFile ( const wxString &uri ) override
     {
         mmGUIFrame *frame = m_reportPanel->m_frame;
         wxString sData;

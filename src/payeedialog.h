@@ -73,7 +73,10 @@ private:
     bool refreshRequested_ = false;
     std::map<int, wxString> ColName_;
 
-    mmPayeeDialog() {}
+    mmPayeeDialog() : wxDialog()
+    {
+        return;
+    }
 
     void Create ( wxWindow *parent, const wxString &name );
     void CreateControls();

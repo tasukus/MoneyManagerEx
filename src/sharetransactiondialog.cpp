@@ -48,8 +48,9 @@ wxBEGIN_EVENT_TABLE ( ShareTransactionDialog, wxDialog )
     EVT_TEXT ( ID_STOCKTRANS_SHARE_COMMISSION, ShareTransactionDialog::OnTextEntered )
 wxEND_EVENT_TABLE()
 
-ShareTransactionDialog::ShareTransactionDialog()
+ShareTransactionDialog::ShareTransactionDialog() : wxDialog()
 {
+    return;
 }
 
 ShareTransactionDialog::ShareTransactionDialog ( wxWindow *parent, Model_Stock::Data *stock )
@@ -114,7 +115,7 @@ void ShareTransactionDialog::DataToControls()
     if ( translink_list.empty() )
     {
         // Set up the transaction as the first entry.
-        int precision = m_stock->NUMSHARES == floor ( m_stock->NUMSHARES ) ? 0 : Option::instance().getSharePrecision();
+        const int precision = m_stock->NUMSHARES == floor ( m_stock->NUMSHARES ) ? 0 : Option::instance().getSharePrecision();
         m_share_num_ctrl->SetValue ( m_stock->NUMSHARES, precision );
         m_share_price_ctrl->SetValue ( m_stock->PURCHASEPRICE, Option::instance().getSharePrecision() );
         m_commission_ctrl->SetValue ( m_stock->COMMISSION, Option::instance().getSharePrecision() );
@@ -126,11 +127,12 @@ void ShareTransactionDialog::DataToControls()
     {
         if ( m_translink_entry && m_share_entry )
         {
-            int precision = m_share_entry->SHARENUMBER == floor ( m_share_entry->SHARENUMBER ) ? 0 : Option::instance().getSharePrecision();
+            const int precision = m_share_entry->SHARENUMBER == floor ( m_share_entry->SHARENUMBER ) ? 0 : Option::instance().getSharePrecision();
             m_share_num_ctrl->SetValue ( std::abs ( m_share_entry->SHARENUMBER ), precision );
             m_share_price_ctrl->SetValue ( m_share_entry->SHAREPRICE, Option::instance().getSharePrecision() );
             m_commission_ctrl->SetValue ( m_share_entry->SHARECOMMISSION, Option::instance().getSharePrecision() );
             m_share_lot_ctrl->SetValue ( m_share_entry->SHARELOT );
+
             Model_Checking::Data *checking_entry = Model_Checking::instance().get ( m_translink_entry->CHECKINGACCOUNTID );
             m_transaction_panel->TransactionDate ( Model_Checking::TRANSDATE ( checking_entry ) );
             m_transaction_panel->SetTransactionValue (
@@ -305,8 +307,8 @@ void ShareTransactionDialog::OnStockPriceButton ( wxCommandEvent &WXUNUSED ( eve
 
     if ( !stockSymbol.IsEmpty() )
     {
-        const wxString &stockURL = Model_Infotable::instance().GetStringInfo ( "STOCKURL", mmex::weblink::DefStockUrl );
-        const wxString &httpString = wxString::Format ( stockURL, stockSymbol );
+        const wxString stockURL = Model_Infotable::instance().GetStringInfo ( "STOCKURL", mmex::weblink::DefStockUrl );
+        const wxString httpString = wxString::Format ( stockURL, stockSymbol );
         wxLaunchDefaultBrowser ( httpString );
     }
 }

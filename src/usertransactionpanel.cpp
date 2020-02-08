@@ -61,7 +61,7 @@ UserTransactionPanel::UserTransactionPanel ( wxWindow *parent
     : m_checking_entry ( checking_entry )
 {
     wxPanel::Create ( parent, win_id, pos, size, style, name );
-    wxDateTime start = wxDateTime::UNow();
+    const wxDateTime start = wxDateTime::UNow();
     Create();
     DataToControls();
     Model_Usage::instance().pageview ( this, ( wxDateTime::UNow() - start ).GetMilliseconds().ToLong() );
@@ -77,10 +77,10 @@ void UserTransactionPanel::Create()
     constexpr int spinCtrlDirection = wxSP_VERTICAL;
 #ifdef __WXMSW__
     constexpr int interval = 4;
-    wxSize spinCtrlSize = wxSize ( 18, 22 );
+    const wxSize spinCtrlSize = wxSize ( 18, 22 );
 #else
     constexpr int interval = 0;
-    wxSize spinCtrlSize = wxSize ( 16, -1 );
+    const wxSize spinCtrlSize = wxSize ( 16, -1 );
 #endif
     const wxSize std_size ( 230, -1 );
     const wxSize std_half_size ( 110, -1 );
@@ -342,7 +342,7 @@ void UserTransactionPanel::OnEnteredText ( wxCommandEvent &event )
 {
     if ( event.GetId() == m_entered_amount->GetId() )
     {
-        Model_Currency::Data *currency;
+        Model_Currency::Data *currency = nullptr;
         Model_Account::Data *account = Model_Account::instance().get ( m_account_id );
 
         if ( account )
@@ -367,7 +367,7 @@ void UserTransactionPanel::OnFrequentNotes ( wxCommandEvent &WXUNUSED ( event ) 
 
     for ( const auto &entry : m_frequent_notes )
     {
-        const wxString &label = entry.Mid ( 0, 30 ) + ( entry.size() > 30 ? "..." : "" );
+        const wxString label = entry.Mid ( 0, 30 ) + ( entry.size() > 30 ? "..." : "" );
         menu.Append ( ++id, label );
     }
 

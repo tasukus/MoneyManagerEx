@@ -37,16 +37,16 @@ public:
                   long style = wxTAB_TRAVERSAL | wxNO_BORDER,
                   const wxString &name = "mmHelpPanel" );
 
-    wxString BuildPage() const
+    wxString BuildPage() const override
     {
         return "";
     }
-    void PrintPage();
+    void PrintPage() override;
 
 public:
     mmGUIFrame *m_frame;
 private:
-    wxWebView *browser_;
+    wxWebView *browser_=nullptr;
 
     bool Create ( wxWindow *parent, wxWindowID winid
                   , const wxPoint &pos = wxDefaultPosition
@@ -55,7 +55,7 @@ private:
                   , const wxString &name = "mmHelpPanel" );
 
     void CreateControls();
-    virtual void sortTable();
+    void sortTable() override;
 
     void OnHelpPageBack ( wxCommandEvent &event );
     void OnHelpPageForward ( wxCommandEvent &event );

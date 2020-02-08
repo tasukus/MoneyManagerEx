@@ -54,7 +54,7 @@ public:
 
 double mmHistoryData::getDailyBalanceAt ( const Model_Account::Data *account, const wxDate &date )
 {
-    const wxString &strDate = date.FormatISODate();
+    const wxString strDate = date.FormatISODate();
     std::map<int, double> totBalance;
 
     for ( const auto &stock : *this )
@@ -125,10 +125,12 @@ double mmHistoryData::getDailyBalanceAt ( const Model_Account::Data *account, co
     return balance;
 }
 
-mmReportSummaryByDate::mmReportSummaryByDate ( int mode )
+mmReportSummaryByDate::mmReportSummaryByDate ( const int mode )
     : mmPrintableBase ( "mmReportSummaryByDate" )
     , mode_ ( mode )
-{}
+{
+    return;
+}
 
 wxString mmReportSummaryByDate::getHTMLText()
 {
@@ -138,7 +140,6 @@ wxString mmReportSummaryByDate::getHTMLText()
     wxString        datePrec;
     wxDate          date, dateStart = wxDate::Today(), dateEnd = wxDate::Today();
     wxDateSpan      span;
-    mmHistoryItem   *pHistItem;
     mmHistoryData   arHistory;
     std::vector<balanceMap> balanceMapVec ( Model_Account::instance().all().size() );
     std::vector<std::map<wxDate, double>::const_iterator> arIt ( balanceMapVec.size() );
@@ -199,7 +200,7 @@ wxString mmReportSummaryByDate::getHTMLText()
             for ( const auto &stock : stocks )
             {
                 arHistory.resize ( arHistory.size() + 1 );
-                pHistItem = arHistory.data() + arHistory.size() - 1;
+                mmHistoryItem *pHistItem = arHistory.data() + arHistory.size() - 1;
                 pHistItem->acctId = account.id();
                 pHistItem->stockId = stock.STOCKID;
                 pHistItem->purchasePrice = stock.PURCHASEPRICE;
@@ -300,7 +301,7 @@ wxString mmReportSummaryByDate::getHTMLText()
         int a = 0;
         for ( const auto &account: Model_Account::instance().all() )
         {
-            double t = arBalance[a++];
+            const double t = arBalance[a++];
             balancePerDay[Model_Account::type ( account )] += t;
         }
 

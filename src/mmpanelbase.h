@@ -28,7 +28,9 @@ struct PANEL_COLUMN
 {
     PANEL_COLUMN ( const wxString &header, int width, int format )
         : HEADER ( header ), WIDTH ( width ), FORMAT ( format )
-    {}
+    {
+        return;
+    }
     wxString HEADER;
     int WIDTH;
     int FORMAT;
@@ -51,7 +53,7 @@ public:
     wxString m_col_width;
     int m_default_sort_column = -1;
 
-    virtual wxListItemAttr *OnGetItemAttr ( long row ) const;
+    wxListItemAttr *OnGetItemAttr ( long row ) const override;
     wxString BuildPage ( const wxString &title ) const;
     int GetColumnWidthSetting ( int column_number, int default_size = wxLIST_AUTOSIZE );
     void SetColumnWidthSetting ( int column_number, int column_width );
@@ -85,7 +87,7 @@ class mmPanelBase : public wxPanel
 {
 public:
     mmPanelBase();
-    virtual ~mmPanelBase();
+    ~mmPanelBase();
 
     virtual wxString BuildPage() const;
     virtual void PrintPage();

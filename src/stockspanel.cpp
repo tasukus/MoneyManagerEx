@@ -194,7 +194,7 @@ wxString StocksListCtrl::OnGetItemText ( long item, long column ) const
 
     if ( column == COL_NUMBER )
     {
-        int precision = m_stocks[item].NUMSHARES == floor ( m_stocks[item].NUMSHARES ) ? 0 : 4;
+        const int precision = m_stocks[item].NUMSHARES == floor ( m_stocks[item].NUMSHARES ) ? 0 : 4;
         return Model_Currency::toString ( m_stocks[item].NUMSHARES, m_stock_panel->m_currency, precision );
     }
 
@@ -248,7 +248,7 @@ wxString StocksListCtrl::OnGetItemText ( long item, long column ) const
     return wxEmptyString;
 }
 
-double StocksListCtrl::GetGainLoss ( long item ) const
+double StocksListCtrl::GetGainLoss ( const long item ) const
 {
     if ( m_stocks[item].PURCHASEPRICE == 0 )
     {
@@ -425,8 +425,8 @@ void StocksListCtrl::OnStockWebPage ( wxCommandEvent &WXUNUSED ( event ) )
 
     if ( !stockSymbol.IsEmpty() )
     {
-        const wxString &stockURL = Model_Infotable::instance().GetStringInfo ( "STOCKURL", mmex::weblink::DefStockUrl );
-        const wxString &httpString = wxString::Format ( stockURL, stockSymbol );
+        const wxString stockURL = Model_Infotable::instance().GetStringInfo ( "STOCKURL", mmex::weblink::DefStockUrl );
+        const wxString httpString = wxString::Format ( stockURL, stockSymbol );
         wxLaunchDefaultBrowser ( httpString );
     }
 }
@@ -438,7 +438,7 @@ void StocksListCtrl::OnOpenAttachment ( wxCommandEvent &WXUNUSED ( event ) )
         return;
     }
 
-    const wxString RefType = Model_Attachment::reftype_desc ( Model_Attachment::STOCK );
+    const wxString &RefType = Model_Attachment::reftype_desc ( Model_Attachment::STOCK );
     const int RefId = m_stocks[m_selected_row].STOCKID;
     mmAttachmentManage::OpenAttachmentFromPanelIcon ( this, RefType, RefId );
     doRefreshItems ( RefId );
@@ -511,7 +511,7 @@ void mmStocksPanel::ViewStockTransactions ( int selectedIndex )
 
 void StocksListCtrl::OnColClick ( wxListEvent &event )
 {
-    int ColumnNr;
+    int ColumnNr = 0;
 
     if ( event.GetId() != MENU_HEADER_SORT )
     {
@@ -717,7 +717,7 @@ bool mmStocksPanel::Create ( wxWindow *parent
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
     wxPanel::Create ( parent, winid, pos, size, style, name );
-    wxDateTime start = wxDateTime::UNow();
+    const wxDateTime start = wxDateTime::UNow();
     strLastUpdate_ = Model_Infotable::instance().GetStringInfo ( "STOCKS_LAST_REFRESH_DATETIME", "" );
     this->windowsFreezeThaw();
     Model_Account::Data *account = Model_Account::instance().get ( m_account_id );
@@ -737,7 +737,7 @@ bool mmStocksPanel::Create ( wxWindow *parent
     GetSizer()->SetSizeHints ( this );
     this->windowsFreezeThaw();
     Model_Usage::instance().pageview ( this, ( wxDateTime::UNow() - start ).GetMilliseconds().ToLong() );
-    return TRUE;
+    return true;
 }
 
 mmStocksPanel::~mmStocksPanel()
@@ -892,12 +892,12 @@ void mmStocksPanel::m_stock_details_short ( const wxString &miniInfo )
     stock_details_short_->SetLabelText ( miniInfo );
 }
 
-int mmStocksPanel::getAccountID()
+int mmStocksPanel::getAccountID() const
 {
     return m_account_id;
 }
 
-void mmStocksPanel::setAccountID ( int id )
+void mmStocksPanel::setAccountID ( const int id )
 {
     m_account_id = id;
 }
@@ -1002,7 +1002,7 @@ bool mmStocksPanel::onlineQuoteRefresh ( wxString &msg )
             continue;
         }
 
-        double dPrice = it->second;
+        const double dPrice = it->second;
 
         if ( dPrice != 0 )
         {
@@ -1066,8 +1066,8 @@ wxString StocksListCtrl::getStockInfo ( int selectedIndex ) const
     }
 
     const double diff = total_current_price - total_purchase_price;
-    const wxString &sTotalCurrentPrice = Model_Currency::toCurrency ( total_current_price, currency );
-    const wxString &sGainLostAmount = Model_Currency::toCurrency ( abs ( diff ), currency );
+    const wxString sTotalCurrentPrice = Model_Currency::toCurrency ( total_current_price, currency );
+    const wxString sGainLostAmount = Model_Currency::toCurrency ( abs ( diff ), currency );
     double total_percentage = 0.0;
 
     if ( total_purchase_price != 0.0 )

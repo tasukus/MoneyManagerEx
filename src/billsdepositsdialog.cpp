@@ -150,7 +150,7 @@ bool mmBDDialog::Create ( wxWindow *parent, wxWindowID id, const wxString &capti
     SetIcon ( mmex::getProgramIcon() );
     this->SetInitialSize();
     Centre();
-    return TRUE;
+    return true;
 }
 
 void mmBDDialog::dataToControls()
@@ -633,7 +633,7 @@ void mmBDDialog::OnPayee ( wxCommandEvent &WXUNUSED ( event ) )
 
         if ( scd.ShowModal() == wxID_OK )
         {
-            const wxString &acctName = scd.GetStringSelection();
+            const wxString acctName = scd.GetStringSelection();
             Model_Account::Data *to_acc = Model_Account::instance().get ( acctName );
 
             if ( to_acc )
@@ -684,7 +684,7 @@ void mmBDDialog::OnTo ( wxCommandEvent &WXUNUSED ( event ) )
 
     if ( scd.ShowModal() == wxID_OK )
     {
-        const wxString &acctName = scd.GetStringSelection();
+        const wxString acctName = scd.GetStringSelection();
         Model_Account::Data *account = Model_Account::instance().get ( acctName );
 
         if ( account )
@@ -848,7 +848,7 @@ void mmBDDialog::OnFrequentUsedNotes ( wxCommandEvent &WXUNUSED ( event ) )
 
     for ( const auto &entry : frequentNotes_ )
     {
-        const wxString &label = entry.Mid ( 0, 30 ) + ( entry.size() > 30 ? "..." : "" );
+        const wxString label = entry.Mid ( 0, 30 ) + ( entry.size() > 30 ? "..." : "" );
         menu.Append ( ++id, label );
     }
 
@@ -1243,7 +1243,7 @@ void mmBDDialog::setRepeatDetails()
     {
         staticTextRepeats_->SetLabelText ( repeatLabelActivate );
         staticTimesRepeat_->SetLabelText ( timeLabelDays );
-        const auto &toolTipsStr = _( "Specify period in Days to activate.\n"
+        const auto toolTipsStr = _( "Specify period in Days to activate.\n"
                 "Becomes blank when not active." );
         textNumRepeats_->SetToolTip ( toolTipsStr );
         m_btn_due_date->Enable();
@@ -1252,7 +1252,7 @@ void mmBDDialog::setRepeatDetails()
     {
         staticTextRepeats_->SetLabelText ( repeatLabelActivate );
         staticTimesRepeat_->SetLabelText ( timeLabelMonths );
-        const auto &toolTipsStr = _( "Specify period in Months to activate.\n"
+        const auto toolTipsStr = _( "Specify period in Months to activate.\n"
                 "Becomes blank when not active." );
         textNumRepeats_->SetToolTip ( toolTipsStr );
         m_btn_due_date->Enable();
@@ -1261,7 +1261,7 @@ void mmBDDialog::setRepeatDetails()
     {
         staticTextRepeats_->SetLabelText ( repeatLabelRepeats );
         staticTimesRepeat_->SetLabelText ( timeLabelDays );
-        const auto &toolTipsStr = _( "Specify period in Days to activate.\n"
+        const auto toolTipsStr = _( "Specify period in Days to activate.\n"
                 "Leave blank when not active." );
         textNumRepeats_->SetToolTip ( toolTipsStr );
     }
@@ -1269,7 +1269,7 @@ void mmBDDialog::setRepeatDetails()
     {
         staticTextRepeats_->SetLabelText ( repeatLabelRepeats );
         staticTimesRepeat_->SetLabelText ( timeLabelMonths );
-        const auto &toolTipsStr = _( "Specify period in Months to activate.\n"
+        const auto toolTipsStr = _( "Specify period in Months to activate.\n"
                 "Leave blank when not active." );
         textNumRepeats_->SetToolTip ( toolTipsStr );
     }
@@ -1277,7 +1277,7 @@ void mmBDDialog::setRepeatDetails()
     {
         staticTextRepeats_->SetLabelText ( repeatLabelRepeats );
         staticTimesRepeat_->SetLabelText ( _( "Payments Left" ) );
-        const auto &toolTipsStr = _( "Specify the number of payments to be made.\n"
+        const auto toolTipsStr = _( "Specify the number of payments to be made.\n"
                 "Leave blank if the payments continue forever." );
         textNumRepeats_->SetToolTip ( toolTipsStr );
     }

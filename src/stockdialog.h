@@ -79,7 +79,7 @@ private:
     void UpdateControls();
     void DataToControls();
     void RefreshStockHistory ( const wxString &symbol );
-    void CreateShareAccount ( Model_Account::Data *stock_account, const wxString &name );
+    void CreateShareAccount ( const Model_Account::Data *stock_account, const wxString &name );
 
     mmTextCtrl *m_stock_symbol_ctrl=nullptr;
     mmTextCtrl *m_stock_name_ctrl=nullptr;

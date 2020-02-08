@@ -267,7 +267,7 @@ void dbUpgrade::SqlFileDebug ( wxSQLite3Database *db )
 
     wxTextFile txtFile;
     txtFile.Open ( fileDlgLoad.GetPath() );
-    bool readonly;
+    bool readonly = false;
     wxString txtLine = txtFile.GetFirstLine();
 
     if ( txtLine == "-- MMEX Debug SQL - Read --" )

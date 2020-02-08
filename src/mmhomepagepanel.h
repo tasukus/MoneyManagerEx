@@ -49,11 +49,11 @@ public:
 
     ~mmHomePagePanel();
 
-    wxString BuildPage() const
+    wxString BuildPage() const override
     {
         return GetHomePageText();
     }
-    void PrintPage();
+    void PrintPage() override;
     void createHTML();
 
 public:
@@ -64,7 +64,10 @@ private:
     wxWebView *browser_=nullptr;
     mmDateRange *date_range_=nullptr;
     void CreateControls();
-    void sortTable() {}
+    void sortTable() override
+    {
+        return;
+    }
     wxString vAccts_;
 
     wxString m_templateText;

@@ -204,7 +204,7 @@ mmReportChartStocks::~mmReportChartStocks()
 {
 }
 
-int mmReportChartStocks::report_parameters()
+int mmReportChartStocks::report_parameters() const noexcept
 {
     return RepParams::DATE_RANGE;
 }
@@ -217,7 +217,7 @@ wxString mmReportChartStocks::getHTMLText()
     hb.addHeader ( 2, getReportTitle() );
     hb.addDateNow();
 
-    wxTimeSpan dtDiff = m_date_range->end_date() - m_date_range->start_date();
+    const wxTimeSpan dtDiff = m_date_range->end_date() - m_date_range->start_date();
     if ( m_date_range->is_with_date() && dtDiff.GetDays() <= 366 )
     {
         hb.DisplayDateHeading ( m_date_range->start_date(), m_date_range->end_date(), true );
@@ -225,7 +225,6 @@ wxString mmReportChartStocks::getHTMLText()
     hb.addHorizontalLine();
 
     bool pointDot = false, showGridLines = false;
-    wxTimeSpan dist;
     wxDate precDateDt = wxInvalidDateTime;
     for ( const auto &stock : Model_Stock::instance().all ( Model_Stock::COL_HELDAT ) )
     {
@@ -275,7 +274,7 @@ wxString mmReportChartStocks::getHTMLText()
         if ( !aData.empty() )
         {
             hb.addDivRow();
-            Model_Account::Data *account = Model_Account::instance().get ( stock.HELDAT );
+            const Model_Account::Data *account = Model_Account::instance().get ( stock.HELDAT );
             hb.addHeader ( 1, wxString::Format ( "%s - (%s)", stock.STOCKNAME, account->ACCOUNTNAME ) );
             hb.addDivCol17_67();
             hb.addLineChart ( aData, stock.STOCKNAME, 0, 1000, 400, pointDot, showGridLines );

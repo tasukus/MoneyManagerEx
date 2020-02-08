@@ -45,7 +45,7 @@ public:
                            const wxString &caption, const wxArrayString &choices );
     mmSingleChoiceDialog ( wxWindow *parent, const wxString &message,
                            const wxString &caption, const Model_Account::Data_Set &accounts );
-    int ShowModal()
+    int ShowModal() override
     {
         return wxSingleChoiceDialog::ShowModal();
     }
@@ -59,7 +59,7 @@ public:
     mmMultiChoiceDialog();
     mmMultiChoiceDialog ( wxWindow *parent, const wxString &message,
                           const wxString &caption, const Model_Account::Data_Set &accounts );
-    int ShowModal()
+    int ShowModal() override
     {
         return wxMultiChoiceDialog::ShowModal();
     }

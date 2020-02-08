@@ -69,13 +69,13 @@ public:
 
 private:
     /* required overrides for virtual style list control */
-    virtual wxString OnGetItemText ( long item, long column ) const;
-    virtual int OnGetItemImage ( long item ) const;
+    wxString OnGetItemText ( long item, long column ) const override;
+    int OnGetItemImage ( long item ) const override;
 
     void OnMouseRightClick ( wxMouseEvent &event );
     void OnListLeftClick ( wxMouseEvent &event );
     void OnListItemActivated ( wxListEvent &event );
-    void OnColClick ( wxListEvent &event );
+    void OnColClick ( wxListEvent &event ) override;
     void OnListKeyDown ( wxListEvent &event );
 
     mmStocksPanel *m_stock_panel;
@@ -142,18 +142,18 @@ public:
     void AddStockTransaction ( int selectedIndex );
     void ViewStockTransactions ( int selectedIndex );
 
-    wxString BuildPage() const;
+    wxString BuildPage() const override;
     void updateHeader();
     void m_stock_details_short ( const wxString &miniInfo );
-    int getAccountID();
-    void setAccountID ( int id );
+    int getAccountID() const;
+    void setAccountID ( const int id );
     void OnListItemActivated ( int selectedIndex );
     void OnListItemSelected ( int selectedIndex );
 
 private:
     void OnRefreshQuotes ( wxCommandEvent &WXUNUSED ( event ) );
 
-    int m_account_id;
+    int m_account_id = -1;
     void CreateControls();
     void updateExtraStocksData ( int selIndex );
     wxStaticText *stock_details_short_ = nullptr;
@@ -161,7 +161,10 @@ private:
     StocksListCtrl *listCtrlAccount_ = nullptr;
     wxStaticText *stock_details_ = nullptr;
     void call_dialog ( const int selectedIndex );
-    void sortTable() {}
+    void sortTable() override
+    {
+        return;
+    }
     const wxString Total_Shares();
 
     wxStaticText *header_text_ = nullptr;

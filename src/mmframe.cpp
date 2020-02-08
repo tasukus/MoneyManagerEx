@@ -1177,7 +1177,7 @@ void mmGUIFrame::OnSelChanged ( wxTreeEvent &event )
             return;
         }
 
-        wxCommandEvent *evt = 0;
+        wxCommandEvent *evt = nullptr;
 
         if ( data == "item@Assets" )
         {
@@ -3356,7 +3356,7 @@ void mmGUIFrame::OnPayeeRelocation ( wxCommandEvent &WXUNUSED ( event ) )
 }
 //----------------------------------------------------------------------------
 
-wxSizer *mmGUIFrame::cleanupHomePanel ( bool new_sizer )
+wxSizer *mmGUIFrame::cleanupHomePanel ( const bool new_sizer )
 {
     wxASSERT ( homePanel_ );
 
@@ -3419,7 +3419,7 @@ void mmGUIFrame::OnClearRecentFiles ( wxCommandEvent &WXUNUSED ( event ) )
     m_recentFiles->AddFileToHistory ( m_filename );
 }
 
-void mmGUIFrame::setGotoAccountID ( int account_id, long transID )
+void mmGUIFrame::setGotoAccountID ( const int account_id,const long transID )
 {
     gotoAccountID_ = account_id;
     gotoTransID_ = transID;

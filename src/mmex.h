@@ -41,23 +41,23 @@ public:
     {
         return m_optParam;
     }
-    wxSQLite3Database *getSettingDB() const
+    wxSQLite3Database *getSettingDB() const noexcept
     {
         return m_setting_db;
     }
-    void setSettingDB ( wxSQLite3Database *db )
+    void setSettingDB ( wxSQLite3Database *db ) noexcept
     {
         m_setting_db = db;
     }
 
 private:
-    virtual void OnInitCmdLine ( wxCmdLineParser &parser );
-    virtual bool OnCmdLineParsed ( wxCmdLineParser &parser );
+    void OnInitCmdLine ( wxCmdLineParser &parser ) override;
+    bool OnCmdLineParsed ( wxCmdLineParser &parser ) override;
     void reportFatalException ( wxDebugReport::Context );
-    bool OnInit();
-    int OnExit();
-    void OnFatalException(); // called when a crash occurs in this application
-    void HandleEvent ( wxEvtHandler *handler, wxEventFunction func, wxEvent &event ) const;
+    bool OnInit() override;
+    int OnExit() override;
+    void OnFatalException() override; // called when a crash occurs in this application
+    void HandleEvent ( wxEvtHandler *handler, wxEventFunction func, wxEvent &event ) const override;
     wxSingleInstanceChecker *m_checker = nullptr;
 
     wxSQLite3Database *m_setting_db = nullptr;
@@ -65,8 +65,7 @@ private:
     wxLanguage m_lang=wxLANGUAGE_UNKNOWN; // GUI translation language displayed
     wxLocale m_locale;
 public:
-    virtual int FilterEvent ( wxEvent &event );
-
+    int FilterEvent ( wxEvent &event ) override;
 };
 
 //----------------------------------------------------------------------------

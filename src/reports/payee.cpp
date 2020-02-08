@@ -30,16 +30,15 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 
 mmReportPayeeExpenses::mmReportPayeeExpenses()
     : mmPrintableBase ( _( "Payee Report" ) )
-    , positiveTotal_ ( 0.0 )
-    , negativeTotal_ ( 0.0 )
 {
+    return;
 }
 
 mmReportPayeeExpenses::~mmReportPayeeExpenses()
 {
 }
 
-int mmReportPayeeExpenses::report_parameters()
+int mmReportPayeeExpenses::report_parameters() const noexcept
 {
     return RepParams::DATE_RANGE | RepParams::CHART;
 }
@@ -64,7 +63,7 @@ void  mmReportPayeeExpenses::RefreshData()
         positiveTotal_ += entry.second.first;
         negativeTotal_ += entry.second.second;
 
-        Model_Payee::Data *payee = Model_Payee::instance().get ( entry.first );
+        const Model_Payee::Data *payee = Model_Payee::instance().get ( entry.first );
 
         line.name = payee ? payee->PAYEENAME : "";
         line.incomes = entry.second.first;

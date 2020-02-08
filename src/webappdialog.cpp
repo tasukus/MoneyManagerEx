@@ -182,7 +182,7 @@ void mmWebAppDialog::OpenAttachment()
     wxDataViewItemArray Selected;
     webtranListBox_->GetSelections ( Selected );
 
-    for ( wxDataViewItem Item : Selected )
+    for ( const wxDataViewItem &Item : Selected )
     {
         const int selectedIndex_ = webtranListBox_->ItemToRow ( Item );
 
@@ -210,13 +210,13 @@ void mmWebAppDialog::ImportWebTrSelected()
         return;
     }
 
-    for ( wxDataViewItem Item : Selected )
+    for ( const wxDataViewItem &Item : Selected )
     {
-        int selectedIndex_ = webtranListBox_->ItemToRow ( Item );
+        const int selectedIndex_ = webtranListBox_->ItemToRow ( Item );
 
         if ( selectedIndex_ >= 0 )
         {
-            int WebTrID = static_cast<int> ( webtranListBox_->GetItemData ( Item ) );
+            const int WebTrID = static_cast<int> ( webtranListBox_->GetItemData ( Item ) );
             mmWebAppDialog::ImportWebTr ( WebTrID, true );
         }
     }
@@ -234,9 +234,9 @@ void mmWebAppDialog::DeleteWebTr()
         return;
     }
 
-    for ( wxDataViewItem Item : Selected )
+    for ( const wxDataViewItem &Item : Selected )
     {
-        int selectedIndex_ = webtranListBox_->ItemToRow ( Item );
+        const int selectedIndex_ = webtranListBox_->ItemToRow ( Item );
 
         if ( selectedIndex_ >= 0 )
         {

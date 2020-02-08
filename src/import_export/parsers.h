@@ -29,9 +29,12 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 class ITransactionsFile
 {
 public:
-    enum ItemType {/*TYPE_UNKNOWN,*/ TYPE_STRING, TYPE_NUMBER};
+    enum ItemType
+    {
+        /*TYPE_UNKNOWN,*/ TYPE_STRING, TYPE_NUMBER
+    };
 
-    virtual ~ITransactionsFile() {}
+    virtual ~ITransactionsFile() = default;
 
 // *********************** Import related methods ***********************
     // Opens and parses the input file in to an internal structure that allows calling the getter functions below.
@@ -54,7 +57,7 @@ public:
     // Adds a new item to the last line. NewLine() must be called first.
     virtual void AddNewItem ( const wxString &stringItem ) = 0;
 
-    virtual void AddNewItem ( const wxString &stringItem, ItemType itemType ) = 0;
+    virtual void AddNewItem ( const wxString &stringItem, const ItemType itemType ) = 0;
 
     // Exports all item to file.
     virtual bool Save ( const wxString &fileName ) = 0;
@@ -64,7 +67,10 @@ public:
 class TableBasedFile : public ITransactionsFile
 {
 public:
-    TableBasedFile ( wxWindow *pParentWindow ) : pParentWindow_ ( pParentWindow ) {}
+    explicit TableBasedFile ( wxWindow *pParentWindow ) : pParentWindow_( pParentWindow )
+    {
+        return;
+    }
     virtual ~TableBasedFile()
     {
         for ( auto line : itemsTable_ )
@@ -73,11 +79,11 @@ public:
         }
         itemsTable_.clear();
     }
-    virtual unsigned int GetLinesCount() const
+    unsigned int GetLinesCount() const override
     {
         return itemsTable_.size();
     }
-    virtual unsigned int GetItemsCount ( unsigned int line ) const
+    unsigned int GetItemsCount ( unsigned int line ) const override
     {
         if ( line >= GetLinesCount() )
         {
@@ -85,7 +91,7 @@ public:
         }
         return itemsTable_[line].size();
     }
-    virtual wxString GetItem ( unsigned int line, unsigned int itemInLine ) const
+    wxString GetItem ( unsigned int line, unsigned int itemInLine ) const override
     {
         if ( line >= GetLinesCount() || itemInLine >= itemsTable_[line].size() )
         {
@@ -93,17 +99,17 @@ public:
         }
         return itemsTable_[line][itemInLine].value;
     }
-    virtual void AddNewLine()
+    void AddNewLine() override
     {
         itemsTable_.push_back ( std::vector<ValueAndType>() );
     }
 
-    virtual void AddNewItem ( const wxString &stringItem )
+    void AddNewItem ( const wxString &stringItem ) override
     {
         itemsTable_.back().push_back ( stringItem );
     }
 
-    virtual void AddNewItem ( const wxString &stringItem, ItemType itemType )
+    void AddNewItem ( const wxString &stringItem, const ItemType itemType ) override
     {
         itemsTable_.back().push_back ( { stringItem, itemType } );
     }
@@ -112,9 +118,18 @@ protected:
     wxWindow *pParentWindow_;
     struct ValueAndType
     {
-        ValueAndType() : value ( wxEmptyString ), type ( TYPE_STRING ) {};
-        ValueAndType ( const wxString &setValue ) : value ( setValue ), type ( TYPE_STRING ) {};
-        ValueAndType ( const wxString &setValue, ItemType setItemType ) : value ( setValue ), type ( setItemType ) {};
+        ValueAndType() : value ( wxEmptyString ), type ( TYPE_STRING )
+        {
+            return;
+        }
+        ValueAndType ( const wxString &setValue ) : value ( setValue ), type ( TYPE_STRING )
+        {
+            return;
+        }
+        ValueAndType ( const wxString &setValue, ItemType setItemType ) : value ( setValue ), type ( setItemType )
+        {
+            return;
+        }
         wxString value;
         ItemType type;
     };
@@ -125,22 +140,24 @@ protected:
 // CSV parser
 class FileCSV : public TableBasedFile
 {
+    FileCSV() = delete;
 public:
-    FileCSV ( wxWindow *pParentWindow, wxConvAuto encoding, wxString delimiter );
-    virtual bool Load ( const wxString &fileName, unsigned int itemsInLine );
-    virtual bool Save ( const wxString &fileName );
+    FileCSV ( wxWindow *pParentWindow, wxConvAuto encoding, const wxString &delimiter );
+    bool Load ( const wxString &fileName, unsigned int itemsInLine ) override;
+    bool Save ( const wxString &fileName ) override;
 protected:
     wxConvAuto encoding_;
-    wxString delimiter_;
+    const wxString delimiter_;
 };
 
 // XML parser
 class FileXML : public TableBasedFile
 {
+    FileXML() = delete;
 public:
-    FileXML ( wxWindow *pParentWindow, wxString encoding );
-    virtual bool Load ( const wxString &fileName, unsigned int itemsInLine );
-    virtual bool Save ( const wxString &fileName );
+    FileXML ( wxWindow *pParentWindow, const wxString &encoding );
+    bool Load ( const wxString &fileName, unsigned int itemsInLine ) override;
+    bool Save ( const wxString &fileName ) override;
 protected:
     wxString encoding_;
 };

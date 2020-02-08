@@ -702,7 +702,7 @@ void mmCheckingPanel::OnOpenAttachment ( wxCommandEvent &event )
 
 void mmCheckingPanel::initViewTransactionsHeader()
 {
-    const wxString &def_view = Model_Setting::instance().ViewTransactions();
+    const wxString def_view = Model_Setting::instance().ViewTransactions();
     m_currentView = menu_labels().Index ( Model_Infotable::instance().GetStringInfo ( wxString::Format ( "CHECK_FILTER_ID_%d", m_AccountID ), def_view ) );
 
     if ( m_currentView < 0 || static_cast<size_t> ( m_currentView ) >= menu_labels().size() )
@@ -728,7 +728,7 @@ void mmCheckingPanel::setDateRange()
 {
     mmDateRange *date_range = nullptr;
     const bool show_future = !Option::instance().getIgnoreFutureTransactions();
-    const wxString &future_date_string = wxDateTime ( 31, wxDateTime::Dec, 9999 ).FormatISODate();
+    const wxString future_date_string = wxDateTime ( 31, wxDateTime::Dec, 9999 ).FormatISODate();
     m_begin_date = "";
     m_end_date = "";
 
@@ -1151,7 +1151,7 @@ TransactionListCtrl::TransactionListCtrl (
     m_columns.push_back ( PANEL_COLUMN ( _( "Deposit" ), wxLIST_AUTOSIZE_USEHEADER, wxLIST_FORMAT_RIGHT ) );
     m_columns.push_back ( PANEL_COLUMN ( _( "Balance" ), wxLIST_AUTOSIZE_USEHEADER, wxLIST_FORMAT_RIGHT ) );
     m_columns.push_back ( PANEL_COLUMN ( _( "Notes" ), 250, wxLIST_FORMAT_LEFT ) );
-    const auto &ref_type = Model_Attachment::reftype_desc ( Model_Attachment::TRANSACTION );
+    const wxString &ref_type = Model_Attachment::reftype_desc ( Model_Attachment::TRANSACTION );
 
     for ( const auto &udfc_entry : Model_CustomField::UDFC_FIELDS() )
     {
@@ -1534,7 +1534,7 @@ void TransactionListCtrl::OnMarkAllTransactions ( wxCommandEvent &event )
 
 void TransactionListCtrl::OnColClick ( wxListEvent &event )
 {
-    int ColumnNr;
+    int ColumnNr = 0;
 
     if ( event.GetId() != MENU_HEADER_SORT )
     {
@@ -1876,7 +1876,7 @@ void TransactionListCtrl::OnOpenAttachment ( wxCommandEvent &WXUNUSED ( event ) 
     }
 
     const int transaction_id = m_cp->m_trans[m_selectedIndex].TRANSID;
-    const wxString RefType = Model_Attachment::reftype_desc ( Model_Attachment::TRANSACTION );
+    const wxString &RefType = Model_Attachment::reftype_desc ( Model_Attachment::TRANSACTION );
     mmAttachmentManage::OpenAttachmentFromPanelIcon ( this, RefType, transaction_id );
     refreshVisualList ( transaction_id );
 }
@@ -1894,7 +1894,7 @@ void TransactionListCtrl::OnListKeyDown ( wxListEvent &event )
 
     m_topItemIndex = GetTopItem() + GetCountPerPage() - 1;
     //Read status of the selected transaction
-    const wxString status = m_cp->m_trans[m_selectedIndex].STATUS;
+    const wxString &status = m_cp->m_trans[m_selectedIndex].STATUS;
 
     if ( wxGetKeyState ( wxKeyCode ( 'R' ) ) && status != "R" )
     {

@@ -57,12 +57,12 @@ public:
     void setAccountToolTip ( const wxString &tip ) const;
     bool getStatusCheckBox();
     bool getAccountCheckBox();
-    int getAccountID();
+    int getAccountID() const noexcept;
     bool getCategoryCheckBox();
 
-    bool getSimilarStatus();
-    int getCategId();
-    int getSubCategId();
+    bool getSimilarStatus() const noexcept;
+    int getCategId() const noexcept;
+    int getSubCategId() const noexcept;
 
 private:
     void getFilterStatus();

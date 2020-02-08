@@ -726,7 +726,7 @@ void mmCategDialog::OnItemRightClick ( wxTreeEvent &event )
     event.Skip();
 }
 
-bool mmCategDialog::categShowStatus ( int categId, int subCategId )
+bool mmCategDialog::categShowStatus ( const int categId,const int subCategId )
 {
     if ( subCategId != -1 )
     {

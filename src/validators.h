@@ -24,9 +24,12 @@ class mmCalcValidator : public wxTextValidator
 {
 public:
     mmCalcValidator();
-    virtual ~mmCalcValidator() {}
+    ~mmCalcValidator()
+    {
+        return;
+    }
 
-    virtual wxObject *Clone() const
+    wxObject *Clone() const override
     {
         return new mmCalcValidator ( *this );
     }

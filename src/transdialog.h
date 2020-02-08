@@ -65,15 +65,15 @@ public:
                 );
 
     void SetDialogTitle ( const wxString &title );
-    int GetAccountID()
+    int GetAccountID() const noexcept
     {
         return m_trx_data.ACCOUNTID;
     }
-    int GetToAccountID()
+    int GetToAccountID() const noexcept
     {
         return m_trx_data.TOACCOUNTID;
     }
-    int GetTransactionID()
+    int GetTransactionID() const noexcept
     {
         return m_trx_data.TRANSID;
     }

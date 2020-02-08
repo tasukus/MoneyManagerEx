@@ -63,7 +63,7 @@ public:
     {
         return m_splits;
     }
-    bool isItemsChanged()
+    bool isItemsChanged() const
     {
         return items_changed_;
     }

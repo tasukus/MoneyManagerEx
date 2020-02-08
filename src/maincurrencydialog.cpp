@@ -298,7 +298,7 @@ void mmMainCurrencyDialog::OnBtnAdd ( wxCommandEvent &WXUNUSED ( event ) )
 
 void mmMainCurrencyDialog::OnBtnEdit ( wxCommandEvent &WXUNUSED ( event ) )
 {
-    Model_Currency::Data *currency = Model_Currency::instance().get ( m_currency_id );
+    const Model_Currency::Data *const currency = Model_Currency::instance().get ( m_currency_id );
 
     if ( currency )
     {
@@ -768,7 +768,7 @@ void mmMainCurrencyDialog::OnHistoryDeselected ( wxListEvent &WXUNUSED ( event )
     valueTextBox_->SetValue ( wxEmptyString );
 }
 
-bool mmMainCurrencyDialog::SetBaseCurrency ( int &baseCurrencyID )
+bool mmMainCurrencyDialog::SetBaseCurrency ( const int baseCurrencyID )
 {
     const int baseCurrencyOLD = Option::instance().getBaseCurrencyID();
 

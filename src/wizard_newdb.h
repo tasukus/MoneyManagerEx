@@ -29,8 +29,9 @@
 
 class mmNewDatabaseWizard : public wxWizard
 {
+    mmNewDatabaseWizard() = delete;
 public:
-    mmNewDatabaseWizard ( wxFrame *frame );
+    explicit mmNewDatabaseWizard ( wxFrame *frame );
     void RunIt ( bool modal );
 
 private:
@@ -43,11 +44,12 @@ private:
 
 class mmNewDatabaseWizardPage : public wxWizardPageSimple
 {
+    mmNewDatabaseWizardPage() = delete;
 public:
-    mmNewDatabaseWizardPage ( mmNewDatabaseWizard *parent );
+    explicit mmNewDatabaseWizardPage ( mmNewDatabaseWizard *parent );
 
     void OnCurrency ( wxCommandEvent &WXUNUSED ( event ) );
-    virtual bool TransferDataFromWindow();
+    bool TransferDataFromWindow() override;
 
 private:
     wxButton *itemButtonCurrency_;

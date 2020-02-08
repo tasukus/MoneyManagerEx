@@ -28,13 +28,6 @@
 
 mmPrintableBase::mmPrintableBase ( const wxString &title )
     : m_title ( title )
-    , m_date_range ( nullptr )
-    , m_initial ( true )
-    , m_date_selection ( 0 )
-    , m_account_selection ( 0 )
-    , m_chart_selection ( 0 )
-    , accountArray_ ( nullptr )
-    , m_only_active ( false )
     , m_settings ( "" )
     , m_begin_date ( wxDateTime::Today() )
     , m_end_date ( wxDateTime::Today() )
@@ -49,7 +42,7 @@ mmPrintableBase::~mmPrintableBase()
 
         if ( j_doc.HasMember ( "ID" ) && j_doc["ID"].IsInt() )
         {
-            int id = j_doc["ID"].GetInt();
+            const int id = j_doc[ "ID" ].GetInt();
 
             StringBuffer json_buffer;
             PrettyWriter<StringBuffer> json_writer ( json_buffer );
@@ -96,8 +89,8 @@ mmPrintableBase::~mmPrintableBase()
 
             json_writer.EndObject();
 
-            const wxString &rj_key = wxString::Format ( "REPORT_%d", id );
-            const wxString &rj_value = json_buffer.GetString();
+            const wxString rj_key = wxString::Format ( "REPORT_%d", id );
+            const wxString rj_value = json_buffer.GetString();
             Model_Infotable::instance().Set ( rj_key, rj_value );
         }
     }
@@ -132,7 +125,7 @@ void mmPrintableBase::setAccounts ( int selection, const wxString &name )
                       : Model_Account::instance().find ( Model_Account::ACCOUNTTYPE ( Model_Account::all_type() [Model_Account::INVESTMENT], NOT_EQUAL ) ) );
                 std::stable_sort ( accounts.begin(), accounts.end(), SorterByACCOUNTNAME() );
 
-                mmMultiChoiceDialog mcd ( 0, _( "Choose Accounts" ), m_title, accounts );
+                mmMultiChoiceDialog mcd ( nullptr, _( "Choose Accounts" ), m_title, accounts );
 
                 if ( mcd.ShowModal() == wxID_OK )
                 {
@@ -253,7 +246,7 @@ void mmPrintableBase::date_range ( const mmDateRange *date_range, int selection 
     }
     else
     {
-        wxDateTime today = wxDateTime::Today();
+        const wxDateTime today = wxDateTime::Today();
         m_begin_date = today;
         m_end_date = today;
     }
@@ -300,7 +293,7 @@ wxString mmGeneralReport::getHTMLText()
     return Model_Report::instance().get_html ( m_report );
 }
 
-int mmGeneralReport::report_parameters()
+int mmGeneralReport::report_parameters() const
 {
     int params = 0;
     const auto content = m_report->SQLCONTENT.Lower();

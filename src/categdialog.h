@@ -28,7 +28,8 @@ public:
     mmTreeItemCateg ( const Model_Category::Data &categData, const Model_Subcategory::Data &subcategData )
         : categData_ ( categData )
         , subcategData_ ( subcategData )
-    {}
+    {
+    }
     Model_Category::Data *getCategData()
     {
         return &categData_;

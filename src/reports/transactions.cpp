@@ -92,17 +92,15 @@ wxString mmReportTransactions::getHTMLText()
                                            ? Model_Account::currency ( account )
                                            : Model_Currency::GetBaseCurrency();
 
-    const wxString &AttRefType = Model_Attachment::reftype_desc ( Model_Attachment::TRANSACTION );
+    const wxString AttRefType = Model_Attachment::reftype_desc ( Model_Attachment::TRANSACTION );
 
     // Display the data for each row
     for ( auto &transaction : trans_ )
     {
         hb.startTableRow();
-        hb.addTableCellLink ( wxString::Format ( "trx:%d", transaction.TRANSID )
-                              , wxString::Format ( "%i", transaction.TRANSID ) );
+        hb.addTableCellLink ( wxString::Format ( "trx:%d", transaction.TRANSID ), wxString::Format ( "%i", transaction.TRANSID ) );
         hb.addTableCellDate ( transaction.TRANSDATE );
-        hb.addTableCellLink ( wxString::Format ( "trxid:%d", transaction.TRANSID )
-                              , transaction.ACCOUNTNAME );
+        hb.addTableCellLink ( wxString::Format ( "trxid:%d", transaction.TRANSID ), transaction.ACCOUNTNAME );
         hb.addTableCell ( transaction.PAYEENAME );
         hb.addTableCell ( transaction.STATUS );
         hb.addTableCell ( transaction.CATEGNAME );

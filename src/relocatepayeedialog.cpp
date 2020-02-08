@@ -125,7 +125,7 @@ void relocatePayeeDialog::OnCancel ( wxCommandEvent &WXUNUSED ( event ) )
 
 void relocatePayeeDialog::OnOk ( wxCommandEvent &WXUNUSED ( event ) )
 {
-    const wxString &info = wxString::Format ( _( "From %s to %s" )
+    const wxString info = wxString::Format ( _( "From %s to %s" )
             , Model_Payee::instance().get ( sourcePayeeID_ )->PAYEENAME
             , Model_Payee::instance().get ( destPayeeID_ )->PAYEENAME );
     int ans = wxMessageBox ( _( "Please Confirm:" ) + "\n" + info
@@ -184,9 +184,10 @@ void relocatePayeeDialog::OnOk ( wxCommandEvent &WXUNUSED ( event ) )
 
 void relocatePayeeDialog::IsOkOk()
 {
-    int trxs_size, bills_size;
-    const wxString &destPayeeName = cbDestPayee_->GetValue();
-    const wxString &sourcePayeeName = cbSourcePayee_->GetValue();
+    int trxs_size = 0, bills_size = 0;
+    const wxString destPayeeName = cbDestPayee_->GetValue();
+    const wxString sourcePayeeName = cbSourcePayee_->GetValue();
+
     Model_Payee::Data *source_payee = Model_Payee::instance().get ( sourcePayeeName );
     Model_Payee::Data *dest_payee = Model_Payee::instance().get ( destPayeeName );
 

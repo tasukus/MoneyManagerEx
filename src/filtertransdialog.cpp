@@ -317,7 +317,7 @@ void mmFilterTransactionsDialog::CreateControls()
 
     for ( int i = 0 ; i < 10 ; i++ )
     {
-        const wxString &data = Model_Infotable::instance().GetStringInfo (
+        const wxString data = Model_Infotable::instance().GetStringInfo (
                 wxString::Format ( "TRANSACTIONS_FILTER_%d", i )
                 , "" );
         Document j_doc;
@@ -329,7 +329,7 @@ void mmFilterTransactionsDialog::CreateControls()
 
         //Label
         const Value &j_label = GetValueByPointerWithDefault ( j_doc, "/LABEL", "" );
-        const wxString &s_label = j_label.IsString() ? j_label.GetString() : "";
+        const wxString s_label = j_label.IsString() ? j_label.GetString() : "";
         m_setting_name->AppendString ( s_label.empty() ? wxString::Format ( _( "%i: Empty" ), i + 1 ) : s_label );
     }
 
@@ -663,7 +663,7 @@ void mmFilterTransactionsDialog::setAccountToolTip ( const wxString &tip ) const
 void mmFilterTransactionsDialog::clearSettings()
 {
     const int i = m_setting_name->GetSelection();
-    const wxString &default_label = wxString::Format ( _( "%i: Empty" ), i + 1 );
+    const wxString default_label = wxString::Format ( _( "%i: Empty" ), i + 1 );
     m_setting_name->SetString ( i, default_label );
     settings_string_ = R"({"LABEL": "Clear"})";
     m_custom_fields->ClearSettings();
@@ -1031,7 +1031,7 @@ void mmFilterTransactionsDialog::from_json ( const wxString &data )
 
     //Label
     const Value &j_label = GetValueByPointerWithDefault ( j_doc, "/LABEL", "" );
-    const wxString &s_label = j_label.IsString() ? j_label.GetString() : "";
+    const wxString s_label = j_label.IsString() ? j_label.GetString() : "";
     m_setting_name->SetStringSelection ( s_label );
 
     if ( s_label.empty() )
@@ -1041,13 +1041,13 @@ void mmFilterTransactionsDialog::from_json ( const wxString &data )
 
     //Account
     const Value &j_account = GetValueByPointerWithDefault ( j_doc, "/ACCOUNT", "" );
-    const wxString &s_account = j_account.IsString() ? j_account.GetString() : "";
+    const wxString s_account = j_account.IsString() ? j_account.GetString() : "";
     accountCheckBox_->SetValue ( !s_account.empty() );
     accountDropDown_->Enable ( accountCheckBox_->IsChecked() );
     accountDropDown_->SetStringSelection ( s_account );
     //Dates
     const Value &j_date = GetValueByPointerWithDefault ( j_doc, "/DATE", "" );
-    const wxString &s_date = j_date.IsString() ? j_date.GetString() : "";
+    const wxString s_date = j_date.IsString() ? j_date.GetString() : "";
     m_date_ranges->SetStringSelection ( wxGetTranslation ( s_date ) );
 
     if ( !s_date.empty() )
@@ -1074,13 +1074,13 @@ void mmFilterTransactionsDialog::from_json ( const wxString &data )
     m_date_ranges->Enable ( m_dateRangeCheckBox->IsChecked() );
     //Payee
     const Value &j_payee = GetValueByPointerWithDefault ( j_doc, "/PAYEE", "" );
-    const wxString &s_payee = j_payee.IsString() ? j_payee.GetString() : "";
+    const wxString s_payee = j_payee.IsString() ? j_payee.GetString() : "";
     payeeCheckBox_->SetValue ( !s_payee.empty() );
     cbPayee_->Enable ( payeeCheckBox_->IsChecked() );
     cbPayee_->SetValue ( s_payee );
     //Category
     const Value &j_category = GetValueByPointerWithDefault ( j_doc, "/CATEGORY", "" );
-    const wxString &s_category = j_category.IsString() ? j_category.GetString() : "";
+    const wxString s_category = j_category.IsString() ? j_category.GetString() : "";
     categoryCheckBox_->SetValue ( !s_category.empty() );
     btnCategory_->Enable ( categoryCheckBox_->IsChecked() );
     bSimilarCategoryStatus_ = false;
@@ -1117,13 +1117,13 @@ void mmFilterTransactionsDialog::from_json ( const wxString &data )
     btnCategory_->SetLabelText ( Model_Category::full_name ( categID_, subcategID_ ) );
     //Status
     const Value &j_status = GetValueByPointerWithDefault ( j_doc, "/STATUS", "" );
-    const wxString &s_status = j_status.IsString() ? j_status.GetString() : "";
+    const wxString s_status = j_status.IsString() ? j_status.GetString() : "";
     statusCheckBox_->SetValue ( !s_status.empty() );
     choiceStatus_->Enable ( statusCheckBox_->IsChecked() );
     choiceStatus_->SetStringSelection ( wxGetTranslation ( s_status ) );
     //Type
     const Value &j_type = GetValueByPointerWithDefault ( j_doc, "/TYPE", "" );
-    const wxString &s_type = j_type.IsString() ? j_type.GetString() : "";
+    const wxString s_type = j_type.IsString() ? j_type.GetString() : "";
     typeCheckBox_->SetValue ( !s_type.empty() );
     cbTypeWithdrawal_->SetValue ( s_type.Contains ( "W" ) );
     cbTypeWithdrawal_->Enable ( typeCheckBox_->IsChecked() );
@@ -1192,7 +1192,7 @@ void mmFilterTransactionsDialog::from_json ( const wxString &data )
     notesEdit_->ChangeValue ( s_notes );
 }
 
-int mmFilterTransactionsDialog::getAccountID()
+int mmFilterTransactionsDialog::getAccountID() const noexcept
 {
     return refAccountID_;
 }
@@ -1213,17 +1213,17 @@ bool mmFilterTransactionsDialog::getCategoryCheckBox()
     return categoryCheckBox_->IsChecked();
 }
 
-bool mmFilterTransactionsDialog::getSimilarStatus()
+bool mmFilterTransactionsDialog::getSimilarStatus() const noexcept
 {
     return bSimilarCategoryStatus_;
 }
 
-int mmFilterTransactionsDialog::getCategId()
+int mmFilterTransactionsDialog::getCategId() const noexcept
 {
     return categID_;
 }
 
-int mmFilterTransactionsDialog::getSubCategId()
+int mmFilterTransactionsDialog::getSubCategId() const noexcept
 {
     return subcategID_;
 }
@@ -1310,7 +1310,7 @@ void mmFilterTransactionsDialog::OnSaveSettings ( wxCommandEvent &WXUNUSED ( eve
 {
     const int i = m_setting_name->GetSelection();
     //m_custom_fields->SaveCustomValues(i);
-    const wxString &default_label = wxString::Format ( _( "%i: Empty" ), i + 1 );
+    const wxString default_label = wxString::Format ( _( "%i: Empty" ), i + 1 );
     wxString label = m_setting_name->GetStringSelection();
     label = wxGetTextFromUser ( _( "Please Enter" ), _( "Setting Name" ), label );
 

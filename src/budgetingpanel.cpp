@@ -302,7 +302,7 @@ void mmBudgetingPanel::CreateControls()
     /* Get data from inidb */
     for ( int i = 0; i < listCtrlBudget_->GetColumnCount(); ++i )
     {
-        int col = Model_Setting::instance().GetIntSetting ( wxString::Format ( listCtrlBudget_->m_col_width, i )
+        const int col = Model_Setting::instance().GetIntSetting ( wxString::Format ( listCtrlBudget_->m_col_width, i )
                 , listCtrlBudget_->m_columns[i].WIDTH );
         listCtrlBudget_->SetColumnWidth ( i, col );
     }
@@ -634,7 +634,7 @@ wxString mmBudgetingPanel::getItem ( long item, long column )
         {
             if ( budget_[item].first >= 0 )
             {
-                double amt = budgetAmt_[budget_[item].first][budget_[item].second];
+                const double amt = budgetAmt_[budget_[item].first][budget_[item].second];
                 return Model_Currency::toCurrency ( amt );
             }
 
@@ -645,12 +645,12 @@ wxString mmBudgetingPanel::getItem ( long item, long column )
         {
             if ( budget_[item].first < 0 )
             {
-                double estimated = budgetTotals_[budget_[item].second].first;
+                const double estimated = budgetTotals_[budget_[item].second].first;
                 return Model_Currency::toCurrency ( estimated );
             }
             else
             {
-                double estimated = getEstimate ( budget_[item].first, budget_[item].second );
+                const double estimated = getEstimate ( budget_[item].first, budget_[item].second );
                 return Model_Currency::toCurrency ( estimated );
             }
         }
@@ -659,12 +659,12 @@ wxString mmBudgetingPanel::getItem ( long item, long column )
         {
             if ( budget_[item].first < 0 )
             {
-                double actual = budgetTotals_[budget_[item].second].second;
+                const double actual = budgetTotals_[budget_[item].second].second;
                 return Model_Currency::toCurrency ( actual );
             }
             else
             {
-                double actual = categoryStats_[budget_[item].first][budget_[item].second][0];
+                const double actual = categoryStats_[budget_[item].first][budget_[item].second][0];
                 return Model_Currency::toCurrency ( actual );
             }
         }

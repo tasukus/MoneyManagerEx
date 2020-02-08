@@ -63,7 +63,10 @@ struct Option::ReportInfo
         ForecastReport,
         BugReport,
     };
-    ReportInfo ( wxString g, wxString n, bool t, Reports r ) : group ( g ), name ( n ), type ( t ), id ( r ) {}
+    ReportInfo ( wxString g, wxString n, bool t, Reports r ) : group ( g ), name ( n ), type ( t ), id ( r )
+    {
+        return;
+    }
     wxString group;
     wxString name;
     bool type;
@@ -293,7 +296,7 @@ void Option::setBaseCurrencyID ( const int base_currency_id )
     m_baseCurrency = base_currency_id;
 }
 
-void Option::setDatabaseUpdated ( const bool value )
+void Option::setDatabaseUpdated ( const bool value ) noexcept
 {
     m_databaseUpdated = value;
 }
@@ -384,7 +387,7 @@ void Option::setBudgetDateOffset ( wxDateTime &date ) const
     }
 }
 
-void Option::setIconSize ( const int value )
+void Option::setIconSize ( const int value ) noexcept
 {
     m_ico_size = value;
 }
@@ -418,7 +421,7 @@ int Option::getAccountImageId ( int account_id, bool def ) const
         favorite = Model_Account::FAVORITEACCT ( account );
     }
 
-    const bool closed = acctStatus == "Closed";
+    const bool closed = ( acctStatus == "Closed" );
 
     switch ( acctType )
     {
@@ -732,8 +735,8 @@ mmPrintableBase *Option::getReportFunction ( int report ) const
 
 const wxString Option::ReportSettings ( int id ) const
 {
-    const wxString &name = wxString::Format ( "REPORT_%d", id );
-    const wxString &settings = Model_Infotable::instance().GetStringInfo ( name, "" );
+    const wxString name = wxString::Format ( "REPORT_%d", id );
+    const wxString settings = Model_Infotable::instance().GetStringInfo ( name, "" );
     Document j_doc_main;
 
     if ( j_doc_main.Parse ( settings.c_str() ).HasParseError() )

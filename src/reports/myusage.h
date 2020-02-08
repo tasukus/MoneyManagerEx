@@ -25,6 +25,6 @@ public:
     mmReportMyUsage();
     virtual ~mmReportMyUsage();
 
-    virtual int report_parameters();
-    virtual wxString getHTMLText();
+    int report_parameters() const noexcept override;
+    wxString getHTMLText() override;
 };

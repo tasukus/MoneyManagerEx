@@ -30,7 +30,10 @@ class mmComboBox : public wxTextCtrl
 public:
     using wxTextCtrl::Connect;
 
-    mmComboBox() {}
+    mmComboBox() noexcept : wxTextCtrl()
+    {
+        return;
+    }
     mmComboBox ( wxWindow *parent, wxWindowID id
                  , const wxString &value
                  , bool payee

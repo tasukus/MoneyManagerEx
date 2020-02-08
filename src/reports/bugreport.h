@@ -23,8 +23,7 @@ const char *bugreport_template = R"(
                                  <!DOCTYPE html>
                                  <html>
                                  <head>
-                                 <meta http-equiv="content-type" content="text/html;
-charset=utf-8" />
+                                 <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <title><TMPL_VAR REPORTNAME></title>
         <link href='master.css' rel='stylesheet' />
         <style>
@@ -48,8 +47,8 @@ public:
     mmBugReport();
     virtual ~mmBugReport();
 
-    virtual int report_parameters();
-    virtual wxString getHTMLText();
+    int report_parameters()const noexcept override;
+    wxString getHTMLText()override;
 };
 
 mmBugReport::mmBugReport()
@@ -61,7 +60,7 @@ mmBugReport::~mmBugReport()
 {
 }
 
-int mmBugReport::report_parameters()
+int mmBugReport::report_parameters()const noexcept
 {
     return RepParams::NONE;
 }
@@ -117,4 +116,3 @@ wxString mmBugReport::getHTMLText()
 
     return out;
 }
-

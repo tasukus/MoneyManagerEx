@@ -479,7 +479,7 @@ void mmAssetDialog::OnQuit ( wxCloseEvent &WXUNUSED ( event ) )
 void mmAssetDialog::OnAttachments ( wxCommandEvent &WXUNUSED ( event ) )
 {
     const wxString &RefType = Model_Attachment::reftype_desc ( Model_Attachment::ASSET );
-    int RefId;
+    int RefId = 0;
 
     if ( !this->m_asset )
     {

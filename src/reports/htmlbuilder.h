@@ -30,7 +30,10 @@ class mmHTMLBuilder
 {
 public:
     mmHTMLBuilder();
-    ~mmHTMLBuilder() {}
+    ~mmHTMLBuilder()
+    {
+        return;
+    }
 
     void DisplayDateHeading ( const wxDateTime &startDate, const wxDateTime &endDate, bool withDateRange = true );
 
@@ -68,7 +71,7 @@ public:
     void addMoneyCell ( double amount, int precision = -1 );
     void addTableCellMonth ( const wxDateTime::Month month );
     void addColorMarker ( const wxString &color );
-    const wxString getColor ( int i ) const;
+    const wxString getColor ( const int i ) const;
 
     /** Add a Cell value */
     void addTableCellDate ( const wxString &iso_date );

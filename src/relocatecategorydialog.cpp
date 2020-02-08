@@ -38,10 +38,11 @@ wxBEGIN_EVENT_TABLE ( relocateCategoryDialog, wxDialog )
 wxEND_EVENT_TABLE()
 
 relocateCategoryDialog::relocateCategoryDialog( )
-{}
+{
+    return;
+}
 
-relocateCategoryDialog::relocateCategoryDialog ( wxWindow *parent
-    , int sourceCatID, int sourceSubCatID )
+relocateCategoryDialog::relocateCategoryDialog ( wxWindow *parent, int sourceCatID, int sourceSubCatID )
 {
     m_sourceCatID    = sourceCatID;
     m_sourceSubCatID = sourceSubCatID;
@@ -64,7 +65,7 @@ bool relocateCategoryDialog::Create ( wxWindow *parent
     GetSizer()->SetSizeHints ( this );
     SetIcon ( mmex::getProgramIcon() );
     Centre();
-    return TRUE;
+    return true;
 }
 
 void relocateCategoryDialog::CreateControls()

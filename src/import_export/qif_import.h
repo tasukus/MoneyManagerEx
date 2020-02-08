@@ -113,12 +113,14 @@ enum qifAccountInfoType
 
 class mmQIFImport
 {
-
 public:
     typedef std::pair<qifLineType, wxString> QIF_Line;
     typedef std::vector<QIF_Line> QIF_Record;
 public:
-    mmQIFImport() {}
+    mmQIFImport()
+    {
+        return;
+    }
 
     static bool isLineOK ( const wxString &line );
     static wxString getLineData ( const wxString &line );

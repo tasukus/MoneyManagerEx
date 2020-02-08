@@ -104,7 +104,9 @@ mmTransDialog::mmTransDialog ( wxWindow *parent
         Model_Checking::getTransactionData ( m_trx_data, transaction );
 
         for ( const auto &item : Model_Checking::splittransaction ( transaction ) )
+        {
             local_splits.push_back ( { item.CATEGID, item.SUBCATEGID, item.SPLITTRANSAMOUNT } );
+        }
     }
 
     Model_Account::Data *acc = Model_Account::instance().get ( m_trx_data.ACCOUNTID );
@@ -170,7 +172,7 @@ bool mmTransDialog::Create ( wxWindow *parent, wxWindowID id, const wxString &ca
     Centre();
     Fit();
     SetEventHandlers();
-    return TRUE;
+    return true;
 }
 
 void mmTransDialog::dataToControls()

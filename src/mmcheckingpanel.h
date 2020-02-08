@@ -91,20 +91,20 @@ public:
     EColumn m_prevSortCol = COL_DEF_SORT;
     bool g_asc = true; // asc\desc sorting
 
-    bool getSortOrder() const
+    bool getSortOrder() const noexcept
     {
         return m_asc;
     }
-    EColumn getSortColumn() const
+    EColumn getSortColumn() const noexcept
     {
         return m_sortCol;
     }
 
-    void setSortOrder ( const bool asc )
+    void setSortOrder ( const bool asc ) noexcept
     {
         m_asc = asc;
     }
-    void setSortColumn ( const EColumn col )
+    void setSortColumn ( const EColumn col ) noexcept
     {
         m_sortCol = col;
     }
@@ -124,7 +124,7 @@ public:
     void OnViewSplitTransaction ( wxCommandEvent &event );
     void OnOrganizeAttachments ( wxCommandEvent &event );
     void OnCreateReoccurance ( wxCommandEvent &event );
-    void refreshVisualList ( int trans_id = -1, bool filter = true );
+    void refreshVisualList ( const int trans_id = -1, const bool filter = true );
     long m_selectedIndex=-1;
     long m_selectedForCopy = -1; //The transaction ID if selected for copy
     long m_selectedID = -1; //Selected transaction ID
@@ -132,7 +132,7 @@ public:
 
 protected:
     /* Sort Columns */
-    virtual void OnColClick ( wxListEvent &event );
+    void OnColClick ( wxListEvent &event ) override;
 
 private:
     enum
@@ -203,9 +203,9 @@ private:
     wxListItemAttr m_attr17; // user defined style 7
 
     /* required overrides for virtual style list control */
-    virtual wxString OnGetItemText ( long item, long column ) const;
-    virtual int OnGetItemColumnImage ( long item, long column ) const;
-    virtual wxListItemAttr *OnGetItemAttr ( long item ) const;
+    wxString OnGetItemText ( long item, long column ) const override;
+    int OnGetItemColumnImage ( long item, long column ) const override;
+    wxListItemAttr *OnGetItemAttr ( long item ) const override;
 
 private:
     void OnMouseRightClick ( wxMouseEvent &event );
@@ -246,7 +246,7 @@ public:
     /// Display the split categories for the selected transaction.
     void DisplaySplitCategories ( int transID );
     /// Refresh account screen with new details
-    void DisplayAccountDetails ( int accountID );
+    void DisplayAccountDetails ( const int accountID );
 
     void SetSelectedTransaction ( int transID );
 
@@ -315,7 +315,7 @@ private:
     wxButton *m_bitmapTransFilter=nullptr;
     mmFilterTransactionsDialog *m_trans_filter_dlg = nullptr;
 
-    int m_currentView;
+    enum menu m_currentView;
     int m_AccountID;
     bool m_transFilterActive;
     wxString m_begin_date;
@@ -333,7 +333,7 @@ private:
     void initViewTransactionsHeader();
     void setDateRange();
     void setAccountSummary();
-    void sortTable();
+    void sortTable() override;
     void filterTable();
     void updateTable();
     void markSelectedTransaction ( int trans_id );

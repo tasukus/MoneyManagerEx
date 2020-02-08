@@ -23,10 +23,14 @@
 #include "reports/htmlbuilder.h"
 
 mmReportBudget::mmReportBudget() : mmPrintableBase ( "mmReportBudget" )
-{}
+{
+    return;
+}
 
 mmReportBudget::~mmReportBudget()
-{}
+{
+    return;
+}
 
 void mmReportBudget::SetDateToEndOfMonth ( const wxDateTime::Month month, wxDateTime &date ) const
 {
