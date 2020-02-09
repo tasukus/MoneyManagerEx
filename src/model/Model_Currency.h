@@ -28,7 +28,10 @@ class Model_Currency : public Model<DB_Table_CURRENCYFORMATS>
 public:
     using Model<DB_Table_CURRENCYFORMATS>::remove;
 
-    enum CURRTYPE { FIAT = 0, CRYPTO};
+    enum CURRTYPE
+    {
+        FIAT = 0, CRYPTO
+    };
 
     static const std::vector<std::pair<CURRTYPE, wxString> > CURRTYPE_CHOICES;
 
@@ -66,9 +69,9 @@ public:
     * Remove the Data record from memory and the database.
     * Delete also all currency history
     */
-    bool remove ( int id );
+    bool remove ( const int id ) override;
 
-    static std::map<wxDateTime,int> DateUsed ( int CurrencyID );
+    static std::map<wxDateTime, int> DateUsed (const int CurrencyID );
 
     /** Return the description of the choice type */
     static wxString currtype_desc ( const int CurrTypeEnum );
@@ -77,15 +80,15 @@ public:
     static wxString toCurrency ( double value, const Data *currency = GetBaseCurrency(), int precision = -1 );
 
     /** convert value to a string with required precision. Currency is used only for precision */
-    static wxString toStringNoFormatting ( double value, const Data *currency = GetBaseCurrency(), int precision = -1 );
+    static wxString toStringNoFormatting ( const double value, const Data *currency = GetBaseCurrency(),const int precision = -1 );
     /** convert value to a currency formatted string with required precision */
-    static wxString toString ( double value, const Data *currency = GetBaseCurrency(), int precision = -1 );
+    static wxString toString ( const double value, const Data *currency = GetBaseCurrency(), const int precision = -1 );
     /** Reset currency string like 1.234,56 to standard C locale number format like 1234.56 */
     static const wxString fromString2Default ( const wxString &s, const Data *currency = Model_Currency::GetBaseCurrency() );
-    static bool fromString ( wxString s, double &val, const Data *currency = GetBaseCurrency() );
+    static bool fromString ( const wxString &s, double &val, const Data *currency = GetBaseCurrency() );
     static int precision ( const Data *r );
     static int precision ( const Data &r );
-    static int precision ( int account_id );
-    static bool BoolOf ( int value );
+    static int precision ( const int account_id );
+    static bool BoolOf ( const int value );
 };
 #endif

@@ -95,7 +95,7 @@ wxArrayString Model_Currency::all_currency_types()
 // Getter
 Model_Currency::Data *Model_Currency::GetBaseCurrency()
 {
-    int currency_id = Option::instance().getBaseCurrencyID();
+    const int currency_id = Option::instance().getBaseCurrencyID();
     Model_Currency::Data *currency = Model_Currency::instance().get ( currency_id );
     return currency;
 }
@@ -128,7 +128,7 @@ Model_Currency::Data *Model_Currency::GetCurrencyRecord ( const wxString &curren
     return record;
 }
 
-std::map<wxDateTime, int> Model_Currency::DateUsed ( int CurrencyID )
+std::map<wxDateTime, int> Model_Currency::DateUsed (const int CurrencyID )
 {
     wxDateTime dt;
     std::map<wxDateTime, int> DatesList;
@@ -158,7 +158,7 @@ std::map<wxDateTime, int> Model_Currency::DateUsed ( int CurrencyID )
 * Remove the Data record from memory and the database.
 * Delete also all currency history
 */
-bool Model_Currency::remove ( int id )
+bool Model_Currency::remove ( const int id )
 {
     this->Savepoint();
     for ( const auto &r : Model_CurrencyHistory::instance().find ( Model_CurrencyHistory::CURRENCYID ( id ) ) )
@@ -173,7 +173,7 @@ bool Model_Currency::remove ( int id )
 wxString Model_Currency::currtype_desc ( const int CurrTypeEnum )
 {
     const auto &item = CURRTYPE_CHOICES[CurrTypeEnum];
-    wxString reftype_desc = item.second;
+    const wxString& reftype_desc = item.second;
     return reftype_desc;
 }
 
@@ -189,31 +189,57 @@ wxString Model_Currency::toCurrency ( double value, const Data *currency, int pr
     return d2s;
 }
 
-wxString Model_Currency::toStringNoFormatting ( double value, const Data *currency, int precision )
+wxString Model_Currency::toStringNoFormatting ( const double value, const Data *currency, const int precision )
 {
-    precision = ( precision >= 0 ? precision : ( currency ? log10 ( currency->SCALE ) : 2 ) );
-    wxString s = wxString::FromCDouble ( value, precision );
+    int tmpPrecision;
+    if ( precision >= 0 )
+    {
+        tmpPrecision = precision;
+    }
+    else if( currency != nullptr )
+    {
+        tmpPrecision = log10(currency->SCALE);
+    }
+    else
+    {
+        tmpPrecision = 2;
+    }
 
+    //数字を文字列に変換。
+    wxString s = wxString::FromCDouble ( value, tmpPrecision);
+
+    //小数点を指定桁数までにカットする
     // remove minus from -0 or -0.0000 that comes from printf("%.Nf")
     wxRegEx re ( "^-(?=0(\\.0+)?$)", wxRE_ADVANCED );
     re.Replace ( &s, wxEmptyString );
     return s;
 }
-wxString Model_Currency::toString ( double value, const Data *currency, int precision )
-{
-    wxString sep = currency ? currency->DECIMAL_POINT : ".",
-             s = Model_Currency::toStringNoFormatting ( value, currency, precision );
 
+wxString Model_Currency::toString ( const double value, const Data *currency, const int precision )
+{
+    wxString sep = currency ? currency->DECIMAL_POINT : ".";
+    const wxString  str = Model_Currency::toStringNoFormatting ( value, currency, precision );
+
+    wxString s = str;
     if ( sep!="." ) // protect decimal point
     {
         sep="\t";
         s.Replace ( ".", sep );
     }
 
+    wxString syousuu;
+    size_t pos = s.find_first_of(sep);
+    if ( pos > 0 )
+    {
+        syousuu = s.Mid(pos);
+        s = s.Mid(0 , pos);
+    }
+
     // add proper group separator
-    wxRegEx re ( "(\\d)(?=(\\d{3})+[" + sep + "$])", wxRE_ADVANCED );
+    wxRegEx re ("(\\d)(?=(\\d{3})+(?!\\d))" , wxRE_ADVANCED );
     re.Replace ( &s, "\\1" + ( currency ? currency->GROUP_SEPARATOR : "," ) );
 
+    s = s + syousuu;
     if ( sep!="." )
     {
         s.Replace ( sep, currency->DECIMAL_POINT );
@@ -244,7 +270,7 @@ const wxString Model_Currency::fromString2Default ( const wxString &s, const Dat
     return str;
 }
 
-bool Model_Currency::fromString ( wxString s, double &val, const Data *currency )
+bool Model_Currency::fromString ( const wxString &s, double &val, const Data *currency )
 {
     return fromString2Default ( s, currency ).ToCDouble ( &val );
 }
@@ -259,7 +285,7 @@ int Model_Currency::precision ( const Data &r )
     return precision ( &r );
 }
 
-int Model_Currency::precision ( int account_id )
+int Model_Currency::precision ( const int account_id )
 {
     const Model_Account::Data *trans_account = Model_Account::instance().get ( account_id );
     if ( account_id > 0 )
@@ -272,7 +298,7 @@ int Model_Currency::precision ( int account_id )
     }
 }
 
-bool Model_Currency::BoolOf ( int value )
+bool Model_Currency::BoolOf ( const int value )
 {
     return value > 0 ? true : false;
 }
