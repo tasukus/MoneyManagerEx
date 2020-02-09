@@ -916,7 +916,9 @@ void mmUnivCSVDialog::OnImport ( wxCommandEvent &WXUNUSED ( event ) )
         tran_holder holder;
         for ( size_t i = 0; i < csvFieldOrder_.size() && i < numTokens; ++i )
         {
-            parseToken ( csvFieldOrder_[i], pParser->GetItem ( lineNum, i ).Trim ( false /*from left*/ ), holder );
+            wxString val = pParser->GetItem ( lineNum, i );
+            val.Trim ( false /*from left*/ );
+            parseToken ( csvFieldOrder_.at ( i ), val, holder );
         }
 
         if ( !validateData ( holder ) )
