@@ -26,6 +26,7 @@
 #include "reports/mmDateRange.h"
 #include "Model_Checking.h"
 #include "Model_Account.h"
+#include <memory>
 //----------------------------------------------------------------------------
 class mmCheckingPanel;
 class mmFilterTransactionsDialog;
