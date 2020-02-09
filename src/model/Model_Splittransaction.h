@@ -25,9 +25,15 @@
 
 struct Split
 {
-    int CATEGID;
-    int SUBCATEGID;
-    double SPLITTRANSAMOUNT;
+    Split ( const int cagte = 0, const int subCage = 0, const double splittransamount = 0.0 )
+    {
+        CATEGID = cagte;
+        SUBCATEGID = subCage;
+        SPLITTRANSAMOUNT = splittransamount;
+    }
+    int CATEGID = 0;
+    int SUBCATEGID = 0;
+    double SPLITTRANSAMOUNT = 0.0;
 };
 
 class Model_Splittransaction : public Model<DB_Table_SPLITTRANSACTIONS>
