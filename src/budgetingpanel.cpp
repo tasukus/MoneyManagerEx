@@ -227,47 +227,50 @@ void mmBudgetingPanel::CreateControls()
 {
     wxSizerFlags flags;
     flags.Align ( wxALIGN_LEFT ).Border ( wxLEFT|wxTOP, 4 );
+
     wxBoxSizer *itemBoxSizer2 = new wxBoxSizer ( wxVERTICAL );
     this->SetSizer ( itemBoxSizer2 );
-    wxPanel *itemPanel3 = new wxPanel ( this, ID_PANEL_REPORTS_HEADER_PANEL
-        , wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+    wxPanel *itemPanel3 = new wxPanel ( this, ID_PANEL_REPORTS_HEADER_PANEL , wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
     itemBoxSizer2->Add ( itemPanel3, flags );
+
     wxBoxSizer *itemBoxSizerVHeader = new wxBoxSizer ( wxVERTICAL );
     itemPanel3->SetSizer ( itemBoxSizerVHeader );
+
     budgetReportHeading_ = new wxStaticText ( itemPanel3, wxID_ANY, "" );
+
     budgetReportHeading_->SetFont ( this->GetFont().Larger().Bold() );
+
     wxBoxSizer *budgetReportHeadingSizer = new wxBoxSizer ( wxHORIZONTAL );
     budgetReportHeadingSizer->Add ( budgetReportHeading_, 1 );
     itemBoxSizerVHeader->Add ( budgetReportHeadingSizer, 0, wxALL, 1 );
+
     wxBoxSizer *itemBoxSizerHHeader2 = new wxBoxSizer ( wxHORIZONTAL );
     itemBoxSizerVHeader->Add ( itemBoxSizerHHeader2, 0, wxALL, 1 );
+
     wxStaticBitmap *itemStaticBitmap3 = new wxStaticBitmap ( itemPanel3
-        , ID_PANEL_BUDGETENTRY_STATIC_BITMAP_VIEW
-        , mmBitmap ( png::RIGHTARROW ) );
+        , ID_PANEL_BUDGETENTRY_STATIC_BITMAP_VIEW , mmBitmap ( png::RIGHTARROW ) );
     itemStaticBitmap3->Connect ( ID_PANEL_BUDGETENTRY_STATIC_BITMAP_VIEW, wxEVT_LEFT_DOWN
         , wxMouseEventHandler ( mmBudgetingPanel::OnMouseLeftDown ), nullptr, this );
     itemBoxSizerHHeader2->Add ( itemStaticBitmap3, 0, wxALIGN_CENTER_VERTICAL|wxALL, 1 );
-    wxStaticText *itemStaticText18 = new wxStaticText ( itemPanel3
-        , ID_PANEL_CHECKING_STATIC_PANELVIEW, "" );
+
+    wxStaticText *itemStaticText18 = new wxStaticText ( itemPanel3, ID_PANEL_CHECKING_STATIC_PANELVIEW, "" );
     itemBoxSizerHHeader2->Add ( itemStaticText18, 0, wxALL, 1 );
+
     wxFlexGridSizer *itemIncomeSizer = new wxFlexGridSizer ( 0, 7, 5, 10 );
     itemBoxSizerVHeader->Add ( itemIncomeSizer );
-    income_estimated_ = new wxStaticText ( itemPanel3
-        , ID_DIALOG_BUDGETENTRY_SUMMARY_INCOME_EST, "$" );
+
+    income_estimated_ = new wxStaticText ( itemPanel3 , ID_DIALOG_BUDGETENTRY_SUMMARY_INCOME_EST, "$" );
     income_estimated_->SetMinSize ( wxSize ( 120, -1 ) );
-    income_actual_ = new wxStaticText ( itemPanel3
-        , ID_DIALOG_BUDGETENTRY_SUMMARY_INCOME_ACT, "$" );
+    income_actual_ = new wxStaticText ( itemPanel3        , ID_DIALOG_BUDGETENTRY_SUMMARY_INCOME_ACT, "$" );
     income_actual_->SetMinSize ( wxSize ( 120, -1 ) );
-    income_diff_ = new wxStaticText ( itemPanel3
-        , ID_DIALOG_BUDGETENTRY_SUMMARY_INCOME_DIF, "$" );
-    expenses_estimated_ = new wxStaticText ( itemPanel3
-        , ID_DIALOG_BUDGETENTRY_SUMMARY_EXPENSES_EST, "$" );
+    income_diff_ = new wxStaticText ( itemPanel3        , ID_DIALOG_BUDGETENTRY_SUMMARY_INCOME_DIF, "$" );
+
+    expenses_estimated_ = new wxStaticText ( itemPanel3, ID_DIALOG_BUDGETENTRY_SUMMARY_EXPENSES_EST, "$" );
     expenses_estimated_->SetMinSize ( wxSize ( 120, -1 ) );
-    expenses_actual_ = new wxStaticText ( itemPanel3
-        , ID_DIALOG_BUDGETENTRY_SUMMARY_EXPENSES_ACT, "$" );
+    expenses_actual_ = new wxStaticText ( itemPanel3, ID_DIALOG_BUDGETENTRY_SUMMARY_EXPENSES_ACT, "$" );
     expenses_actual_->SetMinSize ( wxSize ( 120, -1 ) );
-    expenses_diff_ = new wxStaticText ( itemPanel3
-        , ID_DIALOG_BUDGETENTRY_SUMMARY_EXPENSES_DIF, "$" );
+    expenses_diff_ = new wxStaticText ( itemPanel3, ID_DIALOG_BUDGETENTRY_SUMMARY_EXPENSES_DIF, "$" );
+
     itemIncomeSizer->Add ( new wxStaticText ( itemPanel3, wxID_STATIC, _( "Income: " ) ) );
     itemIncomeSizer->Add ( new wxStaticText ( itemPanel3, wxID_STATIC, _( "Estimated: " ) ) );
     itemIncomeSizer->Add ( income_estimated_ );
@@ -275,6 +278,7 @@ void mmBudgetingPanel::CreateControls()
     itemIncomeSizer->Add ( income_actual_ );
     itemIncomeSizer->Add ( new wxStaticText ( itemPanel3, wxID_STATIC, _( "Difference: " ) ) );
     itemIncomeSizer->Add ( income_diff_ );
+
     itemIncomeSizer->Add ( new wxStaticText ( itemPanel3, wxID_STATIC, _( "Expenses: " ) ) );
     itemIncomeSizer->Add ( new wxStaticText ( itemPanel3, wxID_STATIC, _( "Estimated: " ) ) );
     itemIncomeSizer->Add ( expenses_estimated_ );
@@ -289,6 +293,7 @@ void mmBudgetingPanel::CreateControls()
     m_imageList->Add ( mmBitmap ( png::VOID_STAT ) );
     m_imageList->Add ( mmBitmap ( png::FOLLOW_UP ) );
     m_imageList->Add ( mmBitmap ( png::EMPTY ) );
+
     listCtrlBudget_ = new budgetingListCtrl ( this, this, wxID_ANY );
     listCtrlBudget_->SetImageList ( m_imageList, wxIMAGE_LIST_SMALL );
     listCtrlBudget_->InsertColumn ( COL_ICON, ( " " ) );
@@ -323,6 +328,7 @@ budgetingListCtrl::budgetingListCtrl ( mmBudgetingPanel *cp, wxWindow *parent, c
     m_columns.push_back ( PANEL_COLUMN ( _( "Amount" ), wxLIST_AUTOSIZE_USEHEADER, wxLIST_FORMAT_RIGHT ) );
     m_columns.push_back ( PANEL_COLUMN ( _( "Estimated" ), wxLIST_AUTOSIZE_USEHEADER, wxLIST_FORMAT_RIGHT ) );
     m_columns.push_back ( PANEL_COLUMN ( _( "Actual" ), wxLIST_AUTOSIZE_USEHEADER, wxLIST_FORMAT_RIGHT ) );
+
     m_col_width = "BUDGET_COL%d_WIDTH";
 }
 
@@ -334,6 +340,7 @@ void mmBudgetingPanel::sortTable()
 bool mmBudgetingPanel::DisplayEntryAllowed ( int categoryID, int subcategoryID )
 {
     bool result = false;
+
     double actual = 0;
     double estimated = 0;
 
@@ -388,6 +395,7 @@ void mmBudgetingPanel::initVirtualListControl()
     double actIncome = 0.0;
     double actExpenses = 0.0;
     mmReportBudget budgetDetails;
+
     bool evaluateTransfer = false;
 
     if ( Option::instance().getBudgetIncludeTransfers() )
@@ -401,6 +409,7 @@ void mmBudgetingPanel::initVirtualListControl()
     budgetYearStr.ToLong ( &year );
     wxDateTime dtBegin ( 1, wxDateTime::Jan, year );
     wxDateTime dtEnd ( 31, wxDateTime::Dec, year );
+
     monthlyBudget_ = ( budgetYearStr.length() > 5 );
 
     if ( monthlyBudget_ )
@@ -420,12 +429,14 @@ void mmBudgetingPanel::initVirtualListControl()
     m_budget_offset_date = dtBegin.FormatISODate();
     Option::instance().setBudgetDateOffset ( dtEnd );
     mmSpecifiedRange date_range ( dtBegin, dtEnd );
+
     //Get statistics
     Model_Budget::instance().getBudgetEntry ( budgetYearID_, budgetPeriod_, budgetAmt_ );
     Model_Category::instance().getCategoryStats ( categoryStats_
         , nullptr
         , &date_range, Option::instance().getIgnoreFutureTransactions()
         , false, ( evaluateTransfer ? &budgetAmt_ : nullptr ) );
+
     const Model_Subcategory::Data_Set &allSubcategories = Model_Subcategory::instance().all ( Model_Subcategory::COL_SUBCATEGNAME );
 
     for ( const auto &category : Model_Category::instance().all ( Model_Category::COL_CATEGNAME ) )
@@ -731,7 +742,12 @@ wxListItemAttr *budgetingListCtrl::OnGetItemAttr ( long item ) const
     }
 
     /* Returns the alternating background pattern */
-    return ( item % 2 ) ? attr2_ : attr1_;
+    if ( item % 2 )
+    {
+        return attr2_.get();
+    }
+
+    return attr1_.get();
 }
 
 void budgetingListCtrl::OnListItemActivated ( wxListEvent &event )

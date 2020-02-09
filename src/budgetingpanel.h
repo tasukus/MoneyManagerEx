@@ -46,7 +46,7 @@ public:
 
 private:
     wxListItemAttr attr3_; // style3
-    mmBudgetingPanel *cp_;
+    mmBudgetingPanel *cp_ = nullptr;
     long selectedIndex_;
 };
 
@@ -85,7 +85,7 @@ public:
     }
     int GetItemImage ( long item ) const;
     void OnListItemActivated ( int selectedIndex );
-    int GetTransID ( long item )
+    int GetTransID (const long item ) const
     {
         return budget_[item].first;
     }
