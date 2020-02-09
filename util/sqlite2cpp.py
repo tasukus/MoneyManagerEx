@@ -447,7 +447,7 @@ struct DB_Table_%s : public DB_Table
             else:
                 s += '''
 
-        bool match(const Self::%s &in) const
+        bool match(const Self::%s &in) const noexcept
         {
             return this->%s == in.v_;
         }''' % (field['name'], field['name'])
@@ -556,12 +556,12 @@ struct DB_Table_%s : public DB_Table
         NUM_COLUMNS = %d
     };
 
-    size_t num_columns() const { return NUM_COLUMNS; }
+    size_t num_columns()  const noexcept override { return NUM_COLUMNS; }
 ''' % len(self._fields)
 
         s += '''
     /** Name of the table */
-    wxString name() const { return "%s"; }
+    wxString name() const override { return "%s"; }
 ''' % self._table
 
         s += '''
@@ -735,7 +735,7 @@ struct DB_Table_%s : public DB_Table
         if (id <= 0)
         {
             ++ skip_;
-            return 0;
+            return nullptr;
         }
 
         Index_By_Id::iterator it = index_by_id_.find(id);
@@ -746,7 +746,7 @@ struct DB_Table_%s : public DB_Table
         }
 
         ++ miss_;
-        Self::Data* entity = 0;
+        Self::Data* entity = nullptr;
         wxString where = wxString::Format(" WHERE %s = ?", PRIMARY::name().c_str());
         try
         {
@@ -849,7 +849,10 @@ struct DB_Table
     virtual ~DB_Table() {};
     wxString query_;
     size_t hit_, miss_, skip_;
-    virtual wxString query() const { return this->query_; }
+    virtual const wxString &query() const
+    {
+        return this->query_;
+    }
     virtual size_t num_columns() const = 0;
     virtual wxString name() const = 0;
 

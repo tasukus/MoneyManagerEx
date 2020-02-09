@@ -32,24 +32,18 @@ wxBEGIN_EVENT_TABLE ( mmListCtrl, wxListCtrl )
 wxEND_EVENT_TABLE()
 
 mmListCtrl::mmListCtrl ( wxWindow *parent, wxWindowID winid )
-    : wxListCtrl ( parent, winid, wxDefaultPosition, wxDefaultSize
-          , wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxLC_VIRTUAL | wxLC_SINGLE_SEL | wxLC_AUTOARRANGE )
-    , attr1_ ( new wxListItemAttr ( mmColors::listBorderColor, mmColors::listAlternativeColor0, wxNullFont ) )
-    , attr2_ ( new wxListItemAttr ( mmColors::listBorderColor, mmColors::listAlternativeColor1, wxNullFont ) )
+    : wxListCtrl ( parent, winid, wxDefaultPosition, wxDefaultSize, wxLC_REPORT | wxLC_HRULES | wxLC_VRULES | wxLC_VIRTUAL | wxLC_SINGLE_SEL | wxLC_AUTOARRANGE )
 {
-}
+    attr1_ = std::make_unique<wxListItemAttr> ( mmColors::listBorderColor, mmColors::listAlternativeColor0, wxNullFont );
+    attr2_ = std::make_unique<wxListItemAttr> ( mmColors::listBorderColor, mmColors::listAlternativeColor1, wxNullFont );
+
+    return;
+    }
 
 mmListCtrl::~mmListCtrl()
 {
-    if ( attr1_ )
-    {
-        delete attr1_;
-    }
-
-    if ( attr2_ )
-    {
-        delete attr2_;
-    }
+    attr1_.reset();
+    attr2_.reset();
 
     /*
       Save the column widths of the list control. This will ensure that the
@@ -112,6 +106,7 @@ wxString mmListCtrl::BuildPage ( const wxString &title ) const
     text << "</table>" << eol;
     text << "</body>" << eol;
     text = wxString::Format ( "<!DOCTYPE html>%s<html>%s</html>%s", eol, text, eol );
+
     return text;
 }
 
