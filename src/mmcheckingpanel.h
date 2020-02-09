@@ -37,8 +37,7 @@ class TransactionListCtrl : public mmListCtrl
 {
 public:
 
-    TransactionListCtrl ( mmCheckingPanel *cp, wxWindow *parent
-                          , const wxWindowID id = wxID_ANY );
+    TransactionListCtrl ( mmCheckingPanel *cp, wxWindow *parent, const wxWindowID id = wxID_ANY );
 
     ~TransactionListCtrl();
 
@@ -211,9 +210,12 @@ private:
 private:
     void OnMouseRightClick ( wxMouseEvent &event );
     void OnListLeftClick ( wxMouseEvent &event );
+
     void OnListItemSelected ( wxListEvent &event );
+
     void OnListItemActivated ( wxListEvent &event );
-    void OnListItemFocused ( wxListEvent &event );
+    void OnListItemUnSelected ( wxListEvent &event );
+    void updateInfoPanel();
     void OnMarkTransaction ( wxCommandEvent &event );
     void OnMarkAllTransactions ( wxCommandEvent &event );
     void OnListKeyDown ( wxListEvent &event );
@@ -245,13 +247,13 @@ public:
     ~mmCheckingPanel();
 
     /// Display the split categories for the selected transaction.
-    void DisplaySplitCategories ( int transID );
+    void DisplaySplitCategories (const int transID );
     /// Refresh account screen with new details
     void DisplayAccountDetails ( const int accountID );
 
-    void SetSelectedTransaction ( int transID );
+    void SetSelectedTransaction (const int transID );
 
-    void RefreshList ( int transID = -1 );
+    void RefreshList (const int transID = -1 );
 
     wxString BuildPage() const override;
 
@@ -283,25 +285,8 @@ private:
         MENU_VIEW_STATEMENTDATE,
         MENU_VIEW_FILTER_DIALOG,
     };
-    static wxArrayString menu_labels()
-    {
-        wxArrayString items;
-        items.Add ( VIEW_TRANS_ALL_STR );
-        items.Add ( VIEW_TRANS_TODAY_STR );
-        items.Add ( VIEW_TRANS_CURRENT_MONTH_STR );
-        items.Add ( VIEW_TRANS_LAST_30_DAYS_STR );
-        items.Add ( VIEW_TRANS_LAST_90_DAYS_STR );
-        items.Add ( VIEW_TRANS_LAST_MONTH_STR );
-        items.Add ( VIEW_TRANS_LAST_3MONTHS_STR );
-        items.Add ( VIEW_TRANS_LAST_12MONTHS_STR );
-        items.Add ( VIEW_TRANS_CURRENT_YEAR_STR );
-        items.Add ( VIEW_TRANS_CRRNT_FIN_YEAR_STR );
-        items.Add ( VIEW_TRANS_LAST_YEAR_STR );
-        items.Add ( VIEW_TRANS_LAST_FIN_YEAR_STR );
-        items.Add ( VIEW_TRANS_SINCE_STATEMENT_STR );
-        items.Add ( VIEW_TRANS_FILTER_DIALOG_STR );
-        return items;
-    }
+    static std::unordered_map<enum menu, wxString> menu_labels;
+
     wxDECLARE_EVENT_TABLE();
     friend class TransactionListCtrl; // needs access to m_core, initdb_, ...
 
@@ -314,7 +299,7 @@ private:
     wxStaticText *m_info_panel=nullptr;
     wxStaticText *m_info_panel_mini=nullptr;
     wxButton *m_bitmapTransFilter=nullptr;
-    mmFilterTransactionsDialog *m_trans_filter_dlg = nullptr;
+    std::unique_ptr<mmFilterTransactionsDialog> m_trans_filter_dlg;
 
     enum menu m_currentView;
     int m_AccountID;
