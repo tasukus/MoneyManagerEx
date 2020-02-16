@@ -21,22 +21,22 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #include <wx/richtooltip.h>
 #include <LuaGlue/LuaGlue.h>
 
-void mmTextCtrl::SetValue ( double value )
+void mmTextCtrl::SetValue ( const double value )
 {
     this->SetValue ( Model_Currency::toString ( value, m_currency ) );
 }
 
-void mmTextCtrl::SetValue ( double value, int precision )
+void mmTextCtrl::SetValue ( const double value, const int precision )
 {
     this->SetValue ( Model_Currency::toString ( value, m_currency, precision ) );
 }
 
-void mmTextCtrl::SetValueNoEvent ( double value, int precision )
+void mmTextCtrl::SetValueNoEvent ( const double value, const int precision )
 {
     this->ChangeValue ( Model_Currency::toString ( value, m_currency, precision ) );
 }
 
-void mmTextCtrl::SetValue ( double value, const Model_Account::Data *account, int precision )
+void mmTextCtrl::SetValue ( double value, const Model_Account::Data *account, const int precision )
 {
     if ( account )
     {
@@ -46,7 +46,7 @@ void mmTextCtrl::SetValue ( double value, const Model_Account::Data *account, in
     this->SetValue ( value, precision > -1 ? precision : log10 ( m_currency->SCALE ) );
 }
 
-void mmTextCtrl::SetValue ( double value, const Model_Currency::Data *currency, int precision )
+void mmTextCtrl::SetValue ( double value, const Model_Currency::Data *currency, const int precision )
 {
     m_currency = ( currency ? currency : Model_Currency::GetBaseCurrency() );
     this->SetValue ( value, precision > -1 ? precision : log10 ( m_currency->SCALE ) );
@@ -84,7 +84,7 @@ bool mmTextCtrl::GetDouble ( double &amount ) const
     return Model_Currency::fromString ( amountStr, amount, m_currency );
 }
 
-bool mmTextCtrl::checkValue ( double &amount, bool positive_value )
+bool mmTextCtrl::checkValue ( double &amount, const bool positive_value )
 {
     if ( !GetDouble ( amount ) || ( positive_value && amount < 0 ) )
     {

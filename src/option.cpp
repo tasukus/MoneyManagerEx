@@ -580,7 +580,7 @@ void Option::setHideReport ( const int report, const bool value )
 {
     if ( isReportIDCorrect ( report ) )
     {
-        const int bitField = 1 << m_reports[report].id;
+        const int bitField = 1 << m_reports.at ( report ).id;
 
         if ( value )
         {
@@ -650,7 +650,7 @@ mmPrintableBase *Option::getReportFunction ( int report ) const
 
     if ( isReportIDCorrect ( report ) )
     {
-        switch ( m_reports[report].id )
+        switch ( m_reports.at ( report ).id )
         {
             case ReportInfo::MyUsage:
                 function = new mmReportMyUsage();

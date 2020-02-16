@@ -124,10 +124,13 @@ wxDate Model_Asset::STARTDATE ( const Data &r )
 
 Model_Asset::TYPE Model_Asset::type ( const Data *r )
 {
-    for ( const auto &item : TYPE_CHOICES ) if ( item.second.CmpNoCase ( r->ASSETTYPE ) == 0 )
+    for ( const auto &item : TYPE_CHOICES )
+    {
+        if ( item.second.CmpNoCase ( r->ASSETTYPE ) == 0 )
         {
             return item.first;
         }
+    }
 
     return TYPE_UNKNOWN;
 }
@@ -139,10 +142,13 @@ Model_Asset::TYPE Model_Asset::type ( const Data &r )
 
 Model_Asset::RATE Model_Asset::rate ( const Data *r )
 {
-    for ( const auto &item : RATE_CHOICES ) if ( item.second.CmpNoCase ( r->VALUECHANGE ) == 0 )
+    for ( const auto &item : RATE_CHOICES )
+    {
+        if ( item.second.CmpNoCase ( r->VALUECHANGE ) == 0 )
         {
             return item.first;
         }
+    }
     return RATE_UNKNOWN;
 }
 
@@ -159,10 +165,10 @@ Model_Currency::Data *Model_Asset::currency ( const Data * /* r */ )
 double Model_Asset::value ( const Data *r )
 {
     double sum = r->VALUE;
-    wxDate start_date = STARTDATE ( r );
+    const wxDate start_date = STARTDATE ( r );
     const wxDate today = wxDate::Today();
-    wxTimeSpan diff_time = today - start_date;
-    double diff_time_in_days = static_cast<double> ( diff_time.GetDays() );
+    const wxTimeSpan diff_time = today - start_date;
+    const double diff_time_in_days = static_cast<double> ( diff_time.GetDays() );
     switch ( rate ( r ) )
     {
         case RATE_NONE:

@@ -208,7 +208,7 @@ wxString Model_Billsdeposits::toShortStatus ( const wxString &fullStatus )
 * Remove the Data record instance from memory and the database
 * including any splits associated with the Data Record.
 */
-bool Model_Billsdeposits::remove ( int id )
+bool Model_Billsdeposits::remove ( const int id )
 {
     for ( auto &item : Model_Billsdeposits::splittransaction ( get ( id ) ) )
     {
@@ -251,7 +251,7 @@ void Model_Billsdeposits::decode_fields ( const Data &q1 )
 
     // DeMultiplex the Auto Executable fields from the db entry: REPEATS
     int repeats = q1.REPEATS;
-    int numRepeats = q1.NUMOCCURRENCES;
+    const int numRepeats = q1.NUMOCCURRENCES;
 
     switch ( repeats/BD_REPEATS_MULTIPLEX_BASE )
     {
@@ -272,22 +272,22 @@ void Model_Billsdeposits::decode_fields ( const Data &q1 )
                            .Subtract ( wxDate::Today() ).GetDays() < 1 );
 }
 
-bool Model_Billsdeposits::autoExecuteManual()
+bool Model_Billsdeposits::autoExecuteManual() const noexcept
 {
     return m_autoExecuteManual;
 }
 
-bool Model_Billsdeposits::autoExecuteSilent()
+bool Model_Billsdeposits::autoExecuteSilent() const noexcept
 {
     return m_autoExecuteSilent;
 }
 
-bool Model_Billsdeposits::requireExecution()
+bool Model_Billsdeposits::requireExecution() const noexcept
 {
     return m_requireExecution;
 }
 
-bool Model_Billsdeposits::allowExecution()
+bool Model_Billsdeposits::allowExecution() const noexcept
 {
     return m_allowExecution;
 }
@@ -296,10 +296,6 @@ bool Model_Billsdeposits::AllowTransaction ( const Data &r, AccountBalance &bal 
 {
     const int acct_id = r.ACCOUNTID;
     Model_Account::Data *account = Model_Account::instance().get ( acct_id );
-    if ( !account )
-    {
-        return false;
-    }
     double current_account_balance = 0;
 
     AccountBalance::iterator itr_bal = bal.find ( acct_id );
@@ -444,20 +440,24 @@ const wxDateTime Model_Billsdeposits::nextOccurDate ( int repeatsType, int numRe
     {
         dt = dt.Add ( wxDateSpan::Days ( 1 ) );
     }
-    else if ( repeatsType == REPEAT_IN_X_DAYS ) // repeat in numRepeats Days (Once only)
+    else if ( repeatsType == REPEAT_IN_X_DAYS )
     {
+        // repeat in numRepeats Days (Once only)
         dt = dt.Add ( wxDateSpan::Days ( numRepeats ) );
     }
-    else if ( repeatsType == REPEAT_IN_X_MONTHS ) // repeat in numRepeats Months (Once only)
+    else if ( repeatsType == REPEAT_IN_X_MONTHS )
     {
+        // repeat in numRepeats Months (Once only)
         dt = dt.Add ( wxDateSpan::Months ( numRepeats ) );
     }
-    else if ( repeatsType == REPEAT_EVERY_X_DAYS ) // repeat every numRepeats Days
+    else if ( repeatsType == REPEAT_EVERY_X_DAYS )
     {
+        // repeat every numRepeats Days
         dt = dt.Add ( wxDateSpan::Days ( numRepeats ) );
     }
-    else if ( repeatsType == REPEAT_EVERY_X_MONTHS ) // repeat every numRepeats Months
+    else if ( repeatsType == REPEAT_EVERY_X_MONTHS )
     {
+        // repeat every numRepeats Months
         dt = dt.Add ( wxDateSpan::Months ( numRepeats ) );
     }
     else if ( repeatsType == REPEAT_MONTHLY_LAST_DAY
@@ -478,7 +478,9 @@ const wxDateTime Model_Billsdeposits::nextOccurDate ( int repeatsType, int numRe
 }
 
 Model_Billsdeposits::Full_Data::Full_Data()
-{}
+{
+    return;
+}
 
 Model_Billsdeposits::Full_Data::Full_Data ( const Data &r ) : Data ( r )
 {

@@ -246,7 +246,7 @@ bool Model_Translink::ShareAccountId ( int &stock_entry_id )
                     Model_Checking::TRANSID ( stock_translink_list.at ( 0 ).CHECKINGACCOUNTID ) );
         if ( !checking_entry.empty() )
         {
-            Model_Account::Data *account_entry = Model_Account::instance().get ( checking_entry.at ( 0 ).ACCOUNTID );
+            const Model_Account::Data *account_entry = Model_Account::instance().get ( checking_entry.at ( 0 ).ACCOUNTID );
             stock_entry_id = account_entry->ACCOUNTID;
             return true;
         }

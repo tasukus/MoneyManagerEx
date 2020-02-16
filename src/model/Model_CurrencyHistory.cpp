@@ -58,7 +58,7 @@ Model_CurrencyHistory::Data *Model_CurrencyHistory::get ( const int &currencyID,
     Data_Set items = this->find ( CURRENCYID ( currencyID ), DB_Table_CURRENCYHISTORY::CURRDATE ( date.FormatISODate() ) );
     if ( !items.empty() )
     {
-        hist = this->get ( items[0].id(), this->db_ );
+        hist = this->get ( items.at ( 0 ).id(), this->db_ );
     }
     return hist;
 }
@@ -161,7 +161,7 @@ double Model_CurrencyHistory::getDayRate ( const int &currencyID, const wxDate &
             return 1;
         }
 
-        return Model_CurrencyHistory::instance().find ( Model_CurrencyHistory::CURRENCYID ( currencyID ), Model_CurrencyHistory::CURRDATE ( dNearest ) ) [0].CURRVALUE;
+        return Model_CurrencyHistory::instance().find ( Model_CurrencyHistory::CURRENCYID ( currencyID ), Model_CurrencyHistory::CURRDATE ( dNearest ) ).at ( 0 ).CURRVALUE;
     }
     else
     {

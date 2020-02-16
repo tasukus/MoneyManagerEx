@@ -97,7 +97,7 @@ DB_Table_BUDGETTABLE::PERIOD Model_Budget::PERIOD ( PERIOD_ENUM period, OP op )
     return DB_Table_BUDGETTABLE::PERIOD ( all_period() [period], op );
 }
 
-void Model_Budget::getBudgetEntry ( int budgetYearID
+void Model_Budget::getBudgetEntry ( const int budgetYearID
                                     , std::map<int, std::map<int, PERIOD_ENUM> > &budgetPeriod
                                     , std::map<int, std::map<int, double> > &budgetAmt )
 {
@@ -116,7 +116,7 @@ void Model_Budget::getBudgetEntry ( int budgetYearID
     }
 }
 
-void Model_Budget::copyBudgetYear ( int newYearID, int baseYearID )
+void Model_Budget::copyBudgetYear ( const int newYearID, const int baseYearID )
 {
     for ( const Data &data : instance().find ( BUDGETYEARID ( baseYearID ) ) )
     {
@@ -129,7 +129,7 @@ void Model_Budget::copyBudgetYear ( int newYearID, int baseYearID )
 double Model_Budget::getMonthlyEstimate ( const PERIOD_ENUM period, const double amount )
 {
     double estimated = 0;
-    int ndays = 365;
+    const int ndays = 365;
     if ( period == MONTHLY )
     {
         estimated = amount;

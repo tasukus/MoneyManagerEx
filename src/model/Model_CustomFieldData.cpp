@@ -49,17 +49,17 @@ Model_CustomFieldData &Model_CustomFieldData::instance()
     return Singleton<Model_CustomFieldData>::instance();
 }
 
-Model_CustomFieldData::Data *Model_CustomFieldData::get ( int FieldID, int RefID )
+Model_CustomFieldData::Data *Model_CustomFieldData::get ( const int FieldID, const int RefID )
 {
     Model_CustomFieldData::Data_Set items = this->find ( FIELDID ( FieldID ), REFID ( RefID ) );
     if ( !items.empty() )
     {
-        return this->get ( items[0].FIELDATADID, this->db_ );
+        return this->get ( items.at ( 0 ).FIELDATADID, this->db_ );
     }
     return nullptr;
 }
 
-std::map<int, Model_CustomFieldData::Data_Set> Model_CustomFieldData::get_all ( Model_Attachment::REFTYPE reftype )
+std::map<int, Model_CustomFieldData::Data_Set> Model_CustomFieldData::get_all ( const Model_Attachment::REFTYPE reftype )
 {
     const wxString &reftype_desc = Model_Attachment::reftype_desc ( reftype );
     Model_CustomField::Data_Set custom_fields = Model_CustomField::instance()
@@ -95,7 +95,7 @@ wxArrayString Model_CustomFieldData::allValue ( const int FieldID )
     return values;
 }
 
-bool Model_CustomFieldData::DeleteAllData ( const wxString &RefType, int RefID )
+bool Model_CustomFieldData::DeleteAllData ( const wxString &RefType, const int RefID )
 {
     const auto &fields = Model_CustomField::instance().find ( Model_CustomField::DB_Table_CUSTOMFIELD::REFTYPE ( RefType ) );
 

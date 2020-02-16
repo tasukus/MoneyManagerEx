@@ -31,8 +31,14 @@ public:
     using Model<DB_Table_ACCOUNTLIST>::remove;
     using Model<DB_Table_ACCOUNTLIST>::get;
 
-    enum STATUS_ENUM { OPEN = 0, CLOSED };
-    enum TYPE { CASH = 0, CHECKING, CREDIT_CARD, LOAN, TERM, CRYPTO, INVESTMENT, ASSET, SHARES };
+    enum STATUS_ENUM
+    {
+        OPEN = 0, CLOSED
+    };
+    enum TYPE
+    {
+        CASH = 0, CHECKING, CREDIT_CARD, LOAN, TERM, CRYPTO, INVESTMENT, ASSET, SHARES
+    };
 
     static const std::vector<std::pair<STATUS_ENUM, wxString> > STATUS_CHOICES;
     static const std::vector<std::pair<TYPE, wxString> > TYPE_CHOICES;
@@ -63,10 +69,10 @@ public:
     /** Return the Data record for the given account num */
     Data *getByAccNum ( const wxString &num );
 
-    static wxString get_account_name ( int account_id );
+    static wxString get_account_name ( const int account_id );
 
     /** Remove the Data record from memory and the database. */
-    bool remove ( int id );
+    bool remove ( const int id ) override;
 
 public:
     wxArrayString all_checking_account_names ( bool skip_closed = false );
@@ -90,8 +96,8 @@ public:
     static std::pair<double, double> investment_balance ( const Data &r );
     static wxString toCurrency ( double value, const Data *r );
 
-    static wxString toString ( double value, const Data *r, int precision = 2 );
-    static wxString toString ( double value, const Data &r, int precision = 2 );
+    static wxString toString ( double value, const Data *r, const int precision = 2 );
+    static wxString toString ( double value, const Data &r, const int precision = 2 );
 
     static STATUS_ENUM status ( const Data *account );
     static STATUS_ENUM status ( const Data &account );
@@ -111,7 +117,7 @@ public:
     static bool Exist ( const wxString &account_name );
 
     static wxDateTime DateOf ( const wxString &date_str );
-    static bool BoolOf ( int value );
+    static bool BoolOf ( const int value ) noexcept;
 };
 
 #endif

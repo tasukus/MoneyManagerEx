@@ -52,12 +52,12 @@ Model_Setting &Model_Setting::instance()
 }
 
 // Setter
-void Model_Setting::Set ( const wxString &key, int value )
+void Model_Setting::Set ( const wxString &key, const int value )
 {
     this->Set ( key, wxString::Format ( "%d", value ) );
 }
 
-void Model_Setting::Set ( const wxString &key, bool value )
+void Model_Setting::Set ( const wxString &key, const bool value )
 {
     this->Set ( key, wxString::Format ( "%s", value ? "TRUE" : "FALSE" ) );
 }
@@ -75,7 +75,7 @@ void Model_Setting::Set ( const wxString &key, const wxString &value )
         Data_Set items = this->find ( SETTINGNAME ( key ) );
         if ( !items.empty() )
         {
-            setting = this->get ( items[0].SETTINGID, this->db_ );
+            setting = this->get ( items.at ( 0 ).SETTINGID, this->db_ );
         }
     }
     if ( setting )
@@ -93,9 +93,9 @@ void Model_Setting::Set ( const wxString &key, const wxString &value )
 }
 
 // Getter
-bool Model_Setting::GetBoolSetting ( const wxString &key, bool default_value )
+bool Model_Setting::GetBoolSetting ( const wxString &key, const bool default_value )
 {
-    wxString value = this->GetStringSetting ( key, "" );
+    const wxString value = this->GetStringSetting ( key, wxEmptyString );
     if ( value == "TRUE" )
     {
         return true;
@@ -108,9 +108,9 @@ bool Model_Setting::GetBoolSetting ( const wxString &key, bool default_value )
     return default_value;
 }
 
-int Model_Setting::GetIntSetting ( const wxString &key, int default_value )
+int Model_Setting::GetIntSetting ( const wxString &key, const int default_value )
 {
-    wxString value = this->GetStringSetting ( key, "" );
+    const wxString value = this->GetStringSetting ( key, wxEmptyString );
     if ( !value.IsEmpty() && value.IsNumber() )
     {
         return wxAtoi ( value );
@@ -124,10 +124,10 @@ wxString Model_Setting::GetStringSetting ( const wxString &key, const wxString &
     Data *setting = this->get_one ( SETTINGNAME ( key ) );
     if ( !setting ) // not cached
     {
-        Data_Set items = this->find ( SETTINGNAME ( key ) );
+        const Data_Set items = this->find ( SETTINGNAME ( key ) );
         if ( !items.empty() )
         {
-            return items[0].SETTINGVALUE;
+            return items.at ( 0 ).SETTINGVALUE;
         }
     }
     else
@@ -139,7 +139,7 @@ wxString Model_Setting::GetStringSetting ( const wxString &key, const wxString &
 
 wxString Model_Setting::getLastDbPath()
 {
-    wxString path = this->GetStringSetting ( "LASTFILENAME", "" );
+    wxString path = this->GetStringSetting ( "LASTFILENAME", wxEmptyString );
 
     if ( !mmex::isPortableMode() )
     {
@@ -182,7 +182,7 @@ row_t Model_Setting::to_row_t()
 //-------------------------------------------------------------------
 wxString Model_Setting::ViewAccounts()
 {
-    wxString val = GetStringSetting ( "VIEWACCOUNTS", VIEW_ACCOUNTS_ALL_STR );
+    const wxString val = GetStringSetting ( "VIEWACCOUNTS", VIEW_ACCOUNTS_ALL_STR );
     // handle SETTING_V1 upgrade to v1.4.0 changes
     return val == "ALL" ? VIEW_ACCOUNTS_ALL_STR : val;
 }
@@ -212,13 +212,13 @@ void Model_Setting::ShrinkUsageTable()
         return;
     }
 
-    const wxString save_point = "SETTINGS_TRIM_USAGE";
+    const wxString save_point ( "SETTINGS_TRIM_USAGE" );
     wxDate date ( wxDate::Now() );
     date.Subtract ( wxDateSpan::Months ( 2 ) );
     db_->Savepoint ( save_point );
     try
     {
-        wxString sql = wxString::Format ( "delete from USAGE_V1 where USAGEDATE < \"%s\";", date.FormatISODate() );
+        const wxString sql = wxString::Format ( "delete from USAGE_V1 where USAGEDATE < \"%s\";", date.FormatISODate() );
         db_->ExecuteUpdate ( sql );
     }
     catch ( const wxSQLite3Exception & /*e*/ )

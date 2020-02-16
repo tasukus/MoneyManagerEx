@@ -87,8 +87,8 @@ bool Model_CustomField::Delete ( const int &FieldID )
 
 const wxString Model_CustomField::fieldtype_desc ( const int FieldTypeEnum )
 {
-    const auto &item = FIELDTYPE_CHOICES[FieldTypeEnum];
-    const wxString reftype_desc = item.second;
+    const auto &item = FIELDTYPE_CHOICES.at ( FieldTypeEnum );
+    const wxString &reftype_desc = item.second;
     return reftype_desc;
 }
 
@@ -130,7 +130,7 @@ const wxString Model_CustomField::getTooltip ( const wxString &Properties )
     {
         if ( json_doc.HasMember ( "Tooltip" ) && json_doc["Tooltip"].IsString() )
         {
-            Value &s = json_doc["Tooltip"];
+            const Value &s = json_doc[ "Tooltip" ];
             return s.GetString();
         }
     }
@@ -144,7 +144,7 @@ const wxString Model_CustomField::getRegEx ( const wxString &Properties )
     {
         if ( json_doc.HasMember ( "RegEx" ) && json_doc["RegEx"].IsString() )
         {
-            Value &s = json_doc["RegEx"];
+            const Value &s = json_doc[ "RegEx" ];
             return s.GetString();
         }
     }
@@ -158,7 +158,7 @@ bool Model_CustomField::getAutocomplete ( const wxString &Properties )
     {
         if ( json_doc.HasMember ( "Autocomplete" ) && json_doc["Autocomplete"].IsBool() )
         {
-            Value &b = json_doc["Autocomplete"];
+            const Value &b = json_doc[ "Autocomplete" ];
             return b.GetBool();
         }
     }
@@ -172,7 +172,7 @@ const wxString Model_CustomField::getDefault ( const wxString &Properties )
     {
         if ( json_doc.HasMember ( "Default" ) && json_doc["Default"].IsString() )
         {
-            Value &s = json_doc["Default"];
+            const Value &s = json_doc[ "Default" ];
             return s.GetString();
         }
     }
@@ -205,7 +205,7 @@ const wxString Model_CustomField::getUDFC ( const wxString &Properties )
     {
         if ( json_doc.HasMember ( "UDFC" ) && json_doc["UDFC"].IsString() )
         {
-            Value &s = json_doc["UDFC"];
+            const Value &s = json_doc[ "UDFC" ];
             return s.GetString();
         }
     }
@@ -237,7 +237,7 @@ int Model_CustomField::getUDFCID ( const wxString &ref_type, const wxString &nam
         {
             if ( json_doc.HasMember ( "UDFC" ) && json_doc["UDFC"].IsString() )
             {
-                Value &s = json_doc["UDFC"];
+                const Value &s = json_doc["UDFC"];
                 const wxString &desc = s.GetString();
                 if ( desc == name )
                 {
@@ -260,7 +260,7 @@ const wxString Model_CustomField::getUDFCName ( const wxString &ref_type, const 
         {
             if ( json_doc.HasMember ( "UDFC" ) && json_doc["UDFC"].IsString() )
             {
-                Value &s = json_doc["UDFC"];
+                const Value &s = json_doc["UDFC"];
                 const wxString &desc = s.GetString();
                 if ( desc == name )
                 {

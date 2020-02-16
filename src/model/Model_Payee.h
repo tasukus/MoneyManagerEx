@@ -55,9 +55,9 @@ public:
     * Returns 0 when payee not found.
     */
     Data *get ( const wxString &name );
-    static wxString get_payee_name ( int payee_id );
+    static wxString get_payee_name ( const int payee_id );
 
-    bool remove ( int id );
+    bool remove ( const int id ) override;
 
     const wxArrayString all_payee_names();
     const wxArrayString used_payee_names();

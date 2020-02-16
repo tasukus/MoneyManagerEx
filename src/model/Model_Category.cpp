@@ -64,7 +64,7 @@ Model_Category::Data *Model_Category::get ( const wxString &name )
     Data_Set items = this->find ( CATEGNAME ( name ) );
     if ( !items.empty() )
     {
-        category = this->get ( items[0].CATEGID, this->db_ );
+        category = this->get ( items.at ( 0 ).CATEGID, this->db_ );
     }
     return category;
 }
@@ -112,12 +112,12 @@ const wxString Model_Category::full_name ( const Data *category, const Model_Sub
 
 const wxString Model_Category::full_name ( const int category_id, const int subcategory_id )
 {
-    Data *category = Model_Category::instance().get ( category_id );
-    Model_Subcategory::Data *sub_category = Model_Subcategory::instance().get ( subcategory_id );
+    const Data *category = Model_Category::instance().get ( category_id );
+    const Model_Subcategory::Data *sub_category = Model_Subcategory::instance().get ( subcategory_id );
     return full_name ( category, sub_category );
 }
 
-bool Model_Category::is_used ( int id, int sub_id )
+bool Model_Category::is_used ( const int id, const int sub_id )
 {
     const auto &trans = Model_Checking::instance().find ( Model_Checking::CATEGID ( id ), Model_Checking::SUBCATEGID ( sub_id ) );
     if ( !trans.empty() )
@@ -143,7 +143,7 @@ bool Model_Category::is_used ( int id, int sub_id )
     return false;
 }
 
-bool Model_Category::has_income ( int id, int sub_id )
+bool Model_Category::has_income ( const int id, const int sub_id )
 {
     double sum = 0.0;
     auto splits = Model_Splittransaction::instance().get_all();
@@ -184,21 +184,21 @@ void Model_Category::getCategoryStats (
     std::map<int, std::map<int, std::map<int, double> > > &categoryStats
     , const wxArrayString *accountArray
     , mmDateRange *date_range, bool WXUNUSED ( ignoreFuture ) //TODO: deprecated
-    , bool group_by_month
+    , const bool group_by_month
     , std::map<int, std::map<int, double> > *budgetAmt )
 {
     //Initialization
     //Set std::map with zerros
     const auto &allSubcategories = Model_Subcategory::instance().all();
     double value = 0;
-    int columns = group_by_month ? 12 : 1;
+    const int columns = group_by_month ? 12 : 1;
     const wxDateTime start_date ( 1, date_range->end_date().GetMonth(), date_range->end_date().GetYear() );
     for ( const auto &category: Model_Category::instance().all() )
     {
         for ( int m = 0; m < columns; m++ )
         {
             const wxDateTime d = start_date.Subtract ( wxDateSpan::Months ( m ) );
-            int idx = group_by_month ? ( d.GetYear() *100 + d.GetMonth() ) : 0;
+            const int idx = group_by_month ? ( d.GetYear() * 100 + d.GetMonth() ) : 0;
             categoryStats[category.CATEGID][-1][idx] = value;
             for ( const auto &sub_category : allSubcategories )
             {
@@ -216,7 +216,6 @@ void Model_Category::getCategoryStats (
                 , Model_Checking::TRANSDATE ( date_range->start_date(), GREATER_OR_EQUAL )
                 , Model_Checking::TRANSDATE ( date_range->end_date(), LESS_OR_EQUAL ) ) )
     {
-
         if ( accountArray )
         {
             const auto account = Model_Account::instance().get ( transaction.ACCOUNTID );
@@ -229,8 +228,8 @@ void Model_Category::getCategoryStats (
         const double convRate = Model_CurrencyHistory::getDayRate (
                                     Model_Account::instance().get ( transaction.ACCOUNTID )->CURRENCYID, transaction.TRANSDATE );
         const wxDateTime &d = Model_Checking::TRANSDATE ( transaction );
-        int idx = group_by_month ? ( d.GetYear() *100 + d.GetMonth() ) : 0;
-        int categID = transaction.CATEGID;
+        const int idx = group_by_month ? ( d.GetYear() * 100 + d.GetMonth() ) : 0;
+        const int categID = transaction.CATEGID;
 
         if ( categID > -1 )
         {
@@ -243,7 +242,7 @@ void Model_Category::getCategoryStats (
                 }
                 categoryStats[categID][transaction.SUBCATEGID][idx] += Model_Checking::balance ( transaction ) * convRate;
             }
-            else if ( budgetAmt != 0 )
+            else if ( budgetAmt != nullptr )
             {
                 double amt = transaction.TRANSAMOUNT * convRate;
                 if ( ( *budgetAmt ) [categID][transaction.SUBCATEGID] < 0 )

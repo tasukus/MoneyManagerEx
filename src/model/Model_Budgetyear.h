@@ -46,16 +46,16 @@ public:
     */
     static Model_Budgetyear &instance();
 
-    bool remove ( int id );
+    bool remove ( const int id ) override;
 
 public:
-    void Set ( int year_id, const wxString &value );
+    void Set ( const int year_id, const wxString &value );
     int Add ( const wxString &value );
 
-    wxString Get ( int year_id );
+    const wxString &Get ( const int year_id );
     int Get ( const wxString &year_name );
 
-    bool Exists ( int year_id );
+    bool Exists ( const int year_id );
     bool Exists ( const wxString &year_name );
 };
 

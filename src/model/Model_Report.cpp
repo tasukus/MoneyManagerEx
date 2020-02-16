@@ -37,8 +37,14 @@
 class Record : public std::map<std::wstring, std::wstring>
 {
 public:
-    Record() {}
-    ~Record() {}
+    Record()
+    {
+        return;
+    }
+    ~Record()
+    {
+        return;
+    }
     /* Access functions for LuaGlue (The required conversion between char and wchar_t is done through wxString.) */
     std::string get ( const char *index )
     {
@@ -123,7 +129,7 @@ bool Model_Report::get_objects_from_sql ( const wxString &query, PrettyWriter<St
         json_writer.StartArray();
 
         wxSQLite3ResultSet q = stmt.ExecuteQuery();
-        int columns = q.GetColumnCount();
+        const int columns = q.GetColumnCount();
         while ( q.NextRow() )
         {
             json_writer.StartObject();
@@ -284,7 +290,7 @@ wxString Model_Report::get_html ( const Data *r )
     method ( "set", &Record::set ).
     end().open().glue();
 
-    bool skip_lua = r->LUACONTENT.IsEmpty();
+    const bool skip_lua = r->LUACONTENT.IsEmpty();
     bool lua_status = state.doString ( std::string ( r->LUACONTENT.ToUTF8() ) );
     if ( !skip_lua && !lua_status )
     {

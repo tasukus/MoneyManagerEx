@@ -48,7 +48,7 @@ Model_Budgetyear &Model_Budgetyear::instance()
     return Singleton<Model_Budgetyear>::instance();
 }
 
-bool Model_Budgetyear::remove ( int id )
+bool Model_Budgetyear::remove ( const int id )
 {
     for ( const Model_Budget::Data &d : Model_Budget::instance().find ( Model_Budget::BUDGETYEARID ( id ) ) )
     {
@@ -58,7 +58,7 @@ bool Model_Budgetyear::remove ( int id )
 }
 
 // Setter
-void Model_Budgetyear::Set ( int year_id, const wxString &value )
+void Model_Budgetyear::Set ( const int year_id, const wxString &value )
 {
     Data *info = this->get ( year_id, this->db_ );
     if ( info )
@@ -89,9 +89,9 @@ int Model_Budgetyear::Add ( const wxString &value )
 }
 
 // Getter
-wxString Model_Budgetyear::Get ( int year_id )
+const wxString &Model_Budgetyear::Get ( const int year_id )
 {
-    Data *e = this->get ( year_id, this->db_ );
+    const Data *e = this->get ( year_id, this->db_ );
     if ( e )
     {
         return e->BUDGETYEARNAME;
@@ -113,7 +113,7 @@ int Model_Budgetyear::Get ( const wxString &year_name )
     return -1;
 }
 
-bool Model_Budgetyear::Exists ( int year_id )
+bool Model_Budgetyear::Exists ( const int year_id )
 {
     Data *e = this->get ( year_id, this->db_ );
     if ( e )

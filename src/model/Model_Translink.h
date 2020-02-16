@@ -28,7 +28,10 @@
 class Model_Translink : public Model<DB_Table_TRANSLINK>
 {
 public:
-    enum CHECKING_TYPE { AS_INCOME_EXPENSE = 32701, AS_TRANSFER }; /* Transfers ignore accounting */
+    enum CHECKING_TYPE
+    {
+        AS_INCOME_EXPENSE = 32701, AS_TRANSFER
+    }; /* Transfers ignore accounting */
 
 public:
     Model_Translink();

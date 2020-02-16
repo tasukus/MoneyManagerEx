@@ -48,10 +48,10 @@ public:
     static Model_CustomFieldData &instance();
 
 public:
-    std::map<int, Data_Set> get_all ( Model_Attachment::REFTYPE reftype );
-    Data *get ( int FieldID, int RefID );
+    std::map<int, Data_Set> get_all ( const Model_Attachment::REFTYPE reftype );
+    Data *get ( const int FieldID, const int RefID );
     wxArrayString allValue ( const int FieldID );
-    bool DeleteAllData ( const wxString &RefType, int RefID );
+    bool DeleteAllData ( const wxString &RefType, const int RefID );
 };
 
 #endif

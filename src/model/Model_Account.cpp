@@ -130,7 +130,7 @@ Model_Account::Data *Model_Account::get ( const wxString &name )
     Data_Set items = this->find ( ACCOUNTNAME ( name ) );
     if ( !items.empty() )
     {
-        account = this->get ( items[0].ACCOUNTID, this->db_ );
+        account = this->get ( items.at ( 0 ).ACCOUNTID, this->db_ );
     }
     return account;
 }
@@ -147,14 +147,14 @@ Model_Account::Data *Model_Account::getByAccNum ( const wxString &num )
     Data_Set items = this->find ( ACCOUNTNUM ( num ) );
     if ( !items.empty() )
     {
-        account = this->get ( items[0].ACCOUNTID, this->db_ );
+        account = this->get ( items.at ( 0 ).ACCOUNTID, this->db_ );
     }
     return account;
 }
 
-wxString Model_Account::get_account_name ( int account_id )
+wxString Model_Account::get_account_name ( const int account_id )
 {
-    Data *account = instance().get ( account_id );
+    const Data *account = instance().get ( account_id );
     if ( account )
     {
         return account->ACCOUNTNAME;
@@ -166,7 +166,7 @@ wxString Model_Account::get_account_name ( int account_id )
 }
 
 /** Remove the Data record instance from memory and the database. */
-bool Model_Account::remove ( int id )
+bool Model_Account::remove ( const int id )
 {
     this->Savepoint();
     for ( const auto &r: Model_Checking::instance().find_or ( Model_Checking::ACCOUNTID ( id ), Model_Checking::TOACCOUNTID ( id ) ) )
@@ -274,12 +274,12 @@ wxString Model_Account::toCurrency ( double value, const Data *r )
     return Model_Currency::toCurrency ( value, currency ( r ) );
 }
 
-wxString Model_Account::toString ( double value, const Data *r, int precision )
+wxString Model_Account::toString ( double value, const Data *r, const int precision )
 {
     return Model_Currency::toString ( value, currency ( r ), precision );
 }
 
-wxString Model_Account::toString ( double value, const Data &r, int precision )
+wxString Model_Account::toString ( double value, const Data &r, const int precision )
 {
     return toString ( value, &r, precision );
 }
@@ -363,7 +363,7 @@ int Model_Account::money_accounts_num()
 
 bool Model_Account::Exist ( const wxString &account_name )
 {
-    Data_Set list = instance().find ( ACCOUNTNAME ( account_name ) );
+    const Data_Set list = instance().find ( ACCOUNTNAME ( account_name ) );
 
     return !list.empty();
 }
@@ -373,7 +373,11 @@ wxDateTime Model_Account::DateOf ( const wxString &date_str )
     return Model::to_date ( date_str );
 }
 
-bool Model_Account::BoolOf ( int value )
+bool Model_Account::BoolOf ( const int value ) noexcept
 {
-    return value > 0 ? true : false;
+    if ( value > 0 )
+    {
+        return true;
+}
+    return false;
 }

@@ -114,7 +114,7 @@ wxString uuid()
     wxString UUID = Model_Setting::instance().GetStringSetting ( "UUID", wxEmptyString );
     if ( UUID.IsEmpty() || UUID.Length() < wxString ( "mac_20140428075834123" ).Length() )
     {
-        wxDateTime now = wxDateTime::UNow();
+        const wxDateTime now = wxDateTime::UNow();
         UUID = wxString::Format ( "%s_%s", wxPlatformInfo::Get().GetPortIdShortName(), now.Format ( "%Y%m%d%H%M%S%l" ) );
         Model_Setting::instance().Set ( "UUID", UUID );
     }
@@ -125,15 +125,20 @@ class SendStatsThread : public wxThread
 {
 public:
     explicit SendStatsThread ( const wxString &url ) : wxThread()
-        , m_url ( url ) {};
-    ~SendStatsThread() {};
+        , m_url ( url )
+    {
+    };
+    ~SendStatsThread()
+    {
+        return;
+    };
 
 protected:
     wxString m_url;
-    virtual ExitCode Entry();
+    ExitCode Entry() override;
 };
 
-void Model_Usage::pageview ( const wxWindow *window, long plt /* = 0 msec*/ )
+void Model_Usage::pageview ( const wxWindow *window, int plt /* = 0 msec*/ )
 {
     if ( !window )
     {
@@ -171,7 +176,7 @@ void Model_Usage::pageview ( const wxWindow *window, long plt /* = 0 msec*/ )
     return pageview ( wxURI ( documentPath ).BuildURI(), wxURI ( documentTitle ).BuildURI(), plt );
 }
 
-void Model_Usage::timing ( const wxString &documentPath, const wxString &documentTitle, long plt /* = 0 msec*/ )
+void Model_Usage::timing ( const wxString &documentPath, const wxString &documentTitle, int plt /* = 0 msec*/ )
 {
     if ( !Option::instance().getSendUsageStatistics() )
     {
@@ -198,7 +203,7 @@ void Model_Usage::timing ( const wxString &documentPath, const wxString &documen
         { "av", mmex::version::string }, // application version
         // custom dimensions
         { "cd1", wxPlatformInfo::Get().GetPortIdShortName() },
-        { "plt", wxString::Format ( "%ld", plt ) }
+        { "plt", wxString::Format ( "%d", plt ) }
     };
 
     for ( const auto &kv : parameters )
@@ -215,7 +220,7 @@ void Model_Usage::timing ( const wxString &documentPath, const wxString &documen
     thread->Run();
 }
 
-void Model_Usage::pageview ( const wxString &documentPath, const wxString &documentTitle, long plt /* = 0 msec*/ )
+void Model_Usage::pageview ( const wxString &documentPath, const wxString &documentTitle, int plt /* = 0 msec*/ )
 {
     if ( !Option::instance().getSendUsageStatistics() )
     {
@@ -242,7 +247,7 @@ void Model_Usage::pageview ( const wxString &documentPath, const wxString &docum
         { "av", mmex::version::string }, // application version
         // custom dimensions
         { "cd1", wxPlatformInfo::Get().GetPortIdShortName() },
-        { "plt", wxString::Format ( "%ld", plt ) }
+        { "plt", wxString::Format ( "%d", plt ) }
     };
 
     for ( const auto &kv : parameters )

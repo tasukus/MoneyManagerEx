@@ -44,15 +44,15 @@ public:
     {
     }
 
-    void SetValue ( double value );
-    void SetValue ( double value, int precision );
+    void SetValue ( const double value );
+    void SetValue ( const double value, const int precision );
     //SetValue without generating an event
-    void SetValueNoEvent ( double value, int precision );
-    void SetValue ( double value, const Model_Account::Data *account, int precision = -1 );
-    void SetValue ( double value, const Model_Currency::Data *currency, int precision = -1 );
+    void SetValueNoEvent ( const double value, const int precision );
+    void SetValue ( double value, const Model_Account::Data *account,  const int precision = -1 );
+    void SetValue ( double value, const Model_Currency::Data *currency, const int precision = -1 );
     bool Calculate ( const int alt_precision = -1 );
     bool GetDouble ( double &amount ) const;
-    bool checkValue ( double &amount, bool positive_value = true );
+    bool checkValue ( double &amount, const bool positive_value = true );
     wxChar GetDecimalPoint();
 
 private:

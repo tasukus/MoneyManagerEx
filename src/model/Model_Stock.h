@@ -62,7 +62,7 @@ public:
     * Remove the Data record from memory and the database.
     * Delete also all stock history
     */
-    bool remove ( int id );
+    bool remove ( const int id ) override;
 
     /**
     Returns the last price date of a given stock

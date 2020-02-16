@@ -33,8 +33,14 @@ public:
     typedef Model_Budgetsplittransaction::Data_Set Split_Data_Set;
 
 public:
-    enum TYPE { WITHDRAWAL = 0, DEPOSIT, TRANSFER };
-    enum STATUS_ENUM { NONE = 0, RECONCILED, VOID_, FOLLOWUP, DUPLICATE_ };
+    enum TYPE
+    {
+        WITHDRAWAL = 0, DEPOSIT, TRANSFER
+    };
+    enum STATUS_ENUM
+    {
+        NONE = 0, RECONCILED, VOID_, FOLLOWUP, DUPLICATE_
+    };
     enum REPEAT_TYPE
     {
         REPEAT_INACTIVE = -1,
@@ -84,8 +90,8 @@ public:
         wxString TRANSACTIONNUMBER;
         int PAYEEID = -1;
         std::vector<Split> local_splits;
-        int REPEATS;
-        int NUMOCCURRENCES;
+        int REPEATS = -1;
+        int NUMOCCURRENCES = -1;
         // This relates the 'Date Paid' field.
         wxString NEXTOCCURRENCEDATE;
     };
@@ -143,10 +149,10 @@ public:
     * autoExecuteManual(), autoExecuteSilent(), requireExecution(), allowExecution();
     */
     void decode_fields ( const Data &r );
-    bool autoExecuteManual();
-    bool autoExecuteSilent();
-    bool requireExecution();
-    bool allowExecution();
+    bool autoExecuteManual() const noexcept;
+    bool autoExecuteSilent() const noexcept;
+    bool requireExecution() const noexcept;
+    bool allowExecution() const noexcept;
     typedef std::map<int, double> AccountBalance;
     bool AllowTransaction ( const Data &r, AccountBalance &bal );
 
@@ -161,7 +167,7 @@ public:
     * Remove the Data record instance from memory and the database
     * including any splits associated with the Data Record.
     */
-    bool remove ( int id );
+    bool remove ( const int id ) override;
 
     static DB_Table_BILLSDEPOSITS::STATUS STATUS ( STATUS_ENUM status, OP op = EQUAL );
     static DB_Table_BILLSDEPOSITS::TRANSCODE TRANSCODE ( TYPE type, OP op = EQUAL );
@@ -174,4 +180,3 @@ public:
 };
 
 #endif
-

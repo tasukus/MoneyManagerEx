@@ -30,8 +30,14 @@ public:
     typedef Model_Splittransaction::Data_Set Split_Data_Set;
 
 public:
-    enum TYPE { WITHDRAWAL = 0, DEPOSIT, TRANSFER };
-    enum STATUS_ENUM { NONE = 0, RECONCILED, VOID_, FOLLOWUP, DUPLICATE_ };
+    enum TYPE
+    {
+        WITHDRAWAL = 0, DEPOSIT, TRANSFER
+    };
+    enum STATUS_ENUM
+    {
+        NONE = 0, RECONCILED, VOID_, FOLLOWUP, DUPLICATE_
+    };
 
     static const std::vector<std::pair<TYPE, wxString> > TYPE_CHOICES;
     static const std::vector<std::pair<STATUS_ENUM, wxString> > STATUS_ENUM_CHOICES;
@@ -132,7 +138,7 @@ public:
     static Model_Checking &instance();
 
 public:
-    bool remove ( int id );
+    bool remove ( const int id ) override;
 
 public:
     static const Model_Splittransaction::Data_Set splittransaction ( const Data *r );
@@ -142,7 +148,7 @@ public:
     static DB_Table_CHECKINGACCOUNT::TRANSDATE TRANSDATE ( const wxDate &date, OP op = EQUAL );
     static DB_Table_CHECKINGACCOUNT::TRANSDATE TRANSDATE ( const wxString &date, OP op = EQUAL );
     static DB_Table_CHECKINGACCOUNT::STATUS STATUS ( STATUS_ENUM status, OP op = EQUAL );
-    static DB_Table_CHECKINGACCOUNT::TRANSCODE TRANSCODE ( TYPE type, OP op = EQUAL );
+    static DB_Table_CHECKINGACCOUNT::TRANSCODE TRANSCODE ( const TYPE type, const OP op = EQUAL );
 
 public:
     static wxDate TRANSDATE ( const Data *r );
@@ -179,17 +185,17 @@ public:
 class TransactionStatus
 {
 private:
-    int m_account_b;
-    wxString m_status_a;
-    wxString m_status_b;
+    int m_account_b = -1;
+    wxString m_status_a = "N";
+    wxString m_status_b = "N";
 
 public:
-    TransactionStatus();
-    TransactionStatus ( const DB_Table_CHECKINGACCOUNT::Data &data );
-    TransactionStatus ( const DB_Table_CHECKINGACCOUNT::Data *data );
+    TransactionStatus() = default;
+    explicit TransactionStatus ( const DB_Table_CHECKINGACCOUNT::Data &data );
+    explicit TransactionStatus ( const DB_Table_CHECKINGACCOUNT::Data *data );
     void InitStatus ( const DB_Table_CHECKINGACCOUNT::Data &data );
     void InitStatus ( const DB_Table_CHECKINGACCOUNT::Data *data );
     void SetStatus ( const wxString &status, int account_id, DB_Table_CHECKINGACCOUNT::Data &data );
     void SetStatusA ( const wxString &status );
-    wxString Status ( int account_id );
+    wxString Status ( const int account_id ) const;
 };

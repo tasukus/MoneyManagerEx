@@ -58,15 +58,15 @@ public:
 
 public:
     // Setter
-    void Set ( const wxString &key, int value );
-    void Set ( const wxString &key, bool value );
+    void Set ( const wxString &key, const int value );
+    void Set ( const wxString &key, const bool value );
     void Set ( const wxString &key, const wxColour &value );
     void Set ( const wxString &key, const wxString &value );
 
 public:
     // Getter
-    bool GetBoolSetting ( const wxString &key, bool default_value );
-    int GetIntSetting ( const wxString &key, int default_value );
+    bool GetBoolSetting ( const wxString &key, const bool default_value );
+    int GetIntSetting ( const wxString &key, const int default_value );
 
     wxString GetStringSetting ( const wxString &key, const wxString &default_value );
     wxString getLastDbPath();

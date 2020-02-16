@@ -78,9 +78,8 @@ std::map<int, Model_Splittransaction::Data_Set> Model_Splittransaction::get_all(
     return data;
 }
 
-int Model_Splittransaction::update ( const Data_Set &rows, int transactionID )
+size_t Model_Splittransaction::update ( const Data_Set &rows, int transactionID )
 {
-
     Data_Set split = instance().find ( TRANSID ( transactionID ) );
     for ( const auto &split_item : split )
     {

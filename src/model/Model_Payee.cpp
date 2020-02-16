@@ -74,12 +74,12 @@ Model_Payee::Data *Model_Payee::get ( const wxString &name )
     Data_Set items = this->find ( PAYEENAME ( name ) );
     if ( !items.empty() )
     {
-        payee = this->get ( items[0].PAYEEID, this->db_ );
+        payee = this->get ( items.at ( 0 ).PAYEEID, this->db_ );
     }
     return payee;
 }
 
-wxString Model_Payee::get_payee_name ( int payee_id )
+wxString Model_Payee::get_payee_name ( const int payee_id )
 {
     Data *payee = instance().get ( payee_id );
     if ( payee )
@@ -92,7 +92,7 @@ wxString Model_Payee::get_payee_name ( int payee_id )
     }
 }
 
-bool Model_Payee::remove ( int id )
+bool Model_Payee::remove ( const int id )
 {
     if ( is_used ( id ) )
     {
@@ -136,7 +136,6 @@ bool Model_Payee::is_used ( int id )
     {
         return true;
     }
-
     return false;
 }
 

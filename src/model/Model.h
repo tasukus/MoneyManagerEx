@@ -51,8 +51,14 @@ struct hash<wxString>
 class ModelBase
 {
 public:
-    ModelBase() :db_ ( 0 ) {};
-    virtual ~ModelBase() {};
+    ModelBase() :db_( nullptr )
+    {
+        return;
+    };
+    virtual ~ModelBase()
+    {
+        return;
+    };
 
 public:
     void Savepoint()
@@ -75,7 +81,8 @@ protected:
         const auto it = cache.find ( str_date );
         if ( it != cache.end() )
         {
-            return it->second;
+            const wxDate &ret = it->second;
+            return ret;
         }
 
         wxDate date;
@@ -145,7 +152,7 @@ public:
     * Return the Data record pointer for the given ID
     * from either memory cache or the database.
     */
-    typename DB_TABLE::Data *get ( int id )
+    typename DB_TABLE::Data *get ( const int id )
     {
         return this->get ( id, this->db_ );
     }
@@ -162,7 +169,7 @@ public:
     * in the record list (Data_Set) to the database.
     */
     template<class DATA>
-    int save ( std::vector<DATA> &rows )
+    size_t save ( std::vector<DATA> &rows )
     {
         this->Savepoint();
         for ( auto &r : rows )
@@ -179,7 +186,7 @@ public:
     }
 
     template<class DATA>
-    int save ( std::vector<DATA *> &rows )
+    size_t save ( std::vector<DATA *> &rows )
     {
         this->Savepoint();
         for ( auto &r : rows )
@@ -192,13 +199,13 @@ public:
     }
 
     /** Remove the Data record instance from memory and the database. */
-    bool remove ( int id )
+    virtual bool remove ( const int id )
     {
         return this->remove ( id, db_ );
     }
 
 public:
-    void preload ( int max_num = 1000 )
+    void preload ( const int max_num = 1000 )
     {
         int i = 0;
         for ( const auto &item : all() )
@@ -212,7 +219,7 @@ public:
     }
 
     // Return accomulated table stats as a json string
-    wxString  GetTableStatsAsJson() const
+    wxString  GetTableStatsAsJson() const override
     {
         StringBuffer json_buffer;
         Writer<StringBuffer> json_writer ( json_buffer );
@@ -220,15 +227,15 @@ public:
         json_writer.Key ( "table" );
         json_writer.String ( this->name().c_str() );
         json_writer.Key ( "cached" );
-        json_writer.Int ( this->cache_.size() );
+        json_writer.Int ( static_cast<int> ( this->cache_.size() ) );
         json_writer.Key ( "index_by_id" );
-        json_writer.Int ( this->index_by_id_.size() );
+        json_writer.Int ( static_cast<int> ( this->index_by_id_.size() ) );
         json_writer.Key ( "hit" );
-        json_writer.Int ( this->hit_ );
+        json_writer.Int ( static_cast<int> ( this->hit_ ) );
         json_writer.Key ( "miss" );
-        json_writer.Int ( this->miss_ );
+        json_writer.Int ( static_cast<int> ( this->miss_ ) );
         json_writer.Key ( "skip" );
-        json_writer.Int ( this->skip_ );
+        json_writer.Int ( static_cast<int> ( this->skip_ ) );
         json_writer.EndObject();
 
         wxLogDebug ( "======== Model.h : GetTableStatsAsJson =======" );
@@ -238,7 +245,7 @@ public:
     }
 
     /** Show table statistics*/
-    void show_statistics() const
+    void show_statistics() const override
     {
         wxLogDebug ( "%s : (cache %zu, index_by_id %zu, hit %zu, miss %zu, skip %zu)",
                      this->name(),

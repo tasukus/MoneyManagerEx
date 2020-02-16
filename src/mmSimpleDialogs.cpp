@@ -119,7 +119,13 @@ mmDialogComboBoxAutocomplete::mmDialogComboBoxAutocomplete ( wxWindow *parent, c
 bool mmDialogComboBoxAutocomplete::Create ( wxWindow *parent, wxWindowID id,
     const wxString &caption, const wxPoint &pos, const wxSize &size, long style )
 {
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     const wxSizerFlags flags = wxSizerFlags().Align ( wxALIGN_CENTER ).Border ( wxLEFT | wxRIGHT, 15 );
     wxBoxSizer *Sizer = new wxBoxSizer ( wxVERTICAL );
     this->SetSizer ( Sizer );
@@ -163,13 +169,13 @@ void mmErrorDialogs::MessageWarning ( wxWindow *parent
 
 void mmErrorDialogs::MessageInvalid ( wxWindow *parent, const wxString &message )
 {
-    const wxString &msg = wxString::Format ( _( "Entry %s is invalid" ), message );
+    const wxString msg = wxString::Format ( _( "Entry %s is invalid" ), message );
     MessageError ( parent, msg, _( "Invalid Entry" ) );
 }
 
 void mmErrorDialogs::InvalidCategory ( wxWindow *win, bool simple )
 {
-    const wxString &msg = simple
+    const wxString msg = simple
         ? _( "Please use this button for category selection." )
         : _( "Please use this button for category selection\n"
             "or use the 'Split' checkbox for multiple categories." );
@@ -182,6 +188,7 @@ void mmErrorDialogs::InvalidFile ( wxWindow *object, bool open )
 {
     const wxString errorHeader = open ? _( "Unable to open file." ) : _( "File name is empty." );
     const wxString errorMessage = _( "Please select the file for this operation." );
+
     wxRichToolTip tip ( errorHeader, errorMessage );
     tip.SetIcon ( wxICON_WARNING );
     tip.ShowFor ( object );

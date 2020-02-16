@@ -26,7 +26,10 @@ class Model_Attachment : public Model<DB_Table_ATTACHMENT>
 {
 public:
     using Model<DB_Table_ATTACHMENT>::get;
-    enum REFTYPE { TRANSACTION = 0, STOCK, ASSET, BANKACCOUNT, BILLSDEPOSIT, PAYEE};
+    enum REFTYPE
+    {
+        TRANSACTION = 0, STOCK, ASSET, BANKACCOUNT, BILLSDEPOSIT, PAYEE
+    };
 
     static const std::vector<std::pair<REFTYPE, wxString> > REFTYPE_CHOICES;
 
@@ -63,10 +66,10 @@ public:
     static int LastAttachmentNumber ( const wxString &RefType, const int RefId );
 
     /** Return the description of the choice reftype */
-    static const wxString reftype_desc ( const int RefTypeEnum );
+    static const wxString &reftype_desc ( const int RefTypeEnum );
 
     /** Return a dataset with attachments linked to a specific type*/
-    std::map<int, Data_Set> get_all ( REFTYPE reftype );
+    std::map<int, Data_Set> get_all ( const REFTYPE reftype );
 
     /** Return all attachments descriptions*/
     wxArrayString allDescriptions();

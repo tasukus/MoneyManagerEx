@@ -57,13 +57,13 @@ public:
     static Model_Subcategory::Data_Set sub_category ( const Data &r );
     static const wxString full_name ( const Data *category, const Model_Subcategory::Data *sub_category = nullptr );
     static const wxString full_name ( const int category_id, const int subcategory_id );
-    static bool is_used ( int id, int sub_id = -1 );
-    static bool has_income ( int id, int sub_id = -1 );
+    static bool is_used ( const int id, const int sub_id = -1 );
+    static bool has_income ( const int id, const int sub_id = -1 );
     static void getCategoryStats (
         std::map<int, std::map<int, std::map<int, double> > > &categoryStats
         , const wxArrayString *accountArray
         , mmDateRange *date_range, bool ignoreFuture
-        , bool group_by_month = true
+        , const bool group_by_month = true
         , std::map<int, std::map<int, double> > *budgetAmt = nullptr );
 };
 

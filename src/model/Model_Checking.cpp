@@ -97,7 +97,7 @@ Model_Checking &Model_Checking::instance()
     return Singleton<Model_Checking>::instance();
 }
 
-bool Model_Checking::remove ( int id )
+bool Model_Checking::remove ( const int id )
 {
     //TODO: remove all split at once
     //Model_Splittransaction::instance().remove(Model_Splittransaction::instance().find(Model_Splittransaction::TRANSID(id)));
@@ -130,12 +130,12 @@ DB_Table_CHECKINGACCOUNT::TRANSDATE Model_Checking::TRANSDATE ( const wxString &
 
 DB_Table_CHECKINGACCOUNT::STATUS Model_Checking::STATUS ( STATUS_ENUM status, OP op )
 {
-    return DB_Table_CHECKINGACCOUNT::STATUS ( toShortStatus ( all_status() [status] ), op );
+    return DB_Table_CHECKINGACCOUNT::STATUS ( toShortStatus ( all_status().Item ( status ) ), op );
 }
 
-DB_Table_CHECKINGACCOUNT::TRANSCODE Model_Checking::TRANSCODE ( TYPE type, OP op )
+DB_Table_CHECKINGACCOUNT::TRANSCODE Model_Checking::TRANSCODE ( const TYPE type, const OP op )
 {
-    return DB_Table_CHECKINGACCOUNT::TRANSCODE ( all_type() [type], op );
+    return DB_Table_CHECKINGACCOUNT::TRANSCODE ( all_type().Item ( type ), op );
 }
 
 wxDate Model_Checking::TRANSDATE ( const Data *r )
@@ -278,7 +278,7 @@ double Model_Checking::balance ( const Data &r, int account_id )
 
 double Model_Checking::withdrawal ( const Data *r, int account_id )
 {
-    double bal = balance ( r, account_id );
+    const double bal = balance ( r, account_id );
     return bal <= 0 ? -bal : 0;
 }
 
@@ -289,7 +289,7 @@ double Model_Checking::withdrawal ( const Data &r, int account_id )
 
 double Model_Checking::deposit ( const Data *r, int account_id )
 {
-    double bal = balance ( r, account_id );
+    const double bal = balance ( r, account_id );
     return bal > 0 ? bal : 0;
 }
 
@@ -331,7 +331,7 @@ wxString Model_Checking::toShortStatus ( const wxString &fullStatus )
     return fullStatus.Left ( 1 ) == "N" ? "" : fullStatus.Left ( 1 );
 }
 
-Model_Checking::Full_Data::Full_Data() : Data ( 0 ), AMOUNT ( 0 ), BALANCE ( 0 )
+Model_Checking::Full_Data::Full_Data() : Data ( nullptr ), AMOUNT ( 0 ), BALANCE ( 0 )
 {
 }
 
@@ -428,7 +428,7 @@ bool Model_Checking::Full_Data::is_foreign_transfer() const
 wxString Model_Checking::Full_Data::info() const
 {
     // TODO more info
-    wxDate date = Model_Checking::TRANSDATE ( this );
+    const wxDate date = Model_Checking::TRANSDATE ( this );
     wxString info = wxGetTranslation ( date.GetEnglishWeekDayName ( date.GetWeekDay() ) );
     return info;
 }
@@ -436,7 +436,7 @@ wxString Model_Checking::Full_Data::info() const
 void Model_Checking::getFrequentUsedNotes ( std::vector<wxString> &frequentNotes, int accountID )
 {
     frequentNotes.clear();
-    size_t max = 20;
+    constexpr size_t max = 20;
 
     const auto notes = instance().find ( NOTES ( "", NOT_EQUAL )
                                          , accountID > 0 ? ACCOUNTID ( accountID ) : ACCOUNTID ( -1, NOT_EQUAL ) );
@@ -624,13 +624,6 @@ bool Model_Checking::foreignTransactionAsTransfer ( const Data &data )
 }
 
 //===========================================================================================//
-TransactionStatus::TransactionStatus()
-    : m_account_b ( -1 )
-    , m_status_a ( "N" )
-    , m_status_b ( "N" )
-{
-}
-
 TransactionStatus::TransactionStatus ( const DB_Table_CHECKINGACCOUNT::Data &data )
 {
     InitStatus ( &data );
@@ -682,14 +675,22 @@ void TransactionStatus::SetStatusA ( const wxString &status )
     m_status_a = ( status.empty() ? "N" : status );
 }
 
-wxString TransactionStatus::Status ( int account_id )
+wxString TransactionStatus::Status ( const int account_id ) const
 {
     if ( account_id == m_account_b )
     {
-        return m_status_b == "N" ? "" : m_status_b;
+        if ( m_status_b == "N" )
+        {
+            return "";
+        }
+        return m_status_b;
     }
     else
     {
-        return m_status_a == "N" ? "" : m_status_a;
+        if ( m_status_a == "N" )
+        {
+            return "";
+        }
+        return m_status_a;
     }
 }

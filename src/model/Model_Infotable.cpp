@@ -80,7 +80,7 @@ void Model_Infotable::Set ( const wxString &key, const wxString &value )
         Data_Set items = this->find ( INFONAME ( key ) );
         if ( !items.empty() )
         {
-            info = this->get ( items[0].INFOID );
+            info = this->get ( items.at ( 0 ).INFOID );
         }
     }
     if ( info )
@@ -105,7 +105,7 @@ void Model_Infotable::Set ( const wxString &key, const wxColour &value )
 //Deleter
 void Model_Infotable::Delete ( const wxString &key )
 {
-    Data_Set items = this->find ( INFONAME ( key ) );
+    const Data_Set items = this->find ( INFONAME ( key ) );
     for ( const auto entry : items )
     {
         this->remove ( entry.id() );
@@ -130,7 +130,7 @@ bool Model_Infotable::GetBoolInfo ( const wxString &key, bool default_value )
     }
 }
 
-int Model_Infotable::GetIntInfo ( const wxString &key, int default_value )
+int Model_Infotable::GetIntInfo ( const wxString &key,const int default_value )
 {
     const wxString value = this->GetStringInfo ( key, "" );
     if ( !value.IsEmpty() && value.IsNumber() )
@@ -143,17 +143,17 @@ int Model_Infotable::GetIntInfo ( const wxString &key, int default_value )
 
 wxString Model_Infotable::GetStringInfo ( const wxString &key, const wxString &default_value )
 {
-    Data *info = this->get_one ( INFONAME ( key ) );
+    const Data *info = this->get_one ( INFONAME ( key ) );
     if ( info )
     {
         return info->INFOVALUE;
     }
     else // not cached
     {
-        Data_Set items = this->find ( INFONAME ( key ) );
+        const Data_Set items = this->find ( INFONAME ( key ) );
         if ( !items.empty() )
         {
-            return items[0].INFOVALUE;
+            return items.at ( 0 ).INFOVALUE;
         }
     }
 

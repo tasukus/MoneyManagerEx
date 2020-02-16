@@ -122,7 +122,7 @@ Model_Currency::Data *Model_Currency::GetCurrencyRecord ( const wxString &curren
     Model_Currency::Data_Set items = Model_Currency::instance().find ( CURRENCY_SYMBOL ( currency_symbol ) );
     if ( !items.empty() )
     {
-        record = this->get ( items[0].id(), this->db_ );
+        record = this->get ( items.at ( 0 ).id(), this->db_ );
     }
 
     return record;
@@ -172,7 +172,7 @@ bool Model_Currency::remove ( const int id )
 /** Return the description of the choice type */
 wxString Model_Currency::currtype_desc ( const int CurrTypeEnum )
 {
-    const auto &item = CURRTYPE_CHOICES[CurrTypeEnum];
+    const auto &item = CURRTYPE_CHOICES.at ( CurrTypeEnum );
     const wxString& reftype_desc = item.second;
     return reftype_desc;
 }

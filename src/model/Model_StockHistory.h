@@ -26,7 +26,10 @@ class Model_StockHistory : public Model<DB_Table_STOCKHISTORY>
 {
 public:
     using Model<DB_Table_STOCKHISTORY>::get;
-    enum UPDTYPE { ONLINE = 1, MANUAL };
+    enum UPDTYPE
+    {
+        ONLINE = 1, MANUAL
+    };
 
 public:
     Model_StockHistory();
@@ -55,7 +58,7 @@ public:
     /**
     Adds or updates an element in stock history
     */
-    int addUpdate ( const wxString &symbol, const wxDate &date, double price, UPDTYPE type );
+    int addUpdate ( const wxString &symbol, const wxDate &date, double price,enum UPDTYPE type );
 };
 
 #endif

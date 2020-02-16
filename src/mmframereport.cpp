@@ -30,8 +30,7 @@ const char *group_report_template = R"(
                                     <!DOCTYPE html>
                                     <html>
                                     <head>
-                                    <meta http-equiv="content-type" content="text/html;
-charset=utf-8" />
+                                    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <title><TMPL_VAR REPORTNAME></title>
         <script src = "ChartNew.js"></script>
         <script src = "sorttable.js"></script>
@@ -87,8 +86,8 @@ public:
         mm_html_template report ( group_report_template );
         report ( L"REPORTNAME" ) = this->m_title + " For " + this->m_group_name;
         report ( L"CONTENTS" ) = contents;
-        wxString out = wxEmptyString;
 
+        wxString out = wxEmptyString;
         try
         {
             out = report.Process();

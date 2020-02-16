@@ -57,7 +57,7 @@ Model_StockHistory::Data *Model_StockHistory::get ( const wxString &symbol, cons
     Data_Set items = this->find ( SYMBOL ( symbol ), DB_Table_STOCKHISTORY::DATE ( date.FormatISODate() ) );
     if ( !items.empty() )
     {
-        hist = this->get ( items[0].id(), this->db_ );
+        hist = this->get ( items.at ( 0 ).id(), this->db_ );
     }
     return hist;
 }
@@ -75,7 +75,7 @@ DB_Table_STOCKHISTORY::DATE Model_StockHistory::DATE ( const wxDate &date, OP op
 /**
 Adds or updates an element in stock history
 */
-int Model_StockHistory::addUpdate ( const wxString &symbol, const wxDate &date, double price, UPDTYPE type )
+int Model_StockHistory::addUpdate ( const wxString &symbol, const wxDate &date, double price,enum UPDTYPE type )
 {
     Data *stockHist = this->get ( symbol, date );
     if ( !stockHist )

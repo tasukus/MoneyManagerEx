@@ -100,7 +100,7 @@ int Model_Attachment::LastAttachmentNumber ( const wxString &RefType, const int 
 
     for ( auto &attachment : attachments )
     {
-        const wxString FileName = attachment.FILENAME;
+        const wxString &FileName = attachment.FILENAME;
         int AttachNumb = wxAtoi ( FileName.SubString ( FileName.Find ( "Attach" ) + 6, FileName.Find ( "." ) - 1 ) );
         if ( AttachNumb > LastAttachmentNumber )
         {
@@ -112,18 +112,18 @@ int Model_Attachment::LastAttachmentNumber ( const wxString &RefType, const int 
 }
 
 /** Return the description of the choice reftype */
-const wxString Model_Attachment::reftype_desc ( const int RefTypeEnum )
+const wxString &Model_Attachment::reftype_desc ( const int RefTypeEnum )
 {
-    const auto &item = REFTYPE_CHOICES[RefTypeEnum];
-    const wxString reftype_desc = item.second;
+    const auto &item = REFTYPE_CHOICES.at ( RefTypeEnum );
+    const wxString &reftype_desc = item.second;
     return reftype_desc;
 }
 
 /** Return a dataset with attachments linked to a specific type*/
-std::map<int, Model_Attachment::Data_Set> Model_Attachment::get_all ( REFTYPE reftype )
+std::map<int, Model_Attachment::Data_Set> Model_Attachment::get_all ( const REFTYPE reftype )
 {
     std::map<int, Model_Attachment::Data_Set> data;
-    const wxString reftype_desc = Model_Attachment::reftype_desc ( reftype );
+    const wxString &reftype_desc = Model_Attachment::reftype_desc ( reftype );
     for ( const auto &attachment : this->find ( Model_Attachment::DB_Table_ATTACHMENT::REFTYPE ( reftype_desc ) ) )
     {
         data[attachment.REFID].push_back ( attachment );

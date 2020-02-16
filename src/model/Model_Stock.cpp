@@ -84,9 +84,9 @@ double Model_Stock::CurrentValue ( const Data &r )
 * Remove the Data record from memory and the database.
 * Delete also all stock history
 */
-bool Model_Stock::remove ( int id )
+bool Model_Stock::remove ( const int id )
 {
-    Model_Stock::Data *data = this->get ( id );
+    const Model_Stock::Data *data = this->get ( id );
     const auto &stocks = Model_Stock::instance().find ( Model_Stock::SYMBOL ( data->SYMBOL ) );
     if ( stocks.size() == 1 )
     {

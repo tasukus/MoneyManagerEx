@@ -63,16 +63,15 @@ Model_Subcategory::Data *Model_Subcategory::get ( const wxString &name, int cate
     Data_Set items = this->find ( SUBCATEGNAME ( name ), CATEGID ( category_id ) );
     if ( !items.empty() )
     {
-        category = this->get ( items[0].SUBCATEGID, this->db_ );
+        category = this->get ( items.at ( 0 ).SUBCATEGID, this->db_ );
     }
     return category;
 }
 
 bool Model_Subcategory::is_used ( int id )
 {
-    int cat_id = instance().get ( id )->CATEGID;
+    const int cat_id = instance().get ( id )->CATEGID;
     const auto &deposits = Model_Billsdeposits::instance().find ( Model_Billsdeposits::CATEGID ( cat_id ), Model_Billsdeposits::SUBCATEGID ( id ) );
     const auto &trans = Model_Checking::instance().find ( Model_Checking::CATEGID ( cat_id ), Model_Checking::SUBCATEGID ( id ) );
     return !deposits.empty() || !trans.empty();
 }
-
