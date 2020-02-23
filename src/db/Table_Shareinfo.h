@@ -57,7 +57,7 @@ struct DB_Table_SHAREINFO : public DB_Table
     /** Removes all records stored in memory (cache) for the table*/
     void destroy_cache()
     {
-        std::for_each ( cache_.begin(), cache_.end(), std::mem_fun ( &Data::destroy ) );
+        std::for_each ( cache_.begin(), cache_.end(), std::mem_fn ( &Data::destroy ) );
         cache_.clear();
         index_by_id_.clear(); // no memory release since it just stores pointer and the according objects are in cache
     }
@@ -111,7 +111,9 @@ struct DB_Table_SHAREINFO : public DB_Table
         {
             return "SHAREINFOID";
         }
-        explicit SHAREINFOID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit SHAREINFOID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct CHECKINGACCOUNTID : public DB_Column<int>
@@ -120,7 +122,9 @@ struct DB_Table_SHAREINFO : public DB_Table
         {
             return "CHECKINGACCOUNTID";
         }
-        explicit CHECKINGACCOUNTID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit CHECKINGACCOUNTID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct SHARENUMBER : public DB_Column<double>
