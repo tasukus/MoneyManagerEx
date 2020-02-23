@@ -60,7 +60,13 @@ bool mmOptionsDialog::Create ( wxWindow *parent
     , wxWindowID id, const wxString &caption, const wxPoint &pos, const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     GetSizer()->Fit ( this );
     GetSizer()->SetSizeHints ( this );
@@ -166,10 +172,13 @@ void mmOptionsDialog::OnApply ( wxCommandEvent &WXUNUSED ( event ) )
 {
     Model_Infotable::instance().Savepoint();
     Model_Setting::instance().Savepoint();
+
     const int selected_page = m_notebook->GetSelection();
-    m_panel_list[selected_page]->SaveSettings();
+    m_panel_list.at ( selected_page )->SaveSettings();
+
     Model_Setting::instance().ReleaseSavepoint();
     Model_Infotable::instance().ReleaseSavepoint();
+
     const wxString msg = wxString::Format ( _( "%s page has been saved." ), m_notebook->GetPageText ( selected_page ) );
     wxMessageBox ( msg, _( "MMEX Options" ) );
 }

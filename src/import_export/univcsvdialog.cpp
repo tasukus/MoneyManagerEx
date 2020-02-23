@@ -91,7 +91,11 @@ mmUnivCSVDialog::mmUnivCSVDialog (
 bool mmUnivCSVDialog::Create ( wxWindow *parent, const wxString &caption, wxWindowID id, const wxPoint &pos, const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+    if ( bret == false )
+    {
+        return false;
+    }
 
     CreateControls();
     SetSettings ( GetStoredSettings ( -1 ) );
@@ -682,7 +686,7 @@ void mmUnivCSVDialog::OnLoad()
     long num = 0;
     for ( const auto &entry : csvFieldOrder_ )
     {
-        const wxString &item_name = CSVFieldName_[entry];
+        const wxString &item_name = CSVFieldName_.at ( entry );
         csvListBox_->Append ( wxGetTranslation ( item_name ), new mmListBoxItem ( num++, item_name ) );
     }
     // update csvFieldCandicate_
@@ -726,7 +730,20 @@ void mmUnivCSVDialog::OnSave ( wxCommandEvent &WXUNUSED ( event ) )
         json_writer.String ( delimit_.c_str() );
     }
 
-    wxString decimal = ( decimal_.empty() ? m_choiceDecimalSeparator->GetStringSelection() : decimal_ );
+    //--------------------------
+    wxString decimal;
+    if ( decimal_.empty() == true && m_choiceDecimalSeparator != nullptr )
+    {
+        decimal = m_choiceDecimalSeparator->GetStringSelection();
+    }
+    else if ( decimal_.empty() == true && m_choiceDecimalSeparator == nullptr )
+    {
+        decimal = "";
+    }
+    else
+    {
+        decimal = decimal_;
+    }
     json_writer.Key ( "DECIMAL" );
     json_writer.String ( decimal.c_str() );
 
@@ -1393,7 +1410,7 @@ void mmUnivCSVDialog::OnMoveUp ( wxCommandEvent &WXUNUSED ( event ) )
         csvListBox_->Insert ( wxGetTranslation ( item_name ), index - 1, new mmListBoxItem ( item_index, item_name ) );
 
         csvListBox_->SetSelection ( index - 1, true );
-        std::swap ( csvFieldOrder_[index - 1], csvFieldOrder_[index] );
+        std::swap ( csvFieldOrder_.at ( index - 1 ), csvFieldOrder_.at ( index ) );
 
         this->update_preview();
     }
@@ -1412,7 +1429,7 @@ void mmUnivCSVDialog::OnMoveDown ( wxCommandEvent &WXUNUSED ( event ) )
         csvListBox_->Insert ( wxGetTranslation ( item_name ), index + 1, new mmListBoxItem ( item_index, item_name ) );
 
         csvListBox_->SetSelection ( index + 1, true );
-        std::swap ( csvFieldOrder_[index + 1], csvFieldOrder_[index] );
+        std::swap ( csvFieldOrder_.at ( index + 1 ), csvFieldOrder_.at ( index ) );
 
         this->update_preview();
     }
@@ -1433,7 +1450,7 @@ void mmUnivCSVDialog::OnStandard ( wxCommandEvent &WXUNUSED ( event ) )
     const int rest[] = { UNIV_CSV_DONTCARE, UNIV_CSV_WITHDRAWAL, UNIV_CSV_DEPOSIT, UNIV_CSV_BALANCE };
     for ( size_t i = 0; i < sizeof ( rest ) / sizeof ( UNIV_CSV_DATE ); ++i )
     {
-        csvFieldCandicate_->Append ( wxGetTranslation ( CSVFieldName_[rest[i]] ), new mmListBoxItem ( rest[i], CSVFieldName_[rest[i]] ) );
+        csvFieldCandicate_->Append ( wxGetTranslation ( CSVFieldName_.at ( rest[ i ] ) ), new mmListBoxItem ( rest[ i ], CSVFieldName_.at ( rest[ i ] ) ) );
     }
 
     update_preview();

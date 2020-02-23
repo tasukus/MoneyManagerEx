@@ -29,7 +29,10 @@ using namespace rapidjson;
 using namespace tmpl;
 
 class wxString;
-enum OP { EQUAL = 0, GREATER, LESS, GREATER_OR_EQUAL, LESS_OR_EQUAL, NOT_EQUAL };
+enum OP
+{
+    EQUAL = 0, GREATER, LESS, GREATER_OR_EQUAL, LESS_OR_EQUAL, NOT_EQUAL
+};
 
 template<class V>
 struct DB_Column
@@ -37,16 +40,24 @@ struct DB_Column
     V v_;
     OP op_;
     DB_Column ( const V &v, OP op = EQUAL ) : v_ ( v ), op_ ( op )
-    {}
+    {
+        return;
+    }
 };
 
 struct DB_Table
 {
-    DB_Table() : hit_ ( 0 ), miss_ ( 0 ), skip_ ( 0 ) {};
-    virtual ~DB_Table() {};
+    DB_Table() : hit_( 0 ), miss_( 0 ), skip_( 0 )
+    {
+        return;
+    }
+    virtual ~DB_Table()
+    {
+        return;
+    };
     wxString query_;
     size_t hit_, miss_, skip_;
-    virtual wxString query() const
+    virtual const wxString &query() const
     {
         return this->query_;
     }
@@ -65,7 +76,7 @@ struct DB_Table
 };
 
 template<typename Arg1>
-void condition ( wxString &out, bool /*op_and*/, const Arg1 &arg1 )
+void condition ( wxString &out, const bool /*op_and*/, const Arg1 &arg1 )
 {
     out += Arg1::name();
     switch ( arg1.op_ )
@@ -92,7 +103,7 @@ void condition ( wxString &out, bool /*op_and*/, const Arg1 &arg1 )
 }
 
 template<typename Arg1, typename... Args>
-void condition ( wxString &out, bool op_and, const Arg1 &arg1, const Args &... args )
+void condition ( wxString &out, const bool op_and, const Arg1 &arg1, const Args &... args )
 {
     out += Arg1::name();
     switch ( arg1.op_ )
@@ -184,7 +195,7 @@ bool match ( const DATA *data, const Arg1 &arg1, const Args &... args )
 struct SorterByACCESSINFO
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ACCESSINFO ) < ( y.ACCESSINFO );
     }
@@ -193,7 +204,7 @@ struct SorterByACCESSINFO
 struct SorterByACCOUNTID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ACCOUNTID ) < ( y.ACCOUNTID );
     }
@@ -202,7 +213,7 @@ struct SorterByACCOUNTID
 struct SorterByACCOUNTNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ACCOUNTNAME ) < ( y.ACCOUNTNAME );
     }
@@ -211,7 +222,7 @@ struct SorterByACCOUNTNAME
 struct SorterByACCOUNTNUM
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ACCOUNTNUM ) < ( y.ACCOUNTNUM );
     }
@@ -220,7 +231,7 @@ struct SorterByACCOUNTNUM
 struct SorterByACCOUNTTYPE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ACCOUNTTYPE ) < ( y.ACCOUNTTYPE );
     }
@@ -229,7 +240,7 @@ struct SorterByACCOUNTTYPE
 struct SorterByALLOCATION
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ALLOCATION ) < ( y.ALLOCATION );
     }
@@ -238,7 +249,7 @@ struct SorterByALLOCATION
 struct SorterByAMOUNT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.AMOUNT ) < ( y.AMOUNT );
     }
@@ -247,7 +258,7 @@ struct SorterByAMOUNT
 struct SorterByASSETCLASSID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ASSETCLASSID ) < ( y.ASSETCLASSID );
     }
@@ -256,7 +267,7 @@ struct SorterByASSETCLASSID
 struct SorterByASSETID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ASSETID ) < ( y.ASSETID );
     }
@@ -265,7 +276,7 @@ struct SorterByASSETID
 struct SorterByASSETNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ASSETNAME ) < ( y.ASSETNAME );
     }
@@ -274,7 +285,7 @@ struct SorterByASSETNAME
 struct SorterByASSETTYPE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ASSETTYPE ) < ( y.ASSETTYPE );
     }
@@ -283,7 +294,7 @@ struct SorterByASSETTYPE
 struct SorterByATTACHMENTID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ATTACHMENTID ) < ( y.ATTACHMENTID );
     }
@@ -292,7 +303,7 @@ struct SorterByATTACHMENTID
 struct SorterByBDID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.BDID ) < ( y.BDID );
     }
@@ -301,7 +312,7 @@ struct SorterByBDID
 struct SorterByBUDGETENTRYID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.BUDGETENTRYID ) < ( y.BUDGETENTRYID );
     }
@@ -310,7 +321,7 @@ struct SorterByBUDGETENTRYID
 struct SorterByBUDGETYEARID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.BUDGETYEARID ) < ( y.BUDGETYEARID );
     }
@@ -319,7 +330,7 @@ struct SorterByBUDGETYEARID
 struct SorterByBUDGETYEARNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.BUDGETYEARNAME ) < ( y.BUDGETYEARNAME );
     }
@@ -328,7 +339,7 @@ struct SorterByBUDGETYEARNAME
 struct SorterByCATEGID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CATEGID ) < ( y.CATEGID );
     }
@@ -337,7 +348,7 @@ struct SorterByCATEGID
 struct SorterByCATEGNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CATEGNAME ) < ( y.CATEGNAME );
     }
@@ -346,7 +357,7 @@ struct SorterByCATEGNAME
 struct SorterByCHECKINGACCOUNTID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CHECKINGACCOUNTID ) < ( y.CHECKINGACCOUNTID );
     }
@@ -355,7 +366,7 @@ struct SorterByCHECKINGACCOUNTID
 struct SorterByCOMMISSION
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.COMMISSION ) < ( y.COMMISSION );
     }
@@ -364,7 +375,7 @@ struct SorterByCOMMISSION
 struct SorterByCONTACTINFO
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CONTACTINFO ) < ( y.CONTACTINFO );
     }
@@ -373,7 +384,7 @@ struct SorterByCONTACTINFO
 struct SorterByCONTENT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CONTENT ) < ( y.CONTENT );
     }
@@ -382,7 +393,7 @@ struct SorterByCONTENT
 struct SorterByCREDITLIMIT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CREDITLIMIT ) < ( y.CREDITLIMIT );
     }
@@ -391,7 +402,7 @@ struct SorterByCREDITLIMIT
 struct SorterByCURRDATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CURRDATE ) < ( y.CURRDATE );
     }
@@ -400,7 +411,7 @@ struct SorterByCURRDATE
 struct SorterByCURRENCYID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CURRENCYID ) < ( y.CURRENCYID );
     }
@@ -409,7 +420,7 @@ struct SorterByCURRENCYID
 struct SorterByCURRENCYNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return wxGetTranslation ( x.CURRENCYNAME ) < wxGetTranslation ( y.CURRENCYNAME );
     }
@@ -418,7 +429,7 @@ struct SorterByCURRENCYNAME
 struct SorterByCURRENCY_SYMBOL
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CURRENCY_SYMBOL ) < ( y.CURRENCY_SYMBOL );
     }
@@ -427,7 +438,7 @@ struct SorterByCURRENCY_SYMBOL
 struct SorterByCURRENCY_TYPE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CURRENCY_TYPE ) < ( y.CURRENCY_TYPE );
     }
@@ -436,7 +447,7 @@ struct SorterByCURRENCY_TYPE
 struct SorterByCURRENTPRICE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CURRENTPRICE ) < ( y.CURRENTPRICE );
     }
@@ -445,7 +456,7 @@ struct SorterByCURRENTPRICE
 struct SorterByCURRHISTID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CURRHISTID ) < ( y.CURRHISTID );
     }
@@ -454,7 +465,7 @@ struct SorterByCURRHISTID
 struct SorterByCURRUPDTYPE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CURRUPDTYPE ) < ( y.CURRUPDTYPE );
     }
@@ -463,7 +474,7 @@ struct SorterByCURRUPDTYPE
 struct SorterByCURRVALUE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.CURRVALUE ) < ( y.CURRVALUE );
     }
@@ -472,7 +483,7 @@ struct SorterByCURRVALUE
 struct SorterByDATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.DATE ) < ( y.DATE );
     }
@@ -481,7 +492,7 @@ struct SorterByDATE
 struct SorterByDECIMAL_POINT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.DECIMAL_POINT ) < ( y.DECIMAL_POINT );
     }
@@ -490,7 +501,7 @@ struct SorterByDECIMAL_POINT
 struct SorterByDESCRIPTION
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.DESCRIPTION ) < ( y.DESCRIPTION );
     }
@@ -499,7 +510,7 @@ struct SorterByDESCRIPTION
 struct SorterByFAVORITEACCT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.FAVORITEACCT ) < ( y.FAVORITEACCT );
     }
@@ -508,7 +519,7 @@ struct SorterByFAVORITEACCT
 struct SorterByFIELDATADID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.FIELDATADID ) < ( y.FIELDATADID );
     }
@@ -517,7 +528,7 @@ struct SorterByFIELDATADID
 struct SorterByFIELDID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.FIELDID ) < ( y.FIELDID );
     }
@@ -526,7 +537,7 @@ struct SorterByFIELDID
 struct SorterByFILENAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.FILENAME ) < ( y.FILENAME );
     }
@@ -535,7 +546,7 @@ struct SorterByFILENAME
 struct SorterByFOLLOWUPID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.FOLLOWUPID ) < ( y.FOLLOWUPID );
     }
@@ -544,7 +555,7 @@ struct SorterByFOLLOWUPID
 struct SorterByGROUPNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.GROUPNAME ) < ( y.GROUPNAME );
     }
@@ -553,7 +564,7 @@ struct SorterByGROUPNAME
 struct SorterByGROUP_SEPARATOR
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.GROUP_SEPARATOR ) < ( y.GROUP_SEPARATOR );
     }
@@ -562,7 +573,7 @@ struct SorterByGROUP_SEPARATOR
 struct SorterByHELDAT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.HELDAT ) < ( y.HELDAT );
     }
@@ -571,7 +582,7 @@ struct SorterByHELDAT
 struct SorterByHISTID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.HISTID ) < ( y.HISTID );
     }
@@ -580,7 +591,7 @@ struct SorterByHISTID
 struct SorterByHISTORIC
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.HISTORIC ) < ( y.HISTORIC );
     }
@@ -589,7 +600,7 @@ struct SorterByHISTORIC
 struct SorterByID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.ID ) < ( y.ID );
     }
@@ -598,7 +609,7 @@ struct SorterByID
 struct SorterByINFOID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.INFOID ) < ( y.INFOID );
     }
@@ -607,7 +618,7 @@ struct SorterByINFOID
 struct SorterByINFONAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.INFONAME ) < ( y.INFONAME );
     }
@@ -616,7 +627,7 @@ struct SorterByINFONAME
 struct SorterByINFOVALUE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.INFOVALUE ) < ( y.INFOVALUE );
     }
@@ -625,7 +636,7 @@ struct SorterByINFOVALUE
 struct SorterByINITIALBAL
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.INITIALBAL ) < ( y.INITIALBAL );
     }
@@ -634,7 +645,7 @@ struct SorterByINITIALBAL
 struct SorterByINTERESTRATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.INTERESTRATE ) < ( y.INTERESTRATE );
     }
@@ -643,7 +654,7 @@ struct SorterByINTERESTRATE
 struct SorterByJSONCONTENT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.JSONCONTENT ) < ( y.JSONCONTENT );
     }
@@ -652,7 +663,7 @@ struct SorterByJSONCONTENT
 struct SorterByLINKRECORDID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.LINKRECORDID ) < ( y.LINKRECORDID );
     }
@@ -661,7 +672,7 @@ struct SorterByLINKRECORDID
 struct SorterByLINKTYPE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.LINKTYPE ) < ( y.LINKTYPE );
     }
@@ -670,7 +681,7 @@ struct SorterByLINKTYPE
 struct SorterByLUACONTENT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.LUACONTENT ) < ( y.LUACONTENT );
     }
@@ -679,7 +690,7 @@ struct SorterByLUACONTENT
 struct SorterByMINIMUMBALANCE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.MINIMUMBALANCE ) < ( y.MINIMUMBALANCE );
     }
@@ -688,7 +699,7 @@ struct SorterByMINIMUMBALANCE
 struct SorterByMINIMUMPAYMENT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.MINIMUMPAYMENT ) < ( y.MINIMUMPAYMENT );
     }
@@ -697,7 +708,7 @@ struct SorterByMINIMUMPAYMENT
 struct SorterByNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.NAME ) < ( y.NAME );
     }
@@ -706,7 +717,7 @@ struct SorterByNAME
 struct SorterByNEXTOCCURRENCEDATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.NEXTOCCURRENCEDATE ) < ( y.NEXTOCCURRENCEDATE );
     }
@@ -715,7 +726,7 @@ struct SorterByNEXTOCCURRENCEDATE
 struct SorterByNOTES
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.NOTES ) < ( y.NOTES );
     }
@@ -724,7 +735,7 @@ struct SorterByNOTES
 struct SorterByNUMOCCURRENCES
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.NUMOCCURRENCES ) < ( y.NUMOCCURRENCES );
     }
@@ -733,7 +744,7 @@ struct SorterByNUMOCCURRENCES
 struct SorterByNUMSHARES
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.NUMSHARES ) < ( y.NUMSHARES );
     }
@@ -742,7 +753,7 @@ struct SorterByNUMSHARES
 struct SorterByPARENTID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.PARENTID ) < ( y.PARENTID );
     }
@@ -751,7 +762,7 @@ struct SorterByPARENTID
 struct SorterByPAYEEID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.PAYEEID ) < ( y.PAYEEID );
     }
@@ -760,7 +771,7 @@ struct SorterByPAYEEID
 struct SorterByPAYEENAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.PAYEENAME ) < ( y.PAYEENAME );
     }
@@ -769,7 +780,7 @@ struct SorterByPAYEENAME
 struct SorterByPAYMENTDUEDATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.PAYMENTDUEDATE ) < ( y.PAYMENTDUEDATE );
     }
@@ -778,7 +789,7 @@ struct SorterByPAYMENTDUEDATE
 struct SorterByPERIOD
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.PERIOD ) < ( y.PERIOD );
     }
@@ -787,7 +798,7 @@ struct SorterByPERIOD
 struct SorterByPFX_SYMBOL
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.PFX_SYMBOL ) < ( y.PFX_SYMBOL );
     }
@@ -796,7 +807,7 @@ struct SorterByPFX_SYMBOL
 struct SorterByPROPERTIES
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.PROPERTIES ) < ( y.PROPERTIES );
     }
@@ -805,7 +816,7 @@ struct SorterByPROPERTIES
 struct SorterByPURCHASEDATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.PURCHASEDATE ) < ( y.PURCHASEDATE );
     }
@@ -814,7 +825,7 @@ struct SorterByPURCHASEDATE
 struct SorterByPURCHASEPRICE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.PURCHASEPRICE ) < ( y.PURCHASEPRICE );
     }
@@ -823,7 +834,7 @@ struct SorterByPURCHASEPRICE
 struct SorterByREFID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.REFID ) < ( y.REFID );
     }
@@ -832,7 +843,7 @@ struct SorterByREFID
 struct SorterByREFTYPE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.REFTYPE ) < ( y.REFTYPE );
     }
@@ -841,7 +852,7 @@ struct SorterByREFTYPE
 struct SorterByREPEATS
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.REPEATS ) < ( y.REPEATS );
     }
@@ -850,7 +861,7 @@ struct SorterByREPEATS
 struct SorterByREPORTID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.REPORTID ) < ( y.REPORTID );
     }
@@ -859,7 +870,7 @@ struct SorterByREPORTID
 struct SorterByREPORTNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.REPORTNAME ) < ( y.REPORTNAME );
     }
@@ -868,7 +879,7 @@ struct SorterByREPORTNAME
 struct SorterBySCALE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SCALE ) < ( y.SCALE );
     }
@@ -877,7 +888,7 @@ struct SorterBySCALE
 struct SorterBySETTINGID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SETTINGID ) < ( y.SETTINGID );
     }
@@ -886,7 +897,7 @@ struct SorterBySETTINGID
 struct SorterBySETTINGNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SETTINGNAME ) < ( y.SETTINGNAME );
     }
@@ -895,7 +906,7 @@ struct SorterBySETTINGNAME
 struct SorterBySETTINGVALUE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SETTINGVALUE ) < ( y.SETTINGVALUE );
     }
@@ -904,7 +915,7 @@ struct SorterBySETTINGVALUE
 struct SorterBySFX_SYMBOL
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SFX_SYMBOL ) < ( y.SFX_SYMBOL );
     }
@@ -913,7 +924,7 @@ struct SorterBySFX_SYMBOL
 struct SorterBySHARECOMMISSION
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SHARECOMMISSION ) < ( y.SHARECOMMISSION );
     }
@@ -922,7 +933,7 @@ struct SorterBySHARECOMMISSION
 struct SorterBySHAREINFOID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SHAREINFOID ) < ( y.SHAREINFOID );
     }
@@ -931,7 +942,7 @@ struct SorterBySHAREINFOID
 struct SorterBySHARELOT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SHARELOT ) < ( y.SHARELOT );
     }
@@ -940,7 +951,7 @@ struct SorterBySHARELOT
 struct SorterBySHARENUMBER
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SHARENUMBER ) < ( y.SHARENUMBER );
     }
@@ -949,7 +960,7 @@ struct SorterBySHARENUMBER
 struct SorterBySHAREPRICE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SHAREPRICE ) < ( y.SHAREPRICE );
     }
@@ -958,7 +969,7 @@ struct SorterBySHAREPRICE
 struct SorterBySORTORDER
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SORTORDER ) < ( y.SORTORDER );
     }
@@ -967,7 +978,7 @@ struct SorterBySORTORDER
 struct SorterBySPLITTRANSAMOUNT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SPLITTRANSAMOUNT ) < ( y.SPLITTRANSAMOUNT );
     }
@@ -976,7 +987,7 @@ struct SorterBySPLITTRANSAMOUNT
 struct SorterBySPLITTRANSID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SPLITTRANSID ) < ( y.SPLITTRANSID );
     }
@@ -985,7 +996,7 @@ struct SorterBySPLITTRANSID
 struct SorterBySQLCONTENT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SQLCONTENT ) < ( y.SQLCONTENT );
     }
@@ -994,7 +1005,7 @@ struct SorterBySQLCONTENT
 struct SorterBySTARTDATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.STARTDATE ) < ( y.STARTDATE );
     }
@@ -1003,7 +1014,7 @@ struct SorterBySTARTDATE
 struct SorterBySTATEMENTDATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.STATEMENTDATE ) < ( y.STATEMENTDATE );
     }
@@ -1012,7 +1023,7 @@ struct SorterBySTATEMENTDATE
 struct SorterBySTATEMENTLOCKED
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.STATEMENTLOCKED ) < ( y.STATEMENTLOCKED );
     }
@@ -1021,7 +1032,7 @@ struct SorterBySTATEMENTLOCKED
 struct SorterBySTATUS
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.STATUS ) < ( y.STATUS );
     }
@@ -1030,7 +1041,7 @@ struct SorterBySTATUS
 struct SorterBySTOCKID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.STOCKID ) < ( y.STOCKID );
     }
@@ -1039,7 +1050,7 @@ struct SorterBySTOCKID
 struct SorterBySTOCKNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.STOCKNAME ) < ( y.STOCKNAME );
     }
@@ -1048,7 +1059,7 @@ struct SorterBySTOCKNAME
 struct SorterBySTOCKSYMBOL
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.STOCKSYMBOL ) < ( y.STOCKSYMBOL );
     }
@@ -1057,7 +1068,7 @@ struct SorterBySTOCKSYMBOL
 struct SorterBySUBCATEGID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SUBCATEGID ) < ( y.SUBCATEGID );
     }
@@ -1066,7 +1077,7 @@ struct SorterBySUBCATEGID
 struct SorterBySUBCATEGNAME
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SUBCATEGNAME ) < ( y.SUBCATEGNAME );
     }
@@ -1075,7 +1086,7 @@ struct SorterBySUBCATEGNAME
 struct SorterBySYMBOL
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.SYMBOL ) < ( y.SYMBOL );
     }
@@ -1084,7 +1095,7 @@ struct SorterBySYMBOL
 struct SorterByTEMPLATECONTENT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.TEMPLATECONTENT ) < ( y.TEMPLATECONTENT );
     }
@@ -1093,7 +1104,7 @@ struct SorterByTEMPLATECONTENT
 struct SorterByTOACCOUNTID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.TOACCOUNTID ) < ( y.TOACCOUNTID );
     }
@@ -1102,7 +1113,7 @@ struct SorterByTOACCOUNTID
 struct SorterByTOTRANSAMOUNT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.TOTRANSAMOUNT ) < ( y.TOTRANSAMOUNT );
     }
@@ -1111,7 +1122,7 @@ struct SorterByTOTRANSAMOUNT
 struct SorterByTRANSACTIONNUMBER
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.TRANSACTIONNUMBER ) < ( y.TRANSACTIONNUMBER );
     }
@@ -1120,7 +1131,7 @@ struct SorterByTRANSACTIONNUMBER
 struct SorterByTRANSAMOUNT
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.TRANSAMOUNT ) < ( y.TRANSAMOUNT );
     }
@@ -1129,7 +1140,7 @@ struct SorterByTRANSAMOUNT
 struct SorterByTRANSCODE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.TRANSCODE ) < ( y.TRANSCODE );
     }
@@ -1138,7 +1149,7 @@ struct SorterByTRANSCODE
 struct SorterByTRANSDATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.TRANSDATE ) < ( y.TRANSDATE );
     }
@@ -1147,7 +1158,7 @@ struct SorterByTRANSDATE
 struct SorterByTRANSID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.TRANSID ) < ( y.TRANSID );
     }
@@ -1156,7 +1167,7 @@ struct SorterByTRANSID
 struct SorterByTRANSLINKID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.TRANSLINKID ) < ( y.TRANSLINKID );
     }
@@ -1165,7 +1176,7 @@ struct SorterByTRANSLINKID
 struct SorterByTYPE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.TYPE ) < ( y.TYPE );
     }
@@ -1174,7 +1185,7 @@ struct SorterByTYPE
 struct SorterByUPDTYPE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.UPDTYPE ) < ( y.UPDTYPE );
     }
@@ -1183,7 +1194,7 @@ struct SorterByUPDTYPE
 struct SorterByUSAGEDATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.USAGEDATE ) < ( y.USAGEDATE );
     }
@@ -1192,7 +1203,7 @@ struct SorterByUSAGEDATE
 struct SorterByUSAGEID
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.USAGEID ) < ( y.USAGEID );
     }
@@ -1201,7 +1212,7 @@ struct SorterByUSAGEID
 struct SorterByVALUE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.VALUE ) < ( y.VALUE );
     }
@@ -1210,7 +1221,7 @@ struct SorterByVALUE
 struct SorterByVALUECHANGE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.VALUECHANGE ) < ( y.VALUECHANGE );
     }
@@ -1219,7 +1230,7 @@ struct SorterByVALUECHANGE
 struct SorterByVALUECHANGERATE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.VALUECHANGERATE ) < ( y.VALUECHANGERATE );
     }
@@ -1228,7 +1239,7 @@ struct SorterByVALUECHANGERATE
 struct SorterByWEBSITE
 {
     template<class DATA>
-    bool operator() ( const DATA &x, const DATA &y )
+    bool operator() ( const DATA &x, const DATA &y ) const
     {
         return ( x.WEBSITE ) < ( y.WEBSITE );
     }

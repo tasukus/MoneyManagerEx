@@ -177,7 +177,10 @@ private:
 
     wxChoice *m_choiceAmountFieldSign = nullptr;
     mmChoiceAmountMask *m_choiceDecimalSeparator = nullptr;
-    enum amountFieldSignValues { PositiveIsDeposit, PositiveIsWithdrawal };
+    enum amountFieldSignValues
+    {
+        PositiveIsDeposit, PositiveIsWithdrawal
+    };
     wxCheckBox *m_checkBoxExportTitles = nullptr;
 
     int fromAccountID_ = 0;

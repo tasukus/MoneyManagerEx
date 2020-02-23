@@ -111,7 +111,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "STOCKID";
         }
-        explicit STOCKID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit STOCKID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct HELDAT : public DB_Column<int>
@@ -120,7 +122,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "HELDAT";
         }
-        explicit HELDAT ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit HELDAT ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct PURCHASEDATE : public DB_Column<wxString>
@@ -129,7 +133,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "PURCHASEDATE";
         }
-        explicit PURCHASEDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit PURCHASEDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct STOCKNAME : public DB_Column<wxString>
@@ -138,7 +144,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "STOCKNAME";
         }
-        explicit STOCKNAME ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit STOCKNAME ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct SYMBOL : public DB_Column<wxString>
@@ -147,7 +155,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "SYMBOL";
         }
-        explicit SYMBOL ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit SYMBOL ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct NUMSHARES : public DB_Column<double>
@@ -156,7 +166,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "NUMSHARES";
         }
-        explicit NUMSHARES ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit NUMSHARES ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct PURCHASEPRICE : public DB_Column<double>
@@ -165,7 +177,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "PURCHASEPRICE";
         }
-        explicit PURCHASEPRICE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit PURCHASEPRICE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct NOTES : public DB_Column<wxString>
@@ -174,7 +188,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "NOTES";
         }
-        explicit NOTES ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit NOTES ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct CURRENTPRICE : public DB_Column<double>
@@ -183,7 +199,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "CURRENTPRICE";
         }
-        explicit CURRENTPRICE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit CURRENTPRICE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct VALUE : public DB_Column<double>
@@ -192,7 +210,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "VALUE";
         }
-        explicit VALUE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit VALUE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct COMMISSION : public DB_Column<double>
@@ -201,7 +221,9 @@ struct DB_Table_STOCK : public DB_Table
         {
             return "COMMISSION";
         }
-        explicit COMMISSION ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit COMMISSION ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     typedef STOCKID PRIMARY;
@@ -222,7 +244,7 @@ struct DB_Table_STOCK : public DB_Table
     };
 
     /** Returns the column name as a string*/
-    static wxString column_to_name ( COLUMN col )
+    static wxString column_to_name ( const COLUMN col )
     {
         switch ( col )
         {
@@ -325,12 +347,12 @@ struct DB_Table_STOCK : public DB_Table
         double VALUE;
         double COMMISSION;
 
-        int id() const
+        int id() const noexcept
         {
             return STOCKID;
         }
 
-        void id ( int id )
+        void id ( const int id ) noexcept
         {
             STOCKID = id;
         }
@@ -345,7 +367,7 @@ struct DB_Table_STOCK : public DB_Table
             return this->id() < r->id();
         }
 
-        explicit Data ( Self *table = 0 )
+        explicit Data ( Self *table = nullptr )
         {
             table_ = table;
 
@@ -358,7 +380,7 @@ struct DB_Table_STOCK : public DB_Table
             COMMISSION = 0.0;
         }
 
-        explicit Data ( wxSQLite3ResultSet &q, Self *table = 0 )
+        explicit Data ( wxSQLite3ResultSet &q, Self *table = nullptr )
         {
             table_ = table;
 
@@ -396,12 +418,12 @@ struct DB_Table_STOCK : public DB_Table
             return *this;
         }
 
-        bool match ( const Self::STOCKID &in ) const
+        bool match ( const Self::STOCKID &in ) const noexcept
         {
             return this->STOCKID == in.v_;
         }
 
-        bool match ( const Self::HELDAT &in ) const
+        bool match ( const Self::HELDAT &in ) const noexcept
         {
             return this->HELDAT == in.v_;
         }
@@ -421,12 +443,12 @@ struct DB_Table_STOCK : public DB_Table
             return this->SYMBOL.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::NUMSHARES &in ) const
+        bool match ( const Self::NUMSHARES &in ) const noexcept
         {
             return this->NUMSHARES == in.v_;
         }
 
-        bool match ( const Self::PURCHASEPRICE &in ) const
+        bool match ( const Self::PURCHASEPRICE &in ) const noexcept
         {
             return this->PURCHASEPRICE == in.v_;
         }
@@ -436,17 +458,17 @@ struct DB_Table_STOCK : public DB_Table
             return this->NOTES.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::CURRENTPRICE &in ) const
+        bool match ( const Self::CURRENTPRICE &in ) const noexcept
         {
             return this->CURRENTPRICE == in.v_;
         }
 
-        bool match ( const Self::VALUE &in ) const
+        bool match ( const Self::VALUE &in ) const noexcept
         {
             return this->VALUE == in.v_;
         }
 
-        bool match ( const Self::COMMISSION &in ) const
+        bool match ( const Self::COMMISSION &in ) const noexcept
         {
             return this->COMMISSION == in.v_;
         }
@@ -562,13 +584,13 @@ struct DB_Table_STOCK : public DB_Table
         NUM_COLUMNS = 11
     };
 
-    size_t num_columns() const
+    size_t num_columns() const noexcept override
     {
         return NUM_COLUMNS;
     }
 
     /** Name of the table */
-    wxString name() const
+    wxString name() const override
     {
         return "STOCK";
     }
@@ -661,7 +683,7 @@ struct DB_Table_STOCK : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove ( int id, wxSQLite3Database *db )
+    bool remove ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
@@ -735,12 +757,12 @@ struct DB_Table_STOCK : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data *get ( int id, wxSQLite3Database *db )
+    Self::Data *get ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
             ++ skip_;
-            return 0;
+            return nullptr;
         }
 
         Index_By_Id::iterator it = index_by_id_.find ( id );
@@ -751,7 +773,7 @@ struct DB_Table_STOCK : public DB_Table
         }
 
         ++ miss_;
-        Self::Data *entity = 0;
+        Self::Data *entity = nullptr;
         wxString where = wxString::Format ( " WHERE %s = ?", PRIMARY::name().c_str() );
         try
         {
@@ -785,7 +807,7 @@ struct DB_Table_STOCK : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all ( wxSQLite3Database *db, COLUMN col = COLUMN ( 0 ), bool asc = true )
+    const Data_Set all ( wxSQLite3Database *db, const COLUMN col = COLUMN ( 0 ), const bool asc = true )
     {
         Data_Set result;
         try

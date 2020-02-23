@@ -54,7 +54,8 @@ ShareTransactionDialog::ShareTransactionDialog() : wxDialog()
 }
 
 ShareTransactionDialog::ShareTransactionDialog ( wxWindow *parent, Model_Stock::Data *stock )
-    : m_dialog_heading ( _( "Add Share Transaction" ) )
+    : wxDialog()
+    , m_dialog_heading ( _( "Add Share Transaction" ) )
     , m_stock ( stock )
 {
     constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
@@ -85,7 +86,13 @@ bool ShareTransactionDialog::Create ( wxWindow *parent, wxWindowID id, const wxS
     , const wxPoint &pos, const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     GetSizer()->Fit ( this );
     GetSizer()->SetSizeHints ( this );

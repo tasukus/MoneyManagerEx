@@ -575,7 +575,7 @@ void mmAttachmentManage::OpenAttachmentFromPanelIcon ( wxWindow *parent, const w
     {
         Model_Attachment::Data_Set attachments = Model_Attachment::instance().FilterAttachments ( RefType, RefId );
         wxString attachmentFilePath = mmex::getPathAttachment ( mmAttachmentManage::InfotablePathSetting() )
-            + m_PathSep + attachments[0].REFTYPE + m_PathSep + attachments[0].FILENAME;
+            + m_PathSep + attachments.at ( 0 ).REFTYPE + m_PathSep + attachments.at ( 0 ).FILENAME;
         mmAttachmentManage::OpenAttachment ( attachmentFilePath );
     }
     else

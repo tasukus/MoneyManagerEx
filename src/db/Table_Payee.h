@@ -111,7 +111,9 @@ struct DB_Table_PAYEE : public DB_Table
         {
             return "PAYEEID";
         }
-        explicit PAYEEID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit PAYEEID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct PAYEENAME : public DB_Column<wxString>
@@ -120,7 +122,9 @@ struct DB_Table_PAYEE : public DB_Table
         {
             return "PAYEENAME";
         }
-        explicit PAYEENAME ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit PAYEENAME ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct CATEGID : public DB_Column<int>
@@ -129,7 +133,9 @@ struct DB_Table_PAYEE : public DB_Table
         {
             return "CATEGID";
         }
-        explicit CATEGID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit CATEGID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct SUBCATEGID : public DB_Column<int>
@@ -138,7 +144,9 @@ struct DB_Table_PAYEE : public DB_Table
         {
             return "SUBCATEGID";
         }
-        explicit SUBCATEGID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit SUBCATEGID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     typedef PAYEEID PRIMARY;
@@ -152,7 +160,7 @@ struct DB_Table_PAYEE : public DB_Table
     };
 
     /** Returns the column name as a string*/
-    static wxString column_to_name ( COLUMN col )
+    static wxString column_to_name ( const COLUMN col )
     {
         switch ( col )
         {
@@ -206,12 +214,12 @@ struct DB_Table_PAYEE : public DB_Table
         int CATEGID;
         int SUBCATEGID;
 
-        int id() const
+        int id() const noexcept
         {
             return PAYEEID;
         }
 
-        void id ( int id )
+        void id ( const int id ) noexcept
         {
             PAYEEID = id;
         }
@@ -226,7 +234,7 @@ struct DB_Table_PAYEE : public DB_Table
             return this->id() < r->id();
         }
 
-        explicit Data ( Self *table = 0 )
+        explicit Data ( Self *table = nullptr )
         {
             table_ = table;
 
@@ -235,7 +243,7 @@ struct DB_Table_PAYEE : public DB_Table
             SUBCATEGID = -1;
         }
 
-        explicit Data ( wxSQLite3ResultSet &q, Self *table = 0 )
+        explicit Data ( wxSQLite3ResultSet &q, Self *table = nullptr )
         {
             table_ = table;
 
@@ -259,7 +267,7 @@ struct DB_Table_PAYEE : public DB_Table
             return *this;
         }
 
-        bool match ( const Self::PAYEEID &in ) const
+        bool match ( const Self::PAYEEID &in ) const noexcept
         {
             return this->PAYEEID == in.v_;
         }
@@ -269,12 +277,12 @@ struct DB_Table_PAYEE : public DB_Table
             return this->PAYEENAME.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::CATEGID &in ) const
+        bool match ( const Self::CATEGID &in ) const noexcept
         {
             return this->CATEGID == in.v_;
         }
 
-        bool match ( const Self::SUBCATEGID &in ) const
+        bool match ( const Self::SUBCATEGID &in ) const noexcept
         {
             return this->SUBCATEGID == in.v_;
         }
@@ -362,13 +370,13 @@ struct DB_Table_PAYEE : public DB_Table
         NUM_COLUMNS = 4
     };
 
-    size_t num_columns() const
+    size_t num_columns() const noexcept override
     {
         return NUM_COLUMNS;
     }
 
     /** Name of the table */
-    wxString name() const
+    wxString name() const override
     {
         return "PAYEE";
     }
@@ -454,7 +462,7 @@ struct DB_Table_PAYEE : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove ( int id, wxSQLite3Database *db )
+    bool remove ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
@@ -521,19 +529,19 @@ struct DB_Table_PAYEE : public DB_Table
 
         ++ miss_;
 
-        return 0;
+        return nullptr;
     }
 
     /**
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data *get ( int id, wxSQLite3Database *db )
+    Self::Data *get ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
             ++ skip_;
-            return 0;
+            return nullptr;
         }
 
         Index_By_Id::iterator it = index_by_id_.find ( id );
@@ -544,7 +552,7 @@ struct DB_Table_PAYEE : public DB_Table
         }
 
         ++ miss_;
-        Self::Data *entity = 0;
+        Self::Data *entity = nullptr;
         wxString where = wxString::Format ( " WHERE %s = ?", PRIMARY::name().c_str() );
         try
         {
@@ -578,7 +586,7 @@ struct DB_Table_PAYEE : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all ( wxSQLite3Database *db, COLUMN col = COLUMN ( 0 ), bool asc = true )
+    const Data_Set all ( wxSQLite3Database *db, const COLUMN col = COLUMN ( 0 ), const bool asc = true )
     {
         Data_Set result;
         try

@@ -111,7 +111,9 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "ASSETID";
         }
-        explicit ASSETID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit ASSETID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct STARTDATE : public DB_Column<wxString>
@@ -120,7 +122,9 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "STARTDATE";
         }
-        explicit STARTDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit STARTDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct ASSETNAME : public DB_Column<wxString>
@@ -129,7 +133,9 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "ASSETNAME";
         }
-        explicit ASSETNAME ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit ASSETNAME ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct VALUE : public DB_Column<double>
@@ -138,7 +144,9 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "VALUE";
         }
-        explicit VALUE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit VALUE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct VALUECHANGE : public DB_Column<wxString>
@@ -147,7 +155,9 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "VALUECHANGE";
         }
-        explicit VALUECHANGE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit VALUECHANGE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct NOTES : public DB_Column<wxString>
@@ -156,7 +166,9 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "NOTES";
         }
-        explicit NOTES ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit NOTES ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct VALUECHANGERATE : public DB_Column<double>
@@ -165,7 +177,9 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "VALUECHANGERATE";
         }
-        explicit VALUECHANGERATE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit VALUECHANGERATE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct ASSETTYPE : public DB_Column<wxString>
@@ -174,7 +188,9 @@ struct DB_Table_ASSETS : public DB_Table
         {
             return "ASSETTYPE";
         }
-        explicit ASSETTYPE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit ASSETTYPE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     typedef ASSETID PRIMARY;
@@ -192,7 +208,7 @@ struct DB_Table_ASSETS : public DB_Table
     };
 
     /** Returns the column name as a string*/
-    static wxString column_to_name ( COLUMN col )
+    static wxString column_to_name ( const COLUMN col )
     {
         switch ( col )
         {
@@ -274,12 +290,12 @@ struct DB_Table_ASSETS : public DB_Table
         double VALUECHANGERATE;
         wxString ASSETTYPE;
 
-        int id() const
+        int id() const noexcept
         {
             return ASSETID;
         }
 
-        void id ( int id )
+        void id ( const int id ) noexcept
         {
             ASSETID = id;
         }
@@ -294,7 +310,7 @@ struct DB_Table_ASSETS : public DB_Table
             return this->id() < r->id();
         }
 
-        explicit Data ( Self *table = 0 )
+        explicit Data ( Self *table = nullptr )
         {
             table_ = table;
 
@@ -303,7 +319,7 @@ struct DB_Table_ASSETS : public DB_Table
             VALUECHANGERATE = 0.0;
         }
 
-        explicit Data ( wxSQLite3ResultSet &q, Self *table = 0 )
+        explicit Data ( wxSQLite3ResultSet &q, Self *table = nullptr )
         {
             table_ = table;
 
@@ -335,7 +351,7 @@ struct DB_Table_ASSETS : public DB_Table
             return *this;
         }
 
-        bool match ( const Self::ASSETID &in ) const
+        bool match ( const Self::ASSETID &in ) const noexcept
         {
             return this->ASSETID == in.v_;
         }
@@ -350,7 +366,7 @@ struct DB_Table_ASSETS : public DB_Table
             return this->ASSETNAME.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::VALUE &in ) const
+        bool match ( const Self::VALUE &in ) const noexcept
         {
             return this->VALUE == in.v_;
         }
@@ -365,7 +381,7 @@ struct DB_Table_ASSETS : public DB_Table
             return this->NOTES.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::VALUECHANGERATE &in ) const
+        bool match ( const Self::VALUECHANGERATE &in ) const noexcept
         {
             return this->VALUECHANGERATE == in.v_;
         }
@@ -474,13 +490,13 @@ struct DB_Table_ASSETS : public DB_Table
         NUM_COLUMNS = 8
     };
 
-    size_t num_columns() const
+    size_t num_columns() const noexcept override
     {
         return NUM_COLUMNS;
     }
 
     /** Name of the table */
-    wxString name() const
+    wxString name() const override
     {
         return "ASSETS";
     }
@@ -570,7 +586,7 @@ struct DB_Table_ASSETS : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove ( int id, wxSQLite3Database *db )
+    bool remove ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
@@ -644,12 +660,12 @@ struct DB_Table_ASSETS : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data *get ( int id, wxSQLite3Database *db )
+    Self::Data *get ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
             ++ skip_;
-            return 0;
+            return nullptr;
         }
 
         Index_By_Id::iterator it = index_by_id_.find ( id );
@@ -660,7 +676,7 @@ struct DB_Table_ASSETS : public DB_Table
         }
 
         ++ miss_;
-        Self::Data *entity = 0;
+        Self::Data *entity = nullptr;
         wxString where = wxString::Format ( " WHERE %s = ?", PRIMARY::name().c_str() );
         try
         {
@@ -694,7 +710,7 @@ struct DB_Table_ASSETS : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all ( wxSQLite3Database *db, COLUMN col = COLUMN ( 0 ), bool asc = true )
+    const Data_Set all ( wxSQLite3Database *db, const COLUMN col = COLUMN ( 0 ), const bool asc = true )
     {
         Data_Set result;
         try

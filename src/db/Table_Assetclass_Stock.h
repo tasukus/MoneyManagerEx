@@ -45,7 +45,7 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     typedef std::map<int, Self::Data *> Index_By_Id;
     Cache cache_;
     Index_By_Id index_by_id_;
-    Data *fake_; // in case the entity not found
+    Data *fake_ = nullptr; // in case the entity not found
 
     /** Destructor: clears any data records stored in memory */
     ~DB_Table_ASSETCLASS_STOCK()
@@ -110,7 +110,9 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         {
             return "ID";
         }
-        explicit ID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit ID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct ASSETCLASSID : public DB_Column<int>
@@ -119,7 +121,9 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         {
             return "ASSETCLASSID";
         }
-        explicit ASSETCLASSID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit ASSETCLASSID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct STOCKSYMBOL : public DB_Column<wxString>
@@ -128,7 +132,9 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         {
             return "STOCKSYMBOL";
         }
-        explicit STOCKSYMBOL ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit STOCKSYMBOL ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     typedef ID PRIMARY;
@@ -141,7 +147,7 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     };
 
     /** Returns the column name as a string*/
-    static wxString column_to_name ( COLUMN col )
+    static wxString column_to_name ( const COLUMN col )
     {
         switch ( col )
         {
@@ -188,27 +194,27 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         int ASSETCLASSID;
         wxString STOCKSYMBOL;
 
-        int id() const
+        int id() const noexcept
         {
             return ID;
         }
 
-        void id ( int id )
+        void id ( const int id ) noexcept
         {
             ID = id;
         }
 
-        bool operator < ( const Data &r ) const
+        bool operator < ( const Data &r ) const noexcept
         {
             return this->id() < r.id();
         }
 
-        bool operator < ( const Data *r ) const
+        bool operator < ( const Data *r ) const noexcept
         {
             return this->id() < r->id();
         }
 
-        explicit Data ( Self *table = 0 )
+        explicit Data ( Self *table = nullptr )
         {
             table_ = table;
 
@@ -216,7 +222,7 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
             ASSETCLASSID = -1;
         }
 
-        explicit Data ( wxSQLite3ResultSet &q, Self *table = 0 )
+        explicit Data ( wxSQLite3ResultSet &q, Self *table = nullptr )
         {
             table_ = table;
 
@@ -238,12 +244,12 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
             return *this;
         }
 
-        bool match ( const Self::ID &in ) const
+        bool match ( const Self::ID &in ) const noexcept
         {
             return this->ID == in.v_;
         }
 
-        bool match ( const Self::ASSETCLASSID &in ) const
+        bool match ( const Self::ASSETCLASSID &in ) const noexcept
         {
             return this->ASSETCLASSID == in.v_;
         }
@@ -332,13 +338,13 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         NUM_COLUMNS = 3
     };
 
-    size_t num_columns() const
+    size_t num_columns() const noexcept override
     {
         return NUM_COLUMNS;
     }
 
     /** Name of the table */
-    wxString name() const
+    wxString name() const override
     {
         return "ASSETCLASS_STOCK";
     }
@@ -423,7 +429,7 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove ( int id, wxSQLite3Database *db )
+    bool remove ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
@@ -497,12 +503,12 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data *get ( int id, wxSQLite3Database *db )
+    Self::Data *get ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
             ++ skip_;
-            return 0;
+            return nullptr;
         }
 
         Index_By_Id::iterator it = index_by_id_.find ( id );
@@ -513,7 +519,7 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
         }
 
         ++ miss_;
-        Self::Data *entity = 0;
+        Self::Data *entity = nullptr;
         wxString where = wxString::Format ( " WHERE %s = ?", PRIMARY::name().c_str() );
         try
         {
@@ -547,7 +553,7 @@ struct DB_Table_ASSETCLASS_STOCK : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all ( wxSQLite3Database *db, COLUMN col = COLUMN ( 0 ), bool asc = true )
+    const Data_Set all ( wxSQLite3Database *db, const COLUMN col = COLUMN ( 0 ), const bool asc = true )
     {
         Data_Set result;
         try

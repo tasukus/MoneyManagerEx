@@ -35,8 +35,7 @@ mmBudgetYearEntryDialog::mmBudgetYearEntryDialog()
 {
 }
 
-mmBudgetYearEntryDialog::mmBudgetYearEntryDialog ( wxWindow *parent
-    , bool withMonth )
+mmBudgetYearEntryDialog::mmBudgetYearEntryDialog ( wxWindow *parent, bool withMonth )
 {
     withMonth_ = withMonth;
     constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
@@ -53,7 +52,13 @@ bool mmBudgetYearEntryDialog::Create ( wxWindow *parent, wxWindowID id
     , const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     GetSizer()->Fit ( this );
     GetSizer()->SetSizeHints ( this );

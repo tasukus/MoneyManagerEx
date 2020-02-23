@@ -89,6 +89,7 @@ mmStockDialog::mmStockDialog ( wxWindow *parent
 
     m_decimal_point = m_currency->DECIMAL_POINT;
     m_precision = Option::instance().getSharePrecision();
+
     Create ( parent, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, style, name );
 }
 
@@ -96,7 +97,13 @@ bool mmStockDialog::Create ( wxWindow *parent, wxWindowID id, const wxString &ca
     , const wxPoint &pos, const wxSize &size, long style, const wxString &name )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style, name );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style, name );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     GetSizer()->Fit ( this );
     GetSizer()->SetSizeHints ( this );
@@ -177,7 +184,7 @@ void mmStockDialog::UpdateControls()
         m_share_price_txt->SetToolTip ( _( "Invalid in this view.\nView Transactions for values" ) );
     }
 
-    double currPrice;
+    double currPrice = 0.0;
 
     if ( !m_edit )
     {
@@ -535,14 +542,29 @@ void mmStockDialog::OnSave ( wxCommandEvent &WXUNUSED ( event ) )
     UpdateControls();
 }
 
-void mmStockDialog::CreateShareAccount ( const Model_Account::Data *stock_account, const wxString &name )
+bool mmStockDialog::CreateShareAccount ( const Model_Account::Data *const stock_account, const wxString &name )
 {
     if ( name.empty() )
     {
-        return;
+        wxASSERT ( name.empty() == false );
+        return false;
     }
 
+    if ( stock_account == nullptr )
+    {
+        wxASSERT ( stock_account != nullptr );
+        return false;
+    }
+
+    //----------------------------
     Model_Account::Data *share_account = Model_Account::instance().create();
+    if ( share_account == nullptr )
+    {
+        wxASSERT ( share_account != nullptr );
+        return false;
+    }
+
+    //----------------------------
     share_account->ACCOUNTNAME = name;
     share_account->ACCOUNTTYPE = Model_Account::all_type() [Model_Account::SHARES];
     share_account->FAVORITEACCT = "TRUE";
@@ -556,6 +578,7 @@ void mmStockDialog::CreateShareAccount ( const Model_Account::Data *stock_accoun
     share_dialog.ShowModal();
     m_gui_frame->RefreshNavigationTree();
     EndModal ( wxID_OK );
+    return true;
 }
 
 void mmStockDialog::OnHistoryImportButton ( wxCommandEvent &WXUNUSED ( event ) )
@@ -590,10 +613,8 @@ void mmStockDialog::OnHistoryImportButton ( wxCommandEvent &WXUNUSED ( event ) )
             , nullptr, wxPD_AUTO_HIDE | wxPD_APP_MODAL | wxPD_SMOOTH | wxPD_CAN_ABORT );
         long countNumTotal = 0;
         long countImported = 0;
-        double price;
-        wxString dateStr, priceStr;
-        Model_StockHistory::Data *data;
         Model_StockHistory::Cache stockData;
+
         wxString line;
         std::vector<wxString> rows;
 
@@ -617,8 +638,6 @@ void mmStockDialog::OnHistoryImportButton ( wxCommandEvent &WXUNUSED ( event ) )
                 continue;
             }
 
-            dateStr.clear();
-            priceStr.clear();
             const wxString &delimiter = Model_Infotable::instance().GetStringInfo ( "DELIMITER", mmex::DEFDELIMTER );
             csv2tab_separated_values ( line, delimiter );
             wxStringTokenizer tkz ( line, "\t", wxTOKEN_RET_EMPTY_ALL );
@@ -638,19 +657,21 @@ void mmStockDialog::OnHistoryImportButton ( wxCommandEvent &WXUNUSED ( event ) )
 
             // date
             wxDateTime dt;
-            dateStr = tokens[0];
+            wxString dateStr = tokens.at (0);
             mmParseDisplayStringToDate ( dt, dateStr, Option::instance().getDateFormat() );
             dateStr = dt.FormatISODate();
             // price
-            priceStr = tokens[1];
+            wxString priceStr = tokens.at (1);
             priceStr.Replace ( " ", wxEmptyString );
+
+            double price;
 
             if ( !Model_Currency::fromString ( priceStr, price, m_currency ) || price <= 0.0 )
             {
                 continue;
             }
 
-            data = Model_StockHistory::instance().create();
+            Model_StockHistory::Data *data = Model_StockHistory::instance().create();
             data->SYMBOL = m_stock->SYMBOL;
             data->DATE = dateStr;
             data->VALUE = price;
@@ -714,7 +735,10 @@ void mmStockDialog::OnHistoryDownloadButton ( wxCommandEvent &WXUNUSED ( event )
     }
 
     /*"ValidRanges":["1d","5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max"]*/
-    enum { DAY5, MON, MON3, MON6, YEAR, YEAR2, YEAR5, YEAR10, YTD, MAX };
+    enum
+    {
+        DAY5, MON, MON3, MON6, YEAR, YEAR2, YEAR5, YEAR10, YTD, MAX
+    };
     const wxString ranges[] = { "5d","1mo","3mo","6mo","1y","2y","5y","10y","ytd","max" };
     const std::vector<std::pair<int, wxString> > RANGE_PAIRS =
     {
@@ -750,7 +774,10 @@ void mmStockDialog::OnHistoryDownloadButton ( wxCommandEvent &WXUNUSED ( event )
     if ( range != "5d" )
     {
         /* Valid intervals : [1m, 2m, 5m, 15m, 30m, 60m, 90m, 1h, 1d, 5d, 1wk, 1mo, 3mo] */
-        enum { IDAILY, IDAY5, IWEEK, IMON, IMON3 };
+        enum
+        {
+            IDAILY, IDAY5, IWEEK, IMON, IMON3
+        };
         const wxString intervals[] = { "1d","5d","1wk","1mo","3mo" };
         const std::vector<std::pair<int, wxString> > INTERVAL_PAIRS =
         {

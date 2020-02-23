@@ -38,6 +38,7 @@ wxBEGIN_EVENT_TABLE ( transactionsUpdateDialog, wxDialog )
 wxEND_EVENT_TABLE()
 
 transactionsUpdateDialog::transactionsUpdateDialog()
+    : wxDialog()
 {
     return;
 }
@@ -46,10 +47,9 @@ transactionsUpdateDialog::~transactionsUpdateDialog()
 {
 }
 
-transactionsUpdateDialog::transactionsUpdateDialog ( wxWindow *parent
-    , int account_id
-    , std::vector<int> &transaction_id )
-    : m_transaction_id ( transaction_id )
+transactionsUpdateDialog::transactionsUpdateDialog ( wxWindow *parent, int account_id, std::vector<int> &transaction_id )
+    : wxDialog()
+    , m_transaction_id ( transaction_id )
 {
     Model_Account::Data *acc = Model_Account::instance().get ( account_id );
     m_currency = acc ? Model_Account::currency ( acc ) : Model_Currency::GetBaseCurrency();
@@ -58,12 +58,16 @@ transactionsUpdateDialog::transactionsUpdateDialog ( wxWindow *parent
         , wxDefaultPosition, wxSize ( 500, 300 ), style );
 }
 
-bool transactionsUpdateDialog::Create ( wxWindow *parent, wxWindowID id
-    , const wxString &caption, const wxPoint &pos
-    , const wxSize &size, long style )
+bool transactionsUpdateDialog::Create ( wxWindow *parent, wxWindowID id, const wxString &caption, const wxPoint &pos, const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     GetSizer()->Fit ( this );
     GetSizer()->SetSizeHints ( this );
@@ -82,20 +86,15 @@ void transactionsUpdateDialog::CreateControls()
     wxFlexGridSizer *grid_sizer = new wxFlexGridSizer ( 0, 2, 0, 0 );
     grid_sizer->AddGrowableCol ( 1, 1 );
     // Date --------------------------------------------
-    m_date_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Date" )
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    m_date_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Date" ), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
     constexpr long date_style = wxDP_DROPDOWN | wxDP_SHOWCENTURY;
-    m_dpc = new wxDatePickerCtrl ( this
-        , wxID_ANY, wxDateTime::Today()
-        , wxDefaultPosition, wxDefaultSize, date_style );
+    m_dpc = new wxDatePickerCtrl ( this, wxID_ANY, wxDateTime::Today(), wxDefaultPosition, wxDefaultSize, date_style );
     m_dpc->Enable ( false );
     grid_sizer->Add ( m_date_checkbox, g_flagsH );
     grid_sizer->Add ( m_dpc, g_flagsH );
     // Status --------------------------------------------
-    m_status_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Status" )
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
-    m_status_choice = new wxChoice ( this, wxID_ANY
-        , wxDefaultPosition, wxDefaultSize );
+    m_status_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Status" ), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    m_status_choice = new wxChoice ( this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
 
     for ( const auto &i : Model_Checking::all_status() )
     {
@@ -107,10 +106,8 @@ void transactionsUpdateDialog::CreateControls()
     grid_sizer->Add ( m_status_checkbox, g_flagsH );
     grid_sizer->Add ( m_status_choice, g_flagsH );
     // Type --------------------------------------------
-    m_type_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Type" )
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
-    m_type_choice = new wxChoice ( this, wxID_ANY
-        , wxDefaultPosition, wxDefaultSize );
+    m_type_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Type" ), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    m_type_choice = new wxChoice ( this, wxID_ANY, wxDefaultPosition, wxDefaultSize );
     m_type_choice->Enable ( false );
 
     for ( const auto &i : Model_Checking::all_type() )
@@ -121,27 +118,22 @@ void transactionsUpdateDialog::CreateControls()
     grid_sizer->Add ( m_type_checkbox, g_flagsH );
     grid_sizer->Add ( m_type_choice, g_flagsH );
     // Amount Field --------------------------------------------
-    m_amount_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Amount" )
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
-    m_amount_ctrl = new mmTextCtrl ( this, wxID_ANY, ""
-        , wxDefaultPosition, wxDefaultSize
-        , wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator() );
+    m_amount_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Amount" ), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    m_amount_ctrl = new mmTextCtrl ( this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxALIGN_RIGHT | wxTE_PROCESS_ENTER, mmCalcValidator() );
     m_amount_ctrl->Enable ( false );
     grid_sizer->Add ( m_amount_checkbox, g_flagsH );
     grid_sizer->Add ( m_amount_ctrl, g_flagsH );
     // Account --------------------------------------------
     // Payee --------------------------------------------
-    m_payee_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Payee" )
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+    m_payee_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Payee" ), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
     m_payee = new mmComboBox ( this, wxID_FILE2 , "", true , wxDefaultPosition ); //payee mode
     m_payee->Enable ( false );
     grid_sizer->Add ( m_payee_checkbox, g_flagsH );
     grid_sizer->Add ( m_payee, g_flagsExpand );
     // Category -------------------------------------------------
-    m_categ_checkbox = new wxCheckBox ( this, wxID_VIEW_DETAILS, _( "Category" )
-        , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
-    m_categ_btn = new wxButton ( this, wxID_VIEW_DETAILS, _( "Select Category" )
-        , wxDefaultPosition );
+    m_categ_checkbox = new wxCheckBox ( this, wxID_VIEW_DETAILS, _( "Category" ), wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
+
+    m_categ_btn = new wxButton ( this, wxID_VIEW_DETAILS, _( "Select Category" ), wxDefaultPosition );
     m_categ_btn->Enable ( false );
     grid_sizer->Add ( m_categ_checkbox, g_flagsH );
     grid_sizer->Add ( m_categ_btn, g_flagsExpand );
@@ -150,8 +142,7 @@ void transactionsUpdateDialog::CreateControls()
     m_notes_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Notes" ) , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
     m_append_checkbox = new wxCheckBox ( this, wxID_ANY, _( "Append" ) , wxDefaultPosition, wxDefaultSize, wxCHK_2STATE );
     m_append_checkbox->SetValue ( true );
-    m_notes_ctrl = new wxTextCtrl ( this, wxID_ANY, ""
-        , wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
+    m_notes_ctrl = new wxTextCtrl ( this, wxID_ANY, "", wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE );
     m_notes_ctrl->Enable ( false );
     m_append_checkbox->Enable ( false );
     grid_sizer->Add ( m_notes_checkbox, g_flagsH );
@@ -163,8 +154,7 @@ void transactionsUpdateDialog::CreateControls()
     /*************************************************************
      Button Panel with OK/Cancel buttons
     *************************************************************/
-    wxPanel *button_panel = new wxPanel ( this, wxID_ANY
-        , wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+    wxPanel *button_panel = new wxPanel ( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
     box_sizer->Add ( button_panel, wxSizerFlags ( g_flagsV ).Center() );
     wxBoxSizer *button_panel_sizer = new wxBoxSizer ( wxHORIZONTAL );
     button_panel->SetSizer ( button_panel_sizer );

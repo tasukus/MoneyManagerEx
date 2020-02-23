@@ -162,7 +162,13 @@ bool mmTransDialog::Create ( wxWindow *parent, wxWindowID id, const wxString &ca
     , const wxPoint &pos, const wxSize &size, long style, const wxString &name )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style, name );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style, name );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     GetSizer()->Fit ( this );
     GetSizer()->SetSizeHints ( this );
@@ -1022,7 +1028,7 @@ void mmTransDialog::SetCategoryForPayee ( const Model_Payee::Data *payee )
 
         if ( category )
         {
-            Model_Subcategory::Data *subcategory = ( payee->SUBCATEGID != -1 ? Model_Subcategory::instance().get ( payee->SUBCATEGID ) : nullptr );
+            const Model_Subcategory::Data *subcategory = ( payee->SUBCATEGID != -1 ? Model_Subcategory::instance().get ( payee->SUBCATEGID ) : nullptr );
             wxString fullCategoryName = Model_Category::full_name ( category, subcategory );
             m_trx_data.CATEGID = payee->CATEGID;
             m_trx_data.SUBCATEGID = payee->SUBCATEGID;
@@ -1087,7 +1093,7 @@ void mmTransDialog::OnSplitChecked ( wxCommandEvent &WXUNUSED ( event ) )
 
 void mmTransDialog::OnAutoTransNum ( wxCommandEvent &WXUNUSED ( event ) )
 {
-    double next_number = 0, temp_num;
+    double next_number = 0;
 
     for ( const auto &num : Model_Checking::instance()
         .find ( Model_Checking::ACCOUNTID ( m_trx_data.ACCOUNTID ) ) )
@@ -1096,6 +1102,8 @@ void mmTransDialog::OnAutoTransNum ( wxCommandEvent &WXUNUSED ( event ) )
         {
             continue;
         }
+
+        double temp_num = 0.0;
 
         if ( num.TRANSACTIONNUMBER.ToDouble ( &temp_num ) && temp_num > next_number )
         {
@@ -1184,7 +1192,7 @@ void mmTransDialog::OnFrequentUsedNotes ( wxCommandEvent &WXUNUSED ( event ) )
 
     for ( const auto &entry : frequentNotes_ )
     {
-        const wxString &label = entry.Mid ( 0, 30 ) + ( entry.size() > 30 ? "..." : "" );
+        const wxString label = entry.Mid ( 0, 30 ) + ( entry.size() > 30 ? "..." : "" );
         menu.Append ( ++id, label );
     }
 
@@ -1200,7 +1208,7 @@ void mmTransDialog::OnNoteSelected ( wxCommandEvent &event )
 
     if ( i > 0 && static_cast<size_t> ( i ) <= frequentNotes_.size() )
     {
-        textNotes_->ChangeValue ( frequentNotes_[i - 1] );
+        textNotes_->ChangeValue ( frequentNotes_.at ( i - 1 ) );
     }
 }
 
@@ -1363,12 +1371,23 @@ void mmTransDialog::OnMoreFields ( wxCommandEvent &WXUNUSED ( event ) )
 {
     wxBitmapButton *button = static_cast<wxBitmapButton *> ( FindWindow ( ID_DIALOG_TRANS_CUSTOMFIELDS ) );
 
+    if ( m_custom_fields->IsCustomPanelShown() )
+    {
+        if ( button )
+        {
+            button->SetBitmap ( mmBitmap ( png::RIGHTARROWSIMPLE ) );
+        }
+    }
+    else
+    {
     if ( button )
-        button->SetBitmap ( mmBitmap ( m_custom_fields->IsCustomPanelShown()
-                ? png::RIGHTARROWSIMPLE
-                : png::LEFTARROWSIMPLE ) );
+        {
+            button->SetBitmap ( mmBitmap ( png::LEFTARROWSIMPLE ) );
+        }
+    }
 
     m_custom_fields->ShowHideCustomPanel();
+
     this->SetMinSize ( wxSize ( 0, 0 ) );
     this->Fit();
 }

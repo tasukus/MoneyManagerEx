@@ -42,8 +42,11 @@ class mmTransDialog : public wxDialog
     wxDECLARE_EVENT_TABLE();
 
 public:
-    mmTransDialog() {}
-    virtual ~mmTransDialog();
+    mmTransDialog() noexcept :wxDialog()
+    {
+        return;
+    }
+    ~mmTransDialog();
 
     mmTransDialog (
         wxWindow *parent

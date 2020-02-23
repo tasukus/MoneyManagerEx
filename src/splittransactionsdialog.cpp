@@ -85,9 +85,14 @@ bool SplitTransactionDialog::Create ( wxWindow *parent
     , const wxString &name
 )
 {
-    lcSplit_ = nullptr;
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style, name );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style, name );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     DataToControls();
     GetSizer()->Fit ( this );
@@ -166,9 +171,11 @@ void SplitTransactionDialog::CreateControls()
     topRowButtonSizer->Add ( itemButtonNew_, flagsH );
     topRowButtonSizer->Add ( itemButtonEdit_, flagsH );
     topRowButtonSizer->Add ( itemButtonDelete_, flagsH );
+
     itemButtonOK_ = new wxButton ( buttons_panel, wxID_OK, _( "&OK " ) );
     wxButton *itemButtonCancel = new wxButton ( buttons_panel, wxID_CANCEL, wxGetTranslation ( g_CancelLabel ) );
     itemButtonCancel->SetFocus();
+
     bottomRowButtonSizer->Add ( itemButtonOK_, g_flagsH );
     bottomRowButtonSizer->Add ( itemButtonCancel, g_flagsH );
 }
@@ -257,11 +264,11 @@ void SplitTransactionDialog::EditEntry ( int index )
         return;
     }
 
-    SplitDetailDialog sdd ( this, m_local_splits[index], transType_, accountID_ );
+    SplitDetailDialog sdd ( this, m_local_splits.at ( index ), transType_, accountID_ );
 
     if ( sdd.ShowModal() == wxID_OK )
     {
-        m_local_splits[index] = sdd.getResult();
+        m_local_splits.at ( index ) = sdd.getResult();
         items_changed_ = true;
         DataToControls();
         UpdateSplitTotal();

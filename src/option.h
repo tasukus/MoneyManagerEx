@@ -34,7 +34,10 @@ class mmPrintableBase;
 class Option
 {
 public:
-    enum USAGE_TYPE { NONE = 0, LASTUSED, UNUSED };
+    enum USAGE_TYPE
+    {
+        NONE = 0, LASTUSED, UNUSED
+    };
 
 public:
     Option();

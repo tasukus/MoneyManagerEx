@@ -144,8 +144,7 @@ void mmAboutDialog::CreateControls ( int TabToOpen )
     wxBoxSizer *itemBoxSizer = new wxBoxSizer ( wxVERTICAL );
     this->SetSizer ( itemBoxSizer );
     //Create tabs
-    wxNotebook *about_notebook = new wxNotebook ( this
-        , wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_MULTILINE );
+    wxNotebook *about_notebook = new wxNotebook ( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxNB_MULTILINE );
     about_notebook->SetMinSize ( wxSize ( 400, 500 ) );
     wxPanel *about_tab = new wxPanel ( about_notebook, wxID_ANY );
     about_notebook->AddPage ( about_tab, _( "About" ) );
@@ -179,13 +178,9 @@ void mmAboutDialog::CreateControls ( int TabToOpen )
         , wxID_ANY, wxDefaultPosition, wxDefaultSize
         , wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL );
     sponsors_sizer->Add ( sponsors_text_, g_flagsExpand );
-    license_text_ = new wxHtmlWindow ( license_tab
-        , wxID_ANY, wxDefaultPosition, wxDefaultSize
-        , wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL );
+    license_text_ = new wxHtmlWindow ( license_tab, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL );
     license_sizer->Add ( license_text_, g_flagsExpand );
-    privacy_text_ = new wxHtmlWindow ( privacy_tab
-        , wxID_ANY, wxDefaultPosition, wxDefaultSize
-        , wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL );
+    privacy_text_ = new wxHtmlWindow ( privacy_tab, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxHW_SCROLLBAR_AUTO | wxSUNKEN_BORDER | wxHSCROLL | wxVSCROLL );
     privacy_sizer->Add ( privacy_text_, g_flagsExpand );
     itemBoxSizer->Add ( about_notebook, g_flagsExpand );
     wxButton *button_OK = new wxButton ( this, wxID_OK, _( "&OK " ) );

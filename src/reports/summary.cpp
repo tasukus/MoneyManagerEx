@@ -180,19 +180,19 @@ wxString mmReportSummaryByDate::getHTMLText()
             const Model_Currency::Data *currency = Model_Account::currency ( account );
             for ( const auto &tran : Model_Account::transaction ( account ) )
             {
-                balanceMapVec[i][Model_Checking::TRANSDATE ( tran )]
+                balanceMapVec.at ( i ) [ Model_Checking::TRANSDATE ( tran ) ]
                 += Model_Checking::balance ( tran, account.ACCOUNTID )
                    * Model_CurrencyHistory::getDayRate ( currency->id(), tran.TRANSDATE );
             }
-            if ( Model_Account::type ( account ) != Model_Account::TERM && balanceMapVec[i].size() )
+            if ( Model_Account::type ( account ) != Model_Account::TERM && balanceMapVec.at ( i ).size() )
             {
-                date = balanceMapVec[i].begin()->first;
+                date = balanceMapVec.at ( i ).begin()->first;
                 if ( date.IsEarlierThan ( dateStart ) )
                 {
                     dateStart = date;
                 }
             }
-            arBalance[i] = account.INITIALBAL * Model_CurrencyHistory::getDayRate ( currency->id(), dateStart );
+            arBalance.at ( i ) = account.INITIALBAL * Model_CurrencyHistory::getDayRate ( currency->id(), dateStart );
         }
         else
         {
@@ -241,7 +241,7 @@ wxString mmReportSummaryByDate::getHTMLText()
     int c = 0;
     for ( const auto &acctMap : balanceMapVec )
     {
-        arIt[c++] = acctMap.begin();
+        arIt.at ( c++ ) = acctMap.begin();
     }
 
     //  prepare the dates array
@@ -270,13 +270,13 @@ wxString mmReportSummaryByDate::getHTMLText()
         {
             if ( Model_Account::type ( account ) != Model_Account::INVESTMENT )
             {
-                for ( ; arIt[k] != balanceMapVec[k].end(); ++arIt[k] )
+                for ( ; arIt.at ( k ) != balanceMapVec.at ( k ).end(); ++arIt.at ( k ) )
                 {
-                    if ( arIt[k]->first.IsLaterThan ( dd ) )
+                    if ( arIt.at ( k )->first.IsLaterThan ( dd ) )
                     {
                         break;
                     }
-                    arBalance[k] += arIt[k]->second;
+                    arBalance.at ( k ) += arIt.at ( k )->second;
                 }
             }
             else
@@ -287,7 +287,7 @@ wxString mmReportSummaryByDate::getHTMLText()
                 {
                     convRate = Model_CurrencyHistory::getDayRate ( currency->id(), dd );
                 }
-                arBalance[k] = arHistory.getDailyBalanceAt ( &account, dd ) * convRate;
+                arBalance.at ( k ) = arHistory.getDailyBalanceAt ( &account, dd ) * convRate;
             }
             k++;
         }
@@ -301,7 +301,7 @@ wxString mmReportSummaryByDate::getHTMLText()
         int a = 0;
         for ( const auto &account: Model_Account::instance().all() )
         {
-            const double t = arBalance[a++];
+            const double t = arBalance.at ( a++ );
             balancePerDay[Model_Account::type ( account )] += t;
         }
 
@@ -326,21 +326,21 @@ wxString mmReportSummaryByDate::getHTMLText()
     const int x = 1 + ( account_types_num ) + 2;
     for ( int k = totBalanceData.size() - x; k >= 0; k -= x )
     {
-        if ( datePrec.Left ( 4 ) != totBalanceData[k].Left ( 4 ) )
+        if ( datePrec.Left ( 4 ) != totBalanceData.at ( k ).Left ( 4 ) )
         {
             hb.startTotalTableRow();
-            hb.addTableCell ( totBalanceData[k].Left ( 4 ) );
+            hb.addTableCell ( totBalanceData.at ( k ).Left ( 4 ) );
             hb.addEmptyTableCell ( x-1 );
             hb.endTableRow();
         }
         hb.startTableRow();
-        hb.addTableCellDate ( totBalanceData[k] );
+        hb.addTableCellDate ( totBalanceData.at ( k ) );
         for ( int j = 0; j < x - 1; j++ )
         {
-            hb.addTableCell ( totBalanceData[k + j + 1], true );
+            hb.addTableCell ( totBalanceData.at ( k + j + 1 ), true );
         }
         hb.endTableRow();
-        datePrec = totBalanceData[k];
+        datePrec = totBalanceData.at ( k );
     }
     hb.endTbody();
 

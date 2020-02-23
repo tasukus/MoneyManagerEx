@@ -90,15 +90,15 @@ public:
         {
             return 0;
         }
-        return itemsTable_[line].size();
+        return itemsTable_.at ( line ).size();
     }
     inline const wxString &GetItem ( const size_t line, const size_t itemInLine ) const override
     {
-        if ( line >= GetLinesCount() || itemInLine >= itemsTable_[line].size() )
+        if ( line >= GetLinesCount() || itemInLine >= itemsTable_.at ( line ).size() )
         {
             return wxEmptyString;
         }
-        return itemsTable_[line][itemInLine].value;
+        return itemsTable_.at ( line ).at ( itemInLine ).value;
     }
     void AddNewLine() override
     {

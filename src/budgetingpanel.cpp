@@ -87,7 +87,13 @@ bool mmBudgetingPanel::Create ( wxWindow *parent
     , const wxSize &size, long style, const wxString &name )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxPanel::Create ( parent, winid, pos, size, style, name );
+    const bool bret = wxPanel::Create( parent, winid, pos, size, style, name );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     this->windowsFreezeThaw();
     const wxDateTime start = wxDateTime::UNow();
     CreateControls();
@@ -297,18 +303,18 @@ void mmBudgetingPanel::CreateControls()
     listCtrlBudget_ = new budgetingListCtrl ( this, this, wxID_ANY );
     listCtrlBudget_->SetImageList ( m_imageList, wxIMAGE_LIST_SMALL );
     listCtrlBudget_->InsertColumn ( COL_ICON, ( " " ) );
-    listCtrlBudget_->InsertColumn ( COL_CATEGORY, listCtrlBudget_->m_columns[COL_CATEGORY].HEADER );
-    listCtrlBudget_->InsertColumn ( COL_SUBCATEGORY, listCtrlBudget_->m_columns[COL_SUBCATEGORY].HEADER );
-    listCtrlBudget_->InsertColumn ( COL_FREQUENCY, listCtrlBudget_->m_columns[COL_FREQUENCY].HEADER );
-    listCtrlBudget_->InsertColumn ( COL_AMOUNT, listCtrlBudget_->m_columns[COL_AMOUNT].HEADER, wxLIST_FORMAT_RIGHT );
-    listCtrlBudget_->InsertColumn ( COL_ESTIMATED, listCtrlBudget_->m_columns[COL_ESTIMATED].HEADER, wxLIST_FORMAT_RIGHT );
-    listCtrlBudget_->InsertColumn ( COL_ACTUAL, listCtrlBudget_->m_columns[COL_ACTUAL].HEADER, wxLIST_FORMAT_RIGHT );
+    listCtrlBudget_->InsertColumn( COL_CATEGORY, listCtrlBudget_->m_columns.at( COL_CATEGORY ).HEADER );
+    listCtrlBudget_->InsertColumn( COL_SUBCATEGORY, listCtrlBudget_->m_columns.at( COL_SUBCATEGORY ).HEADER );
+    listCtrlBudget_->InsertColumn( COL_FREQUENCY, listCtrlBudget_->m_columns.at( COL_FREQUENCY ).HEADER );
+    listCtrlBudget_->InsertColumn( COL_AMOUNT, listCtrlBudget_->m_columns.at( COL_AMOUNT ).HEADER, wxLIST_FORMAT_RIGHT );
+    listCtrlBudget_->InsertColumn( COL_ESTIMATED, listCtrlBudget_->m_columns.at( COL_ESTIMATED ).HEADER, wxLIST_FORMAT_RIGHT );
+    listCtrlBudget_->InsertColumn( COL_ACTUAL, listCtrlBudget_->m_columns.at( COL_ACTUAL ).HEADER, wxLIST_FORMAT_RIGHT );
 
     /* Get data from inidb */
     for ( int i = 0; i < listCtrlBudget_->GetColumnCount(); ++i )
     {
         const int col = Model_Setting::instance().GetIntSetting ( wxString::Format ( listCtrlBudget_->m_col_width, i )
-                , listCtrlBudget_->m_columns[i].WIDTH );
+                , listCtrlBudget_->m_columns.at( i ).WIDTH );
         listCtrlBudget_->SetColumnWidth ( i, col );
     }
 
@@ -351,7 +357,7 @@ bool mmBudgetingPanel::DisplayEntryAllowed ( int categoryID, int subcategoryID )
     }
     else
     {
-        actual = categoryStats_[categoryID][subcategoryID][0];
+        actual = categoryStats_.at( categoryID ).at( subcategoryID ).at( 0 );
         estimated = getEstimate ( categoryID, subcategoryID );
     }
 
@@ -456,7 +462,7 @@ void mmBudgetingPanel::initVirtualListControl()
 
         if ( currentView_ != VIEW_PLANNED || estimated != 0 )
         {
-            actual = categoryStats_[category.CATEGID][-1][0];
+            actual = categoryStats_.at( category.CATEGID ).at( -1 ).at( 0 );
 
             if ( actual < 0 )
             {
@@ -501,7 +507,7 @@ void mmBudgetingPanel::initVirtualListControl()
 
             if ( currentView_ != VIEW_PLANNED || estimated != 0 )
             {
-                actual = categoryStats_[category.CATEGID][subcategory.SUBCATEGID][0];
+                actual = categoryStats_.at( category.CATEGID ).at( subcategory.SUBCATEGID ).at( 0 );
 
                 if ( actual < 0 )
                 {
@@ -565,7 +571,7 @@ void mmBudgetingPanel::initVirtualListControl()
     UpdateBudgetHeading();
 }
 
-double mmBudgetingPanel::getEstimate ( int category, int subcategory ) const
+double mmBudgetingPanel::getEstimate( const int category, const int subcategory ) const
 {
     const Model_Budget::PERIOD_ENUM period = budgetPeriod_.at ( category ).at ( subcategory );
     const double amt = budgetAmt_.at ( category ).at ( subcategory );
@@ -594,9 +600,9 @@ wxString mmBudgetingPanel::getItem ( long item, long column )
 
         case COL_CATEGORY:
         {
-            if ( budget_[item].first < 0 )
+            if ( budget_.at( item ).first < 0 )
             {
-                Model_Category::Data *category = Model_Category::instance().get ( budget_[item].second );
+                Model_Category::Data *category = Model_Category::instance().get( budget_.at( item ).second );
 
                 if ( category )
                 {
@@ -605,7 +611,7 @@ wxString mmBudgetingPanel::getItem ( long item, long column )
             }
             else
             {
-                Model_Category::Data *category = Model_Category::instance().get ( budget_[item].first );
+                Model_Category::Data *category = Model_Category::instance().get( budget_.at( item ).first );
 
                 if ( category )
                 {
@@ -618,9 +624,9 @@ wxString mmBudgetingPanel::getItem ( long item, long column )
 
         case COL_SUBCATEGORY:
         {
-            if ( budget_[item].first >= 0 )
+            if ( budget_.at( item ).first >= 0 )
             {
-                Model_Subcategory::Data *subcategory = Model_Subcategory::instance().get ( budget_[item].second );
+                Model_Subcategory::Data *subcategory = Model_Subcategory::instance().get( budget_.at( item ).second );
 
                 if ( subcategory )
                 {
@@ -633,9 +639,9 @@ wxString mmBudgetingPanel::getItem ( long item, long column )
 
         case COL_FREQUENCY:
         {
-            if ( budget_[item].first >= 0 )
+            if ( budget_.at( item ).first >= 0 )
             {
-                return Model_Budget::all_period() [budgetPeriod_[budget_[item].first][budget_[item].second]];
+                return Model_Budget::all_period() [budgetPeriod_ [budget_.at( item ).first][budget_.at( item ).second]];
             }
 
             return wxEmptyString;
@@ -643,9 +649,9 @@ wxString mmBudgetingPanel::getItem ( long item, long column )
 
         case COL_AMOUNT:
         {
-            if ( budget_[item].first >= 0 )
+            if ( budget_.at( item ).first >= 0 )
             {
-                const double amt = budgetAmt_[budget_[item].first][budget_[item].second];
+                const double amt = budgetAmt_ [budget_.at( item ).first][budget_.at( item ).second];
                 return Model_Currency::toCurrency ( amt );
             }
 
@@ -654,28 +660,28 @@ wxString mmBudgetingPanel::getItem ( long item, long column )
 
         case COL_ESTIMATED:
         {
-            if ( budget_[item].first < 0 )
+            if ( budget_.at( item ).first < 0 )
             {
-                const double estimated = budgetTotals_[budget_[item].second].first;
+                const double estimated = budgetTotals_ [budget_.at( item ).second].first;
                 return Model_Currency::toCurrency ( estimated );
             }
             else
             {
-                const double estimated = getEstimate ( budget_[item].first, budget_[item].second );
+                const double estimated = getEstimate( budget_.at( item ).first, budget_.at( item ).second );
                 return Model_Currency::toCurrency ( estimated );
             }
         }
 
         case COL_ACTUAL:
         {
-            if ( budget_[item].first < 0 )
+            if ( budget_.at( item ).first < 0 )
             {
-                const double actual = budgetTotals_[budget_[item].second].second;
+                const double actual = budgetTotals_ [budget_.at( item ).second].second;
                 return Model_Currency::toCurrency ( actual );
             }
             else
             {
-                const double actual = categoryStats_[budget_[item].first][budget_[item].second][0];
+                const double actual = categoryStats_ [budget_.at( item ).first][budget_.at( item ).second][0];
                 return Model_Currency::toCurrency ( actual );
             }
         }
@@ -694,15 +700,15 @@ int mmBudgetingPanel::GetItemImage ( long item ) const
     double estimated = 0;
     double actual = 0;
 
-    if ( budget_[item].first < 0 )
+    if ( budget_.at( item ).first < 0 )
     {
-        estimated = budgetTotals_.at ( budget_[item].second ).first;
-        actual = budgetTotals_.at ( budget_[item].second ).second;
+        estimated = budgetTotals_.at( budget_.at( item ).second ).first;
+        actual = budgetTotals_.at( budget_.at( item ).second ).second;
     }
     else
     {
-        estimated = getEstimate ( budget_[item].first, budget_[item].second );
-        actual = categoryStats_.at ( budget_[item].first ).at ( budget_[item].second ).at ( 0 );
+        estimated = getEstimate( budget_.at( item ).first, budget_.at( item ).second );
+        actual = categoryStats_.at( budget_.at( item ).first ).at( budget_.at( item ).second ).at( 0 );
     }
 
     if ( ( estimated == 0.0 ) && ( actual == 0.0 ) )
@@ -761,32 +767,33 @@ void mmBudgetingPanel::OnListItemActivated ( int selectedIndex )
     /***************************************************************************
      A TOTALS entry does not contain a budget entry, therefore ignore the event.
      ***************************************************************************/
-    if ( budget_[selectedIndex].first < 0 )
+    if ( budget_.at( selectedIndex ).first < 0 )
     {
         return;
     }
 
     Model_Budget::Data_Set budget = Model_Budget::instance().find ( Model_Budget::BUDGETYEARID ( GetBudgetYearID() )
-            , Model_Budget::CATEGID ( budget_[selectedIndex].first ), Model_Budget::SUBCATEGID ( budget_[selectedIndex].second ) );
+            , Model_Budget::CATEGID( budget_.at( selectedIndex ).first ), Model_Budget::SUBCATEGID( budget_.at( selectedIndex ).second ) );
     Model_Budget::Data *entry = nullptr;
 
     if ( budget.empty() )
     {
         entry = Model_Budget::instance().create();
         entry->BUDGETYEARID = GetBudgetYearID();
-        entry->CATEGID = budget_[selectedIndex].first;
-        entry->SUBCATEGID = budget_[selectedIndex].second;
+        entry->CATEGID = budget_.at( selectedIndex ).first;
+        entry->SUBCATEGID = budget_.at( selectedIndex ).second;
         entry->PERIOD = "";
         entry->AMOUNT = 0.0;
         Model_Budget::instance().save ( entry );
     }
     else
     {
-        entry = &budget[0];
+        entry = &budget.at( 0 );
     }
 
-    const double estimated = getEstimate ( budget_[selectedIndex].first, budget_[selectedIndex].second );
-    const double actual = categoryStats_[budget_[selectedIndex].first][budget_[selectedIndex].second][0];
+    const double estimated = getEstimate( budget_.at( selectedIndex ).first, budget_.at( selectedIndex ).second );
+    const double actual = categoryStats_.at( budget_.at( selectedIndex ).first ) [budget_.at( selectedIndex ).second][0];
+
     mmBudgetEntryDialog dlg ( this, entry, Model_Currency::toCurrency ( estimated ), Model_Currency::toCurrency ( actual ) );
 
     if ( dlg.ShowModal() == wxID_OK )

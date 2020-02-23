@@ -50,7 +50,13 @@ bool mmBudgetYearDialog::Create ( wxWindow *parent, wxWindowID id,
     const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     fillControls();
     GetSizer()->Fit ( this );

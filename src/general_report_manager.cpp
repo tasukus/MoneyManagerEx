@@ -55,8 +55,7 @@ static const wxString SAMPLE_ASSETS_HTT =
     R"(<!DOCTYPE html>
     <html>
     <head>
-    <meta http-equiv="content-type" content="text/html;
-charset=utf-8" />
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <title><TMPL_VAR REPORTNAME></title>
         <script src = "sorttable.js"></script>
         <link href="master.css" rel="stylesheet">
@@ -130,8 +129,7 @@ static const char *HTT_CONTEINER =
     R"(<!DOCTYPE html>
     <html>
     <head>
-    <meta http-equiv="content-type" content="text/html;
-charset=utf-8" />
+    <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <title><TMPL_VAR REPORTNAME></title>
         <script src = "ChartNew.js"></script>
         <script src = "sorttable.js"></script>
@@ -240,6 +238,7 @@ mmGeneralReportManager::mmGeneralReportManager ( wxWindow *parent, wxSQLite3Data
 
 mmGeneralReportManager::~mmGeneralReportManager()
 {
+    return;
 }
 
 bool mmGeneralReportManager::Create ( wxWindow *parent
@@ -250,7 +249,12 @@ bool mmGeneralReportManager::Create ( wxWindow *parent
     , long style )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create( parent , id , caption , pos , size , style );
+    if ( bret == false )
+    {
+        return false;
+    }
+
     wxAcceleratorEntry entries[2];
     entries[0].Set ( wxACCEL_NORMAL, WXK_F9, wxID_EXECUTE );
     entries[1].Set ( wxACCEL_CTRL, 'S', wxID_SAVE );

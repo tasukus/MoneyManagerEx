@@ -150,7 +150,7 @@ void mmAssetsListCtrl::OnListItemSelected ( wxListEvent &event )
 
 int mmAssetsListCtrl::OnGetItemImage ( long item ) const
 {
-    return Model_Asset::type ( m_panel->getAssetDataSet() [item] );
+    return Model_Asset::type ( m_panel->getAssetDataSet().at ( item ) );
 }
 
 void mmAssetsListCtrl::OnListKeyDown ( wxListEvent &event )
@@ -220,7 +220,7 @@ void mmAssetsListCtrl::OnDeleteAsset ( wxCommandEvent &WXUNUSED ( event ) )
 
     if ( msgDlg.ShowModal() == wxID_YES )
     {
-        const Model_Asset::Data &asset = m_panel->getAssetDataSet() [m_selected_row];
+        const Model_Asset::Data &asset = m_panel->getAssetDataSet().at ( m_selected_row );
         Model_Asset::instance().remove ( asset.ASSETID );
         mmAttachmentManage::DeleteAllAttachments ( Model_Attachment::reftype_desc ( Model_Attachment::ASSET ), asset.ASSETID );
         Model_Translink::RemoveTransLinkRecords ( Model_Attachment::ASSET, asset.ASSETID );
@@ -248,7 +248,7 @@ void mmAssetsListCtrl::OnDuplicateAsset ( wxCommandEvent &WXUNUSED ( event ) )
         return;
     }
 
-    const Model_Asset::Data &asset = m_panel->getAssetDataSet() [m_selected_row];
+    const Model_Asset::Data &asset = m_panel->getAssetDataSet().at ( m_selected_row );
     Model_Asset::Data *duplicate_asset = Model_Asset::instance().clone ( &asset );
 
     if ( EditAsset ( duplicate_asset ) )
@@ -295,8 +295,9 @@ void mmAssetsListCtrl::OnOrganizeAttachments ( wxCommandEvent &WXUNUSED ( event 
         return;
     }
 
-    const wxString RefType = Model_Attachment::reftype_desc ( Model_Attachment::ASSET );
-    const int RefId = m_panel->getAssetDataSet() [m_selected_row].ASSETID;
+    const wxString &RefType = Model_Attachment::reftype_desc ( Model_Attachment::ASSET );
+    const int RefId = m_panel->getAssetDataSet().at ( m_selected_row ).ASSETID;
+
     mmAttachmentDialog dlg ( this, RefType, RefId );
     dlg.ShowModal();
     doRefreshItems ( RefId );
@@ -310,7 +311,7 @@ void mmAssetsListCtrl::OnOpenAttachment ( wxCommandEvent &WXUNUSED ( event ) )
     }
 
     const wxString RefType = Model_Attachment::reftype_desc ( Model_Attachment::ASSET );
-    const int RefId = m_panel->getAssetDataSet() [m_selected_row].ASSETID;
+    const int RefId = m_panel->getAssetDataSet().at (m_selected_row).ASSETID;
     mmAttachmentManage::OpenAttachmentFromPanelIcon ( this, RefType, RefId );
     doRefreshItems ( RefId );
 }
@@ -322,7 +323,7 @@ void mmAssetsListCtrl::OnListItemActivated ( wxListEvent &event )
         m_selected_row = event.GetIndex();
     }
 
-    EditAsset ( & ( m_panel->getAssetDataSet() [m_selected_row] ) );
+    EditAsset ( & ( m_panel->getAssetDataSet().at ( m_selected_row ) ) );
 }
 
 bool mmAssetsListCtrl::EditAsset ( Model_Asset::Data *pEntry )
@@ -379,7 +380,7 @@ void mmAssetsListCtrl::OnColClick ( wxListEvent &event )
 
     if ( m_selected_row>=0 )
     {
-        trx_id = m_panel->getAssetDataSet() [m_selected_row].ASSETID;
+        trx_id = m_panel->getAssetDataSet().at ( m_selected_row ).ASSETID;
     }
 
     doRefreshItems ( trx_id );
@@ -392,7 +393,7 @@ void mmAssetsListCtrl::OnEndLabelEdit ( wxListEvent &event )
         return;
     }
 
-    Model_Asset::Data *asset = &m_panel->getAssetDataSet() [event.GetIndex()];
+    Model_Asset::Data *asset = &m_panel->getAssetDataSet().at ( event.GetIndex() );
     asset->ASSETNAME = event.m_item.m_text;
     Model_Asset::instance().save ( asset );
     RefreshItems ( event.GetIndex(), event.GetIndex() );
@@ -670,7 +671,7 @@ void mmAssetsPanel::OnOpenAttachment ( wxCommandEvent &event )
 
 const wxString mmAssetsPanel::getItem ( long item, long column ) const
 {
-    const Model_Asset::Data &asset = this->m_assets[item];
+    const Model_Asset::Data &asset = this->m_assets.at ( item );
 
     switch ( column )
     {
@@ -719,7 +720,7 @@ void mmAssetsPanel::updateExtraAssetData ( int selIndex )
 
     if ( selIndex > -1 )
     {
-        const Model_Asset::Data &asset = this->m_assets[selIndex];
+        const Model_Asset::Data &asset = this->m_assets.at ( selIndex );
         enableEditDeleteButtons ( true );
         const auto change_rate = ( Model_Asset::rate ( asset ) != Model_Asset::RATE_NONE )
             ? wxString::Format ( "%.2f %%", asset.VALUECHANGERATE ) : "";
@@ -860,7 +861,7 @@ void mmAssetsPanel::OnSearchTxtEntered ( wxCommandEvent &event )
 
 void mmAssetsPanel::AddAssetTrans ( const int selected_index )
 {
-    Model_Asset::Data *asset = &m_assets[selected_index];
+    Model_Asset::Data *asset = &m_assets.at ( selected_index );
     mmAssetDialog asset_dialog ( this, m_frame, asset, true );
     Model_Account::Data *account = Model_Account::instance().get ( asset->ASSETNAME );
 
@@ -892,7 +893,7 @@ void mmAssetsPanel::AddAssetTrans ( const int selected_index )
 
 void mmAssetsPanel::ViewAssetTrans ( const int selected_index )
 {
-    Model_Asset::Data *asset = &m_assets[selected_index];
+    Model_Asset::Data *asset = &m_assets.at ( selected_index );
     Model_Translink::Data_Set asset_list = Model_Translink::TranslinkList ( Model_Attachment::ASSET, asset->ASSETID );
     // TODO create a panel to display all the information on one screen
     wxString msg = _( "Account \t Date\t   Value\n\n" );
@@ -915,7 +916,7 @@ void mmAssetsPanel::ViewAssetTrans ( const int selected_index )
 
 void mmAssetsPanel::GotoAssetAccount ( const int selected_index )
 {
-    Model_Asset::Data *asset = &m_assets[selected_index];
+    Model_Asset::Data *asset = &m_assets.at ( selected_index );
     const Model_Account::Data *account = Model_Account::instance().get ( asset->ASSETNAME );
 
     if ( account )

@@ -583,7 +583,12 @@ bool mmHomePagePanel::Create ( wxWindow *parent
     , const wxString &name )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxPanelBase::Create ( parent, winid, pos, size, style, name );
+    const bool bret = wxPanelBase::Create( parent , winid , pos , size , style , name );
+    if ( bret == false )
+    {
+        return false;
+    }
+
     const wxDateTime start = wxDateTime::UNow();
 
     CreateControls();
@@ -789,11 +794,11 @@ const wxString mmHomePagePanel::getAccountsHTML ( double &tBalance
     , std::map<int, std::pair<double, double> > &accountStats, enum Model_Account::TYPE type ) const
 {
     wxASSERT ( acc_type_str.size() >= static_cast<size_t> ( type ) );
-    const wxString idStr = acc_type_str[type].first;
+    const wxString idStr = acc_type_str.at(type).first;
     wxString output = "<table class = 'sortable table'>\n";
     output += "<col style=\"width:50%\"><col style=\"width:25%\"><col style=\"width:25%\">\n";
     output += "<thead><tr><th nowrap>";
-    output += wxGetTranslation ( acc_type_str[type].second );
+    output += wxGetTranslation ( acc_type_str.at(type).second );
     output += "</th><th class = 'text-right'>" + _( "Reconciled" ) + "</th>\n";
     output += "<th class = 'text-right'>" + _( "Balance" ) + "</th>\n";
     output += wxString::Format ( "<th nowrap class='text-right sorttable_nosort'><a id='%s_label' onclick=\"toggleTable('%s'); \" href='#%s' oncontextmenu='return false;'>[-]</a></th>\n"
@@ -991,8 +996,8 @@ void mmHomePagePanel::OnLinkClicked ( wxWebViewEvent &event )
         wxString str = Model_Infotable::instance().GetStringInfo ( "HOME_PAGE_STATUS", "{}" );
         wxLogDebug ( "======= mmHomePagePanel::OnLinkClicked =======" );
         wxLogDebug ( "Name = %s", name );
-        Document json_doc;
 
+        Document json_doc;
         if ( json_doc.Parse ( str.c_str() ).HasParseError() )
         {
             return;

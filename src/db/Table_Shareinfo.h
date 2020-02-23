@@ -129,7 +129,9 @@ struct DB_Table_SHAREINFO : public DB_Table
         {
             return "SHARENUMBER";
         }
-        explicit SHARENUMBER ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit SHARENUMBER ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct SHAREPRICE : public DB_Column<double>
@@ -138,7 +140,9 @@ struct DB_Table_SHAREINFO : public DB_Table
         {
             return "SHAREPRICE";
         }
-        explicit SHAREPRICE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit SHAREPRICE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct SHARECOMMISSION : public DB_Column<double>
@@ -147,7 +151,9 @@ struct DB_Table_SHAREINFO : public DB_Table
         {
             return "SHARECOMMISSION";
         }
-        explicit SHARECOMMISSION ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit SHARECOMMISSION ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct SHARELOT : public DB_Column<wxString>
@@ -156,7 +162,9 @@ struct DB_Table_SHAREINFO : public DB_Table
         {
             return "SHARELOT";
         }
-        explicit SHARELOT ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit SHARELOT ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     typedef SHAREINFOID PRIMARY;
@@ -172,7 +180,7 @@ struct DB_Table_SHAREINFO : public DB_Table
     };
 
     /** Returns the column name as a string*/
-    static wxString column_to_name ( COLUMN col )
+    static wxString column_to_name ( const COLUMN col )
     {
         switch ( col )
         {
@@ -240,12 +248,12 @@ struct DB_Table_SHAREINFO : public DB_Table
         double SHARECOMMISSION;
         wxString SHARELOT;
 
-        int id() const
+        int id() const noexcept
         {
             return SHAREINFOID;
         }
 
-        void id ( int id )
+        void id ( const int id ) noexcept
         {
             SHAREINFOID = id;
         }
@@ -260,7 +268,7 @@ struct DB_Table_SHAREINFO : public DB_Table
             return this->id() < r->id();
         }
 
-        explicit Data ( Self *table = 0 )
+        explicit Data ( Self *table = nullptr )
         {
             table_ = table;
 
@@ -271,7 +279,7 @@ struct DB_Table_SHAREINFO : public DB_Table
             SHARECOMMISSION = 0.0;
         }
 
-        explicit Data ( wxSQLite3ResultSet &q, Self *table = 0 )
+        explicit Data ( wxSQLite3ResultSet &q, Self *table = nullptr )
         {
             table_ = table;
 
@@ -299,27 +307,27 @@ struct DB_Table_SHAREINFO : public DB_Table
             return *this;
         }
 
-        bool match ( const Self::SHAREINFOID &in ) const
+        bool match ( const Self::SHAREINFOID &in ) const noexcept
         {
             return this->SHAREINFOID == in.v_;
         }
 
-        bool match ( const Self::CHECKINGACCOUNTID &in ) const
+        bool match ( const Self::CHECKINGACCOUNTID &in ) const noexcept
         {
             return this->CHECKINGACCOUNTID == in.v_;
         }
 
-        bool match ( const Self::SHARENUMBER &in ) const
+        bool match ( const Self::SHARENUMBER &in ) const noexcept
         {
             return this->SHARENUMBER == in.v_;
         }
 
-        bool match ( const Self::SHAREPRICE &in ) const
+        bool match ( const Self::SHAREPRICE &in ) const noexcept
         {
             return this->SHAREPRICE == in.v_;
         }
 
-        bool match ( const Self::SHARECOMMISSION &in ) const
+        bool match ( const Self::SHARECOMMISSION &in ) const noexcept
         {
             return this->SHARECOMMISSION == in.v_;
         }
@@ -420,13 +428,13 @@ struct DB_Table_SHAREINFO : public DB_Table
         NUM_COLUMNS = 6
     };
 
-    size_t num_columns() const
+    size_t num_columns() const noexcept override
     {
         return NUM_COLUMNS;
     }
 
     /** Name of the table */
-    wxString name() const
+    wxString name() const override
     {
         return "SHAREINFO";
     }
@@ -514,7 +522,7 @@ struct DB_Table_SHAREINFO : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove ( int id, wxSQLite3Database *db )
+    bool remove ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
@@ -588,12 +596,12 @@ struct DB_Table_SHAREINFO : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data *get ( int id, wxSQLite3Database *db )
+    Self::Data *get ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
             ++ skip_;
-            return 0;
+            return nullptr;
         }
 
         Index_By_Id::iterator it = index_by_id_.find ( id );
@@ -604,7 +612,7 @@ struct DB_Table_SHAREINFO : public DB_Table
         }
 
         ++ miss_;
-        Self::Data *entity = 0;
+        Self::Data *entity = nullptr;
         wxString where = wxString::Format ( " WHERE %s = ?", PRIMARY::name().c_str() );
         try
         {
@@ -638,7 +646,7 @@ struct DB_Table_SHAREINFO : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all ( wxSQLite3Database *db, COLUMN col = COLUMN ( 0 ), bool asc = true )
+    const Data_Set all ( wxSQLite3Database *db, const COLUMN col = COLUMN ( 0 ), const bool asc = true )
     {
         Data_Set result;
         try

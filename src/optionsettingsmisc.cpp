@@ -179,7 +179,7 @@ void OptionSettingsMisc::SaveStocksUrl()
 
         if ( !items.empty() )
         {
-            Model_Infotable::instance().remove ( items[0].INFOID );
+            Model_Infotable::instance().remove ( items.at ( 0 ).INFOID );
         }
     }
 }

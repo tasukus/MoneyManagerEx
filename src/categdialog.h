@@ -29,6 +29,7 @@ public:
         : categData_ ( categData )
         , subcategData_ ( subcategData )
     {
+		return;
     }
     Model_Category::Data *getCategData()
     {
@@ -80,7 +81,7 @@ public:
 private:
     void CreateControls();
     void fillControls();
-    void setTreeSelection ( int category_id, int subcategory_id );
+	void setTreeSelection(const int category_id , const int subcategory_id);
 
     void OnCancel ( wxCommandEvent &event );
     void OnAdd ( wxCommandEvent &event );
@@ -89,7 +90,7 @@ private:
     void OnEdit ( wxCommandEvent &event );
     void OnSelChanged ( wxTreeEvent &event );
     void OnDoubleClicked ( wxTreeEvent &event );
-    void showCategDialogDeleteError ( bool category = true );
+	void showCategDialogDeleteError(const bool category = true);
     void OnCategoryRelocation ( wxCommandEvent &WXUNUSED ( event ) );
     void OnExpandChbClick ( wxCommandEvent &WXUNUSED ( event ) );
     void OnShowHiddenChbClick ( wxCommandEvent &WXUNUSED ( event ) );

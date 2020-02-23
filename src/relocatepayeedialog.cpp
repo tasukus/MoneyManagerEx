@@ -40,6 +40,7 @@ relocatePayeeDialog::relocatePayeeDialog( )
 }
 
 relocatePayeeDialog::relocatePayeeDialog ( wxWindow *parent, int source_payee_id )
+    : wxDialog()
 {
     sourcePayeeID_  = source_payee_id;
     constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
@@ -51,7 +52,13 @@ bool relocatePayeeDialog::Create ( wxWindow *parent
     , const wxPoint &pos, const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     IsOkOk();
     GetSizer()->Fit ( this );

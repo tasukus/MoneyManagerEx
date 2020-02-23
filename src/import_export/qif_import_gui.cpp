@@ -74,7 +74,11 @@ bool mmQIFImportDialog::Create ( wxWindow *parent, wxWindowID id, const wxString
                                  , const wxPoint &pos, const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+    if ( bret == false )
+    {
+        return false;
+    }
 
     ColName_[COL_ID] = _( "#" );
     ColName_[COL_ACCOUNT] = _( "Account" );

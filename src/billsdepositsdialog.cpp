@@ -142,7 +142,13 @@ bool mmBDDialog::Create ( wxWindow *parent, wxWindowID id, const wxString &capti
     , const wxPoint &pos, const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     dataToControls();
     GetSizer()->Fit ( this );
@@ -821,16 +827,17 @@ void mmBDDialog::resetPayeeString()
         if ( filtd.size() == 1 )
         {
             //only one payee present. Choose it
-            payeeStr = filtd[0].PAYEENAME;
-            m_bill_data.PAYEEID = filtd[0].PAYEEID;
+            payeeStr = filtd.at ( 0 ).PAYEENAME;
+            m_bill_data.PAYEEID = filtd.at ( 0 ).PAYEEID;
             payeeUnknown_ = false;
 
             // Only for new transactions: if user want to autofill last category used for payee.
             // If this is a Split Transaction, ignore displaying last category for payee
-            if ( filtd[0].CATEGID != -1 && m_bill_data.local_splits.empty() && Option::instance().getTransCategorySelection() == Option::LASTUSED && !categUpdated_ && m_bill_data.BDID == 0 )
+            if ( filtd.at ( 0 ).CATEGID != -1 && m_bill_data.local_splits.empty() && Option::instance().getTransCategorySelection() == Option::LASTUSED && !categUpdated_ && m_bill_data.BDID == 0 )
             {
-                m_bill_data.CATEGID = filtd[0].CATEGID;
-                m_bill_data.SUBCATEGID = filtd[0].SUBCATEGID;
+                m_bill_data.CATEGID = filtd.at ( 0 ).CATEGID;
+                m_bill_data.SUBCATEGID = filtd.at ( 0 ).SUBCATEGID;
+
                 const Model_Category::Data *category = Model_Category::instance().get ( m_bill_data.CATEGID );
                 const Model_Subcategory::Data *sub_category = ( m_bill_data.SUBCATEGID != -1 ? Model_Subcategory::instance().get ( m_bill_data.SUBCATEGID ) : nullptr );
                 bCategory_->SetLabelText ( Model_Category::full_name ( category, sub_category ) );
@@ -864,7 +871,7 @@ void mmBDDialog::onNoteSelected ( wxCommandEvent &event )
 
     if ( i > 0 && i <= frequentNotes_.size() )
     {
-        textNotes_->ChangeValue ( frequentNotes_[i - 1] );
+        textNotes_->ChangeValue ( frequentNotes_.at ( i - 1 ) );
     }
 }
 

@@ -543,8 +543,9 @@ void mmGUIFrame::OnAutoRepeatTransactionsTimer ( wxTimerEvent &WXUNUSED ( event 
                 {
                     refreshPanelData();
                 }
-                else // stop repeat executions from occurring
+                else
                 {
+                    // stop repeat executions from occurring
                     continueExecution = false;
                 }
             }

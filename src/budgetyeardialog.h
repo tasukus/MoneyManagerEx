@@ -51,7 +51,10 @@ private:
     void OnDoubleClicked ( wxCommandEvent &event );
 
     wxListBox *m_listBox=nullptr;
-    enum { ID_ADD_MONTH = wxID_HIGHEST + 300 };
+    enum
+    {
+        ID_ADD_MONTH = wxID_HIGHEST + 300
+    };
 };
 
 #endif

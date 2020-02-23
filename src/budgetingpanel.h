@@ -87,7 +87,7 @@ public:
     void OnListItemActivated ( int selectedIndex );
     int GetTransID (const long item ) const
     {
-        return budget_[item].first;
+        return budget_.at ( item ).first;
     }
 
     void RefreshList();
@@ -128,7 +128,7 @@ private:
     void sortTable() override;
     bool DisplayEntryAllowed ( int categoryID, int subcategoryID );
     void UpdateBudgetHeading();
-    double getEstimate ( int category, int subcategory ) const;
+    double getEstimate ( const int category, const int subcategory ) const;
     wxString GetPanelTitle() const;
 
     /* Event handlers for Buttons */

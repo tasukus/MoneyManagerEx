@@ -143,9 +143,9 @@ void mmListCtrl::OnColRightClick ( wxListEvent &event )
         for ( int i = 0; i < static_cast<int> ( m_columns.size() ); i++ )
         {
             const int id = MENU_HEADER_COLUMN + i;
-            submenu->AppendCheckItem ( id, m_columns[i].HEADER );
+            submenu->AppendCheckItem ( id, m_columns.at ( i ).HEADER );
 
-            if ( Model_Setting::instance().GetIntSetting ( wxString::Format ( m_col_width, i ), m_columns[i].WIDTH ) != 0 )
+            if ( Model_Setting::instance().GetIntSetting ( wxString::Format ( m_col_width, i ), m_columns.at ( i ).WIDTH ) != 0 )
             {
                 submenu->Check ( id, true );
             }
@@ -209,7 +209,7 @@ void mmListCtrl::OnHeaderReset ( wxCommandEvent &WXUNUSED ( event ) )
 
     for ( int i = 0; i < static_cast<int> ( m_columns.size() ); i++ )
     {
-        SetColumnWidth ( i, m_columns[i].WIDTH );
+        SetColumnWidth ( i, m_columns.at ( i ).WIDTH );
 
         if ( !m_col_width.IsEmpty() )
         {
@@ -232,7 +232,7 @@ void mmListCtrl::OnHeaderColumn ( wxCommandEvent &event )
 
     if ( columnNbr >= 0 && static_cast<size_t> ( columnNbr ) < m_columns.size() && !m_col_width.IsEmpty() )
     {
-        int default_width = m_columns[columnNbr].WIDTH;
+        int default_width = m_columns.at ( columnNbr ).WIDTH;
 
         if ( default_width == 0 )
         {

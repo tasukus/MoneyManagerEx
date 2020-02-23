@@ -53,7 +53,13 @@ bool mmBudgetEntryDialog::Create ( wxWindow *parent
     , const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     fillControls();
     GetSizer()->Fit ( this );
@@ -154,7 +160,7 @@ void mmBudgetEntryDialog::CreateControls()
 void mmBudgetEntryDialog::OnOk ( wxCommandEvent &WXUNUSED ( event ) )
 {
     const int typeSelection = m_choiceType->GetSelection();
-    wxString period = Model_Budget::PERIOD_ENUM_CHOICES[m_FrequencyChooser->GetSelection()].second;
+    wxString period = Model_Budget::PERIOD_ENUM_CHOICES.at ( m_FrequencyChooser->GetSelection() ).second;
     double amt = 0.0;
 
     if ( !m_textAmount->checkValue ( amt ) )
@@ -162,9 +168,9 @@ void mmBudgetEntryDialog::OnOk ( wxCommandEvent &WXUNUSED ( event ) )
         return;
     }
 
-    if ( amt == 0.0 || period == Model_Budget::PERIOD_ENUM_CHOICES[Model_Budget::NONE].second )
+    if ( amt == 0.0 || period == Model_Budget::PERIOD_ENUM_CHOICES.at ( Model_Budget::NONE ).second )
     {
-        period = Model_Budget::PERIOD_ENUM_CHOICES[Model_Budget::NONE].second;
+        period = Model_Budget::PERIOD_ENUM_CHOICES.at ( Model_Budget::NONE ).second;
         amt = 0;
     }
 

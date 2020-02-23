@@ -27,7 +27,10 @@ Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 class mmReportCashFlow : public mmPrintableBase
 {
 public:
-    enum TYPE { MONTHLY = 0, DAILY };
+    enum TYPE
+    {
+        MONTHLY = 0, DAILY
+    };
     explicit mmReportCashFlow ( TYPE cashflowreporttype );
     virtual ~mmReportCashFlow();
 

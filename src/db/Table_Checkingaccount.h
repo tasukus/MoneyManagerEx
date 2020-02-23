@@ -112,7 +112,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "TRANSID";
         }
-        explicit TRANSID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit TRANSID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct ACCOUNTID : public DB_Column<int>
@@ -121,7 +123,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "ACCOUNTID";
         }
-        explicit ACCOUNTID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit ACCOUNTID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct TOACCOUNTID : public DB_Column<int>
@@ -130,7 +134,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "TOACCOUNTID";
         }
-        explicit TOACCOUNTID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit TOACCOUNTID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct PAYEEID : public DB_Column<int>
@@ -139,7 +145,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "PAYEEID";
         }
-        explicit PAYEEID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit PAYEEID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct TRANSCODE : public DB_Column<wxString>
@@ -148,7 +156,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "TRANSCODE";
         }
-        explicit TRANSCODE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit TRANSCODE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct TRANSAMOUNT : public DB_Column<double>
@@ -157,7 +167,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "TRANSAMOUNT";
         }
-        explicit TRANSAMOUNT ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit TRANSAMOUNT ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct STATUS : public DB_Column<wxString>
@@ -166,7 +178,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "STATUS";
         }
-        explicit STATUS ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit STATUS ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct TRANSACTIONNUMBER : public DB_Column<wxString>
@@ -175,7 +189,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "TRANSACTIONNUMBER";
         }
-        explicit TRANSACTIONNUMBER ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit TRANSACTIONNUMBER ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct NOTES : public DB_Column<wxString>
@@ -184,7 +200,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "NOTES";
         }
-        explicit NOTES ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit NOTES ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct CATEGID : public DB_Column<int>
@@ -193,7 +211,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "CATEGID";
         }
-        explicit CATEGID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit CATEGID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct SUBCATEGID : public DB_Column<int>
@@ -202,7 +222,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "SUBCATEGID";
         }
-        explicit SUBCATEGID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit SUBCATEGID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct TRANSDATE : public DB_Column<wxString>
@@ -211,7 +233,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "TRANSDATE";
         }
-        explicit TRANSDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit TRANSDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct FOLLOWUPID : public DB_Column<int>
@@ -220,7 +244,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "FOLLOWUPID";
         }
-        explicit FOLLOWUPID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit FOLLOWUPID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct TOTRANSAMOUNT : public DB_Column<double>
@@ -229,7 +255,9 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         {
             return "TOTRANSAMOUNT";
         }
-        explicit TOTRANSAMOUNT ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit TOTRANSAMOUNT ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     typedef TRANSID PRIMARY;
@@ -253,7 +281,7 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
     };
 
     /** Returns the column name as a string*/
-    static wxString column_to_name ( COLUMN col )
+    static wxString column_to_name ( const COLUMN col )
     {
         switch ( col )
         {
@@ -377,12 +405,12 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         int FOLLOWUPID;
         double TOTRANSAMOUNT;
 
-        int id() const
+        int id() const noexcept
         {
             return TRANSID;
         }
 
-        void id ( int id )
+        void id ( const int id ) noexcept
         {
             TRANSID = id;
         }
@@ -397,7 +425,7 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
             return this->id() < r->id();
         }
 
-        explicit Data ( Self *table = 0 )
+        explicit Data ( Self *table = nullptr )
         {
             table_ = table;
 
@@ -412,7 +440,7 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
             TOTRANSAMOUNT = 0.0;
         }
 
-        explicit Data ( wxSQLite3ResultSet &q, Self *table = 0 )
+        explicit Data ( wxSQLite3ResultSet &q, Self *table = nullptr )
         {
             table_ = table;
 
@@ -456,22 +484,22 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
             return *this;
         }
 
-        bool match ( const Self::TRANSID &in ) const
+        bool match ( const Self::TRANSID &in ) const noexcept
         {
             return this->TRANSID == in.v_;
         }
 
-        bool match ( const Self::ACCOUNTID &in ) const
+        bool match ( const Self::ACCOUNTID &in ) const noexcept
         {
             return this->ACCOUNTID == in.v_;
         }
 
-        bool match ( const Self::TOACCOUNTID &in ) const
+        bool match ( const Self::TOACCOUNTID &in ) const noexcept
         {
             return this->TOACCOUNTID == in.v_;
         }
 
-        bool match ( const Self::PAYEEID &in ) const
+        bool match ( const Self::PAYEEID &in ) const noexcept
         {
             return this->PAYEEID == in.v_;
         }
@@ -481,7 +509,7 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
             return this->TRANSCODE.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::TRANSAMOUNT &in ) const
+        bool match ( const Self::TRANSAMOUNT &in ) const noexcept
         {
             return this->TRANSAMOUNT == in.v_;
         }
@@ -501,12 +529,12 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
             return this->NOTES.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::CATEGID &in ) const
+        bool match ( const Self::CATEGID &in ) const noexcept
         {
             return this->CATEGID == in.v_;
         }
 
-        bool match ( const Self::SUBCATEGID &in ) const
+        bool match ( const Self::SUBCATEGID &in ) const noexcept
         {
             return this->SUBCATEGID == in.v_;
         }
@@ -516,12 +544,12 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
             return this->TRANSDATE.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::FOLLOWUPID &in ) const
+        bool match ( const Self::FOLLOWUPID &in ) const noexcept
         {
             return this->FOLLOWUPID == in.v_;
         }
 
-        bool match ( const Self::TOTRANSAMOUNT &in ) const
+        bool match ( const Self::TOTRANSAMOUNT &in ) const noexcept
         {
             return this->TOTRANSAMOUNT == in.v_;
         }
@@ -649,13 +677,13 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         NUM_COLUMNS = 14
     };
 
-    size_t num_columns() const
+    size_t num_columns() const noexcept override
     {
         return NUM_COLUMNS;
     }
 
     /** Name of the table */
-    wxString name() const
+    wxString name() const override
     {
         return "CHECKINGACCOUNT";
     }
@@ -751,7 +779,7 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove ( int id, wxSQLite3Database *db )
+    bool remove ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
@@ -825,12 +853,12 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data *get ( int id, wxSQLite3Database *db )
+    Self::Data *get ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
             ++ skip_;
-            return 0;
+            return nullptr;
         }
 
         Index_By_Id::iterator it = index_by_id_.find ( id );
@@ -841,7 +869,7 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
         }
 
         ++ miss_;
-        Self::Data *entity = 0;
+        Self::Data *entity = nullptr;
         wxString where = wxString::Format ( " WHERE %s = ?", PRIMARY::name().c_str() );
         try
         {
@@ -875,7 +903,7 @@ struct DB_Table_CHECKINGACCOUNT : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all ( wxSQLite3Database *db, COLUMN col = COLUMN ( 0 ), bool asc = true )
+    const Data_Set all ( wxSQLite3Database *db, const COLUMN col = COLUMN ( 0 ), const bool asc = true )
     {
         Data_Set result;
         try

@@ -42,7 +42,8 @@ relocateCategoryDialog::relocateCategoryDialog( )
     return;
 }
 
-relocateCategoryDialog::relocateCategoryDialog ( wxWindow *parent, int sourceCatID, int sourceSubCatID )
+relocateCategoryDialog::relocateCategoryDialog(wxWindow *parent , const int sourceCatID , const int sourceSubCatID)
+    : wxDialog()
 {
     m_sourceCatID    = sourceCatID;
     m_sourceSubCatID = sourceSubCatID;
@@ -50,15 +51,16 @@ relocateCategoryDialog::relocateCategoryDialog ( wxWindow *parent, int sourceCat
     Create ( parent, wxID_ANY, _( "Relocate Category Dialog" ), wxDefaultPosition, wxSize ( 500, 300 ), style );
 }
 
-bool relocateCategoryDialog::Create ( wxWindow *parent
-    , wxWindowID id
-    , const wxString &caption
-    , const wxPoint &pos
-    , const wxSize &size
-    , long style )
+bool relocateCategoryDialog::Create ( wxWindow *parent, wxWindowID id, const wxString &caption, const wxPoint &pos, const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create( parent , id , caption , pos , size , style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     IsOkOk();
     GetSizer()->Fit ( this );

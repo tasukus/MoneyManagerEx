@@ -96,7 +96,7 @@ public:
     virtual void show_statistics() const = 0;
 
 protected:
-    wxSQLite3Database *db_;
+    wxSQLite3Database *db_ = nullptr;
 };
 
 template<class DB_TABLE>

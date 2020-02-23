@@ -219,7 +219,7 @@ void mmReportCashFlow::getStats ( double &tInitialBalance, std::vector<ValueTrio
         {
             if ( balance.date.IsBetween ( dtBegin, dtEnd ) )
             {
-                forecastVector[idx].amount += balance.amount;
+                forecastVector.at ( idx ).amount += balance.amount;
             }
         }
 
@@ -227,10 +227,10 @@ void mmReportCashFlow::getStats ( double &tInitialBalance, std::vector<ValueTrio
         {
             if ( !d_balance.first.IsLaterThan ( dtEnd ) )
             {
-                forecastVector[idx].amount += d_balance.second;
+                forecastVector.at ( idx ).amount += d_balance.second;
             }
         }
-        forecastVector[idx].label = dtEnd.FormatISODate();
+        forecastVector.at ( idx ).label = dtEnd.FormatISODate();
     }
 }
 
@@ -316,8 +316,8 @@ wxString mmReportCashFlow::getHTMLText_i()
     int colorNum = 0;
     for ( size_t idx = 0; idx < forecastVector.size(); idx++ )
     {
-        const double balance = forecastVector[idx].amount + tInitialBalance;
-        const double diff = ( idx == 0 ? 0 : forecastVector[idx].amount - forecastVector[idx-1].amount ) ;
+        const double balance = forecastVector.at ( idx ).amount + tInitialBalance;
+        const double diff = ( idx == 0 ? 0 : forecastVector.at ( idx ).amount - forecastVector.at ( idx - 1 ).amount );
         const wxDateTime dtEnd = cashFlowReportType_ == MONTHLY
                                  ? today_.Add ( wxDateSpan::Months ( idx ) ) : today_.Add ( wxDateSpan::Days ( idx ) );
 
@@ -336,7 +336,7 @@ wxString mmReportCashFlow::getHTMLText_i()
         }
 
         hb.startTableRow ( COLORS[colorNum] );
-        hb.addTableCell ( forecastVector[idx].label );
+        hb.addTableCell ( forecastVector.at ( idx ).label );
         hb.addMoneyCell ( balance );
         hb.addMoneyCell ( diff );
         hb.endTableRow();

@@ -59,13 +59,13 @@ bool FileCSV::Load ( const wxString &fileName, unsigned int itemsInLine )
         // Tokens in row
         while ( tkz.HasMoreTokens() )
         {
-            if ( itemsTable_[row].size() >= itemsInLine )
+            if ( itemsTable_.at ( row ).size() >= itemsInLine )
             {
                 break;
             }
 
             wxString token = tkz.GetNextToken();
-            itemsTable_[row].push_back ( token );
+            itemsTable_.at ( row ).push_back ( token );
         }
 
         ++row;

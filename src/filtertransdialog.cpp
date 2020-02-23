@@ -66,8 +66,9 @@ wxBEGIN_EVENT_TABLE ( mmFilterTransactionsDialog, wxDialog )
     EVT_BUTTON ( wxID_MORE, mmFilterTransactionsDialog::OnMoreFields )
 wxEND_EVENT_TABLE()
 
-mmFilterTransactionsDialog::mmFilterTransactionsDialog()
+mmFilterTransactionsDialog::mmFilterTransactionsDialog() : wxDialog()
 {
+    return;
 }
 
 mmFilterTransactionsDialog::~mmFilterTransactionsDialog()
@@ -109,15 +110,16 @@ mmFilterTransactionsDialog::mmFilterTransactionsDialog ( wxWindow *parent, int a
     Create ( parent, wxID_ANY, _( "Transaction Filter" ), wxDefaultPosition, wxSize ( 400, 300 ), style );
 }
 
-bool mmFilterTransactionsDialog::Create ( wxWindow *parent
-    , wxWindowID id
-    , const wxString &caption
-    , const wxPoint &pos
-    , const wxSize &size
-    , long style )
+bool mmFilterTransactionsDialog::Create ( wxWindow *parent, wxWindowID id, const wxString &caption, const wxPoint &pos, const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     GetStoredSettings ( -1 );
     dataToControls();
@@ -899,7 +901,7 @@ wxString mmFilterTransactionsDialog::to_json ( bool i18n )
     if ( m_dateRangeCheckBox->IsChecked() )
     {
         const int i = m_date_ranges->GetSelection();
-        const auto &title = m_all_date_ranges[i]->title();
+        const auto &title = m_all_date_ranges.at(i)->title();
 
         if ( !title.empty() )
         {

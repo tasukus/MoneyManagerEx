@@ -91,7 +91,13 @@ bool mmNewAcctDialog::Create ( wxWindow *parent
     , const wxString &name )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style, name );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style, name );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     this->SetTitle ( _( "Edit Account" ) );
     SetIcon ( mmex::getProgramIcon() );
     CreateControls();

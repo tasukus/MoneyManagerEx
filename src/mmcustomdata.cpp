@@ -295,7 +295,8 @@ void mmCustomData::OnMultiChoice ( wxCommandEvent &event )
     }
 
     const auto &name = button->GetName();
-    const wxString type = Model_CustomField::FIELDTYPE_CHOICES[Model_CustomField::MULTICHOICE].second;
+    const wxString type = Model_CustomField::FIELDTYPE_CHOICES.at ( Model_CustomField::MULTICHOICE ).second;
+
     Model_CustomField::Data_Set fields = Model_CustomField::instance()
         .find ( Model_CustomField::REFTYPE ( m_ref_type )
             , Model_CustomField::TYPE ( type )

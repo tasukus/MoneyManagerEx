@@ -51,8 +51,7 @@ mmCurrencyDialog::~mmCurrencyDialog()
 {
 }
 
-mmCurrencyDialog::mmCurrencyDialog ( wxWindow *parent
-    , const Model_Currency::Data *currency )
+mmCurrencyDialog::mmCurrencyDialog ( wxWindow *parent, const Model_Currency::Data *currency )
     : m_scale ( SCALE )
 {
     if ( currency )
@@ -75,7 +74,13 @@ bool mmCurrencyDialog::Create ( wxWindow *parent, wxWindowID id
     , const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
 
     if ( !m_currency )

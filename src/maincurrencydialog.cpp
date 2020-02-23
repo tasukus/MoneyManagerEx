@@ -58,11 +58,8 @@ wxBEGIN_EVENT_TABLE ( mmMainCurrencyDialog, wxDialog )
     EVT_LIST_ITEM_DESELECTED ( wxID_ANY, mmMainCurrencyDialog::OnHistoryDeselected )
 wxEND_EVENT_TABLE()
 
-mmMainCurrencyDialog::mmMainCurrencyDialog (
-    wxWindow *parent
-    , int currencyID
-    , bool bEnableSelect
-) : bEnableSelect_ ( bEnableSelect )
+mmMainCurrencyDialog::mmMainCurrencyDialog ( wxWindow *parent, int currencyID, bool bEnableSelect)
+    : bEnableSelect_ ( bEnableSelect )
 {
     ColName_[CURR_BASE]   = _( "Base" );
     ColName_[CURR_SYMBOL] = _( "Symbol" );
@@ -82,7 +79,13 @@ bool mmMainCurrencyDialog::Create ( wxWindow *parent
     , long style )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create ( parent, id, caption, pos, size, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     SetIcon ( mmex::getProgramIcon() );
     fillControls();
@@ -656,16 +659,13 @@ void mmMainCurrencyDialog::OnHistoryUpdate ( wxCommandEvent &WXUNUSED ( event ) 
 
     const int msgResult = wxMessageBox ( _( "Do you want to add also dates without any transaction?" )
             , _( "Currency Dialog" ), wxYES_NO | wxNO_DEFAULT | wxICON_ERROR );
-    bool CheckDate;
 
-    if ( msgResult == wxYES || msgResult == wxNO )
-    {
-        CheckDate = msgResult == wxNO;
-    }
-    else
+    if ( msgResult != wxYES && msgResult != wxNO )
     {
         return;
     }
+
+    bool CheckDate = msgResult == wxNO;
 
     const bool Found = !historical_rates.empty();
 

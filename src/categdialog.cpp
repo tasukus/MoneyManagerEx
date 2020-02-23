@@ -82,7 +82,13 @@ bool mmCategDialog::Create ( wxWindow *parent, wxWindowID id
     , const wxSize &size, long style )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxDialog::Create ( parent, id, caption, pos, size, style );
+    const bool bret = wxDialog::Create( parent , id , caption , pos , size , style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     fillControls();
     GetSizer()->Fit ( this );
@@ -585,7 +591,7 @@ wxTreeItemId mmCategDialog::getTreeItemFor ( const wxTreeItemId &itemID, const w
     return catID;
 }
 
-void mmCategDialog::setTreeSelection ( int category_id, int subcategory_id )
+void mmCategDialog::setTreeSelection(const int category_id , const int subcategory_id)
 {
     const auto &categories = Model_Category::instance().find ( Model_Category::CATEGID ( category_id ) );
 
@@ -750,7 +756,7 @@ bool mmCategDialog::categShowStatus ( const int categId,const int subCategId )
 
 wxString mmCategDialog::getFullCategName()
 {
-    Model_Category::Data *category = Model_Category::instance().get ( m_categ_id );
+    const Model_Category::Data *category = Model_Category::instance().get(m_categ_id);
     Model_Subcategory::Data *subcategory = ( m_subcateg_id != -1 ? Model_Subcategory::instance().get ( m_subcateg_id ) : nullptr );
     return Model_Category::full_name ( category, subcategory );
 }

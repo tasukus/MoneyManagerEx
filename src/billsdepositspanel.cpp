@@ -162,7 +162,7 @@ void billsDepositsListCtrl::OnColClick ( wxListEvent &event )
 
     if ( m_selected_row >= 0 )
     {
-        refreshVisualList ( m_bdp->initVirtualListControl ( m_bdp->bills_[m_selected_row].BDID ) );
+        refreshVisualList ( m_bdp->initVirtualListControl ( m_bdp->bills_.at ( m_selected_row ).BDID ) );
     }
     else
     {
@@ -170,8 +170,7 @@ void billsDepositsListCtrl::OnColClick ( wxListEvent &event )
     }
 }
 
-mmBillsDepositsPanel::mmBillsDepositsPanel ( wxWindow *parent, wxWindowID winid
-    , const wxPoint &pos, const wxSize &size, long style, const wxString &name )
+mmBillsDepositsPanel::mmBillsDepositsPanel ( wxWindow *parent, wxWindowID winid , const wxPoint &pos, const wxSize &size, long style, const wxString &name )
 {
     m_today = wxDate::Today();
     this->tips_.Add (
@@ -185,7 +184,13 @@ bool mmBillsDepositsPanel::Create ( wxWindow *parent
     , const wxSize &size, long style, const wxString &name )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxPanel::Create ( parent, winid, pos, size, style, name );
+    const bool bret = wxPanel::Create ( parent, winid, pos, size, style, name );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     this->windowsFreezeThaw();
     const wxDateTime start = wxDateTime::UNow( );
     CreateControls();
@@ -578,7 +583,7 @@ int billsDepositsListCtrl::OnGetItemImage ( long item ) const
 {
     bool bd_repeat_user = false;
     bool bd_repeat_auto = false;
-    int repeats = m_bdp->bills_[item].REPEATS;
+    int repeats = m_bdp->bills_.at ( item ).REPEATS;
 
     // DeMultiplex the Auto Executable fields.
     switch ( repeats/BD_REPEATS_MULTIPLEX_BASE )
@@ -592,11 +597,12 @@ int billsDepositsListCtrl::OnGetItemImage ( long item ) const
     }
 
     repeats %= BD_REPEATS_MULTIPLEX_BASE;
-    const int daysRemaining = Model_Billsdeposits::NEXTOCCURRENCEDATE ( m_bdp->bills_[item] )
+
+    const int daysRemaining = Model_BillsDeposits::NEXTOCCURRENCEDATE ( m_bdp->bills_.at ( item ) )
         .Subtract ( m_bdp->getToday() ).GetDays();
 
     /* Returns the icon to be shown for each entry */
-    if ( daysRemaining <= 0 && repeats > 10 && repeats < 15 && m_bdp->bills_[item].NUMOCCURRENCES < 0 )
+    if ( daysRemaining <= 0 && repeats > 10 && repeats < 15 && m_bdp->bills_.at ( item ).NUMOCCURRENCES < 0 )
     {
         return -1;
     }
@@ -625,8 +631,7 @@ void billsDepositsListCtrl::OnListKeyDown ( wxListEvent &event )
     {
         case WXK_DELETE:
         {
-            wxCommandEvent evt ( wxEVT_COMMAND_MENU_SELECTED,
-                MENU_TREEPOPUP_DELETE );
+            wxCommandEvent evt ( wxEVT_COMMAND_MENU_SELECTED,MENU_TREEPOPUP_DELETE );
             OnDeleteBDSeries ( evt );
         }
         break;
@@ -653,7 +658,7 @@ void billsDepositsListCtrl::OnEditBDSeries ( wxCommandEvent &WXUNUSED ( event ) 
         return;
     }
 
-    mmBDDialog dlg ( this, m_bdp->bills_[m_selected_row].BDID, true, false );
+    mmBDDialog dlg ( this, m_bdp->bills_.at ( m_selected_row ).BDID, true, false );
 
     if ( dlg.ShowModal() == wxID_OK )
     {
@@ -679,7 +684,7 @@ void billsDepositsListCtrl::OnDeleteBDSeries ( wxCommandEvent &WXUNUSED ( event 
 
     if ( msgDlg.ShowModal() == wxID_YES )
     {
-        const int BdId = m_bdp->bills_[m_selected_row].BDID;
+        const int BdId = m_bdp->bills_.at ( m_selected_row ).BDID;
         Model_Billsdeposits::instance().remove ( BdId );
         mmAttachmentManage::DeleteAllAttachments ( Model_Attachment::reftype_desc ( Model_Attachment::BILLSDEPOSIT ), BdId );
         m_bdp->initVirtualListControl();
@@ -694,7 +699,7 @@ void billsDepositsListCtrl::OnEnterBDTransaction ( wxCommandEvent &WXUNUSED ( ev
         return;
     }
 
-    const int id = m_bdp->bills_[m_selected_row].BDID;
+    const int id = m_bdp->bills_.at ( m_selected_row ).BDID;
     mmBDDialog dlg ( this, id, false, true );
 
     if ( dlg.ShowModal() == wxID_OK )
@@ -710,7 +715,7 @@ void billsDepositsListCtrl::OnSkipBDTransaction ( wxCommandEvent &WXUNUSED ( eve
         return;
     }
 
-    const int id = m_bdp->bills_[m_selected_row].BDID;
+    const int id = m_bdp->bills_.at ( m_selected_row ).BDID;
     Model_Billsdeposits::instance().completeBDInSeries ( id );
     refreshVisualList ( m_bdp->initVirtualListControl ( id ) );
 }
@@ -722,7 +727,7 @@ void billsDepositsListCtrl::OnOrganizeAttachments ( wxCommandEvent &WXUNUSED ( e
         return;
     }
 
-    const int RefId = m_bdp->bills_[m_selected_row].BDID;
+    const int RefId = m_bdp->bills_.at ( m_selected_row ).BDID;
     const wxString &RefType = Model_Attachment::reftype_desc ( Model_Attachment::BILLSDEPOSIT );
     mmAttachmentDialog dlg ( this, RefType, RefId );
     dlg.ShowModal();
@@ -736,7 +741,7 @@ void billsDepositsListCtrl::OnOpenAttachment ( wxCommandEvent &WXUNUSED ( event 
         return;
     }
 
-    const int RefId = m_bdp->bills_[m_selected_row].BDID;
+    const int RefId = m_bdp->bills_.at ( m_selected_row ).BDID;
     const wxString &RefType = Model_Attachment::reftype_desc ( Model_Attachment::BILLSDEPOSIT );
     mmAttachmentManage::OpenAttachmentFromPanelIcon ( this, RefType, RefId );
     refreshVisualList ( m_bdp->initVirtualListControl ( RefId ) );
@@ -749,7 +754,7 @@ void billsDepositsListCtrl::OnListItemActivated ( wxListEvent &WXUNUSED ( event 
         return;
     }
 
-    mmBDDialog dlg ( this, m_bdp->bills_[m_selected_row].BDID, true, false );
+    mmBDDialog dlg ( this, m_bdp->bills_.at ( m_selected_row ).BDID, true, false );
 
     if ( dlg.ShowModal() == wxID_OK )
     {
@@ -763,8 +768,8 @@ void mmBillsDepositsPanel::updateBottomPanelData ( int selIndex )
 
     if ( selIndex != -1 )
     {
-        m_infoTextMini->SetLabelText ( Model_Category::full_name ( bills_[selIndex].CATEGID, bills_[selIndex].SUBCATEGID ) );
-        m_infoText->SetLabelText ( bills_[selIndex].NOTES );
+        m_infoTextMini->SetLabelText ( Model_Category::full_name ( bills_.at ( selIndex ).CATEGID, bills_.at ( selIndex ).SUBCATEGID ) );
+        m_infoText->SetLabelText ( bills_.at ( selIndex ).NOTES );
     }
 }
 
@@ -964,7 +969,7 @@ void billsDepositsListCtrl::RefreshList()
 
     if ( m_selected_row != -1 )
     {
-        id = m_bdp->bills_[m_selected_row].BDID;
+        id = m_bdp->bills_.at ( m_selected_row ).BDID;
     }
 
     refreshVisualList ( m_bdp->initVirtualListControl ( id ) );

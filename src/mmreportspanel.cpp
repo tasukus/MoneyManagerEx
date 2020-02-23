@@ -130,10 +130,7 @@ wxBEGIN_EVENT_TABLE ( mmReportsPanel, wxPanel )
 wxEND_EVENT_TABLE()
 
 mmReportsPanel::mmReportsPanel (
-    mmPrintableBase *rb, bool cleanupReport, wxWindow *parent, mmGUIFrame *frame,
-    wxWindowID winid, const wxPoint &pos,
-    const wxSize &size, long style,
-    const wxString &name )
+    mmPrintableBase *rb, bool cleanupReport, wxWindow *parent, mmGUIFrame *frame, wxWindowID winid, const wxPoint &pos, const wxSize &size, long style, const wxString &name )
     : rb_ ( rb )
     , cleanup_ ( cleanupReport )
     , m_frame ( frame )
@@ -183,13 +180,18 @@ mmReportsPanel::~mmReportsPanel()
     }
 }
 
-bool mmReportsPanel::Create ( wxWindow *parent, wxWindowID winid
-    , const wxPoint &pos, const wxSize &size, long style
-    , const wxString &name )
+bool mmReportsPanel::Create ( wxWindow *parent, wxWindowID winid, const wxPoint &pos, const wxSize &size, long style, const wxString &name )
 {
     SetExtraStyle ( GetExtraStyle() | wxWS_EX_BLOCK_EVENTS );
-    wxPanel::Create ( parent, winid, pos, size, style, name );
-    wxDateTime start = wxDateTime::UNow();
+    const bool bret = wxPanel::Create ( parent, winid, pos, size, style, name );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
+    const wxDateTime start = wxDateTime::UNow();
+
     CreateControls();
 
     if ( rb_ )

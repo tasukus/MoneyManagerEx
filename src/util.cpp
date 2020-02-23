@@ -41,6 +41,7 @@ wxString JSON_PrettyFormated ( rapidjson::Document &j_doc )
     StringBuffer j_buffer;
     PrettyWriter<StringBuffer> j_writer ( j_buffer );
     j_doc.Accept ( j_writer );
+
     return j_buffer.GetString();
 }
 
@@ -49,6 +50,7 @@ wxString JSON_Formated ( rapidjson::Document &j_doc )
     StringBuffer j_buffer;
     Writer<StringBuffer> j_writer ( j_buffer );
     j_doc.Accept ( j_writer );
+
     return j_buffer.GetString();
 }
 
@@ -61,21 +63,29 @@ int CaseInsensitiveCmp ( const wxString &s1, const wxString &s2 )
 mmTreeItemData::mmTreeItemData ( const int id, const bool isBudget )
     : id_ ( id )
     , isBudgetingNode_ ( isBudget )
-{}
+{
+    return;
+}
 mmTreeItemData::mmTreeItemData ( const wxString &string, mmPrintableBase *report )
     : isString_ ( true )
     , stringData_ ( "report@" + string )
     , report_ ( report )
-{}
+{
+    return;
+}
 mmTreeItemData::mmTreeItemData ( mmPrintableBase *report )
     : isString_ ( true )
     , stringData_ ( "report@" + report->getReportTitle() )
     , report_ ( report )
-{}
+{
+    return;
+}
 mmTreeItemData::mmTreeItemData ( const wxString &string )
     : isString_ ( true )
     , stringData_ ( "item@" + string )
-{}
+{
+    return;
+}
 mmTreeItemData::~mmTreeItemData()
 {
     if ( report_ )

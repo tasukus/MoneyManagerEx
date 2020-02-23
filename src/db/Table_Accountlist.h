@@ -111,7 +111,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "ACCOUNTID";
         }
-        explicit ACCOUNTID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit ACCOUNTID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct ACCOUNTNAME : public DB_Column<wxString>
@@ -120,7 +122,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "ACCOUNTNAME";
         }
-        explicit ACCOUNTNAME ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit ACCOUNTNAME ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct ACCOUNTTYPE : public DB_Column<wxString>
@@ -129,7 +133,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "ACCOUNTTYPE";
         }
-        explicit ACCOUNTTYPE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit ACCOUNTTYPE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct ACCOUNTNUM : public DB_Column<wxString>
@@ -138,7 +144,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "ACCOUNTNUM";
         }
-        explicit ACCOUNTNUM ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit ACCOUNTNUM ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct STATUS : public DB_Column<wxString>
@@ -147,7 +155,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "STATUS";
         }
-        explicit STATUS ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit STATUS ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct NOTES : public DB_Column<wxString>
@@ -156,7 +166,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "NOTES";
         }
-        explicit NOTES ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit NOTES ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct HELDAT : public DB_Column<wxString>
@@ -165,7 +177,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "HELDAT";
         }
-        explicit HELDAT ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit HELDAT ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct WEBSITE : public DB_Column<wxString>
@@ -174,7 +188,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "WEBSITE";
         }
-        explicit WEBSITE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit WEBSITE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct CONTACTINFO : public DB_Column<wxString>
@@ -183,7 +199,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "CONTACTINFO";
         }
-        explicit CONTACTINFO ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit CONTACTINFO ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct ACCESSINFO : public DB_Column<wxString>
@@ -192,7 +210,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "ACCESSINFO";
         }
-        explicit ACCESSINFO ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit ACCESSINFO ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct INITIALBAL : public DB_Column<double>
@@ -201,7 +221,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "INITIALBAL";
         }
-        explicit INITIALBAL ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit INITIALBAL ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct FAVORITEACCT : public DB_Column<wxString>
@@ -210,7 +232,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "FAVORITEACCT";
         }
-        explicit FAVORITEACCT ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit FAVORITEACCT ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct CURRENCYID : public DB_Column<int>
@@ -219,7 +243,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "CURRENCYID";
         }
-        explicit CURRENCYID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit CURRENCYID ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct STATEMENTLOCKED : public DB_Column<int>
@@ -228,7 +254,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "STATEMENTLOCKED";
         }
-        explicit STATEMENTLOCKED ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op ) {}
+        explicit STATEMENTLOCKED ( const int &v, OP op = EQUAL ) : DB_Column<int> ( v, op )
+        {
+        }
     };
 
     struct STATEMENTDATE : public DB_Column<wxString>
@@ -237,7 +265,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "STATEMENTDATE";
         }
-        explicit STATEMENTDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit STATEMENTDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct MINIMUMBALANCE : public DB_Column<double>
@@ -246,7 +276,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "MINIMUMBALANCE";
         }
-        explicit MINIMUMBALANCE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit MINIMUMBALANCE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct CREDITLIMIT : public DB_Column<double>
@@ -255,7 +287,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "CREDITLIMIT";
         }
-        explicit CREDITLIMIT ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit CREDITLIMIT ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct INTERESTRATE : public DB_Column<double>
@@ -264,7 +298,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "INTERESTRATE";
         }
-        explicit INTERESTRATE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit INTERESTRATE ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     struct PAYMENTDUEDATE : public DB_Column<wxString>
@@ -273,7 +309,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "PAYMENTDUEDATE";
         }
-        explicit PAYMENTDUEDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op ) {}
+        explicit PAYMENTDUEDATE ( const wxString &v, OP op = EQUAL ) : DB_Column<wxString> ( v, op )
+        {
+        }
     };
 
     struct MINIMUMPAYMENT : public DB_Column<double>
@@ -282,7 +320,9 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         {
             return "MINIMUMPAYMENT";
         }
-        explicit MINIMUMPAYMENT ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op ) {}
+        explicit MINIMUMPAYMENT ( const double &v, OP op = EQUAL ) : DB_Column<double> ( v, op )
+        {
+        }
     };
 
     typedef ACCOUNTID PRIMARY;
@@ -312,7 +352,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     };
 
     /** Returns the column name as a string*/
-    static wxString column_to_name ( COLUMN col )
+    static wxString column_to_name ( const COLUMN col )
     {
         switch ( col )
         {
@@ -478,27 +518,27 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         wxString PAYMENTDUEDATE;
         double MINIMUMPAYMENT;
 
-        int id() const
+        int id() const noexcept
         {
             return ACCOUNTID;
         }
 
-        void id ( int id )
+        void id ( const int id ) noexcept
         {
             ACCOUNTID = id;
         }
 
-        bool operator < ( const Data &r ) const
+        bool operator < ( const Data &r ) const noexcept
         {
             return this->id() < r.id();
         }
 
-        bool operator < ( const Data *r ) const
+        bool operator < ( const Data *r ) const noexcept
         {
             return this->id() < r->id();
         }
 
-        explicit Data ( Self *table = 0 )
+        explicit Data ( Self *table = nullptr )
         {
             table_ = table;
 
@@ -512,7 +552,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             MINIMUMPAYMENT = 0.0;
         }
 
-        explicit Data ( wxSQLite3ResultSet &q, Self *table = 0 )
+        explicit Data ( wxSQLite3ResultSet &q, Self *table = nullptr )
         {
             table_ = table;
 
@@ -568,7 +608,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             return *this;
         }
 
-        bool match ( const Self::ACCOUNTID &in ) const
+        bool match ( const Self::ACCOUNTID &in ) const noexcept
         {
             return this->ACCOUNTID == in.v_;
         }
@@ -618,7 +658,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             return this->ACCESSINFO.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::INITIALBAL &in ) const
+        bool match ( const Self::INITIALBAL &in ) const noexcept
         {
             return this->INITIALBAL == in.v_;
         }
@@ -628,12 +668,12 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             return this->FAVORITEACCT.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::CURRENCYID &in ) const
+        bool match ( const Self::CURRENCYID &in ) const noexcept
         {
             return this->CURRENCYID == in.v_;
         }
 
-        bool match ( const Self::STATEMENTLOCKED &in ) const
+        bool match ( const Self::STATEMENTLOCKED &in ) const noexcept
         {
             return this->STATEMENTLOCKED == in.v_;
         }
@@ -643,17 +683,17 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             return this->STATEMENTDATE.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::MINIMUMBALANCE &in ) const
+        bool match ( const Self::MINIMUMBALANCE &in ) const noexcept
         {
             return this->MINIMUMBALANCE == in.v_;
         }
 
-        bool match ( const Self::CREDITLIMIT &in ) const
+        bool match ( const Self::CREDITLIMIT &in ) const noexcept
         {
             return this->CREDITLIMIT == in.v_;
         }
 
-        bool match ( const Self::INTERESTRATE &in ) const
+        bool match ( const Self::INTERESTRATE &in ) const noexcept
         {
             return this->INTERESTRATE == in.v_;
         }
@@ -663,7 +703,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
             return this->PAYMENTDUEDATE.CmpNoCase ( in.v_ ) == 0;
         }
 
-        bool match ( const Self::MINIMUMPAYMENT &in ) const
+        bool match ( const Self::MINIMUMPAYMENT &in ) const noexcept
         {
             return this->MINIMUMPAYMENT == in.v_;
         }
@@ -815,13 +855,13 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         NUM_COLUMNS = 20
     };
 
-    size_t num_columns() const
+    size_t num_columns() const noexcept override
     {
         return NUM_COLUMNS;
     }
 
     /** Name of the table */
-    wxString name() const
+    wxString name() const override
     {
         return "ACCOUNTLIST";
     }
@@ -923,7 +963,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     }
 
     /** Remove the Data record from the database and the memory table (cache) */
-    bool remove ( int id, wxSQLite3Database *db )
+    bool remove ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
@@ -997,12 +1037,12 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     * Search the memory table (Cache) for the data record.
     * If not found in memory, search the database and update the cache.
     */
-    Self::Data *get ( int id, wxSQLite3Database *db )
+    Self::Data *get ( const int id, wxSQLite3Database *db )
     {
         if ( id <= 0 )
         {
             ++ skip_;
-            return 0;
+            return nullptr;
         }
 
         Index_By_Id::iterator it = index_by_id_.find ( id );
@@ -1013,7 +1053,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
         }
 
         ++ miss_;
-        Self::Data *entity = 0;
+        Self::Data *entity = nullptr;
         wxString where = wxString::Format ( " WHERE %s = ?", PRIMARY::name().c_str() );
         try
         {
@@ -1047,7 +1087,7 @@ struct DB_Table_ACCOUNTLIST : public DB_Table
     * Return a list of Data records (Data_Set) derived directly from the database.
     * The Data_Set is sorted based on the column number.
     */
-    const Data_Set all ( wxSQLite3Database *db, COLUMN col = COLUMN ( 0 ), bool asc = true )
+    const Data_Set all ( wxSQLite3Database *db, const COLUMN col = COLUMN ( 0 ), const bool asc = true )
     {
         Data_Set result;
         try

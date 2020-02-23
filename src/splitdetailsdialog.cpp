@@ -68,8 +68,13 @@ SplitDetailDialog::SplitDetailDialog (
 bool SplitDetailDialog::Create ( wxWindow *parent )
 {
     constexpr long style = wxCAPTION | wxSYSTEM_MENU | wxCLOSE_BOX;
-    wxDialog::Create ( parent, wxID_ANY, _( "Split Detail Dialog" )
-        , wxDefaultPosition, wxDefaultSize, style );
+    const bool bret = wxDialog::Create ( parent, wxID_ANY, _( "Split Detail Dialog" ), wxDefaultPosition, wxDefaultSize, style );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     CreateControls();
     DataToControls();
     Layout();

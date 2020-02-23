@@ -50,15 +50,12 @@ wxEND_EVENT_TABLE()
 
 UserTransactionPanel::UserTransactionPanel()
 {
+    return;
 }
 
-UserTransactionPanel::UserTransactionPanel ( wxWindow *parent
-    , Model_Checking::Data *checking_entry
-    , wxWindowID win_id
-    , const wxPoint &pos
-    , const wxSize &size
-    , long style, const wxString &name )
-    : m_checking_entry ( checking_entry )
+UserTransactionPanel::UserTransactionPanel ( wxWindow *parent, Model_Checking::Data *checking_entry, wxWindowID win_id, const wxPoint &pos, const wxSize &size, long style, const wxString &name )
+    : wxPanel()
+    , m_checking_entry ( checking_entry )
 {
     wxPanel::Create ( parent, win_id, pos, size, style, name );
     const wxDateTime start = wxDateTime::UNow();
@@ -69,6 +66,7 @@ UserTransactionPanel::UserTransactionPanel ( wxWindow *parent
 
 UserTransactionPanel::~UserTransactionPanel()
 {
+    return;
 }
 
 void UserTransactionPanel::Create()
@@ -383,7 +381,7 @@ void UserTransactionPanel::onSelectedNote ( wxCommandEvent &event )
 
     if ( i > 0 && static_cast<size_t> ( i ) <= m_frequent_notes.size() )
     {
-        m_entered_notes->ChangeValue ( m_frequent_notes[i - 1] );
+        m_entered_notes->ChangeValue ( m_frequent_notes.at ( i - 1 ) );
     }
 }
 

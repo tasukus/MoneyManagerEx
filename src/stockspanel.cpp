@@ -174,38 +174,38 @@ wxString StocksListCtrl::OnGetItemText ( long item, long column ) const
 {
     if ( column == COL_ID )
     {
-        return wxString::Format ( "%i", m_stocks[item].STOCKID ).Trim();
+        return wxString::Format ( "%i", m_stocks.at ( item ).STOCKID ).Trim();
     }
 
     if ( column == COL_DATE )
     {
-        return mmGetDateForDisplay ( m_stocks[item].PURCHASEDATE );
+        return mmGetDateForDisplay ( m_stocks.at ( item ).PURCHASEDATE );
     }
 
     if ( column == COL_NAME )
     {
-        return m_stocks[item].STOCKNAME;
+        return m_stocks.at ( item ).STOCKNAME;
     }
 
     if ( column == COL_SYMBOL )
     {
-        return m_stocks[item].SYMBOL;
+        return m_stocks.at ( item ).SYMBOL;
     }
 
     if ( column == COL_NUMBER )
     {
-        const int precision = m_stocks[item].NUMSHARES == floor ( m_stocks[item].NUMSHARES ) ? 0 : 4;
-        return Model_Currency::toString ( m_stocks[item].NUMSHARES, m_stock_panel->m_currency, precision );
+        const int precision = m_stocks.at ( item ).NUMSHARES == floor ( m_stocks.at ( item ).NUMSHARES ) ? 0 : 4;
+        return Model_Currency::toString ( m_stocks.at ( item ).NUMSHARES, m_stock_panel->m_currency, precision );
     }
 
     if ( column == COL_PRICE )
     {
-        return Model_Currency::toString ( m_stocks[item].PURCHASEPRICE, m_stock_panel->m_currency, 4 );
+        return Model_Currency::toString ( m_stocks.at ( item ).PURCHASEPRICE, m_stock_panel->m_currency, 4 );
     }
 
     if ( column == COL_VALUE )
     {
-        return Model_Currency::toString ( m_stocks[item].VALUE, m_stock_panel->m_currency );
+        return Model_Currency::toString ( m_stocks.at ( item ).VALUE, m_stock_panel->m_currency );
     }
 
     if ( column == COL_GAIN_LOSS )
@@ -215,29 +215,29 @@ wxString StocksListCtrl::OnGetItemText ( long item, long column ) const
 
     if ( column == COL_CURRENT )
     {
-        return Model_Currency::toString ( m_stocks[item].CURRENTPRICE, m_stock_panel->m_currency, 4 );
+        return Model_Currency::toString ( m_stocks.at ( item ).CURRENTPRICE, m_stock_panel->m_currency, 4 );
     }
 
     if ( column == COL_CURRVALUE )
     {
-        return Model_Currency::toString ( Model_Stock::CurrentValue ( m_stocks[item] ), m_stock_panel->m_currency );
+        return Model_Currency::toString ( Model_Stock::CurrentValue ( m_stocks.at ( item ) ), m_stock_panel->m_currency );
     }
 
     if ( column == COL_PRICEDATE )
     {
-        return mmGetDateForDisplay ( Model_Stock::instance().lastPriceDate ( &m_stocks[item] ) );
+        return mmGetDateForDisplay ( Model_Stock::instance().lastPriceDate ( &m_stocks.at ( item ) ) );
     }
 
     if ( column == COL_COMMISSION )
     {
-        return Model_Currency::toString ( m_stocks[item].COMMISSION, m_stock_panel->m_currency );
+        return Model_Currency::toString ( m_stocks.at ( item ).COMMISSION, m_stock_panel->m_currency );
     }
 
     if ( column == COL_NOTES )
     {
-        wxString full_notes = m_stocks[item].NOTES;
+        wxString full_notes = m_stocks.at ( item ).NOTES;
 
-        if ( Model_Attachment::NrAttachments ( Model_Attachment::reftype_desc ( Model_Attachment::STOCK ), m_stocks[item].STOCKID ) )
+        if ( Model_Attachment::NrAttachments ( Model_Attachment::reftype_desc ( Model_Attachment::STOCK ), m_stocks.at ( item ).STOCKID ) )
         {
             full_notes = full_notes.Prepend ( mmAttachmentManage::GetAttachmentNoteSign() );
         }
@@ -338,9 +338,9 @@ void StocksListCtrl::OnDeleteStocks ( wxCommandEvent &WXUNUSED ( event ) )
 
     if ( msgDlg.ShowModal() == wxID_YES )
     {
-        Model_Stock::instance().remove ( m_stocks[m_selected_row].STOCKID );
-        mmAttachmentManage::DeleteAllAttachments ( Model_Attachment::reftype_desc ( Model_Attachment::STOCK ), m_stocks[m_selected_row].STOCKID );
-        Model_Translink::RemoveTransLinkRecords ( Model_Attachment::STOCK, m_stocks[m_selected_row].STOCKID );
+        Model_Stock::instance().remove ( m_stocks.at ( m_selected_row ).STOCKID );
+        mmAttachmentManage::DeleteAllAttachments ( Model_Attachment::reftype_desc ( Model_Attachment::STOCK ), m_stocks.at ( m_selected_row ).STOCKID );
+        Model_Translink::RemoveTransLinkRecords ( Model_Attachment::STOCK, m_stocks.at ( m_selected_row ).STOCKID );
         DeleteItem ( m_selected_row );
         doRefreshItems ( -1 );
         m_stock_panel->m_frame->RefreshNavigationTree();
@@ -376,7 +376,7 @@ void StocksListCtrl::OnMoveStocks ( wxCommandEvent &WXUNUSED ( event ) )
 
     if ( toAccountID != -1 )
     {
-        Model_Stock::Data *stock = Model_Stock::instance().get ( m_stocks[m_selected_row].STOCKID );
+        Model_Stock::Data *stock = Model_Stock::instance().get ( m_stocks.at ( m_selected_row ).STOCKID );
         stock->HELDAT = toAccountID;
         Model_Stock::instance().save ( stock );
         DeleteItem ( m_selected_row );
@@ -407,8 +407,9 @@ void StocksListCtrl::OnOrganizeAttachments ( wxCommandEvent &WXUNUSED ( event ) 
         return;
     }
 
-    const wxString RefType = Model_Attachment::reftype_desc ( Model_Attachment::STOCK );
-    const int RefId = m_stocks[m_selected_row].STOCKID;
+    const wxString &RefType = Model_Attachment::reftype_desc ( Model_Attachment::STOCK );
+    const int RefId = m_stocks.at ( m_selected_row ).STOCKID;
+
     mmAttachmentDialog dlg ( this, RefType, RefId );
     dlg.ShowModal();
     doRefreshItems ( RefId );
@@ -421,7 +422,7 @@ void StocksListCtrl::OnStockWebPage ( wxCommandEvent &WXUNUSED ( event ) )
         return;
     }
 
-    const wxString stockSymbol = m_stocks[m_selected_row].SYMBOL;
+    const wxString stockSymbol = m_stocks.at ( m_selected_row ).SYMBOL;
 
     if ( !stockSymbol.IsEmpty() )
     {
@@ -439,7 +440,8 @@ void StocksListCtrl::OnOpenAttachment ( wxCommandEvent &WXUNUSED ( event ) )
     }
 
     const wxString &RefType = Model_Attachment::reftype_desc ( Model_Attachment::STOCK );
-    const int RefId = m_stocks[m_selected_row].STOCKID;
+    const int RefId = m_stocks.at ( m_selected_row ).STOCKID;
+
     mmAttachmentManage::OpenAttachmentFromPanelIcon ( this, RefType, RefId );
     doRefreshItems ( RefId );
 }
@@ -463,7 +465,7 @@ void StocksListCtrl::OnListItemActivated ( wxListEvent &event )
 
 void mmStocksPanel::AddStockTransaction ( int selectedIndex )
 {
-    Model_Stock::Data *stock = &listCtrlAccount_->m_stocks[selectedIndex];
+    Model_Stock::Data *stock = &listCtrlAccount_->m_stocks.at ( selectedIndex );
     ShareTransactionDialog dlg ( this, stock );
 
     if ( dlg.ShowModal() == wxID_OK )
@@ -483,7 +485,7 @@ void mmStocksPanel::OnListItemActivated ( int selectedIndex )
 //TODO: improve View Stock Transactions
 void mmStocksPanel::ViewStockTransactions ( int selectedIndex )
 {
-    Model_Stock::Data *stock = &listCtrlAccount_->m_stocks[selectedIndex];
+    Model_Stock::Data *stock = &listCtrlAccount_->m_stocks.at ( selectedIndex );
     Model_Translink::Data_Set stock_list = Model_Translink::TranslinkList ( Model_Attachment::STOCK, stock->STOCKID );
     // TODO create a panel to display all the information on one screen
     wxString msg = wxString::Format ( _( "Temporary Stock list: %s\n\n"
@@ -543,7 +545,7 @@ void StocksListCtrl::OnColClick ( wxListEvent &event )
 
     if ( m_selected_row>=0 )
     {
-        trx_id = m_stocks[m_selected_row].STOCKID;
+        trx_id = m_stocks.at ( m_selected_row ).STOCKID;
     }
 
     doRefreshItems ( trx_id );
@@ -716,7 +718,14 @@ bool mmStocksPanel::Create ( wxWindow *parent
     , const wxSize &size, long style, const wxString &name )
 {
     SetExtraStyle ( GetExtraStyle() |wxWS_EX_BLOCK_EVENTS );
-    wxPanel::Create ( parent, winid, pos, size, style, name );
+
+    const bool bret = wxPanel::Create ( parent, winid, pos, size, style, name );
+
+    if ( bret == false )
+    {
+        return false;
+    }
+
     const wxDateTime start = wxDateTime::UNow();
     strLastUpdate_ = Model_Infotable::instance().GetStringInfo ( "STOCKS_LAST_REFRESH_DATETIME", "" );
     this->windowsFreezeThaw();
@@ -742,6 +751,7 @@ bool mmStocksPanel::Create ( wxWindow *parent
 
 mmStocksPanel::~mmStocksPanel()
 {
+    return;
 }
 
 void mmStocksPanel::RefreshList()
@@ -1026,7 +1036,7 @@ bool mmStocksPanel::onlineQuoteRefresh ( wxString &msg )
 
     if ( listCtrlAccount_->get_selectedIndex() > -1 )
     {
-        selected_id = listCtrlAccount_->m_stocks[listCtrlAccount_->get_selectedIndex()].STOCKID;
+        selected_id = listCtrlAccount_->m_stocks.at ( listCtrlAccount_->get_selectedIndex() ).STOCKID;
     }
 
     listCtrlAccount_->doRefreshItems ( selected_id );
@@ -1053,7 +1063,8 @@ void mmStocksPanel::updateExtraStocksData ( int selectedIndex )
 wxString StocksListCtrl::getStockInfo ( int selectedIndex ) const
 {
     const auto currency = m_stock_panel->m_currency;
-    const auto symbol = m_stocks[selectedIndex].SYMBOL;
+    const auto symbol = m_stocks.at ( selectedIndex ).SYMBOL;
+
     double total_purchase_price = 0;
     double total_current_price = 0;
     double total_shares = 0;
@@ -1077,9 +1088,9 @@ wxString StocksListCtrl::getStockInfo ( int selectedIndex ) const
 
     wxString miniInfo = "";
 
-    if ( m_stocks[selectedIndex].SYMBOL != "" )
+    if ( m_stocks.at ( selectedIndex ).SYMBOL != "" )
     {
-        miniInfo << wxString::Format ( _( "Symbol: %s" ), m_stocks[selectedIndex].SYMBOL ) << "\t";
+        miniInfo << wxString::Format ( _( "Symbol: %s" ), m_stocks.at ( selectedIndex ).SYMBOL ) << "\t";
     }
 
     m_stock_panel->m_stock_details_short ( miniInfo );
@@ -1135,7 +1146,7 @@ void mmStocksPanel::enableEditDeleteButtons ( bool en )
 
 void mmStocksPanel::call_dialog ( int selectedIndex )
 {
-    Model_Stock::Data *stock = &listCtrlAccount_->m_stocks[selectedIndex];
+    Model_Stock::Data *stock = &listCtrlAccount_->m_stocks.at ( selectedIndex );
     mmStockDialog dlg ( this, m_frame, stock, m_account_id );
     dlg.ShowModal();
     listCtrlAccount_->doRefreshItems ( dlg.m_stock_id );
