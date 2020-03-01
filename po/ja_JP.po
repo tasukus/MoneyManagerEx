@@ -296,10 +296,6 @@ msgstr "拡張子 (*.mmb) の、すでに作成済のデータベースを開き
 msgid "Read Documentation"
 msgstr "ドキュメントを読む"
 
-#: appstartdialog.cpp:111
-msgid "Read the user manual"
-msgstr "ユーザーマニュアルを読む"
-
 #: appstartdialog.cpp:114
 msgid "Visit Website for more information"
 msgstr "詳細情報はウェブサイトを参照してください"
@@ -4582,7 +4578,7 @@ msgstr ""
 
 #: mmframe.cpp:2140
 msgid "Please use this function only if explicitly requested by MMEX support"
-msgstr "この関数は、MMEX サポートによって明示的に要求された場合にのみ使用してください"
+msgstr "この機能は、MMEX サポートによって明示的に要求された場合にのみ使用してください"
 
 #: mmframe.cpp:2141
 msgid "DB Debug"

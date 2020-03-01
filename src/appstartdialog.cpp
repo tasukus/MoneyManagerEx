@@ -98,7 +98,7 @@ void mmAppStartDialog::CreateControls()
     itemButton7->SetToolTip ( _( "Open an already created database file with extension (*.mmb)" ) );
     itemBoxSizer5->Add ( itemButton7, 0, wxGROW | wxALL, 5 );
     wxButton *itemButton8 = new wxButton ( this, wxID_HELP, _( "Read Documentation" ) );
-    itemButton8->SetToolTip ( _( "Read the user manual" ) );
+    itemButton8->SetToolTip ( _( "Read the user Manual" ) );
     itemBoxSizer5->Add ( itemButton8, 0, wxGROW | wxALL, 5 );
     wxButton *itemButton9 = new wxButton ( this, wxID_INDEX, _( "Visit Website for more information" ) );
     const wxString s = wxString::Format ( _( "Open the %s website for latest news, updates etc" )
