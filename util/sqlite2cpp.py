@@ -177,10 +177,10 @@ struct DB_Table_%s : public DB_Table
     struct Data;
     typedef DB_Table_%s Self;
 
-    /** A container to hold list of Data records for the table*/
+    /// A container to hold list of Data records for the table
     struct Data_Set : public std::vector<Self::Data>
     {
-        /** Return the data records as a json array string */
+        /// Return the data records as a json array string
         wxString to_json() const
         {
             StringBuffer json_buffer;
@@ -199,21 +199,21 @@ struct DB_Table_%s : public DB_Table
         }
     };
 
-    /** A container to hold a list of Data record pointers for the table in memory*/
+    /// A container to hold a list of Data record pointers for the table in memory
     typedef std::vector<Self::Data*> Cache;
     typedef std::map<int, Self::Data*> Index_By_Id;
     Cache cache_;
     Index_By_Id index_by_id_;
     Data *fake_ = nullptr; // in case the entity not found
 
-    /** Destructor: clears any data records stored in memory */
+    /// Destructor: clears any data records stored in memory
     ~DB_Table_%s()
     {
         delete this->fake_;
         destroy_cache();
     }
 
-    /** Removes all records stored in memory (cache) for the table*/
+    /// Removes all records stored in memory (cache) for the table
     void destroy_cache()
     {
         std::for_each( cache_.begin(), cache_.end(), std::mem_fn(&Data::destroy) );
@@ -223,7 +223,7 @@ struct DB_Table_%s : public DB_Table
 ''' % (self._table, self._table, self._table)
 
         s += '''
-    /** Creates the database table if the table does not exist*/
+    /// Creates the database table if the table does not exist
     bool ensure ( wxSQLite3Database* db )
     {
         if ( !exists(db) )
@@ -327,7 +327,7 @@ struct DB_Table_%s : public DB_Table
     };
 '''
         s += '''
-    /** Returns the column name as a string*/
+    /// Returns the column name as a string
     static wxString column_to_name( const COLUMN col)
     {
         switch ( col )
@@ -348,7 +348,7 @@ struct DB_Table_%s : public DB_Table
     }
 '''
         s += '''
-    /** Returns the column number from the given column name*/
+    /// Returns the column number from the given column name
     static COLUMN name_to_column ( const wxString& name )
     {
         if ( "%s" == name )
@@ -369,11 +369,11 @@ struct DB_Table_%s : public DB_Table
     }
 '''
         s += '''
-    /** Data is a single record in the database table*/
+    /// Data is a single record in the database table
     struct Data
     {
         friend struct DB_Table_%s;
-        /** This is a instance pointer to itself in memory. */
+        // This is a instance pointer to itself in memory.
         Self* table_ = nullptr;
 ''' % self._table.upper()
         for field in self._fields:
@@ -470,7 +470,7 @@ struct DB_Table_%s : public DB_Table
 
         s += '''
 
-        /** Return the data record as a json string */
+        /// Return the data record as a json string
         wxString to_json() const
         {
             StringBuffer json_buffer;
@@ -483,7 +483,7 @@ struct DB_Table_%s : public DB_Table
             return json_buffer.GetString();
         }
 
-        /** Add the field data as json key:value pairs */
+        /// Add the field data as json key:value pairs
         void as_json(PrettyWriter<StringBuffer>& json_writer) const
         {'''
         for field in self._fields:
@@ -532,7 +532,7 @@ struct DB_Table_%s : public DB_Table
 
         s += '''
 
-        /** Save the record instance in memory to the database. */
+        /// Save the record instance in memory to the database.
         bool save ( wxSQLite3Database* db )
         {
             if ( db!= nullptr && db->IsReadOnly()== true )
@@ -548,7 +548,7 @@ struct DB_Table_%s : public DB_Table
             return table_->save(this , db);
         }
 
-        /** Remove the record instance from memory and the database. */
+        /// Remove the record instance from memory and the database.
         bool remove ( wxSQLite3Database* db )
         {
             if ( table_ == nullptr || db == nullptr )
@@ -579,7 +579,7 @@ struct DB_Table_%s : public DB_Table
 ''' % len(self._fields)
 
         s += '''
-    /** Name of the table */
+    /// Name of the table
     wxString name() const override
     {
         return "%s";
@@ -594,7 +594,7 @@ struct DB_Table_%s : public DB_Table
 ''' % (self._table, ', '.join([field['name'] for field in self._fields]), self._table)
 
         s += '''
-    /** Create a new Data record and add to memory table (cache) */
+    /// Create a new Data record and add to memory table (cache)
     Self::Data* create()
     {
         Self::Data* entity = new Self::Data(this);
@@ -602,7 +602,7 @@ struct DB_Table_%s : public DB_Table
         return entity;
     }
 
-    /** Create a copy of the Data record and add to memory table (cache) */
+    /// Create a copy of the Data record and add to memory table (cache)
     Self::Data* clone ( const Data* e )
     {
         Self::Data *entity = create();
@@ -612,11 +612,11 @@ struct DB_Table_%s : public DB_Table
     }
 '''
         s += '''
-    /**
-    * Saves the Data record to the database table.
-    * Either create a new record or update the existing record.
-    * Remove old record from the memory table (cache)
-    */
+    ///
+    /// Saves the Data record to the database table.
+    /// Either create a new record or update the existing record.
+    /// Remove old record from the memory table (cache)
+    ///
     bool save ( Self::Data* entity , wxSQLite3Database* db )
     {
         wxString sql = wxEmptyString;
@@ -683,7 +683,7 @@ struct DB_Table_%s : public DB_Table
     }
 ''' % (len(self._fields), self._primay_key, self._table)
         s += '''
-    /** Remove the Data record from the database and the memory table (cache) */
+    /// Remove the Data record from the database and the memory table (cache)
     bool remove ( const int id , wxSQLite3Database* db )
     {
         if ( id <= 0 )
@@ -725,7 +725,7 @@ struct DB_Table_%s : public DB_Table
         return true;
     }
 
-    /** Remove the Data record from the database and the memory table (cache) */
+    /// Remove the Data record from the database and the memory table (cache)
     bool remove ( Self::Data* entity , wxSQLite3Database* db )
     {
         if (remove( entity->id(), db) )
@@ -759,10 +759,10 @@ struct DB_Table_%s : public DB_Table
 
         s += '''
 
-    /**
-    * Search the memory table (Cache) for the data record.
-    * If not found in memory, search the database and update the cache.
-    */
+    ///
+    /// Search the memory table (Cache) for the data record.
+    ///If not found in memory, search the database and update the cache.
+    ///
     Self::Data* get ( const int id , wxSQLite3Database* db )
     {
         if ( id <= 0 )
@@ -810,10 +810,10 @@ struct DB_Table_%s : public DB_Table
     }
 '''
         s += '''
-    /**
-    * Return a list of Data records (Data_Set) derived directly from the database.
-    * The Data_Set is sorted based on the column number.
-    */
+    ///
+    /// Return a list of Data records (Data_Set) derived directly from the database.
+    /// The Data_Set is sorted based on the column number.
+    ///
     const Data_Set all ( wxSQLite3Database* db , const COLUMN col = COLUMN(0) , const bool asc = true )
     {
         Data_Set result;
